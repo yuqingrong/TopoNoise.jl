@@ -114,3 +114,68 @@ expanded = plot_sequential_circuit(circuit; expand_physical_buses=true)
 `yao_circuit(circuit)` also prepares the carriers in `|+⟩`. The final
 carrier `⟨+|` projections remain explicit model metadata and are not part of
 the executable unitary block. The global circuit matrix is never materialized.
+
+## Noisy measured trajectories
+
+`ToricCodeTrajectoryModel` implements the measurement/reset version of the
+same diagonal circuit. It uses four reusable physical ancillas and one carrier
+per row and column. At every site the physical record is stored in
+`(E, N, W, S)` order, the four ancillas are reset to zero, and any internal
+carrier error is applied before that carrier reaches its next site.
+
+Every internal and dangling virtual bond receives one independent Bernoulli
+`X`-error opportunity. For an `R` by `C` patch there are
+
+```text
+R(C-1) + (R-1)C + 2R + 2C
+```
+
+such opportunities. The west/south boundary errors occur after the carrier
+`|+⟩` preparation; east/north errors occur after the final site on the
+corresponding carrier and before its analytic `⟨+|` projection. These boundary
+events are deliberately retained in `VirtualBondErrors`, even though they do
+not affect physical records because `X|+⟩=|+⟩` and `⟨+|X=⟨+|`.
+
+```julia
+using TopoNoise, Random
+
+model = ToricCodeTrajectoryModel(8, 8)
+trajectory = sample_trajectory(
+    MersenneTwister(1234), model; error_rate=0.1)
+mismatches = bond_mismatches(trajectory)
+observables = trajectory_observables(trajectory)
+
+# Literal small-system Yao reference: 4 reusable ancillas + R+C carriers.
+errors = sample_virtual_errors(MersenneTwister(7), model; error_rate=0.1)
+reference = sample_yao_trajectory(
+    MersenneTwister(8), model, errors; max_qubits=24)
+```
+
+The observable internal doubled-edge syndromes are
+`E[r,c] ⊻ W[r,c+1]` horizontally and
+`N[r+1,c] ⊻ S[r,c]` vertically. They reproduce the internal error maps
+exactly. Dangling boundary errors have no doubled neighbor and therefore
+cannot be inferred from these mismatch records.
+
+### Finite-size raw-percolation scan
+
+The trajectory scanner reports injected-error density, boundary density,
+internal mismatch density, odd-plaquette frustration, largest occupied-bond
+cluster, and horizontal/vertical spanning. Run the example with an explicit
+error-rate grid:
+
+```bash
+julia --project=. examples/scan_toric_trajectories.jl \
+  --p-min 0.35 --p-max 0.65 --p-step 0.01
+```
+
+Defaults are sizes `4,8,16,32`, 10,000 shots per point, seed `1234`, and
+2,000 bootstrap replicates. The script writes `trajectory_scan.csv`,
+`trajectory_crossings.csv`, and `trajectory_scan.{svg,pdf,png}`. Adjacent-size
+crossings use monotone-smoothed horizontal-spanning curves and batch bootstrap
+intervals; unbracketed or unstable results remain in the output with an
+explicit status.
+
+This is a raw bond-percolation diagnostic of the sampled internal errors. It
+does not reconstruct spins, compute a Binder cumulant, or solve a Nishimori
+decoding problem; those require an additional Gibbs model or decoder.

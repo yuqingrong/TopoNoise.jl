@@ -1,4 +1,5 @@
 using CairoMakie: CairoMakie, Figure
+using Random
 import Yao
 
 function rendered_text(fig)
@@ -11,6 +12,42 @@ function rendered_text(fig)
         end
     end
     return labels
+end
+
+@testset "Trajectory scan figure" begin
+    @test isdefined(TopoNoise, :plot_trajectory_scan)
+
+    if isdefined(TopoNoise, :plot_trajectory_scan)
+        scan = scan_trajectories(
+            MersenneTwister(301), [2, 3], [0.0, 0.5, 1.0];
+            shots=12, batches=3)
+        crossings = estimate_crossings(
+            MersenneTwister(302), scan; bootstrap=12)
+        figure = plot_trajectory_scan(scan, crossings)
+        @test figure isa Figure
+
+        titles = [string(block.title[]) for block in figure.content
+                  if hasproperty(block, :title)]
+        @test "Injected errors and mismatches" in titles
+        @test "Plaquette frustration" in titles
+        @test "Largest occupied cluster" in titles
+        @test "Horizontal spanning probability" in titles
+
+        mktempdir() do directory
+            for extension in ("svg", "pdf", "png")
+                path = joinpath(directory, "trajectory_scan.$extension")
+                CairoMakie.save(path, figure)
+                @test isfile(path)
+                @test filesize(path) > 100
+            end
+            @test startswith(
+                read(joinpath(directory, "trajectory_scan.svg"), String),
+                "<?xml")
+            @test startswith(
+                read(joinpath(directory, "trajectory_scan.pdf"), String),
+                "%PDF")
+        end
+    end
 end
 
 @testset "Native Yao circuit figures" begin
