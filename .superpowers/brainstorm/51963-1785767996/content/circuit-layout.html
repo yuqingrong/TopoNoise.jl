@@ -1,0 +1,62 @@
+<h2>What should “sequential circuit graph” look like?</h2>
+<p class="subtitle">Both views use the same causal schedule: west/south legs enter each local gate, east/north legs leave it, and equal-colored anti-diagonals form parallel layers starting at the bottom-left.</p>
+
+<div class="cards">
+  <div class="card" data-choice="spatial-dag" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f8fafc;">
+      <svg viewBox="0 0 420 300" style="width:100%;height:auto" aria-label="Spatial dependency graph">
+        <defs>
+          <marker id="arrow-a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#64748b"/></marker>
+        </defs>
+        <g stroke="#cbd5e1" stroke-width="3" marker-end="url(#arrow-a)">
+          <path d="M90 235 H180"/><path d="M210 235 H300"/>
+          <path d="M90 145 H180"/><path d="M210 145 H300"/>
+          <path d="M90 55 H180"/><path d="M210 55 H300"/>
+          <path d="M75 220 V160"/><path d="M195 220 V160"/><path d="M315 220 V160"/>
+          <path d="M75 130 V70"/><path d="M195 130 V70"/><path d="M315 130 V70"/>
+        </g>
+        <g font-family="system-ui" text-anchor="middle" font-weight="700">
+          <g fill="#7c3aed"><rect x="45" y="205" width="60" height="60" rx="12"/><text x="75" y="240" fill="white">U₁</text></g>
+          <g fill="#2563eb"><rect x="165" y="205" width="60" height="60" rx="12"/><text x="195" y="240" fill="white">U₂</text></g>
+          <g fill="#2563eb"><rect x="45" y="115" width="60" height="60" rx="12"/><text x="75" y="150" fill="white">U₂</text></g>
+          <g fill="#0891b2"><rect x="285" y="205" width="60" height="60" rx="12"/><text x="315" y="240" fill="white">U₃</text></g>
+          <g fill="#0891b2"><rect x="165" y="115" width="60" height="60" rx="12"/><text x="195" y="150" fill="white">U₃</text></g>
+          <g fill="#0891b2"><rect x="45" y="25" width="60" height="60" rx="12"/><text x="75" y="60" fill="white">U₃</text></g>
+          <g fill="#059669"><rect x="285" y="115" width="60" height="60" rx="12"/><text x="315" y="150" fill="white">U₄</text></g>
+          <g fill="#059669"><rect x="165" y="25" width="60" height="60" rx="12"/><text x="195" y="60" fill="white">U₄</text></g>
+          <g fill="#d97706"><rect x="285" y="25" width="60" height="60" rx="12"/><text x="315" y="60" fill="white">U₅</text></g>
+        </g>
+        <text x="20" y="286" font-family="system-ui" font-size="13" fill="#475569">start ↗</text>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>A · Spatial dependency DAG</h3>
+      <p>Preserves the PEPS geometry. Arrows show virtual-leg flow; colors and labels show parallel anti-diagonal layers.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="wire-circuit" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f8fafc;">
+      <svg viewBox="0 0 420 300" style="width:100%;height:auto" aria-label="Wire-based circuit schedule">
+        <g stroke="#94a3b8" stroke-width="2">
+          <path d="M25 45 H395"/><path d="M25 85 H395"/><path d="M25 125 H395"/><path d="M25 165 H395"/><path d="M25 205 H395"/><path d="M25 245 H395"/>
+        </g>
+        <g font-family="system-ui" font-size="12" fill="#475569"><text x="8" y="49">q₁</text><text x="8" y="89">q₂</text><text x="8" y="129">q₃</text><text x="8" y="169">q₄</text><text x="8" y="209">q₅</text><text x="8" y="249">q₆</text></g>
+        <g font-family="system-ui" text-anchor="middle" font-weight="700" fill="white">
+          <rect x="48" y="30" width="46" height="230" rx="10" fill="#7c3aed"/><text x="71" y="149">U₁</text>
+          <rect x="121" y="30" width="46" height="110" rx="10" fill="#2563eb"/><text x="144" y="89">U₂a</text>
+          <rect x="176" y="150" width="46" height="110" rx="10" fill="#2563eb"/><text x="199" y="209">U₂b</text>
+          <rect x="249" y="70" width="46" height="150" rx="10" fill="#0891b2"/><text x="272" y="149">U₃…</text>
+          <rect x="322" y="30" width="46" height="230" rx="10" fill="#059669"/><text x="345" y="149">U₄…</text>
+        </g>
+        <g font-family="system-ui" font-size="12" fill="#64748b" text-anchor="middle"><text x="71" y="282">layer 1</text><text x="171" y="282">layer 2</text><text x="272" y="282">layer 3</text><text x="345" y="282">later</text></g>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>B · Conventional wire circuit</h3>
+      <p>Emphasizes time and qubit wires. Familiar circuit notation, but the 2D PEPS geometry and virtual-bond meaning are less immediate.</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:18px">Click the view you want as the primary sequential-circuit figure. We can still derive the other later from the same schedule model.</p>

@@ -4,3 +4,16 @@
 /Manifest*.toml
 /docs/Manifest*.toml
 /docs/build/
+/examples/output/
+*.pdf
+*.png
+*.svg
+*.eps
+*.tex
+*.sty
+*.cls
+*.bst
+*.bbl
+*.blg
+*.aux
+*.log

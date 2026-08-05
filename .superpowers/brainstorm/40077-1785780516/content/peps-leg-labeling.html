@@ -1,0 +1,128 @@
+<style>
+  .diagram-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:22px; }
+  .diagram-card { border:1px solid #d9dee8; border-radius:14px; background:#fff; overflow:hidden; cursor:pointer; transition:.18s ease; }
+  .diagram-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(35,55,80,.10); }
+  .diagram-card.selected { border:2px solid #315b7d; box-shadow:0 0 0 3px rgba(49,91,125,.14); }
+  .diagram { background:#f8fafc; padding:10px; }
+  .diagram svg { width:100%; height:auto; display:block; }
+  .diagram-copy { padding:14px 16px 18px; }
+  .diagram-copy h3 { margin:0 0 7px; font-size:17px; }
+  .diagram-copy p { margin:0; color:#5e6878; line-height:1.45; font-size:13px; }
+  .badge { display:inline-block; margin-bottom:8px; padding:3px 8px; border-radius:999px; background:#e6f0f5; color:#315b7d; font-size:11px; font-weight:700; letter-spacing:.03em; }
+  .key { display:flex; gap:16px; flex-wrap:wrap; margin-top:18px; color:#566273; font-size:13px; }
+  .key span::before { content:""; display:inline-block; width:18px; height:3px; margin-right:6px; vertical-align:middle; }
+  .key .virtual::before { background:#405064; }
+  .key .physical::before { background:#c44e52; }
+  @media (max-width: 1000px) { .diagram-grid { grid-template-columns:1fr; } }
+</style>
+
+<h2>How much leg labeling should the open-boundary PEPS show?</h2>
+<p class="subtitle">All three keep eight legs per tensor and your isometric orientation: γ and δ enter from west/south; α, β, i, j, k, l leave toward east/north.</p>
+
+<div class="diagram-grid">
+  <div class="diagram-card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="diagram">
+      <svg viewBox="0 0 320 270" aria-label="Every tensor fully labelled">
+        <defs>
+          <marker id="av-a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#405064"/></marker>
+          <marker id="ap-a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#c44e52"/></marker>
+        </defs>
+        <g stroke="#405064" stroke-width="2.2" fill="none" marker-end="url(#av-a)">
+          <path d="M42 82H91"/><path d="M111 82H201"/><path d="M221 82H272"/>
+          <path d="M42 188H91"/><path d="M111 188H201"/><path d="M221 188H272"/>
+          <path d="M101 238V198"/><path d="M101 178V92"/><path d="M101 72V32"/>
+          <path d="M211 238V198"/><path d="M211 178V92"/><path d="M211 72V32"/>
+        </g>
+        <g stroke="#c44e52" stroke-width="1.8" fill="none" marker-end="url(#ap-a)">
+          <path d="M111 85l18-22"/><path d="M104 72l14-21"/><path d="M91 79l14-21"/><path d="M98 92l14-20"/>
+          <path d="M221 85l18-22"/><path d="M214 72l14-21"/><path d="M201 79l14-21"/><path d="M208 92l14-20"/>
+          <path d="M111 191l18-22"/><path d="M104 178l14-21"/><path d="M91 185l14-21"/><path d="M98 198l14-20"/>
+          <path d="M221 191l18-22"/><path d="M214 178l14-21"/><path d="M201 185l14-21"/><path d="M208 198l14-20"/>
+        </g>
+        <g fill="#315b7d" stroke="#fff" stroke-width="1.5">
+          <rect x="91" y="72" width="20" height="20"/><rect x="201" y="72" width="20" height="20"/>
+          <rect x="91" y="178" width="20" height="20"/><rect x="201" y="178" width="20" height="20"/>
+        </g>
+        <g font-family="serif" font-style="italic" font-size="10" fill="#263545">
+          <text x="74" y="77">γ</text><text x="114" y="77">α</text><text x="94" y="62">β</text><text x="94" y="105">δ</text>
+          <text x="114" y="69">i</text><text x="107" y="52">j</text><text x="86" y="61">k</text><text x="108" y="91">l</text>
+          <text x="184" y="77">γ</text><text x="224" y="77">α</text><text x="204" y="62">β</text><text x="204" y="105">δ</text>
+          <text x="224" y="69">i</text><text x="217" y="52">j</text><text x="196" y="61">k</text><text x="218" y="91">l</text>
+          <text x="74" y="183">γ</text><text x="114" y="183">α</text><text x="94" y="168">β</text><text x="94" y="211">δ</text>
+          <text x="114" y="175">i</text><text x="107" y="158">j</text><text x="86" y="167">k</text><text x="108" y="197">l</text>
+          <text x="184" y="183">γ</text><text x="224" y="183">α</text><text x="204" y="168">β</text><text x="204" y="211">δ</text>
+          <text x="224" y="175">i</text><text x="217" y="158">j</text><text x="196" y="167">k</text><text x="218" y="197">l</text>
+        </g>
+        <g fill="#fff" font-size="9" text-anchor="middle"><text x="101" y="85">T</text><text x="211" y="85">T</text><text x="101" y="191">T</text><text x="211" y="191">T</text></g>
+      </svg>
+    </div>
+    <div class="diagram-copy"><h3>A · Label every tensor</h3><p>Most literal match to the local diagram, but labels become dense quickly on a 3×3 or larger lattice.</p></div>
+  </div>
+
+  <div class="diagram-card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="diagram">
+      <svg viewBox="0 0 320 270" aria-label="All arrows with one representative tensor labelled">
+        <defs>
+          <marker id="av-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#405064"/></marker>
+          <marker id="ap-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#c44e52"/></marker>
+        </defs>
+        <g stroke="#405064" stroke-width="2.2" fill="none" marker-end="url(#av-b)">
+          <path d="M42 82H91"/><path d="M111 82H201"/><path d="M221 82H272"/>
+          <path d="M42 188H91"/><path d="M111 188H201"/><path d="M221 188H272"/>
+          <path d="M101 238V198"/><path d="M101 178V92"/><path d="M101 72V32"/>
+          <path d="M211 238V198"/><path d="M211 178V92"/><path d="M211 72V32"/>
+        </g>
+        <g stroke="#c44e52" stroke-width="1.8" fill="none" marker-end="url(#ap-b)">
+          <path d="M111 85l18-22"/><path d="M104 72l14-21"/><path d="M91 79l14-21"/><path d="M98 92l14-20"/>
+          <path d="M221 85l18-22"/><path d="M214 72l14-21"/><path d="M201 79l14-21"/><path d="M208 92l14-20"/>
+          <path d="M111 191l18-22"/><path d="M104 178l14-21"/><path d="M91 185l14-21"/><path d="M98 198l14-20"/>
+          <path d="M221 191l18-22"/><path d="M214 178l14-21"/><path d="M201 185l14-21"/><path d="M208 198l14-20"/>
+        </g>
+        <circle cx="101" cy="188" r="27" fill="none" stroke="#78a8bc" stroke-width="2" stroke-dasharray="4 4"/>
+        <g fill="#315b7d" stroke="#fff" stroke-width="1.5">
+          <rect x="91" y="72" width="20" height="20"/><rect x="201" y="72" width="20" height="20"/>
+          <rect x="91" y="178" width="20" height="20"/><rect x="201" y="178" width="20" height="20"/>
+        </g>
+        <g fill="#fff" font-size="9" text-anchor="middle"><text x="101" y="85">T</text><text x="211" y="85">T</text><text x="101" y="191">T</text><text x="211" y="191">T</text></g>
+        <g font-family="serif" font-style="italic" font-size="11" fill="#263545">
+          <text x="73" y="184">γ</text><text x="115" y="184">α</text><text x="95" y="166">β</text><text x="95" y="214">δ</text>
+          <text x="129" y="169">i</text><text x="119" y="155">j</text><text x="84" y="162">k</text><text x="114" y="204">l</text>
+        </g>
+        <text x="160" y="256" text-anchor="middle" font-size="11" fill="#526173">Representative-site labels; arrows remain on every leg</text>
+      </svg>
+    </div>
+    <div class="diagram-copy"><span class="badge">RECOMMENDED</span><h3>B · One labelled tensor</h3><p>Preserves the full isometric direction everywhere while keeping the lattice readable at publication size.</p></div>
+  </div>
+
+  <div class="diagram-card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="diagram">
+      <svg viewBox="0 0 320 270" aria-label="Arrows only with separate legend">
+        <defs>
+          <marker id="av-c" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#405064"/></marker>
+          <marker id="ap-c" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#c44e52"/></marker>
+        </defs>
+        <g stroke="#405064" stroke-width="2.2" fill="none" marker-end="url(#av-c)">
+          <path d="M42 82H91"/><path d="M111 82H201"/><path d="M221 82H272"/>
+          <path d="M42 188H91"/><path d="M111 188H201"/><path d="M221 188H272"/>
+          <path d="M101 238V198"/><path d="M101 178V92"/><path d="M101 72V32"/>
+          <path d="M211 238V198"/><path d="M211 178V92"/><path d="M211 72V32"/>
+        </g>
+        <g stroke="#c44e52" stroke-width="1.8" fill="none" marker-end="url(#ap-c)">
+          <path d="M111 85l18-22"/><path d="M104 72l14-21"/><path d="M91 79l14-21"/><path d="M98 92l14-20"/>
+          <path d="M221 85l18-22"/><path d="M214 72l14-21"/><path d="M201 79l14-21"/><path d="M208 92l14-20"/>
+          <path d="M111 191l18-22"/><path d="M104 178l14-21"/><path d="M91 185l14-21"/><path d="M98 198l14-20"/>
+          <path d="M221 191l18-22"/><path d="M214 178l14-21"/><path d="M201 185l14-21"/><path d="M208 198l14-20"/>
+        </g>
+        <g fill="#315b7d" stroke="#fff" stroke-width="1.5">
+          <rect x="91" y="72" width="20" height="20"/><rect x="201" y="72" width="20" height="20"/>
+          <rect x="91" y="178" width="20" height="20"/><rect x="201" y="178" width="20" height="20"/>
+        </g>
+        <g fill="#fff" font-size="9" text-anchor="middle"><text x="101" y="85">T</text><text x="211" y="85">T</text><text x="101" y="191">T</text><text x="211" y="191">T</text></g>
+        <g font-size="11" fill="#526173"><text x="55" y="255">virtual: γ/δ → T → α/β</text><text x="183" y="255">physical: i,j,k,l ↗</text></g>
+      </svg>
+    </div>
+    <div class="diagram-copy"><h3>C · Separate legend</h3><p>Cleanest lattice. Semantic labels live in a legend, while every individual leg still carries its arrow direction.</p></div>
+  </div>
+</div>
+
+<div class="key"><span class="virtual">Virtual legs and bonds</span><span class="physical">Physical legs</span></div>
