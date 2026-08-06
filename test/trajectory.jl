@@ -382,3 +382,51 @@ end
     @test !singleton_observables.spans_horizontal
     @test !singleton_observables.spans_vertical
 end
+
+@testset "Marginalized component-spin observables" begin
+    model = ToricCodeTrajectoryModel(2, 2)
+
+    fully_matched = sample_trajectory(
+        MersenneTwister(201), model, test_virtual_errors(2, 2))
+    matched = marginal_spin_observables(
+        MersenneTwister(202), fully_matched)
+    @test matched isa MarginalSpinObservables
+    @test matched.component_count == 1
+    @test matched.second_moment == 1.0
+    @test matched.fourth_moment == 1.0
+    @test matched.absolute_magnetization == 1.0
+
+    fully_erased_errors = test_virtual_errors(
+        2, 2; horizontal=trues(2, 1), vertical=trues(1, 2))
+    fully_erased = marginal_spin_observables(
+        MersenneTwister(203),
+        sample_trajectory(MersenneTwister(204), model, fully_erased_errors))
+    @test fully_erased.component_count == 4
+    @test fully_erased.second_moment == 1 / 4
+    @test fully_erased.fourth_moment == 5 / 32
+
+    corner_erased_errors = test_virtual_errors(
+        2, 2;
+        horizontal=BitMatrix(reshape(Bool[1, 0], 2, 1)),
+        vertical=BitMatrix([1 0]))
+    corner_trajectory = sample_trajectory(
+        MersenneTwister(205), model, corner_erased_errors)
+    corner = marginal_spin_observables(
+        MersenneTwister(206), corner_trajectory; spin_samples=20_000)
+    @test corner.component_count == 2
+    @test corner.second_moment == 5 / 8
+    @test corner.fourth_moment == 17 / 32
+    @test corner.absolute_magnetization ≈ 3 / 4 atol=0.01
+    @test corner == marginal_spin_observables(
+        MersenneTwister(206), corner_trajectory; spin_samples=20_000)
+
+    unrelated_metadata = ToricCodeTrajectory(
+        copy(corner_trajectory.measurements), test_virtual_errors(2, 2))
+    @test marginal_spin_observables(
+        MersenneTwister(207), unrelated_metadata; spin_samples=5) ==
+          marginal_spin_observables(
+        MersenneTwister(207), corner_trajectory; spin_samples=5)
+
+    @test_throws ArgumentError marginal_spin_observables(
+        MersenneTwister(208), corner_trajectory; spin_samples=0)
+end

@@ -9,6 +9,14 @@ struct TrajectoryObservables
     spans_vertical::Bool
 end
 
+"""Equal-weight spin moments after marginalizing mismatched internal edges."""
+struct MarginalSpinObservables
+    component_count::Int
+    second_moment::Float64
+    fourth_moment::Float64
+    absolute_magnetization::Float64
+end
+
 """Streaming summary for one square size and one virtual-bond error rate."""
 struct TrajectoryScanPoint
     size::Int
@@ -100,6 +108,62 @@ function _union_vertices!(
     parent[second_root] = first_root
     component_size[first_root] += component_size[second_root]
     return first_root
+end
+
+function _matched_component_sizes(trajectory::ToricCodeTrajectory)
+    mismatches = bond_mismatches(trajectory)
+    rows = size(mismatches.horizontal, 1)
+    cols = size(mismatches.vertical, 2)
+    vertices = rows * cols
+    parent = collect(1:vertices)
+    component_size = ones(Int, vertices)
+    vertex(row, col) = (row - 1) * cols + col
+
+    for row in 1:rows, col in axes(mismatches.horizontal, 2)
+        mismatches.horizontal[row, col] && continue
+        _union_vertices!(
+            parent, component_size, vertex(row, col), vertex(row, col + 1))
+    end
+    for row in axes(mismatches.vertical, 1), col in 1:cols
+        mismatches.vertical[row, col] && continue
+        _union_vertices!(
+            parent, component_size, vertex(row, col), vertex(row + 1, col))
+    end
+
+    roots = unique(_find_root!(parent, index) for index in 1:vertices)
+    return [component_size[root] for root in roots]
+end
+
+"""
+    marginal_spin_observables(rng, trajectory; spin_samples=1)
+
+Treat every mismatched internal doubled edge as an equal-weight erasure and
+every matched edge as an equal-spin constraint. Return exact conditional
+second and fourth magnetization moments together with a Monte Carlo estimate
+of the conditional absolute magnetization.
+"""
+function marginal_spin_observables(
+        rng::Random.AbstractRNG, trajectory::ToricCodeTrajectory;
+        spin_samples::Integer=1)
+    spin_samples > 0 || throw(ArgumentError(
+        "spin_samples must be positive, got $spin_samples"))
+    component_sizes = _matched_component_sizes(trajectory)
+    site_count = sum(component_sizes)
+    squared_size_sum = sum(Float64(size)^2 for size in component_sizes)
+    fourth_size_sum = sum(Float64(size)^4 for size in component_sizes)
+    second_moment = squared_size_sum / site_count^2
+    fourth_moment = (
+        3 * squared_size_sum^2 - 2 * fourth_size_sum) / site_count^4
+
+    absolute_total = 0.0
+    for _ in 1:Int(spin_samples)
+        signed_size_sum = sum(
+            rand(rng, Bool) ? size : -size for size in component_sizes)
+        absolute_total += abs(signed_size_sum) / site_count
+    end
+    return MarginalSpinObservables(
+        length(component_sizes), second_moment, fourth_moment,
+        absolute_total / spin_samples)
 end
 
 function _cluster_observables(horizontal::BitMatrix, vertical::BitMatrix)
