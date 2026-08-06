@@ -23,7 +23,10 @@ end
             shots=12, batches=3)
         crossings = estimate_crossings(
             MersenneTwister(302), scan; bootstrap=12)
-        figure = plot_trajectory_scan(scan, crossings)
+        binder_crossings = estimate_binder_crossings(
+            MersenneTwister(303), scan; bootstrap=12)
+        figure = plot_trajectory_scan(
+            scan, crossings; binder_crossings=binder_crossings)
         @test figure isa Figure
 
         titles = [string(block.title[]) for block in figure.content
@@ -32,6 +35,41 @@ end
         @test "Plaquette frustration" in titles
         @test "Largest occupied cluster" in titles
         @test "Horizontal spanning probability" in titles
+        @test "Marginalized |M|" in titles
+        @test "Binder cumulant U₄" in titles
+
+        raw_only_scan = TrajectoryScan(
+            scan.sizes, scan.error_rates, scan.points)
+        raw_only_figure = plot_trajectory_scan(raw_only_scan, crossings)
+        @test raw_only_figure isa Figure
+        raw_only_titles = [
+            string(block.title[]) for block in raw_only_figure.content
+            if hasproperty(block, :title)]
+        @test !("Marginalized |M|" in raw_only_titles)
+        @test !("Binder cumulant U₄" in raw_only_titles)
+
+        negative_spin_points = [
+            MarginalSpinScanPoint(
+                point.size, point.error_rate, point.shots,
+                point.absolute_magnetization_mean,
+                point.absolute_magnetization_se,
+                point.second_moment_mean, point.second_moment_se,
+                point.fourth_moment_mean, point.fourth_moment_se,
+                index == 1 ? -0.4 : point.binder_cumulant,
+                missing,
+                point.batch_counts, point.second_moment_batches,
+                point.fourth_moment_batches)
+            for (index, point) in enumerate(scan.marginal_spin_points)]
+        negative_scan = TrajectoryScan(
+            scan.sizes, scan.error_rates, scan.points, negative_spin_points)
+        negative_figure = plot_trajectory_scan(negative_scan, crossings)
+        negative_binder_axis = only(
+            block for block in negative_figure.content
+            if hasproperty(block, :title) &&
+               string(block.title[]) == "Binder cumulant U₄")
+        @test negative_binder_axis.limits[][2][1] < -0.4
+        @test !any(occursin("Errorbars", string(typeof(plot)))
+                   for plot in negative_binder_axis.scene.plots)
 
         mktempdir() do directory
             for extension in ("svg", "pdf", "png")

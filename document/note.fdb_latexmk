@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1785896425.18471 "note.tex" "note.pdf" "note" 1785896426.78 0
+["pdflatex"] 1786002359.9283 "note.tex" "note.pdf" "note" 1786002361.60577 0
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -193,8 +193,8 @@
   "image/lattice_diagram.pdf" 1785679775.32148 7509 e72d933b541149cbe3d80e8817cf93bb ""
   "image/lattice_diagram_double_Hilbert_space.pdf" 1785680374.07078 7536 ae4cc2ce7847f6512a805197ac5035ad ""
   "image/teleportation_transition.png" 1785230842.76987 259457 8a5719ba3f7b702c0945ac68e31198e2 ""
-  "note.aux" 1785896426.63408 1614 a6ca74d1f4a2f3452c723578440bf698 "pdflatex"
-  "note.tex" 1785896424.93167 4394 c3089ee8d8f35421c97005e38309fb66 ""
+  "note.aux" 1786002361.4807 1614 a6ca74d1f4a2f3452c723578440bf698 "pdflatex"
+  "note.tex" 1786002359.54239 4408 bb9a0551441a5140cd580cf63fe54207 ""
   (generated)
   "note.aux"
   "note.log"

@@ -384,6 +384,48 @@ end
 end
 
 @testset "Marginalized component-spin observables" begin
+    function exhaustive_component_moments(component_sizes)
+        site_count = sum(component_sizes)
+        second_total = 0.0
+        fourth_total = 0.0
+        sector_count = 2^length(component_sizes)
+        for sector in 0:(sector_count - 1)
+            magnetization = sum(
+                ((sector >> (index - 1)) & 1 == 1 ? size : -size)
+                for (index, size) in enumerate(component_sizes)) / site_count
+            second_total += magnetization^2
+            fourth_total += magnetization^4
+        end
+        return second_total / sector_count, fourth_total / sector_count
+    end
+
+    enumeration_cases = [
+        (1, 1, test_virtual_errors(1, 1), [1]),
+        (1, 2, test_virtual_errors(1, 2), [2]),
+        (2, 1, test_virtual_errors(
+            2, 1; vertical=trues(1, 1)), [1, 1]),
+        (2, 2, test_virtual_errors(
+            2, 2; horizontal=trues(2, 1), vertical=trues(1, 2)),
+         [1, 1, 1, 1]),
+        (2, 2, test_virtual_errors(
+            2, 2;
+            horizontal=BitMatrix(reshape(Bool[1, 0], 2, 1)),
+            vertical=BitMatrix([1 0])),
+         [3, 1]),
+    ]
+    for (case_index, (rows, cols, errors, component_sizes)) in
+            enumerate(enumeration_cases)
+        trajectory = sample_trajectory(
+            MersenneTwister(180 + case_index),
+            ToricCodeTrajectoryModel(rows, cols), errors)
+        observed = marginal_spin_observables(
+            MersenneTwister(190 + case_index), trajectory)
+        expected_second, expected_fourth =
+            exhaustive_component_moments(component_sizes)
+        @test observed.second_moment ≈ expected_second atol=1e-14
+        @test observed.fourth_moment ≈ expected_fourth atol=1e-14
+    end
+
     model = ToricCodeTrajectoryModel(2, 2)
 
     fully_matched = sample_trajectory(

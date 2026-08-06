@@ -223,18 +223,28 @@ function _trajectory_scan_points(scan::TrajectoryScan, size::Int)
     return [_scan_point(scan, size, rate) for rate in scan.error_rates]
 end
 
+function _marginal_spin_scan_points(scan::TrajectoryScan, size::Int)
+    return [
+        _marginal_spin_point(scan, size, rate) for rate in scan.error_rates]
+end
+
 """
-    plot_trajectory_scan(scan, crossings)
+    plot_trajectory_scan(scan, crossings; binder_crossings=[])
 
 Render the injected-error diagnostics, plaquette frustration, largest
-occupied internal-bond cluster, and horizontal spanning probability for a
-finite-size trajectory scan. Crossing estimates are shown on the spanning
-panel when available.
+occupied internal-bond cluster, horizontal spanning probability, marginalized
+absolute magnetization, and Binder cumulant for a finite-size trajectory scan.
+Crossing estimates are shown on their corresponding panels when available.
 """
 function plot_trajectory_scan(
         scan::TrajectoryScan,
-        crossings::AbstractVector{<:CriticalCrossing}=CriticalCrossing[])
-    figure = CairoMakie.Figure(size=(1100, 820), backgroundcolor=:white)
+        crossings::AbstractVector{<:CriticalCrossing}=CriticalCrossing[];
+        binder_crossings::AbstractVector{<:CriticalCrossing}=
+            CriticalCrossing[])
+    has_marginal_spins = !isempty(scan.marginal_spin_points)
+    figure = CairoMakie.Figure(
+        size=has_marginal_spins ? (1100, 1180) : (1100, 820),
+        backgroundcolor=:white)
     injected_axis = CairoMakie.Axis(
         figure[1, 1]; title="Injected errors and mismatches",
         xlabel="virtual-bond error rate p", ylabel="density")
@@ -247,6 +257,12 @@ function plot_trajectory_scan(
     spanning_axis = CairoMakie.Axis(
         figure[2, 2]; title="Horizontal spanning probability",
         xlabel="virtual-bond error rate p", ylabel="probability")
+    magnetization_axis = has_marginal_spins ? CairoMakie.Axis(
+        figure[3, 1]; title="Marginalized |M|",
+        xlabel="virtual-bond error rate p", ylabel="⟨|M|⟩") : nothing
+    binder_axis = has_marginal_spins ? CairoMakie.Axis(
+        figure[3, 2]; title="Binder cumulant U₄",
+        xlabel="virtual-bond error rate p", ylabel="U₄") : nothing
 
     colors = ("#0072B2", "#D55E00", "#009E73", "#CC79A7",
               "#E69F00", "#56B4E9", "#000000")
@@ -294,6 +310,35 @@ function plot_trajectory_scan(
             CairoMakie.errorbars!(axis, rates, values, errors;
                 color=color, whiskerwidth=7)
         end
+        if has_marginal_spins
+            spin_points = _marginal_spin_scan_points(scan, size)
+            magnetization = [
+                point.absolute_magnetization_mean for point in spin_points]
+            magnetization_se = [
+                point.absolute_magnetization_se for point in spin_points]
+            binder = [point.binder_cumulant for point in spin_points]
+            CairoMakie.lines!(magnetization_axis, rates, magnetization;
+                color=color, linewidth=2, label="L=$size")
+            CairoMakie.scatter!(
+                magnetization_axis, rates, magnetization; color=color)
+            CairoMakie.errorbars!(
+                magnetization_axis, rates, magnetization, magnetization_se;
+                color=color, whiskerwidth=7)
+
+            CairoMakie.lines!(binder_axis, rates, binder;
+                color=color, linewidth=2, label="L=$size")
+            CairoMakie.scatter!(binder_axis, rates, binder; color=color)
+            binder_error_indices = findall(
+                point -> !ismissing(point.binder_cumulant_se), spin_points)
+            if !isempty(binder_error_indices)
+                CairoMakie.errorbars!(
+                    binder_axis, rates[binder_error_indices],
+                    binder[binder_error_indices],
+                    Float64[spin_points[index].binder_cumulant_se
+                            for index in binder_error_indices];
+                    color=color, whiskerwidth=7)
+            end
+        end
     end
 
     for crossing in crossings
@@ -302,9 +347,36 @@ function plot_trajectory_scan(
         CairoMakie.vlines!(spanning_axis, [crossing.estimate];
             color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
     end
-    for axis in (injected_axis, frustration_axis, cluster_axis, spanning_axis)
+    if has_marginal_spins
+        for crossing in binder_crossings
+            crossing.status == :ok || continue
+            ismissing(crossing.estimate) && continue
+            CairoMakie.vlines!(binder_axis, [crossing.estimate];
+                color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
+        end
+    end
+    for axis in (
+            injected_axis, frustration_axis, cluster_axis, spanning_axis)
         CairoMakie.ylims!(axis, -0.03, 1.03)
         CairoMakie.axislegend(axis; position=:lt, framevisible=false)
+    end
+    if has_marginal_spins
+        CairoMakie.ylims!(magnetization_axis, -0.03, 1.03)
+        CairoMakie.axislegend(
+            magnetization_axis; position=:lt, framevisible=false)
+        binder_lower = minimum(
+            point.binder_cumulant -
+            coalesce(point.binder_cumulant_se, 0.0)
+            for point in scan.marginal_spin_points)
+        binder_upper = maximum(
+            point.binder_cumulant +
+            coalesce(point.binder_cumulant_se, 0.0)
+            for point in scan.marginal_spin_points)
+        binder_padding = max(0.03, 0.05 * (binder_upper - binder_lower))
+        CairoMakie.ylims!(
+            binder_axis, binder_lower - binder_padding,
+            max(0.70, binder_upper + binder_padding))
+        CairoMakie.axislegend(binder_axis; position=:lt, framevisible=false)
     end
     return figure
 end

@@ -23,9 +23,10 @@
 The complete suite checks the doubled-edge tensor and PEPS construction,
 six-qubit local gates, graph and sequential-circuit representations, literal
 Yao measurement/reset trajectories, an exact scalable sampler, raw
-percolation observables, finite-size crossings, runnable command-line
-workflows, and all generated figures. The verified run contains *837
-assertions* in *23 test groups*.
+percolation observables, equal-weight marginalized component spins, Binder
+cumulants and finite-size crossings, runnable command-line workflows, and all
+generated figures. The verified run contains *1008 assertions* in *25 test
+groups*.
 
 #text(size: 8.3pt)[
   #table(
@@ -43,24 +44,25 @@ assertions* in *23 test groups*.
     [Complete small-patch wavefunctions], [9],
     [Trajectory mismatch observables], [29],
     [$3 times 3$ patch], [6],
-    [Welford streaming accumulator], [3],
+    [Marginalized component-spin observables], [25],
     [Unitary completion], [10],
-    [Streaming trajectory scans], [45],
+    [Welford streaming accumulator], [3],
     [Toric-code local unitary gate], [19],
-    [Finite-size spanning crossings], [26],
+    [Streaming trajectory scans], [152],
     [Toric-code PEPS graph], [49],
-    [Runnable toric-code circuit example], [36],
+    [Finite-size spanning crossings], [26],
     [Toric-code sequential circuit schedule], [122],
-    [Trajectory critical-scan CLI], [36],
+    [Marginalized Binder crossings], [24],
     [Executable Yao circuit], [26],
-    [Trajectory scan figure], [14],
+    [Runnable toric-code circuit example], [36],
     [Yao local-gate convention and small-patch states], [11],
-    [Native Yao circuit figures], [13],
+    [Trajectory critical-scan CLI], [44],
     [Exact small-patch trajectory distributions], [25],
-    [Toric-code vector figures], [24],
+    [Trajectory scan figure], [21],
     [Virtual-bond trajectory model], [29],
-    [], [],
-    [*Total*], [*837*], [], [],
+    [Native Yao circuit figures], [13],
+    [Toric-code vector figures], [24], [], [],
+    [*Total*], [*1008*], [], [],
   )
 ]
 
@@ -469,23 +471,74 @@ $p=1$, every internal bond is occupied, the largest cluster fills the patch,
 both directions span, and plaquette frustration is zero. The singleton case
 has no internal mismatch or plaquette but one isolated-site cluster.
 
+= Marginalized component-spin observables
+
+For the spin analysis, the tests deliberately reinterpret every mismatched
+internal doubled edge (`01` or `10`) as an erased relation. A matched edge
+(`00` or `11`) requires its endpoint spins to agree. Union--find partitions
+the $N=R C$ sites into matched components of sizes $n_a$. Open boundaries give
+each component an independent sign $eta_a in {-1,+1}$, so
+
+$
+M = 1/N sum_a n_a eta_a.
+$
+
+Equal $1/2$ weights for both latent values of an erased edge make that edge
+impose no spin constraint. The conditional even moments are therefore
+calculated exactly without enumerating $2^(N_("component"))$ sign sectors:
+
+$
+chevron.l M^2 chevron.r_t = (sum_a n_a^2) / N^2,
+quad
+chevron.l M^4 chevron.r_t =
+  (3 (sum_a n_a^2)^2 - 2 sum_a n_a^4) / N^4.
+$
+
+The tests exhaustively enumerate every component-sign sector for $1 times 1$,
+$1 times 2$, $2 times 1$, and selected $2 times 2$ matched/erased patterns,
+including a $3+1$ component decomposition. The enumerated moments are checked
+against the analytic formulas, seeded component-sign samples converge to the expected
+$chevron.l |M| chevron.r_t$, and repeated seeds reproduce the same estimate.
+Changing stored latent-error metadata without changing the physical record
+leaves all marginalized spin observables invariant. Nonpositive component-
+sign sample counts are rejected.
+
+For one component, both moments and $|M|$ equal one. For $N$ isolated sites,
+
+$
+chevron.l M^2 chevron.r = 1/N,
+quad
+chevron.l M^4 chevron.r = (3N^2-2N)/N^4,
+quad
+U_4 = 2/(3N).
+$
+
 = Streaming scans and finite-size crossings
 
 == Online statistics
 
 The Welford accumulator is tested on the sequence $(1,2,3,4)$, giving count
 four, mean $2.5$, and the expected standard error. Finite-size scans retain
-only seven online mean/standard-error pairs and horizontal-spanning batch
-means, rather than all trajectories.
+the seven raw online mean/standard-error pairs, marginalized $|M|$, $M^2$,
+and $M^4$, horizontal-spanning batches, and paired spin-moment batches rather
+than complete trajectories.
 
 Seeded scans on sizes 2 and 3 check all output fields and reproducibility. At
 $p=0$, injected, boundary, mismatch, frustration, and spanning observables
 vanish; the largest cluster is one isolated site. At $p=1$, the three error
 densities, largest-cluster fraction, and both spanning probabilities equal
-one, while frustration remains zero. Invalid sizes, unsorted or duplicate
-grids, nonpositive shots, and invalid batch counts are rejected.
+one, while frustration remains zero. The spin sector gives $U_4=2/3$ at
+$p=0$ and $U_4=2/(3L^2)$ at $p=1$. A derived RNG stream ensures that changing
+`spin_samples` does not change any raw physical trajectory statistic. Binder
+standard errors use a weighted delete-one-batch jackknife and are missing when
+only one batch exists. A nonzero hand-calculated jackknife with unequal batch
+counts verifies the weighting, and a mixed-component example distinguishes
+the aggregate-moment Binder ratio from an average of trajectory ratios.
+The same aggregate identity is asserted on a nontrivial generated scan point.
+Invalid sizes, grids, shot counts, batch counts, and
+component-sign sample counts are rejected.
 
-== Crossing classification and bootstrap
+== Spanning crossing classification and bootstrap
 
 Adjacent-size horizontal-spanning curves are smoothed by pool-adjacent-
 violators isotonic regression. An isolated sign-changing equality is a valid
@@ -502,6 +555,27 @@ At least two batches per scan point are required, preventing a meaningless
 zero-width interval from one resampled batch. Invalid bootstrap counts and
 confidence levels are also rejected.
 
+== Binder crossing classification and bootstrap
+
+The Binder ratio is formed after averaging conditional moments across shots,
+never by averaging per-trajectory ratios:
+
+$
+U_4(p,L) = 1 -
+  chevron.l M^4 chevron.r / (3 chevron.l M^2 chevron.r^2).
+$
+
+Binder curves are isotonic-smoothed in the non-increasing direction. Each
+bootstrap replicate resamples paired $M^2$ and $M^4$ batches, recomputes the
+ratio, and then locates one unique interior adjacent-size crossing. Exact
+synthetic curves verify the estimate and confidence interval. No crossing is
+`:unbracketed`; identical curves, sign-changing equal plateaus, multiple
+crossings, and too few valid bootstrap estimates are `:unstable`. Seeded
+nonconstant unequal-size batches verify paired resampling, while a noisy
+synthetic scan deterministically exercises the below-80-percent status. Missing
+spin points, one-batch input, invalid replicate counts, and invalid confidence
+levels are rejected.
+
 = Examples, CLI, and figure artifacts
 
 The runnable circuit example is exercised with default and explicit lattice
@@ -511,11 +585,12 @@ argument counts return a usage error.
 
 The trajectory scan CLI is run in a temporary directory with a seeded small
 scan. Its required error-grid options are `--p-min`, `--p-max`, and
-`--p-step`; the tests also exercise size, shot, batch, bootstrap, seed, and
-output-directory overrides. Missing options, a zero or nondividing step,
-unsorted sizes, one batch, and unknown arguments are rejected.
+`--p-step`; the tests also exercise size, shot, batch, component-sign sample,
+bootstrap, seed, and output-directory overrides. Missing options, a zero or
+nondividing step, unsorted sizes, one batch, zero component-sign samples, and
+unknown arguments are rejected.
 
-The successful run checks all five output artifacts:
+The successful run checks all six output artifacts:
 
 #table(
   columns: (2.4fr, 3.6fr),
@@ -523,46 +598,54 @@ The successful run checks all five output artifacts:
   stroke: 0.5pt + rgb("b5b5b5"),
   fill: (_, row) => if row == 0 { rgb("e8eef7") },
   table.header([*Artifact*], [*Verification*]),
-  [`trajectory_scan.csv`], [Exact 17-column header and one row per $(L,p)$ point.],
+  [`trajectory_scan.csv`], [Exact 25-column raw and marginalized-spin header.],
   [`trajectory_crossings.csv`], [Exact 8-column header and preserved status.],
+  [`trajectory_binder_crossings.csv`], [Separate 8-column Binder crossings.],
   [`trajectory_scan.svg`], [Nonempty XML vector figure.],
   [`trajectory_scan.pdf`], [Nonempty file with a PDF signature.],
   [`trajectory_scan.png`], [Nonempty raster figure.],
 )
 
-The four-panel scan figure is tested for the requested titles and all three
-save formats. Native Yao figures are validated separately for $1 times 1$ and
+The six-panel scan figure retains all four raw panels and adds marginalized
+$|M|$ and Binder panels with crossing markers. A legacy scan without spin
+points still renders its original four-panel layout. A negative-Binder
+regression checks that the vertical range expands instead of clipping valid
+data, and unavailable one-batch uncertainties do not render as zero-width
+error bars. All three save formats
+are checked. Native Yao figures are validated separately for $1 times 1$ and
 $2 times 2$ circuits. CairoMakie PEPS and sequential-circuit figures are
 checked for site, direction, carrier, gate, state, and layer labels before SVG
 and PDF export.
 
 #block(fill: rgb("f5f1e8"), inset: 8pt, radius: 2pt)[
-  *Scope.* These trajectory observables test raw percolation of sampled
-  internal error bonds. They do not reconstruct spins, compute a Binder
-  cumulant, or test a Nishimori decoder.
+  *Scope.* The spin analysis marginalizes `01/10` edges with equal weights,
+  making them deleted constraints between independently oriented matched
+  components. Its Binder cumulant describes this bond-diluted component-spin
+  ensemble, not a decoder or finite-temperature random-bond Ising model.
 ]
 
 = Core PEPS test helpers
 
 The original tensor-network tests use five focused helper routines:
 
-#table(
-  columns: (1.7fr, 4fr),
-  inset: 6pt,
-  stroke: 0.5pt + rgb("b5b5b5"),
-  fill: (_, row) => if row == 0 { rgb("e8eef7") },
-  table.header([*Helper*], [*Role*]),
-  [`ordered_physical_indices`], [Returns physical indices in site and east/north/west/south order.],
-  [`contract_state`], [Fully contracts a small PEPS while retaining all physical indices.],
-  [`is_allowed_configuration`], [Checks local parity and duplicated-bond agreement.],
-  [`projected_amplitude`], [Projects a basis configuration and contracts only the virtual network.],
-  [`double_layer_norm2`], [Contracts the exact bra-ket norm without constructing the dense wavefunction.],
-)
+#text(size: 8.3pt)[
+  #table(
+    columns: (1.7fr, 4fr),
+    inset: 2.5pt,
+    stroke: 0.5pt + rgb("b5b5b5"),
+    fill: (_, row) => if row == 0 { rgb("e8eef7") },
+    table.header([*Helper*], [*Role*]),
+    [`ordered_physical_indices`], [Returns physical indices in site and east/north/west/south order.],
+    [`contract_state`], [Fully contracts a small PEPS while retaining all physical indices.],
+    [`is_allowed_configuration`], [Checks local parity and duplicated-bond agreement.],
+    [`projected_amplitude`], [Projects a basis configuration and contracts only the virtual network.],
+    [`double_layer_norm2`], [Contracts the exact bra-ket norm without constructing the dense wavefunction.],
+  )
+]
 
-= Running the tests
-
-#text(size: 8.3pt)[Run `julia --project=. -e 'using Pkg; Pkg.test()'` with Julia
+#text(size: 8.3pt)[*Running the tests.* Run
+`julia --project=. -e 'using Pkg; Pkg.test()'` with Julia
 1.12.6, ITensors 0.9.30, ITensorNetworks 0.21.5, Yao 0.9.3, and CairoMakie
-0.15.13: all *837 assertions* passed. The Typst build and `git diff --check`
+0.15.13: all *1008 assertions* passed. The Typst build and `git diff --check`
 passed; independent review found no critical or important issues; and
 `document/note.tex` was unchanged.]

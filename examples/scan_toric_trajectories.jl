@@ -17,6 +17,7 @@ Options:
   --sizes LIST       comma-separated square sizes (default: 4,8,16,32)
   --shots N          trajectories per (L,p) point (default: 10000)
   --batches N        bootstrap batches, at least 2 (default: min(100,shots))
+  --spin-samples N   component-sign samples per trajectory (default: 1)
   --bootstrap N      bootstrap replicates (default: 2000)
   --confidence X     confidence level (default: 0.95)
   --seed N           random seed (default: 1234)
@@ -25,7 +26,7 @@ Options:
 
 const _KNOWN_OPTIONS = Set((
     "--p-min", "--p-max", "--p-step", "--sizes", "--shots",
-    "--batches", "--bootstrap", "--confidence", "--seed",
+    "--batches", "--spin-samples", "--bootstrap", "--confidence", "--seed",
     "--output-dir"))
 
 function _option_dictionary(args)
@@ -111,6 +112,7 @@ function _parse_options(args)
         "--batches must be at least 2 for bootstrap crossings"))
     batches <= shots || throw(ArgumentError(
         "--batches must not exceed --shots"))
+    spin_samples = _positive_integer(options, "--spin-samples", 1)
     bootstrap = _positive_integer(options, "--bootstrap", 2_000)
     seed = _parse_number(Int, get(options, "--seed", "1234"), "--seed")
     confidence = _parse_number(
@@ -119,8 +121,8 @@ function _parse_options(args)
         "--confidence must be strictly between 0 and 1"))
     output_dir = get(options, "--output-dir", joinpath(@__DIR__, "output"))
     isempty(output_dir) && throw(ArgumentError("--output-dir must not be empty"))
-    return (; rates, sizes, shots, batches, bootstrap, seed, confidence,
-            output_dir)
+    return (; rates, sizes, shots, batches, spin_samples, bootstrap, seed,
+            confidence, output_dir)
 end
 
 function _csv_value(value)
@@ -139,6 +141,11 @@ function _write_scan_csv(path, scan)
         :largest_cluster_mean, :largest_cluster_se,
         :horizontal_spanning_mean, :horizontal_spanning_se,
         :vertical_spanning_mean, :vertical_spanning_se)
+    spin_fields = (
+        :absolute_magnetization_mean, :absolute_magnetization_se,
+        :second_moment_mean, :second_moment_se,
+        :fourth_moment_mean, :fourth_moment_se,
+        :binder_cumulant, :binder_cumulant_se)
     header = (
         "L", "p", "shots",
         "sampled_error_mean", "sampled_error_se",
@@ -147,12 +154,26 @@ function _write_scan_csv(path, scan)
         "frustration_mean", "frustration_se",
         "largest_cluster_mean", "largest_cluster_se",
         "horizontal_spanning_mean", "horizontal_spanning_se",
-        "vertical_spanning_mean", "vertical_spanning_se")
+        "vertical_spanning_mean", "vertical_spanning_se",
+        "marginal_abs_magnetization_mean",
+        "marginal_abs_magnetization_se",
+        "marginal_m2_mean", "marginal_m2_se",
+        "marginal_m4_mean", "marginal_m4_se",
+        "binder_cumulant", "binder_cumulant_se")
+    length(scan.points) == length(scan.marginal_spin_points) ||
+        throw(ArgumentError("raw and marginal scan point counts differ"))
     open(path, "w") do io
         println(io, join(header, ','))
-        for point in scan.points
-            println(io, join(
-                (_csv_value(getfield(point, field)) for field in fields), ','))
+        for (point, spin_point) in
+                zip(scan.points, scan.marginal_spin_points)
+            (point.size, point.error_rate, point.shots) ==
+                (spin_point.size, spin_point.error_rate, spin_point.shots) ||
+                throw(ArgumentError(
+                    "raw and marginal scan point coordinates differ"))
+            values = (
+                (getfield(point, field) for field in fields)...,
+                (getfield(spin_point, field) for field in spin_fields)...)
+            println(io, join((_csv_value(value) for value in values), ','))
         end
     end
     return path
@@ -178,18 +199,25 @@ function run(options; io::IO=stdout)
     rng = Random.MersenneTwister(options.seed)
     scan = scan_trajectories(
         rng, options.sizes, options.rates;
-        shots=options.shots, batches=options.batches)
+        shots=options.shots, batches=options.batches,
+        spin_samples=options.spin_samples)
     crossings = estimate_crossings(
         rng, scan; bootstrap=options.bootstrap, confidence=options.confidence)
-    figure = plot_trajectory_scan(scan, crossings)
+    binder_crossings = estimate_binder_crossings(
+        rng, scan; bootstrap=options.bootstrap, confidence=options.confidence)
+    figure = plot_trajectory_scan(
+        scan, crossings; binder_crossings=binder_crossings)
 
     mkpath(options.output_dir)
     scan_path = abspath(joinpath(options.output_dir, "trajectory_scan.csv"))
     crossing_path = abspath(joinpath(
         options.output_dir, "trajectory_crossings.csv"))
+    binder_crossing_path = abspath(joinpath(
+        options.output_dir, "trajectory_binder_crossings.csv"))
     _write_scan_csv(scan_path, scan)
     _write_crossing_csv(crossing_path, crossings)
-    outputs = [scan_path, crossing_path]
+    _write_crossing_csv(binder_crossing_path, binder_crossings)
+    outputs = [scan_path, crossing_path, binder_crossing_path]
     for extension in ("svg", "pdf", "png")
         path = abspath(joinpath(
             options.output_dir, "trajectory_scan.$extension"))
@@ -199,7 +227,7 @@ function run(options; io::IO=stdout)
     for path in outputs
         println(io, "wrote: $path")
     end
-    return (; scan, crossings, figure, outputs)
+    return (; scan, crossings, binder_crossings, figure, outputs)
 end
 
 function main(args=ARGS; io::IO=stdout, error_io::IO=stderr)

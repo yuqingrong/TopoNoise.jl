@@ -39,12 +39,36 @@ struct TrajectoryScanPoint
     horizontal_span_batches::Vector{Float64}
 end
 
+"""Marginalized spin summary for one square size and one error rate."""
+struct MarginalSpinScanPoint
+    size::Int
+    error_rate::Float64
+    shots::Int
+    absolute_magnetization_mean::Float64
+    absolute_magnetization_se::Float64
+    second_moment_mean::Float64
+    second_moment_se::Float64
+    fourth_moment_mean::Float64
+    fourth_moment_se::Float64
+    binder_cumulant::Float64
+    binder_cumulant_se::Union{Missing,Float64}
+    batch_counts::Vector{Int}
+    second_moment_batches::Vector{Float64}
+    fourth_moment_batches::Vector{Float64}
+end
+
 """Finite-size trajectory scan on a shared error-rate grid."""
 struct TrajectoryScan
     sizes::Vector{Int}
     error_rates::Vector{Float64}
     points::Vector{TrajectoryScanPoint}
+    marginal_spin_points::Vector{MarginalSpinScanPoint}
 end
+
+TrajectoryScan(
+    sizes::Vector{Int}, error_rates::Vector{Float64},
+    points::Vector{TrajectoryScanPoint}) =
+    TrajectoryScan(sizes, error_rates, points, MarginalSpinScanPoint[])
 
 """One adjacent-size crossing estimate and its bootstrap interval."""
 struct CriticalCrossing
@@ -290,15 +314,55 @@ function _standard_error(accumulator::_WelfordAccumulator)
     return sqrt(max(0.0, variance) / accumulator.count)
 end
 
-"""
-    scan_trajectories(rng, sizes, error_rates; shots=10_000, batches=100)
+function _binder_cumulant(second_moment::Real, fourth_moment::Real)
+    second_moment > 0 || throw(ArgumentError(
+        "second magnetization moment must be positive, got $second_moment"))
+    return 1 - fourth_moment / (3 * second_moment^2)
+end
 
-Stream raw trajectory summaries for square patches. Only horizontal-spanning
-batch means are retained for later bootstrap crossings.
+function _binder_jackknife_se(
+        batch_counts::Vector{Int}, second_batches::Vector{Float64},
+        fourth_batches::Vector{Float64})
+    batch_count = length(batch_counts)
+    batch_count < 2 && return missing
+    length(second_batches) == batch_count || throw(DimensionMismatch(
+        "second-moment batch count does not match batch_counts"))
+    length(fourth_batches) == batch_count || throw(DimensionMismatch(
+        "fourth-moment batch count does not match batch_counts"))
+
+    total_count = sum(batch_counts)
+    second_total = sum(batch_counts .* second_batches)
+    fourth_total = sum(batch_counts .* fourth_batches)
+    estimates = Float64[]
+    for batch in 1:batch_count
+        retained_count = total_count - batch_counts[batch]
+        retained_count > 0 || throw(ArgumentError(
+            "jackknife requires at least one retained trajectory"))
+        second = (
+            second_total - batch_counts[batch] * second_batches[batch]) /
+            retained_count
+        fourth = (
+            fourth_total - batch_counts[batch] * fourth_batches[batch]) /
+            retained_count
+        push!(estimates, _binder_cumulant(second, fourth))
+    end
+    center = Statistics.mean(estimates)
+    return sqrt((batch_count - 1) / batch_count *
+                sum((estimate - center)^2 for estimate in estimates))
+end
+
+"""
+    scan_trajectories(
+        rng, sizes, error_rates; shots=10_000, batches=100, spin_samples=1)
+
+Stream raw trajectory summaries and equal-weight marginalized spin moments for
+square patches. Horizontal-spanning and paired spin-moment batches are retained
+for later bootstrap crossings.
 """
 function scan_trajectories(
         rng::Random.AbstractRNG, sizes, error_rates;
-        shots::Integer=10_000, batches::Integer=100)
+        shots::Integer=10_000, batches::Integer=100,
+        spin_samples::Integer=1)
     size_values = Int[values for values in sizes]
     _validate_strictly_increasing(size_values, "sizes")
     all(>=(2), size_values) || throw(ArgumentError(
@@ -311,15 +375,23 @@ function scan_trajectories(
         "batches must be positive, got $batches"))
     batches <= shots || throw(ArgumentError(
         "batches must not exceed shots, got batches=$batches and shots=$shots"))
+    spin_samples > 0 || throw(ArgumentError(
+        "spin_samples must be positive, got $spin_samples"))
     shot_count, batch_count = Int(shots), Int(batches)
+    spin_sample_count = Int(spin_samples)
+    spin_rng = Random.Xoshiro(rand(rng, UInt64))
 
     points = TrajectoryScanPoint[]
+    marginal_spin_points = MarginalSpinScanPoint[]
     for size in size_values
         model = ToricCodeTrajectoryModel(size, size)
         for error_rate in rate_values
             accumulators = [_WelfordAccumulator() for _ in 1:7]
+            spin_accumulators = [_WelfordAccumulator() for _ in 1:3]
             horizontal_batch_totals = zeros(batch_count)
-            horizontal_batch_counts = zeros(Int, batch_count)
+            second_batch_totals = zeros(batch_count)
+            fourth_batch_totals = zeros(batch_count)
+            batch_counts = zeros(Int, batch_count)
             for shot in 1:shot_count
                 trajectory = sample_trajectory(
                     rng, model; error_rate=error_rate)
@@ -327,14 +399,24 @@ function scan_trajectories(
                 for index in eachindex(values)
                     _push!(accumulators[index], values[index])
                 end
+                spin = marginal_spin_observables(
+                    spin_rng, trajectory; spin_samples=spin_sample_count)
+                spin_values = (
+                    spin.absolute_magnetization, spin.second_moment,
+                    spin.fourth_moment)
+                for index in eachindex(spin_values)
+                    _push!(spin_accumulators[index], spin_values[index])
+                end
                 batch = fld((shot - 1) * batch_count, shot_count) + 1
                 horizontal_batch_totals[batch] += values[6]
-                horizontal_batch_counts[batch] += 1
+                second_batch_totals[batch] += spin.second_moment
+                fourth_batch_totals[batch] += spin.fourth_moment
+                batch_counts[batch] += 1
             end
             means = [accumulator.mean for accumulator in accumulators]
             standard_errors = _standard_error.(accumulators)
             horizontal_batches =
-                horizontal_batch_totals ./ horizontal_batch_counts
+                horizontal_batch_totals ./ batch_counts
             push!(points, TrajectoryScanPoint(
                 size, error_rate, shot_count,
                 means[1], standard_errors[1],
@@ -345,9 +427,26 @@ function scan_trajectories(
                 means[6], standard_errors[6],
                 means[7], standard_errors[7],
                 horizontal_batches))
+
+            spin_means = [
+                accumulator.mean for accumulator in spin_accumulators]
+            spin_standard_errors = _standard_error.(spin_accumulators)
+            second_batches = second_batch_totals ./ batch_counts
+            fourth_batches = fourth_batch_totals ./ batch_counts
+            binder = _binder_cumulant(spin_means[2], spin_means[3])
+            binder_se = _binder_jackknife_se(
+                batch_counts, second_batches, fourth_batches)
+            push!(marginal_spin_points, MarginalSpinScanPoint(
+                size, error_rate, shot_count,
+                spin_means[1], spin_standard_errors[1],
+                spin_means[2], spin_standard_errors[2],
+                spin_means[3], spin_standard_errors[3],
+                binder, binder_se,
+                copy(batch_counts), second_batches, fourth_batches))
         end
     end
-    return TrajectoryScan(size_values, rate_values, points)
+    return TrajectoryScan(
+        size_values, rate_values, points, marginal_spin_points)
 end
 
 function _scan_point(scan::TrajectoryScan, size::Int, error_rate::Float64)
@@ -356,6 +455,17 @@ function _scan_point(scan::TrajectoryScan, size::Int, error_rate::Float64)
         scan.points)
     length(matches) == 1 || throw(ArgumentError(
         "scan must contain exactly one point for L=$size, p=$error_rate"))
+    return only(matches)
+end
+
+function _marginal_spin_point(
+        scan::TrajectoryScan, size::Int, error_rate::Float64)
+    matches = filter(
+        point -> point.size == size && point.error_rate == error_rate,
+        scan.marginal_spin_points)
+    length(matches) == 1 || throw(ArgumentError(
+        "scan must contain exactly one marginal spin point for " *
+        "L=$size, p=$error_rate"))
     return only(matches)
 end
 
@@ -382,6 +492,9 @@ function _isotonic_non_decreasing(values::Vector{Float64})
     end
     return result
 end
+
+_isotonic_non_increasing(values::Vector{Float64}) =
+    -_isotonic_non_decreasing(-values)
 
 function _selected_crossing(
         rates::Vector{Float64}, first_curve::Vector{Float64},
@@ -506,6 +619,144 @@ function estimate_crossings(
         tail = (1 - confidence) / 2
         push!(results, CriticalCrossing(
             small_size, large_size, estimate,
+            Statistics.quantile(bootstrap_estimates, tail),
+            Statistics.quantile(bootstrap_estimates, 1 - tail),
+            Float64(confidence), valid_fraction, :ok))
+    end
+    return results
+end
+
+function _unique_crossing(
+        rates::Vector{Float64}, first_curve::Vector{Float64},
+        second_curve::Vector{Float64})
+    differences = first_curve .- second_curve
+    all(iszero, differences) && return (estimate=missing, status=:unstable)
+    candidates = Float64[]
+
+    for index in 1:(length(rates) - 1)
+        left, right = differences[index], differences[index + 1]
+        (iszero(left) || iszero(right)) && continue
+        left * right < 0 || continue
+        fraction = -left / (right - left)
+        push!(candidates,
+            rates[index] + fraction * (rates[index + 1] - rates[index]))
+    end
+
+    ambiguous_plateau = false
+    index = 1
+    while index <= length(rates)
+        if !iszero(differences[index])
+            index += 1
+            continue
+        end
+        first_zero = index
+        while index < length(rates) && iszero(differences[index + 1])
+            index += 1
+        end
+        last_zero = index
+        if first_zero > 1 && last_zero < length(rates)
+            left = differences[first_zero - 1]
+            right = differences[last_zero + 1]
+            if left * right < 0
+                first_zero == last_zero ?
+                    push!(candidates, rates[first_zero]) :
+                    (ambiguous_plateau = true)
+            end
+        end
+        index += 1
+    end
+
+    ambiguous_plateau && return (estimate=missing, status=:unstable)
+    isempty(candidates) && return (estimate=missing, status=:unbracketed)
+    length(candidates) == 1 || return (estimate=missing, status=:unstable)
+    return (estimate=only(candidates), status=:ok)
+end
+
+function _bootstrap_binder(
+        rng::Random.AbstractRNG, point::MarginalSpinScanPoint)
+    batch_count = length(point.batch_counts)
+    indices = rand(rng, 1:batch_count, batch_count)
+    sampled_count = sum(point.batch_counts[index] for index in indices)
+    second = sum(
+        point.batch_counts[index] * point.second_moment_batches[index]
+        for index in indices) / sampled_count
+    fourth = sum(
+        point.batch_counts[index] * point.fourth_moment_batches[index]
+        for index in indices) / sampled_count
+    return _binder_cumulant(second, fourth)
+end
+
+"""Estimate adjacent-size marginalized Binder crossings by batch bootstrap."""
+function estimate_binder_crossings(
+        rng::Random.AbstractRNG, scan::TrajectoryScan;
+        bootstrap::Integer=2_000, confidence::Real=0.95)
+    length(scan.sizes) >= 2 || throw(ArgumentError(
+        "at least two sizes are required for Binder crossings"))
+    length(scan.error_rates) >= 2 || throw(ArgumentError(
+        "at least two error rates are required for Binder crossings"))
+    bootstrap > 0 || throw(ArgumentError(
+        "bootstrap must be positive, got $bootstrap"))
+    isfinite(confidence) && 0 < confidence < 1 || throw(ArgumentError(
+        "confidence must be strictly between 0 and 1, got $confidence"))
+    isempty(scan.marginal_spin_points) && throw(ArgumentError(
+        "scan does not contain marginalized spin points"))
+    for point in scan.marginal_spin_points
+        batch_count = length(point.batch_counts)
+        batch_count >= 2 || throw(ArgumentError(
+            "Binder crossing estimation requires at least two batches per point"))
+        length(point.second_moment_batches) == batch_count ||
+            throw(DimensionMismatch(
+                "second-moment batches do not match batch counts"))
+        length(point.fourth_moment_batches) == batch_count ||
+            throw(DimensionMismatch(
+                "fourth-moment batches do not match batch counts"))
+        all(>(0), point.batch_counts) || throw(ArgumentError(
+            "Binder batch counts must be positive"))
+    end
+
+    results = CriticalCrossing[]
+    for pair in 1:(length(scan.sizes) - 1)
+        small_size, large_size = scan.sizes[pair], scan.sizes[pair + 1]
+        small_points = [
+            _marginal_spin_point(scan, small_size, rate)
+            for rate in scan.error_rates]
+        large_points = [
+            _marginal_spin_point(scan, large_size, rate)
+            for rate in scan.error_rates]
+        small_curve = _isotonic_non_increasing(
+            [point.binder_cumulant for point in small_points])
+        large_curve = _isotonic_non_increasing(
+            [point.binder_cumulant for point in large_points])
+        selected = _unique_crossing(
+            scan.error_rates, small_curve, large_curve)
+        if selected.status != :ok
+            push!(results, CriticalCrossing(
+                small_size, large_size, missing, missing, missing,
+                Float64(confidence), 0.0, selected.status))
+            continue
+        end
+
+        bootstrap_estimates = Float64[]
+        for _ in 1:Int(bootstrap)
+            small_sample = _isotonic_non_increasing([
+                _bootstrap_binder(rng, point) for point in small_points])
+            large_sample = _isotonic_non_increasing([
+                _bootstrap_binder(rng, point) for point in large_points])
+            sample_selection = _unique_crossing(
+                scan.error_rates, small_sample, large_sample)
+            sample_selection.status == :ok && push!(
+                bootstrap_estimates, sample_selection.estimate)
+        end
+        valid_fraction = length(bootstrap_estimates) / bootstrap
+        if valid_fraction < 0.8
+            push!(results, CriticalCrossing(
+                small_size, large_size, selected.estimate, missing, missing,
+                Float64(confidence), valid_fraction, :unstable))
+            continue
+        end
+        tail = (1 - confidence) / 2
+        push!(results, CriticalCrossing(
+            small_size, large_size, selected.estimate,
             Statistics.quantile(bootstrap_estimates, tail),
             Statistics.quantile(bootstrap_estimates, 1 - tail),
             Float64(confidence), valid_fraction, :ok))

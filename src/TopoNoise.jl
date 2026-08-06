@@ -19,8 +19,9 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        sample_virtual_errors, sample_trajectory, sample_yao_trajectory,
        TrajectoryObservables, bond_mismatches, trajectory_observables,
        MarginalSpinObservables, marginal_spin_observables,
-       TrajectoryScanPoint, TrajectoryScan, CriticalCrossing,
-       scan_trajectories, estimate_crossings,
+       TrajectoryScanPoint, MarginalSpinScanPoint, TrajectoryScan,
+       CriticalCrossing, scan_trajectories, estimate_crossings,
+       estimate_binder_crossings,
        plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan
 
 include("toric_code_peps.jl")

@@ -13,6 +13,7 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
                 "--p-min", "0", "--p-max", "1", "--p-step", "1",
                 "--sizes", "2,3", "--shots", "8", "--batches", "2",
                 "--bootstrap", "4", "--seed", "1234",
+                "--spin-samples", "3",
                 "--output-dir", directory,
             ]
             @test ScanToricTrajectoriesExample.main(
@@ -21,7 +22,9 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
 
             scan_path = joinpath(directory, "trajectory_scan.csv")
             crossing_path = joinpath(directory, "trajectory_crossings.csv")
-            for path in (scan_path, crossing_path)
+            binder_crossing_path = joinpath(
+                directory, "trajectory_binder_crossings.csv")
+            for path in (scan_path, crossing_path, binder_crossing_path)
                 @test isfile(path)
                 @test filesize(path) > 100
                 @test contains(text, "wrote: $(abspath(path))")
@@ -43,14 +46,24 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
                 "frustration_mean", "frustration_se",
                 "largest_cluster_mean", "largest_cluster_se",
                 "horizontal_spanning_mean", "horizontal_spanning_se",
-                "vertical_spanning_mean", "vertical_spanning_se"), ",")
+                "vertical_spanning_mean", "vertical_spanning_se",
+                "marginal_abs_magnetization_mean",
+                "marginal_abs_magnetization_se",
+                "marginal_m2_mean", "marginal_m2_se",
+                "marginal_m4_mean", "marginal_m4_se",
+                "binder_cumulant", "binder_cumulant_se"), ",")
             crossing_lines = readlines(crossing_path)
+            binder_crossing_lines = readlines(binder_crossing_path)
             @test length(crossing_lines) == 2
+            @test length(binder_crossing_lines) == 2
             @test first(crossing_lines) == join((
                 "small_size", "large_size", "estimate", "ci_low",
                 "ci_high", "confidence", "valid_bootstrap_fraction",
                 "status"), ",")
+            @test first(binder_crossing_lines) == first(crossing_lines)
             @test last(split(last(crossing_lines), ',')) in
+                  ("ok", "unbracketed", "unstable")
+            @test last(split(last(binder_crossing_lines), ',')) in
                   ("ok", "unbracketed", "unstable")
         end
 
@@ -63,6 +76,8 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
                  "--sizes", "4,2"],
                 ["--p-min", "0", "--p-max", "1", "--p-step", "1",
                  "--shots", "10", "--batches", "1"],
+                ["--p-min", "0", "--p-max", "1", "--p-step", "1",
+                 "--spin-samples", "0"],
                 ["--p-min", "0", "--p-max", "1", "--p-step", "1",
                  "--unknown", "value"])
             output = IOBuffer()
