@@ -22,6 +22,8 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        TrajectoryScanPoint, MarginalSpinScanPoint, TrajectoryScan,
        CriticalCrossing, scan_trajectories, estimate_crossings,
        estimate_binder_crossings,
+       OpenCodeCapacityModel, DataEdgeErrors, sample_data_edge_errors,
+       code_capacity_syndrome, logical_cut,
        plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan
 
 include("toric_code_peps.jl")
@@ -29,6 +31,7 @@ include("local_gate.jl")
 include("network_graph.jl")
 include("sequential_circuit.jl")
 include("trajectory.jl")
+include("code_capacity.jl")
 include("trajectory_analysis.jl")
 include("visualization.jl")
 
