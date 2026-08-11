@@ -1,6 +1,137 @@
 export OpenCodeCapacityScanPoint, OpenCodeCapacityScan,
        scan_open_code_capacity, estimate_open_code_crossings
 
+const _stim_ref = Ref{Py}()
+
+_stim() = isassigned(_stim_ref) ? _stim_ref[] :
+    (_stim_ref[] = pyimport("stim"))
+
+"""Open rotated planar surface-code patch for code-capacity experiments."""
+struct RotatedCodeCapacityModel
+    distance::Int
+    base_circuit::Py
+    data_qubits::Vector{Int}
+end
+
+function _data_qubits_from_terminal_measurement(circuit::Py)
+    instructions = split(string(circuit), '\n')
+    measurement_indices = findall(instructions) do instruction
+        startswith(strip(instruction), "M ")
+    end
+    isempty(measurement_indices) && throw(ErrorException(
+        "generated rotated patch has no data-basis measurement"))
+
+    terminal_index = last(measurement_indices)
+    terminal_index == length(instructions) || begin
+        trailing = instructions[(terminal_index + 1):end]
+        all(instruction -> startswith(strip(instruction), "DETECTOR(") ||
+                           startswith(strip(instruction), "OBSERVABLE_INCLUDE(") ||
+                           isempty(strip(instruction)), trailing) || throw(ErrorException(
+            "terminal data-basis measurement is not followed only by annotations"))
+    end
+    terminal_measurements = split(strip(instructions[terminal_index]))
+    length(terminal_measurements) > 1 || throw(ErrorException(
+        "terminal data-basis measurement has no data qubits"))
+    data_qubits = parse.(Int, terminal_measurements[2:end])
+    length(unique(data_qubits)) == length(data_qubits) || throw(ErrorException(
+        "terminal data-basis measurement contains duplicate data qubits"))
+    return data_qubits
+end
+
+function RotatedCodeCapacityModel(distance::Integer)
+    distance >= 3 || throw(ArgumentError("distance must be at least 3"))
+    base = _stim().Circuit.generated(
+        "surface_code:rotated_memory_z"; distance=Int(distance), rounds=1)
+    data = _data_qubits_from_terminal_measurement(base)
+    length(data) == Int(distance)^2 || throw(ErrorException(
+        "generated rotated patch did not expose d² data qubits"))
+    return RotatedCodeCapacityModel(Int(distance), base, data)
+end
+
+function _circuit_after_first_tick(base::Py)
+    instructions = split(chomp(string(base)), '\n')
+    tick = findfirst(instruction -> strip(instruction) == "TICK", instructions)
+    tick === nothing && throw(ErrorException("generated circuit has no preparation TICK"))
+    prefix = join(instructions[1:tick], "\n")
+    suffix = join(instructions[(tick + 1):end], "\n")
+    return prefix, suffix
+end
+
+function _data_x_circuit(
+        model::RotatedCodeCapacityModel, operation::String, qubits::Vector{Int})
+    prefix, suffix = _circuit_after_first_tick(model.base_circuit)
+    injected = isempty(qubits) ? "" : "$(operation) $(join(qubits, ' '))"
+    text = join((prefix, injected, suffix), "\n")
+    return _stim().Circuit(text)
+end
+
+function _circuit_with_data_x_noise(model::RotatedCodeCapacityModel, error_rate::Real)
+    isfinite(error_rate) && 0 <= error_rate < 0.5 || throw(ArgumentError(
+        "error_rate must be finite and lie in [0, 0.5), got $error_rate"))
+    error_rate == 0 && return model.base_circuit
+    return _data_x_circuit(
+        model, "X_ERROR($(Float64(error_rate)))", model.data_qubits)
+end
+
+"""Return the noiseless extraction circuit with independent data-qubit X noise."""
+rotated_code_capacity_circuit(model::RotatedCodeCapacityModel, error_rate::Real) =
+    _circuit_with_data_x_noise(model, error_rate)
+
+function _deterministic_data_x_circuit(
+        model::RotatedCodeCapacityModel, support::AbstractVector{<:Integer})
+    support_values = Int[support...]
+    all(qubit -> qubit in model.data_qubits, support_values) || throw(ArgumentError(
+        "deterministic X support must contain only data qubits"))
+    length(unique(support_values)) == length(support_values) || throw(ArgumentError(
+        "deterministic X support must not repeat data qubits"))
+    isempty(support_values) && return model.base_circuit
+    return _data_x_circuit(model, "X_ERROR(1)", support_values)
+end
+
+function _sample_deterministic_x_support(
+        model::RotatedCodeCapacityModel, support::Vector{Int})
+    circuit = _deterministic_data_x_circuit(model, support)
+    detectors, observables = circuit.compile_detector_sampler().sample(
+        shots=1, separate_observables=true)
+    return pyconvert(BitMatrix, detectors), pyconvert(BitMatrix, observables)
+end
+
+function _minimum_x_logical_support(model::RotatedCodeCapacityModel)
+    coordinates = Dict{Int,Tuple{Int,Int}}()
+    for line in split(string(model.base_circuit), '\n')
+        match_result = match(r"^QUBIT_COORDS\(([-0-9]+), ([-0-9]+)\) ([0-9]+)$", strip(line))
+        match_result === nothing && continue
+        x, y, qubit = parse.(Int, match_result.captures)
+        qubit in model.data_qubits && (coordinates[qubit] = (x, y))
+    end
+    length(coordinates) == length(model.data_qubits) || throw(ErrorException(
+        "generated rotated patch did not expose coordinates for every data qubit"))
+
+    rows = Dict{Int,Vector{Int}}()
+    columns = Dict{Int,Vector{Int}}()
+    for (qubit, (x, y)) in coordinates
+        push!(get!(rows, y, Int[]), qubit)
+        push!(get!(columns, x, Int[]), qubit)
+    end
+    candidate_families = Vector{Vector{Vector{Int}}}()
+    for family in (values(rows), values(columns))
+        candidates = Vector{Vector{Int}}()
+        for members in family
+            support = sort(members)
+            length(support) == model.distance || continue
+            detectors, observables = _sample_deterministic_x_support(model, support)
+            !any(detectors) && only(vec(observables)) && push!(candidates, support)
+        end
+        isempty(candidates) || push!(candidate_families, candidates)
+    end
+    length(candidate_families) == 1 || throw(ErrorException(
+        "expected exactly one orientation family of minimum X logical strings"))
+    support = first(sort(only(candidate_families)))
+    length(support) == model.distance || throw(ErrorException(
+        "minimum X logical support has the wrong length"))
+    return support
+end
+
 """Open rectangular patch used for data-edge code-capacity experiments."""
 struct OpenCodeCapacityModel
     rows::Int

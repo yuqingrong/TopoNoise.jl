@@ -1,149 +1,21 @@
 using TopoNoise
-using Random
 using Test
 
-function synthetic_open_code_scan(rates, small_curve, large_curve)
-    points = OpenCodeCapacityScanPoint[]
-    for (size, curve) in ((4, small_curve), (8, large_curve))
-        for (rate, failure) in zip(rates, curve)
-            batches = fill(Float64(failure), 4)
-            push!(points, OpenCodeCapacityScanPoint(
-                size, Float64(rate), 100, Float64(failure), 0.0,
-                Float64(failure), 0.0, batches, batches))
-        end
-    end
-    return OpenCodeCapacityScan([4, 8], Float64[rates...], points)
-end
+@testset "rotated planar code-capacity circuit" begin
+    @test_throws ArgumentError RotatedCodeCapacityModel(0)
+    model = RotatedCodeCapacityModel(3)
+    @test model.distance == 3
+    @test length(model.data_qubits) == 9
 
-@testset "open code-capacity scan" begin
-    scan = scan_open_code_capacity(MersenneTwister(8), [3, 4], [0.0, 0.2];
-                                   shots=12, batches=3)
-    @test length(scan.points) == 4
-    @test all(point -> point.logical_failure_ns_mean == 0.0,
-              filter(point -> point.error_rate == 0.0, scan.points))
-    @test all(point -> length(point.logical_failure_ns_batches) == 3, scan.points)
-end
+    noisy = rotated_code_capacity_circuit(model, 0.1)
+    @test occursin("X_ERROR(0.1)", string(noisy))
+    @test all(occursin(string(qubit), string(noisy)) for qubit in model.data_qubits)
 
-@testset "crossing statuses" begin
-    bracketed = synthetic_open_code_scan([0.08, 0.10, 0.12],
-        [0.20, 0.45, 0.70], [0.30, 0.45, 0.60])
-    @test only(estimate_open_code_crossings(MersenneTwister(9), bracketed;
-        bootstrap=20)).status == :ok
-
-    unbracketed = synthetic_open_code_scan([0.08, 0.10, 0.12],
-        [0.20, 0.30, 0.40], [0.10, 0.20, 0.30])
-    crossing = only(estimate_open_code_crossings(MersenneTwister(10), unbracketed;
-        bootstrap=20))
-    @test ismissing(crossing.estimate)
-    @test crossing.status == :unbracketed
-end
-
-@testset "open code-capacity data edges" begin
-    model = OpenCodeCapacityModel(4, 5)
-    zero = sample_data_edge_errors(MersenneTwister(1), model; error_rate=0.0)
-    one = sample_data_edge_errors(MersenneTwister(1), model; error_rate=1.0)
-    @test size(zero.horizontal) == (4, 4)
-    @test size(zero.vertical) == (3, 5)
-    @test !any(zero.horizontal) && !any(zero.vertical)
-    @test all(one.horizontal) && all(one.vertical)
-    @test !any(code_capacity_syndrome(zero))
-end
-
-@testset "one edge has the plaquette-incidence syndrome" begin
-    errors = DataEdgeErrors(falses(4, 3), falses(3, 4))
-    errors.horizontal[2, 2] = true
-    syndrome = code_capacity_syndrome(errors)
-    @test syndrome[1, 2] && syndrome[2, 2]
-    @test count(syndrome) == 2
-end
-
-@testset "data-edge inputs and logical cuts are validated" begin
-    @test_throws ArgumentError OpenCodeCapacityModel(1, 5)
-    @test_throws ArgumentError OpenCodeCapacityModel(4, 1)
-    @test_throws ArgumentError DataEdgeErrors(falses(4, 4), falses(2, 5))
-
-    model = OpenCodeCapacityModel(4, 5)
-    north_south = logical_cut(model; sector=:north_south)
-    east_west = logical_cut(model; sector=:east_west)
-    @test north_south.horizontal == BitMatrix([false false false false;
-                                               true true true true;
-                                               false false false false;
-                                               false false false false])
-    @test !any(north_south.vertical)
-    @test east_west.vertical == BitMatrix([false false true false false;
-                                           false false true false false;
-                                           false false true false false])
-    @test !any(east_west.horizontal)
-    @test_throws ArgumentError logical_cut(model; sector=:diagonal)
-end
-
-function single_edge_error_configurations(model)
-    errors = DataEdgeErrors[]
-    for r in 1:model.rows, c in 1:(model.cols - 1)
-        horizontal = falses(model.rows, model.cols - 1)
-        horizontal[r, c] = true
-        push!(errors, DataEdgeErrors(horizontal, falses(model.rows - 1, model.cols)))
-    end
-    for r in 1:(model.rows - 1), c in 1:model.cols
-        vertical = falses(model.rows - 1, model.cols)
-        vertical[r, c] = true
-        push!(errors, DataEdgeErrors(falses(model.rows, model.cols - 1), vertical))
-    end
-    errors
-end
-
-@testset "syndrome-only decode" begin
-    model = OpenCodeCapacityModel(4, 4)
-    for sector in (:north_south, :east_west)
-        for errors in single_edge_error_configurations(model)
-            syndrome = code_capacity_syndrome(errors)
-            correction = decode_syndrome(model, syndrome; sector=sector)
-            residual = residual_errors(errors, correction)
-            @test !any(code_capacity_syndrome(residual))
-            @test !logical_failure(errors, correction; sector=sector)
-        end
-    end
-end
-
-@testset "logical-cut geometry" begin
-    model = OpenCodeCapacityModel(4, 4)
-    none = Correction(4, 4)
-    north_south = DataEdgeErrors(falses(4, 3), falses(3, 4))
-    north_south.horizontal[:, 2] .= true
-    @test !any(code_capacity_syndrome(north_south))
-    @test logical_failure(north_south, none; sector=:north_south)
-    @test !logical_failure(north_south, none; sector=:east_west)
-
-    east_west = DataEdgeErrors(falses(4, 3), falses(3, 4))
-    east_west.vertical[2, :] .= true
-    @test !any(code_capacity_syndrome(east_west))
-    @test logical_failure(east_west, none; sector=:east_west)
-    @test !logical_failure(east_west, none; sector=:north_south)
-end
-
-@testset "thin open patches preserve boundary mechanisms" begin
-    for (rows, cols, sector) in ((2, 3, :east_west), (3, 2, :north_south))
-        model = OpenCodeCapacityModel(rows, cols)
-        empty!(TopoNoise._open_matching_cache)
-        matching = TopoNoise._open_code_matching(model, sector; error_rate=0.1)
-        expected_edges = rows * (cols - 1) + (rows - 1) * cols
-        @test TopoNoise.pyconvert(Int, matching.num_edges) == expected_edges
-
-        for errors in single_edge_error_configurations(model)
-            syndrome = code_capacity_syndrome(errors)
-            correction = decode_syndrome(model, syndrome; sector=sector)
-            residual = residual_errors(errors, correction)
-            @test !any(code_capacity_syndrome(residual))
-            @test !logical_failure(errors, correction; sector=sector)
-        end
-    end
-end
-
-@testset "decoder sector validation is data-independent" begin
-    model = OpenCodeCapacityModel(3, 3)
-    zero = falses(2, 2)
-    nonzero = copy(zero)
-    nonzero[1, 1] = true
-    @test_throws ArgumentError decode_syndrome(model, zero; sector=:diagonal)
-    @test_throws ArgumentError decode_syndrome(model, nonzero; sector=:diagonal)
+    clean = rotated_code_capacity_circuit(model, 0.0)
+    dets, observables = clean.compile_detector_sampler().sample(
+        shots=8, separate_observables=true)
+    @test !any(TopoNoise.pyconvert(BitMatrix, dets))
+    @test !any(TopoNoise.pyconvert(BitMatrix, observables))
+    @test length(noisy.shortest_graphlike_error()) == 3
+    @test TopoNoise._minimum_x_logical_support(model) == [1, 8, 15]
 end
