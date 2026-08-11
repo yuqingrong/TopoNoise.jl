@@ -1,5 +1,7 @@
 using CairoMakie: CairoMakie, Figure
 using Random
+using Test
+using TopoNoise
 import Yao
 
 function rendered_text(fig)
@@ -12,6 +14,38 @@ function rendered_text(fig)
         end
     end
     return labels
+end
+
+@testset "Open code-capacity figure" begin
+    @test isdefined(TopoNoise, :plot_open_code_capacity)
+
+    if isdefined(TopoNoise, :plot_open_code_capacity)
+        scan = scan_open_code_capacity(
+            MersenneTwister(401), [3, 4], [0.05, 0.10];
+            shots=12, batches=3)
+        ns_crossings = estimate_open_code_crossings(
+            MersenneTwister(402), scan; sector=:north_south, bootstrap=12)
+        ew_crossings = estimate_open_code_crossings(
+            MersenneTwister(403), scan; sector=:east_west, bootstrap=12)
+        figure = plot_open_code_capacity(
+            scan, ns_crossings; ew_crossings=ew_crossings)
+        @test figure isa Figure
+
+        titles = [string(block.title[]) for block in figure.content
+                  if hasproperty(block, :title)]
+        @test "Logical failure (N-S)" in titles
+        @test "Logical failure (E-W)" in titles
+
+        mktempdir() do directory
+            for extension in ("svg", "pdf", "png")
+                path = joinpath(
+                    directory, "open_code_capacity_scan.$extension")
+                CairoMakie.save(path, figure)
+                @test isfile(path)
+                @test filesize(path) > 100
+            end
+        end
+    end
 end
 
 @testset "Trajectory scan figure" begin

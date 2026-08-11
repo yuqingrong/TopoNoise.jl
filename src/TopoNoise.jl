@@ -27,7 +27,8 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        code_capacity_syndrome, logical_cut,
        Correction, DecodedTrajectory, plaquette_syndrome, decode_uf,
        decode_syndrome, residual_errors, logical_failure, decode_trajectory,
-       plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan
+       plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan,
+       plot_open_code_capacity
 
 include("toric_code_peps.jl")
 include("local_gate.jl")

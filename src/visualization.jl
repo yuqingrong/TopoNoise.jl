@@ -229,21 +229,28 @@ function _marginal_spin_scan_points(scan::TrajectoryScan, size::Int)
 end
 
 """
-    plot_trajectory_scan(scan, crossings; binder_crossings=[])
+    plot_trajectory_scan(scan, crossings; binder_crossings=[],
+                         logical_ns_crossings=[], logical_ew_crossings=[])
 
 Render the injected-error diagnostics, plaquette frustration, largest
 occupied internal-bond cluster, horizontal spanning probability, marginalized
-absolute magnetization, and Binder cumulant for a finite-size trajectory scan.
-Crossing estimates are shown on their corresponding panels when available.
+absolute magnetization, Binder cumulant, and MWPM/union-find logical-failure
+rates for the north-south and east-west logicals. Crossing estimates are
+shown on their corresponding panels when available.
 """
 function plot_trajectory_scan(
         scan::TrajectoryScan,
         crossings::AbstractVector{<:CriticalCrossing}=CriticalCrossing[];
         binder_crossings::AbstractVector{<:CriticalCrossing}=
+            CriticalCrossing[],
+        logical_ns_crossings::AbstractVector{<:CriticalCrossing}=
+            CriticalCrossing[],
+        logical_ew_crossings::AbstractVector{<:CriticalCrossing}=
             CriticalCrossing[])
     has_marginal_spins = !isempty(scan.marginal_spin_points)
+    total_rows = has_marginal_spins ? 4 : 3
     figure = CairoMakie.Figure(
-        size=has_marginal_spins ? (1100, 1180) : (1100, 820),
+        size=(1100, 360 * total_rows),
         backgroundcolor=:white)
     injected_axis = CairoMakie.Axis(
         figure[1, 1]; title="Injected errors and mismatches",
@@ -257,11 +264,17 @@ function plot_trajectory_scan(
     spanning_axis = CairoMakie.Axis(
         figure[2, 2]; title="Horizontal spanning probability",
         xlabel="virtual-bond error rate p", ylabel="probability")
+    logical_ns_axis = CairoMakie.Axis(
+        figure[3, 1]; title="Logical failure (N-S, MWPM)",
+        xlabel="virtual-bond error rate p", ylabel="p_fail")
+    logical_ew_axis = CairoMakie.Axis(
+        figure[3, 2]; title="Logical failure (E-W, MWPM)",
+        xlabel="virtual-bond error rate p", ylabel="p_fail")
     magnetization_axis = has_marginal_spins ? CairoMakie.Axis(
-        figure[3, 1]; title="Marginalized |M|",
+        figure[4, 1]; title="Marginalized |M|",
         xlabel="virtual-bond error rate p", ylabel="⟨|M|⟩") : nothing
     binder_axis = has_marginal_spins ? CairoMakie.Axis(
-        figure[3, 2]; title="Binder cumulant U₄",
+        figure[4, 2]; title="Binder cumulant U₄",
         xlabel="virtual-bond error rate p", ylabel="U₄") : nothing
 
     colors = ("#0072B2", "#D55E00", "#009E73", "#CC79A7",
@@ -288,6 +301,10 @@ function plot_trajectory_scan(
         largest_se = [point.largest_cluster_se for point in points]
         spanning = [point.horizontal_spanning_mean for point in points]
         spanning_se = [point.horizontal_spanning_se for point in points]
+        failure_ns = [point.logical_failure_ns_mean for point in points]
+        failure_ns_se = [point.logical_failure_ns_se for point in points]
+        failure_ew = [point.logical_failure_ew_mean for point in points]
+        failure_ew_se = [point.logical_failure_ew_se for point in points]
 
         CairoMakie.lines!(injected_axis, rates, total;
             color=color, linewidth=2, label="L=$size injected")
@@ -303,7 +320,9 @@ function plot_trajectory_scan(
         for (axis, values, errors) in (
                 (frustration_axis, frustration, frustration_se),
                 (cluster_axis, largest, largest_se),
-                (spanning_axis, spanning, spanning_se))
+                (spanning_axis, spanning, spanning_se),
+                (logical_ns_axis, failure_ns, failure_ns_se),
+                (logical_ew_axis, failure_ew, failure_ew_se))
             CairoMakie.lines!(axis, rates, values;
                 color=color, linewidth=2, label="L=$size")
             CairoMakie.scatter!(axis, rates, values; color=color)
@@ -347,6 +366,18 @@ function plot_trajectory_scan(
         CairoMakie.vlines!(spanning_axis, [crossing.estimate];
             color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
     end
+    for crossing in logical_ns_crossings
+        crossing.status == :ok || continue
+        ismissing(crossing.estimate) && continue
+        CairoMakie.vlines!(logical_ns_axis, [crossing.estimate];
+            color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
+    end
+    for crossing in logical_ew_crossings
+        crossing.status == :ok || continue
+        ismissing(crossing.estimate) && continue
+        CairoMakie.vlines!(logical_ew_axis, [crossing.estimate];
+            color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
+    end
     if has_marginal_spins
         for crossing in binder_crossings
             crossing.status == :ok || continue
@@ -356,7 +387,8 @@ function plot_trajectory_scan(
         end
     end
     for axis in (
-            injected_axis, frustration_axis, cluster_axis, spanning_axis)
+            injected_axis, frustration_axis, cluster_axis, spanning_axis,
+            logical_ns_axis, logical_ew_axis)
         CairoMakie.ylims!(axis, -0.03, 1.03)
         CairoMakie.axislegend(axis; position=:lt, framevisible=false)
     end
@@ -377,6 +409,60 @@ function plot_trajectory_scan(
             binder_axis, binder_lower - binder_padding,
             max(0.70, binder_upper + binder_padding))
         CairoMakie.axislegend(binder_axis; position=:lt, framevisible=false)
+    end
+    return figure
+end
+
+"""
+    plot_open_code_capacity(scan, ns_crossings; ew_crossings=[])
+
+Render north-south and east-west logical-failure rates for an independent
+open code-capacity scan. Standard-error bars are shown at each scan point,
+and successful adjacent-size crossing estimates are marked by vertical lines.
+"""
+function plot_open_code_capacity(
+        scan::OpenCodeCapacityScan,
+        ns_crossings::AbstractVector{<:CriticalCrossing}=CriticalCrossing[];
+        ew_crossings::AbstractVector{<:CriticalCrossing}=CriticalCrossing[])
+    figure = CairoMakie.Figure(size=(1100, 470), backgroundcolor=:white)
+    ns_axis = CairoMakie.Axis(
+        figure[1, 1]; title="Logical failure (N-S)",
+        xlabel="data-edge error rate p", ylabel="p_fail")
+    ew_axis = CairoMakie.Axis(
+        figure[1, 2]; title="Logical failure (E-W)",
+        xlabel="data-edge error rate p", ylabel="p_fail")
+    colors = ("#0072B2", "#D55E00", "#009E73", "#CC79A7",
+              "#E69F00", "#56B4E9", "#000000")
+
+    for (size_index, size) in enumerate(scan.sizes)
+        points = [_open_code_capacity_scan_point(
+            scan, size, rate) for rate in scan.error_rates]
+        color = colors[mod1(size_index, length(colors))]
+        for (axis, values, errors) in (
+                (ns_axis,
+                 [point.logical_failure_ns_mean for point in points],
+                 [point.logical_failure_ns_se for point in points]),
+                (ew_axis,
+                 [point.logical_failure_ew_mean for point in points],
+                 [point.logical_failure_ew_se for point in points]))
+            CairoMakie.lines!(axis, scan.error_rates, values;
+                color=color, linewidth=2, label="L=$size")
+            CairoMakie.scatter!(axis, scan.error_rates, values; color=color)
+            CairoMakie.errorbars!(axis, scan.error_rates, values, errors;
+                color=color, whiskerwidth=7)
+        end
+    end
+
+    for (axis, crossings) in (
+            (ns_axis, ns_crossings), (ew_axis, ew_crossings))
+        for crossing in crossings
+            crossing.status == :ok || continue
+            ismissing(crossing.estimate) && continue
+            CairoMakie.vlines!(axis, [crossing.estimate];
+                color=(:gray25, 0.55), linestyle=:dash, linewidth=1.5)
+        end
+        CairoMakie.ylims!(axis, -0.03, 1.03)
+        CairoMakie.axislegend(axis; position=:lt, framevisible=false)
     end
     return figure
 end
