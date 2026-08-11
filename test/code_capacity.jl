@@ -84,3 +84,30 @@ end
     @test logical_failure(east_west, none; sector=:east_west)
     @test !logical_failure(east_west, none; sector=:north_south)
 end
+
+@testset "thin open patches preserve boundary mechanisms" begin
+    for (rows, cols, sector) in ((2, 3, :east_west), (3, 2, :north_south))
+        model = OpenCodeCapacityModel(rows, cols)
+        empty!(TopoNoise._open_matching_cache)
+        matching = TopoNoise._open_code_matching(model, sector; error_rate=0.1)
+        expected_edges = rows * (cols - 1) + (rows - 1) * cols
+        @test TopoNoise.pyconvert(Int, matching.num_edges) == expected_edges
+
+        for errors in single_edge_error_configurations(model)
+            syndrome = code_capacity_syndrome(errors)
+            correction = decode_syndrome(model, syndrome; sector=sector)
+            residual = residual_errors(errors, correction)
+            @test !any(code_capacity_syndrome(residual))
+            @test !logical_failure(errors, correction; sector=sector)
+        end
+    end
+end
+
+@testset "decoder sector validation is data-independent" begin
+    model = OpenCodeCapacityModel(3, 3)
+    zero = falses(2, 2)
+    nonzero = copy(zero)
+    nonzero[1, 1] = true
+    @test_throws ArgumentError decode_syndrome(model, zero; sector=:diagonal)
+    @test_throws ArgumentError decode_syndrome(model, nonzero; sector=:diagonal)
+end

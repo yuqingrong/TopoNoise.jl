@@ -84,5 +84,3 @@ function _data_edge_logical_failure(
                 count(residual.vertical .& cut.vertical)
     return isodd(crossings)
 end
-
-export residual_errors

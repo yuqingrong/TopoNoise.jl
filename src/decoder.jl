@@ -168,6 +168,8 @@ function _build_open_code_matching(
     matching = _pymatching().Matching()
     logical_id = _num_qubits(rows, cols)
     cut = logical_cut(model; sector=sector)
+    boundary_nodes = Int[]
+    next_boundary_node = (rows - 1) * (cols - 1)
     interior_check(row, col) = (row - 1) * (cols - 1) + (col - 1)
 
     for row in 1:rows, col in 1:(cols - 1)
@@ -179,11 +181,13 @@ function _build_open_code_matching(
         if length(checks) == 2
             matching.add_edge(pyint(checks[1]), pyint(checks[2]);
                 fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="independent")
+                merge_strategy="disallow")
         else
-            matching.add_boundary_edge(pyint(only(checks));
+            push!(boundary_nodes, next_boundary_node)
+            matching.add_edge(pyint(only(checks)), pyint(next_boundary_node);
                 fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="independent")
+                merge_strategy="disallow")
+            next_boundary_node += 1
         end
     end
 
@@ -196,13 +200,16 @@ function _build_open_code_matching(
         if length(checks) == 2
             matching.add_edge(pyint(checks[1]), pyint(checks[2]);
                 fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="independent")
+                merge_strategy="disallow")
         else
-            matching.add_boundary_edge(pyint(only(checks));
+            push!(boundary_nodes, next_boundary_node)
+            matching.add_edge(pyint(only(checks)), pyint(next_boundary_node);
                 fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="independent")
+                merge_strategy="disallow")
+            next_boundary_node += 1
         end
     end
+    matching.set_boundary_nodes(pyset(boundary_nodes))
     return matching
 end
 
@@ -240,6 +247,7 @@ function decode_syndrome(
         model::OpenCodeCapacityModel, syndrome::BitMatrix;
         sector::Symbol=:north_south, error_rate::Real=0.1)::Correction
     _validate_open_syndrome(model, syndrome)
+    _validate_boundary(sector)
     0 <= error_rate < 0.5 ||
         throw(ArgumentError("error_rate must be in [0, 0.5)"))
     any(syndrome) || return Correction(model.rows, model.cols)
@@ -250,8 +258,6 @@ function decode_syndrome(
     predicted = matching.decode(_syndrome_vector(syndrome))
     return _correction_from_faults(model, predicted)
 end
-
-export Correction, decode_syndrome
 
 """
     decode_uf(model, mismatches; boundary=:north_south) -> Correction
