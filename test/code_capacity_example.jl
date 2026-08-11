@@ -1,27 +1,38 @@
 using Test
 
-const _OPEN_CODE_CAPACITY_EXAMPLE_PATH = joinpath(
-    @__DIR__, "..", "examples", "scan_open_code_capacity.jl")
+const _ROTATED_CODE_CAPACITY_EXAMPLE_PATH = joinpath(
+    @__DIR__, "..", "examples", "scan_rotated_code_capacity.jl")
 
-@testset "open code-capacity example" begin
-    @test isfile(_OPEN_CODE_CAPACITY_EXAMPLE_PATH)
+@testset "rotated code-capacity example" begin
+    @test isfile(_ROTATED_CODE_CAPACITY_EXAMPLE_PATH)
 
-    if isfile(_OPEN_CODE_CAPACITY_EXAMPLE_PATH)
-        include(_OPEN_CODE_CAPACITY_EXAMPLE_PATH)
+    if isfile(_ROTATED_CODE_CAPACITY_EXAMPLE_PATH)
+        include(_ROTATED_CODE_CAPACITY_EXAMPLE_PATH)
 
         mktempdir() do directory
             output = IOBuffer()
-            status = ScanOpenCodeCapacityExample.main([
+            status = ScanRotatedCodeCapacityExample.main([
                 "--p-min", "0.05", "--p-max", "0.10", "--p-step", "0.05",
-                "--sizes", "3,4", "--shots", "12", "--batches", "3",
-                "--bootstrap", "12", "--output-dir", directory]; io=output)
-            text = String(take!(output))
+                "--sizes", "3,5", "--shots", "12", "--batches", "3",
+                "--bootstrap", "12", "--seed", "31", "--output-dir", directory];
+                io=output)
 
             @test status == 0
-            @test isfile(joinpath(directory, "open_code_capacity_scan.csv"))
-            @test isfile(joinpath(directory, "open_code_capacity_scan.pdf"))
-            @test occursin("completed L=3", text)
-            @test !isfile(joinpath(directory, "trajectory_scan.csv"))
+            @test all(isfile(joinpath(directory, name)) for name in (
+                "rotated_code_capacity_scan.csv",
+                "rotated_code_capacity_crossings.csv",
+                "rotated_code_capacity_scan.svg",
+                "rotated_code_capacity_scan.pdf",
+                "rotated_code_capacity_scan.png"))
+            @test occursin("open rotated planar code", read(
+                joinpath(directory, "rotated_code_capacity_scan.svg"), String))
+            @test occursin("unbracketed", String(take!(output)))
+            @test startswith(read(joinpath(
+                directory, "rotated_code_capacity_scan.svg"), String), "<?xml")
+            @test startswith(read(joinpath(
+                directory, "rotated_code_capacity_scan.pdf"), String), "%PDF")
+            @test read(joinpath(directory, "rotated_code_capacity_scan.png"))[1:8] ==
+                UInt8[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
         end
     end
 end

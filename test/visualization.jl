@@ -48,6 +48,37 @@ end
     end
 end
 
+@testset "Rotated code-capacity figure" begin
+    @test isdefined(TopoNoise, :plot_rotated_code_capacity)
+
+    scan = RotatedCodeCapacityScan(
+            [3, 5, 7], [0.05, 0.10], [
+                RotatedCodeCapacityScanPoint(3, 0.05, 12, 1, 1 / 12,
+                    sqrt((1 / 12) * (11 / 12) / 12), [0.0, 0.0, 0.25], 31),
+                RotatedCodeCapacityScanPoint(3, 0.10, 12, 3, 0.25,
+                    sqrt(0.25 * 0.75 / 12), [0.0, 0.25, 0.5], 31),
+                RotatedCodeCapacityScanPoint(5, 0.05, 12, 2, 1 / 6,
+                    sqrt((1 / 6) * (5 / 6) / 12), [0.0, 0.25, 0.25], 31),
+                RotatedCodeCapacityScanPoint(5, 0.10, 12, 3, 0.25,
+                    sqrt(0.25 * 0.75 / 12), [0.25, 0.25, 0.25], 31),
+                RotatedCodeCapacityScanPoint(7, 0.05, 12, 3, 0.25,
+                    sqrt(0.25 * 0.75 / 12), [0.25, 0.25, 0.25], 31),
+                RotatedCodeCapacityScanPoint(7, 0.10, 12, 6, 0.5,
+                    sqrt(0.5 * 0.5 / 12), [0.25, 0.5, 0.75], 31),
+            ])
+        crossings = [
+            CriticalCrossing(3, 5, 0.075, 0.060, 0.090, 0.95, 1.0, :ok),
+            CriticalCrossing(5, 7, missing, missing, missing, 0.95, 0.0,
+                :unbracketed),
+        ]
+    figure = plot_rotated_code_capacity(scan, crossings)
+    labels = join(rendered_text(figure), "\n")
+
+    @test figure isa Figure
+    @test occursin("p_c", labels)
+    @test occursin("unbracketed", labels)
+end
+
 @testset "Trajectory scan figure" begin
     @test isdefined(TopoNoise, :plot_trajectory_scan)
 
@@ -71,6 +102,7 @@ end
         @test "Horizontal spanning probability" in titles
         @test "Marginalized |M|" in titles
         @test "Binder cumulant U₄" in titles
+        @test !("Logical failure (N-S, MWPM)" in titles)
 
         raw_only_scan = TrajectoryScan(
             scan.sizes, scan.error_rates, scan.points)
