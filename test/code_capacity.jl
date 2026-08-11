@@ -2,6 +2,42 @@ using TopoNoise
 using Random
 using Test
 
+function synthetic_open_code_scan(rates, small_curve, large_curve)
+    points = OpenCodeCapacityScanPoint[]
+    for (size, curve) in ((4, small_curve), (8, large_curve))
+        for (rate, failure) in zip(rates, curve)
+            batches = fill(Float64(failure), 4)
+            push!(points, OpenCodeCapacityScanPoint(
+                size, Float64(rate), 100, Float64(failure), 0.0,
+                Float64(failure), 0.0, batches, batches))
+        end
+    end
+    return OpenCodeCapacityScan([4, 8], Float64[rates...], points)
+end
+
+@testset "open code-capacity scan" begin
+    scan = scan_open_code_capacity(MersenneTwister(8), [3, 4], [0.0, 0.2];
+                                   shots=12, batches=3)
+    @test length(scan.points) == 4
+    @test all(point -> point.logical_failure_ns_mean == 0.0,
+              filter(point -> point.error_rate == 0.0, scan.points))
+    @test all(point -> length(point.logical_failure_ns_batches) == 3, scan.points)
+end
+
+@testset "crossing statuses" begin
+    bracketed = synthetic_open_code_scan([0.08, 0.10, 0.12],
+        [0.20, 0.45, 0.70], [0.30, 0.45, 0.60])
+    @test only(estimate_open_code_crossings(MersenneTwister(9), bracketed;
+        bootstrap=20)).status == :ok
+
+    unbracketed = synthetic_open_code_scan([0.08, 0.10, 0.12],
+        [0.20, 0.30, 0.40], [0.10, 0.20, 0.30])
+    crossing = only(estimate_open_code_crossings(MersenneTwister(10), unbracketed;
+        bootstrap=20))
+    @test ismissing(crossing.estimate)
+    @test crossing.status == :unbracketed
+end
+
 @testset "open code-capacity data edges" begin
     model = OpenCodeCapacityModel(4, 5)
     zero = sample_data_edge_errors(MersenneTwister(1), model; error_rate=0.0)
