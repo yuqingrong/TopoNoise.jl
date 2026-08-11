@@ -52,11 +52,37 @@ function logical_cut(model::OpenCodeCapacityModel; sector::Symbol)
     horizontal = falses(model.rows, model.cols - 1)
     vertical = falses(model.rows - 1, model.cols)
     if sector === :north_south
-        vertical[cld(model.rows - 1, 2), :] .= true
+        horizontal[cld(model.rows, 2), :] .= true
     elseif sector === :east_west
-        horizontal[:, cld(model.cols - 1, 2)] .= true
+        vertical[:, cld(model.cols, 2)] .= true
     else
         throw(ArgumentError("sector must be :north_south or :east_west"))
     end
     return (horizontal=horizontal, vertical=vertical)
 end
+
+"""Return the data-edge residual obtained by XORing errors and correction."""
+function _residual_errors(errors::DataEdgeErrors, correction)
+    size(errors.horizontal) == size(correction.horizontal) ||
+        throw(DimensionMismatch("correction.horizontal must match horizontal errors"))
+    size(errors.vertical) == size(correction.vertical) ||
+        throw(DimensionMismatch("correction.vertical must match vertical errors"))
+    return DataEdgeErrors(
+        BitMatrix(xor.(errors.horizontal, correction.horizontal)),
+        BitMatrix(xor.(errors.vertical, correction.vertical)))
+end
+
+"""Return whether the residual data-edge chain crosses the logical cut oddly."""
+function _data_edge_logical_failure(
+        errors::DataEdgeErrors, correction;
+        sector::Symbol=:north_south)
+    model = OpenCodeCapacityModel(
+        size(errors.horizontal, 1), size(errors.vertical, 2))
+    cut = logical_cut(model; sector=sector)
+    residual = _residual_errors(errors, correction)
+    crossings = count(residual.horizontal .& cut.horizontal) +
+                count(residual.vertical .& cut.vertical)
+    return isodd(crossings)
+end
+
+export residual_errors
