@@ -144,6 +144,13 @@ struct RotatedCodeCapacityScanPoint
     seed::Union{Missing,Int}
 end
 
+"""Finite-size rotated-planar code-capacity scan on a shared error-rate grid."""
+struct RotatedCodeCapacityScan
+    distances::Vector{Int}
+    error_rates::Vector{Float64}
+    points::Vector{RotatedCodeCapacityScanPoint}
+end
+
 function _rotated_code_matching(model::RotatedCodeCapacityModel, p::Float64)
     p > 0 || throw(ArgumentError("matching requires p > 0"))
     dem = rotated_code_capacity_circuit(model, p).detector_error_model(
@@ -255,6 +262,155 @@ function estimate_rotated_code_capacity(
     return RotatedCodeCapacityScanPoint(
         model.distance, rate, shot_count, failure_count, failure_rate, failure_se,
         batch_rates, result_seed)
+end
+
+"""
+    scan_rotated_code_capacity(rng, distances, error_rates;
+                               shots=10_000, batches=100, seed=nothing,
+                               progress_io=nothing)
+
+Estimate logical-X decoder failure across strictly increasing rotated-patch
+distances and data-X error rates. Each point retains equal-size batch rates
+for subsequent bootstrap crossing estimates.
+"""
+function scan_rotated_code_capacity(
+        rng::Random.AbstractRNG, distances, error_rates;
+        shots::Integer=10_000, batches::Integer=100, seed=nothing,
+        progress_io=nothing)
+    distance_values = Int[value for value in distances]
+    rate_values = [_rotated_code_capacity_error_rate(value) for value in error_rates]
+    _validate_strictly_increasing(distance_values, "distances")
+    all(distance -> distance >= 3, distance_values) || throw(ArgumentError(
+        "distances must be at least 3"))
+    _validate_strictly_increasing(rate_values, "error_rates")
+    shots > 0 || throw(ArgumentError("shots must be positive, got $shots"))
+    2 <= batches <= shots || throw(ArgumentError(
+        "batches must satisfy 2 <= batches <= shots, got batches=$batches and shots=$shots"))
+    shots % batches == 0 || throw(ArgumentError(
+        "shots must be divisible by batches, got shots=$shots and batches=$batches"))
+    scan_seed = seed === nothing ? nothing : _rotated_result_seed(seed)
+
+    shot_count = Int(shots)
+    models = Dict(distance => RotatedCodeCapacityModel(distance)
+                  for distance in distance_values)
+    points = RotatedCodeCapacityScanPoint[]
+    for distance in distance_values
+        model = models[distance]
+        for error_rate in rate_values
+            point = estimate_rotated_code_capacity(
+                rng, model, error_rate;
+                shots=shots, batches=batches, seed=scan_seed)
+            push!(points, point)
+            progress_io === nothing || println(
+                progress_io,
+                "completed d=$distance p=$error_rate ($shot_count shots)")
+        end
+    end
+    return RotatedCodeCapacityScan(distance_values, rate_values, points)
+end
+
+function _rotated_code_capacity_scan_point(
+        scan::RotatedCodeCapacityScan, distance::Int, error_rate::Float64)
+    matches = filter(
+        point -> point.distance == distance && point.error_rate == error_rate,
+        scan.points)
+    length(matches) == 1 || throw(ArgumentError(
+        "scan must contain exactly one point for d=$distance, p=$error_rate"))
+    return only(matches)
+end
+
+"""
+    estimate_rotated_code_crossings(rng, scan; bootstrap=2_000, confidence=0.95)
+
+Estimate crossings of adjacent rotated-patch logical-X failure curves using
+monotone fits and a nonparametric bootstrap over equal-length stored batches.
+"""
+function estimate_rotated_code_crossings(
+        rng::Random.AbstractRNG, scan::RotatedCodeCapacityScan;
+        bootstrap::Integer=2_000, confidence::Real=0.95)
+    length(scan.distances) >= 2 || throw(ArgumentError(
+        "at least two distances are required for crossings"))
+    length(scan.error_rates) >= 2 || throw(ArgumentError(
+        "at least two error rates are required for crossings"))
+    _validate_strictly_increasing(scan.distances, "distances")
+    all(distance -> distance >= 3, scan.distances) || throw(ArgumentError(
+        "distances must be at least 3"))
+    foreach(_rotated_code_capacity_error_rate, scan.error_rates)
+    _validate_strictly_increasing(scan.error_rates, "error_rates")
+    bootstrap > 0 || throw(ArgumentError(
+        "bootstrap must be positive, got $bootstrap"))
+    isfinite(confidence) && 0 < confidence < 1 || throw(ArgumentError(
+        "confidence must be strictly between 0 and 1, got $confidence"))
+
+    expected_points = length(scan.distances) * length(scan.error_rates)
+    length(scan.points) == expected_points || throw(ArgumentError(
+        "scan must contain one point for every distance and error rate"))
+    batch_lengths = length.(getfield.(scan.points, :logical_x_failure_batches))
+    all(>=(2), batch_lengths) || throw(ArgumentError(
+        "crossing estimation requires at least two batches per scan point"))
+    all(==(first(batch_lengths)), batch_lengths) || throw(ArgumentError(
+        "crossing estimation requires equal batch lengths at every scan point"))
+    all(point -> point.shots > 0 &&
+                 point.shots % length(point.logical_x_failure_batches) == 0,
+        scan.points) || throw(ArgumentError(
+        "crossing estimation requires batches with integral shot counts"))
+    batch_sizes = [div(point.shots, length(point.logical_x_failure_batches))
+                   for point in scan.points]
+    all(==(first(batch_sizes)), batch_sizes) || throw(ArgumentError(
+        "crossing estimation requires equal-size stored batches"))
+
+    results = CriticalCrossing[]
+    for pair in 1:(length(scan.distances) - 1)
+        small_distance, large_distance =
+            scan.distances[pair], scan.distances[pair + 1]
+        small_points = [_rotated_code_capacity_scan_point(
+            scan, small_distance, rate) for rate in scan.error_rates]
+        large_points = [_rotated_code_capacity_scan_point(
+            scan, large_distance, rate) for rate in scan.error_rates]
+        small_curve = _isotonic_non_decreasing(
+            [point.logical_x_failure_rate for point in small_points])
+        large_curve = _isotonic_non_decreasing(
+            [point.logical_x_failure_rate for point in large_points])
+        selected = _selected_crossing(
+            scan.error_rates, small_curve, large_curve)
+        if selected.status != :ok
+            push!(results, CriticalCrossing(
+                small_distance, large_distance, missing, missing, missing,
+                Float64(confidence), 0.0, selected.status))
+            continue
+        end
+        estimate = selected.estimate
+
+        bootstrap_estimates = Float64[]
+        for _ in 1:Int(bootstrap)
+            small_sample = _isotonic_non_decreasing([
+                _bootstrap_batch_mean(rng, point.logical_x_failure_batches)
+                for point in small_points
+            ])
+            large_sample = _isotonic_non_decreasing([
+                _bootstrap_batch_mean(rng, point.logical_x_failure_batches)
+                for point in large_points
+            ])
+            sample_selection = _selected_crossing(
+                scan.error_rates, small_sample, large_sample)
+            sample_selection.status == :ok && push!(
+                bootstrap_estimates, sample_selection.estimate)
+        end
+        valid_fraction = length(bootstrap_estimates) / bootstrap
+        if valid_fraction < 0.8
+            push!(results, CriticalCrossing(
+                small_distance, large_distance, estimate, missing, missing,
+                Float64(confidence), valid_fraction, :unstable))
+            continue
+        end
+        tail = (1 - confidence) / 2
+        push!(results, CriticalCrossing(
+            small_distance, large_distance, estimate,
+            Statistics.quantile(bootstrap_estimates, tail),
+            Statistics.quantile(bootstrap_estimates, 1 - tail),
+            Float64(confidence), valid_fraction, :ok))
+    end
+    return results
 end
 
 """Open rectangular patch used for data-edge code-capacity experiments."""
