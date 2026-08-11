@@ -132,6 +132,131 @@ function _minimum_x_logical_support(model::RotatedCodeCapacityModel)
     return support
 end
 
+"""One decoded logical-X failure estimate for a rotated planar patch."""
+struct RotatedCodeCapacityScanPoint
+    distance::Int
+    error_rate::Float64
+    shots::Int
+    logical_x_failure_count::Int
+    logical_x_failure_rate::Float64
+    logical_x_failure_se::Float64
+    logical_x_failure_batches::Vector{Float64}
+    seed::Union{Missing,Int}
+end
+
+function _rotated_code_matching(model::RotatedCodeCapacityModel, p::Float64)
+    p > 0 || throw(ArgumentError("matching requires p > 0"))
+    dem = rotated_code_capacity_circuit(model, p).detector_error_model(
+        decompose_errors=true,
+        block_decomposition_from_introducing_remnant_edges=true)
+    return _pymatching().Matching.from_detector_error_model(dem)
+end
+
+_decode_observables(matching::Py, syndrome) = matching.decode_batch(syndrome)
+
+function _rotated_detector_count(model::RotatedCodeCapacityModel, circuit::Py)
+    expected = model.distance^2 - 1
+    pyconvert(Int, model.base_circuit.num_detectors) == expected || throw(ErrorException(
+        "rotated model has $(pyconvert(Int, model.base_circuit.num_detectors)) " *
+        "detectors; expected $expected for distance $(model.distance)"))
+    pyconvert(Int, circuit.num_detectors) == expected || throw(ErrorException(
+        "rotated code-capacity circuit has $(pyconvert(Int, circuit.num_detectors)) " *
+        "detectors; expected $expected for distance $(model.distance)"))
+    return expected
+end
+
+function _rotated_code_capacity_error_rate(error_rate::Real)
+    isfinite(error_rate) && 0 <= error_rate < 0.5 || throw(ArgumentError(
+        "error_rate must be finite and lie in [0, 0.5), got $error_rate"))
+    return Float64(error_rate)
+end
+
+function _rotated_result_seed(seed)
+    seed === nothing && return missing
+    try
+        return Int(seed)
+    catch error
+        throw(ArgumentError("seed must be convertible to Int, got $seed"))
+    end
+end
+
+function _sample_rotated_detectors(
+        rng::Random.AbstractRNG, circuit::Py, shots::Int)
+    sampler = circuit.compile_detector_sampler(seed=rand(rng, UInt64))
+    syndrome_py, actual_py = sampler.sample(
+        shots=shots, separate_observables=true)
+    return syndrome_py, actual_py
+end
+
+function _validate_rotated_samples(
+        syndrome::BitMatrix, actual::BitMatrix, shots::Int, detector_count::Int)
+    size(syndrome) == (shots, detector_count) || throw(ErrorException(
+        "Stim returned detector samples with size $(size(syndrome)); expected " *
+        "($shots, $detector_count)"))
+    size(actual) == (shots, 1) || throw(ErrorException(
+        "Stim returned logical-observable samples with size $(size(actual)); " *
+        "expected ($shots, 1)"))
+    return nothing
+end
+
+"""
+    estimate_rotated_code_capacity(rng, model, error_rate;
+                                   shots=10_000, batches=100, seed=nothing)
+
+Sample data-X code-capacity noise and score detector-only MWPM predictions
+against Stim's held-out logical-X observable.
+"""
+function estimate_rotated_code_capacity(
+        rng::Random.AbstractRNG, model::RotatedCodeCapacityModel, error_rate::Real;
+        shots::Integer=10_000, batches::Integer=100, seed=nothing)
+    rate = _rotated_code_capacity_error_rate(error_rate)
+    shots > 0 || throw(ArgumentError("shots must be positive, got $shots"))
+    2 <= batches <= shots || throw(ArgumentError(
+        "batches must satisfy 2 <= batches <= shots, got batches=$batches and shots=$shots"))
+    shots % batches == 0 || throw(ArgumentError(
+        "shots must be divisible by batches, got shots=$shots and batches=$batches"))
+
+    shot_count, batch_count = Int(shots), Int(batches)
+    result_seed = _rotated_result_seed(seed)
+    circuit = rotated_code_capacity_circuit(model, rate)
+    detector_count = _rotated_detector_count(model, circuit)
+    syndrome_py, actual_py = _sample_rotated_detectors(
+        rng, circuit, shot_count)
+    if rate == 0
+        syndrome = pyconvert(BitMatrix, syndrome_py)
+        actual = pyconvert(BitMatrix, actual_py)
+        _validate_rotated_samples(syndrome, actual, shot_count, detector_count)
+        !any(syndrome) && !any(actual) || throw(ErrorException(
+            "noiseless rotated code-capacity sampling produced detector or logical flips"))
+        return RotatedCodeCapacityScanPoint(
+            model.distance, rate, shot_count, 0, 0.0, 0.0,
+            zeros(batch_count), result_seed)
+    end
+
+    matching = _rotated_code_matching(model, rate)
+    predicted_py = _decode_observables(matching, syndrome_py)
+    syndrome = pyconvert(BitMatrix, syndrome_py)
+    actual = pyconvert(BitMatrix, actual_py)
+    _validate_rotated_samples(syndrome, actual, shot_count, detector_count)
+    predicted = pyconvert(BitMatrix, predicted_py)
+    size(predicted) == size(actual) || throw(ErrorException(
+        "PyMatching returned logical-observable predictions with size $(size(predicted)); " *
+        "expected $(size(actual))"))
+    failures = vec(any(predicted .!= actual; dims=2))
+    failure_count = count(failures)
+    failure_rate = failure_count / shot_count
+    batch_size = div(shot_count, batch_count)
+    batch_rates = [
+        count(failures[((batch - 1) * batch_size + 1):(batch * batch_size)]) / batch_size
+        for batch in 1:batch_count
+    ]
+    failure_se = failure_rate == 0 || failure_rate == 1 ? 0.0 :
+        sqrt(failure_rate * (1 - failure_rate) / shot_count)
+    return RotatedCodeCapacityScanPoint(
+        model.distance, rate, shot_count, failure_count, failure_rate, failure_se,
+        batch_rates, result_seed)
+end
+
 """Open rectangular patch used for data-edge code-capacity experiments."""
 struct OpenCodeCapacityModel
     rows::Int
