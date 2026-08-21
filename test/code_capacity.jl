@@ -5,6 +5,15 @@ using TopoNoise
 using Test
 using Random
 
+@testset "invalid open-code API is removed" begin
+    removed_symbols = (
+        Symbol("OpenCode" * "CapacityModel"),
+        Symbol("scan_open" * "_code_capacity"),
+        Symbol("plot_open" * "_code_capacity"),
+    )
+    @test all(symbol -> !isdefined(TopoNoise, symbol), removed_symbols)
+end
+
 function synthetic_rotated_scan(
         error_rates::Vector{Float64}, small_rates::Vector{Float64},
         large_rates::Vector{Float64})

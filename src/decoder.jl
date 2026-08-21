@@ -13,15 +13,6 @@ end
 Correction(rows::Integer, cols::Integer) =
     Correction(falses(Int(rows), Int(cols) - 1), falses(Int(rows) - 1, Int(cols)))
 
-residual_errors(errors::DataEdgeErrors, correction::Correction) =
-    _residual_errors(errors, correction)
-
-function logical_failure(
-        errors::DataEdgeErrors, correction::Correction;
-        sector::Symbol=:north_south)
-    return _data_edge_logical_failure(errors, correction; sector=sector)
-end
-
 """
     plaquette_syndrome(mismatches) -> BitMatrix
 
@@ -142,121 +133,48 @@ function _matching(rows::Int, cols::Int, boundary::Symbol)
     return _matching_cache[key]
 end
 
-const _open_matching_cache = Dict{Tuple{Int,Int,Symbol},Py}()
-
-function _validate_open_syndrome(
-        model::OpenCodeCapacityModel, syndrome::BitMatrix)
-    expected = (model.rows - 1, model.cols - 1)
+"""Decode an open-patch plaquette-parity syndrome without accessing true errors."""
+function _decode_parity_syndrome(
+        rows::Int, cols::Int, syndrome::BitMatrix;
+        boundary::Symbol=:north_south)
+    _validate_boundary(boundary)
+    expected = (rows - 1, cols - 1)
     size(syndrome) == expected || throw(DimensionMismatch(
-        "syndrome must have size $expected"))
-    return syndrome
-end
+        "syndrome must have size $expected, got $(size(syndrome))"))
+    correction = Correction(rows, cols)
+    any(syndrome) || return correction
 
-function _syndrome_vector(syndrome::BitMatrix)
-    rows, cols = size(syndrome)
-    flattened = Vector{Int8}(undef, rows * cols)
-    for row in 1:rows, col in 1:cols
-        flattened[(row - 1) * cols + col] = syndrome[row, col] ? 1 : 0
+    # A 2×2 tensor patch has one detector and several parallel boundary
+    # links. PyMatching merges those parallel edges and therefore returns one
+    # observable bit instead of a recoverable per-link vector. Choose a fixed
+    # boundary representative for this degenerate legacy trajectory case.
+    if rows == 2 && cols == 2
+        if boundary === :north_south
+            correction.horizontal[1, 1] = true
+        else
+            correction.vertical[1, 1] = true
+        end
+        return correction
     end
-    return pyimport("numpy").asarray(flattened)
-end
 
-function _build_open_code_matching(
-        model::OpenCodeCapacityModel, sector::Symbol)
-    _validate_boundary(sector)
-    rows, cols = model.rows, model.cols
-    matching = _pymatching().Matching()
-    logical_id = _num_qubits(rows, cols)
-    cut = logical_cut(model; sector=sector)
-    boundary_nodes = Int[]
-    next_boundary_node = (rows - 1) * (cols - 1)
-    interior_check(row, col) = (row - 1) * (cols - 1) + (col - 1)
-
+    syndrome_vec = zeros(Int8, length(syndrome))
+    for row in 1:(rows - 1), col in 1:(cols - 1)
+        syndrome_vec[(row - 1) * (cols - 1) + col] = syndrome[row, col] ? 1 : 0
+    end
+    corr_py = _matching(rows, cols, boundary).decode(
+        pyimport("numpy").asarray(syndrome_vec))
+    corr_vec = pyconvert(Vector{Int}, corr_py)
+    n_qubits = _num_qubits(rows, cols)
+    length(corr_vec) >= n_qubits || throw(ErrorException(
+        "pymatching returned $(length(corr_vec)) fault predictions; expected " *
+        "at least $n_qubits"))
     for row in 1:rows, col in 1:(cols - 1)
-        qubit = _h_qubit(row, col, cols)
-        checks = Int[]
-        row > 1 && push!(checks, interior_check(row - 1, col))
-        row < rows && push!(checks, interior_check(row, col))
-        fault_ids = cut.horizontal[row, col] ? [qubit, logical_id] : [qubit]
-        if length(checks) == 2
-            matching.add_edge(pyint(checks[1]), pyint(checks[2]);
-                fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="disallow")
-        else
-            push!(boundary_nodes, next_boundary_node)
-            matching.add_edge(pyint(only(checks)), pyint(next_boundary_node);
-                fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="disallow")
-            next_boundary_node += 1
-        end
+        correction.horizontal[row, col] = corr_vec[_h_qubit(row, col, cols) + 1] == 1
     end
-
     for row in 1:(rows - 1), col in 1:cols
-        qubit = _v_qubit(row, col, rows, cols)
-        checks = Int[]
-        col > 1 && push!(checks, interior_check(row, col - 1))
-        col < cols && push!(checks, interior_check(row, col))
-        fault_ids = cut.vertical[row, col] ? [qubit, logical_id] : [qubit]
-        if length(checks) == 2
-            matching.add_edge(pyint(checks[1]), pyint(checks[2]);
-                fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="disallow")
-        else
-            push!(boundary_nodes, next_boundary_node)
-            matching.add_edge(pyint(only(checks)), pyint(next_boundary_node);
-                fault_ids=pyset(fault_ids), weight=1.0,
-                merge_strategy="disallow")
-            next_boundary_node += 1
-        end
-    end
-    matching.set_boundary_nodes(pyset(boundary_nodes))
-    return matching
-end
-
-function _open_code_matching(
-        model::OpenCodeCapacityModel, sector::Symbol;
-        error_rate::Float64)
-    _validate_boundary(sector)
-    key = (model.rows, model.cols, sector)
-    return get!(_open_matching_cache, key) do
-        _build_open_code_matching(model, sector)
-    end
-end
-
-function _correction_from_faults(
-        model::OpenCodeCapacityModel, predicted)::Correction
-    prediction = pyconvert(Vector{Int}, predicted)
-    required = _num_qubits(model.rows, model.cols)
-    length(prediction) >= required || throw(ErrorException(
-        "pymatching returned $(length(prediction)) fault predictions; expected " *
-        "at least $required"))
-    correction = Correction(model.rows, model.cols)
-    for row in 1:model.rows, col in 1:(model.cols - 1)
-        correction.horizontal[row, col] =
-            prediction[_h_qubit(row, col, model.cols) + 1] == 1
-    end
-    for row in 1:(model.rows - 1), col in 1:model.cols
-        correction.vertical[row, col] =
-            prediction[_v_qubit(row, col, model.rows, model.cols) + 1] == 1
+        correction.vertical[row, col] = corr_vec[_v_qubit(row, col, rows, cols) + 1] == 1
     end
     return correction
-end
-
-"""Decode an open-patch plaquette syndrome without access to true errors."""
-function decode_syndrome(
-        model::OpenCodeCapacityModel, syndrome::BitMatrix;
-        sector::Symbol=:north_south, error_rate::Real=0.1)::Correction
-    _validate_open_syndrome(model, syndrome)
-    _validate_boundary(sector)
-    0 <= error_rate < 0.5 ||
-        throw(ArgumentError("error_rate must be in [0, 0.5)"))
-    any(syndrome) || return Correction(model.rows, model.cols)
-    error_rate > 0 ||
-        throw(ArgumentError("nonzero syndrome is impossible at p=0"))
-    matching = _open_code_matching(
-        model, sector; error_rate=Float64(error_rate))
-    predicted = matching.decode(_syndrome_vector(syndrome))
-    return _correction_from_faults(model, predicted)
 end
 
 """
@@ -275,34 +193,8 @@ function decode_uf(
         boundary::Symbol=:north_south)
     _validate_boundary(boundary)
     rows, cols = model.rows, model.cols
-    correction = Correction(rows, cols)
-    (rows < 2 || cols < 2) && return correction
-
-    R, C = rows, cols
     interior = plaquette_syndrome(mismatches)
-    syndrome_vec = zeros(Int8, (R - 1) * (C - 1))
-    for r in 1:(R - 1), c in 1:(C - 1)
-        syndrome_vec[(r - 1) * (C - 1) + c] = interior[r, c] ? 1 : 0
-    end
-    any(syndrome_vec .!= 0) || return correction
-
-    matching = _matching(R, C, boundary)
-    np = pyimport("numpy")
-    syndrome_py = np.asarray(syndrome_vec)
-    corr_py = matching.decode(syndrome_py)
-    corr_vec = pyconvert(Vector{Int}, corr_py)
-    n_qubits = _num_qubits(R, C)
-    length(corr_vec) >= n_qubits || throw(ErrorException(
-        "pymatching returned $(length(corr_vec)) fault predictions; expected " *
-        "at least $n_qubits"))
-
-    for r in 1:R, c in 1:(C - 1)
-        correction.horizontal[r, c] = corr_vec[_h_qubit(r, c, C) + 1] == 1
-    end
-    for r in 1:(R - 1), c in 1:C
-        correction.vertical[r, c] = corr_vec[_v_qubit(r, c, R, C) + 1] == 1
-    end
-    return correction
+    return _decode_parity_syndrome(rows, cols, interior; boundary=boundary)
 end
 
 """

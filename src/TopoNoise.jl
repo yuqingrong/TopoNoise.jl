@@ -2,9 +2,10 @@ module TopoNoise
 
 using ITensors: ITensors, ITensor, Index
 using ITensorNetworks: ITensorNetwork
-using LinearAlgebra: I, nullspace
+using LinearAlgebra: I, nullspace, rank
 import Random
 import Statistics
+import Optim
 import Yao
 using Yao: H, chain, matblock, repeat, subroutine
 import CairoMakie
@@ -23,16 +24,28 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        TrajectoryScanPoint, MarginalSpinScanPoint, TrajectoryScan,
        CriticalCrossing, scan_trajectories, estimate_crossings,
        estimate_binder_crossings,
-       OpenCodeCapacityModel, DataEdgeErrors, sample_data_edge_errors,
-       code_capacity_syndrome, logical_cut,
        RotatedCodeCapacityModel, RotatedCodeCapacityScanPoint,
        RotatedCodeCapacityScan, rotated_code_capacity_circuit,
        estimate_rotated_code_capacity, scan_rotated_code_capacity,
        estimate_rotated_code_crossings, plot_rotated_code_capacity,
+       IsometricPlanarCodeModel, IsometricPlanarVirtualErrors,
+       IsometricPlanarSyndrome, sample_isometric_planar_virtual_errors,
+       isometric_planar_syndrome, decode_isometric_planar_syndrome,
+       isometric_planar_logical_failure, IsometricPlanarEncoder,
+       IsometricPlanarCheckLayer, isometric_planar_encoder,
+       isometric_planar_check_layer,
+       IsometricPlanarYaoTrajectory, sample_isometric_planar_yao_trajectory,
+       isometric_planar_bond_mismatches,
+       IsometricPlanarCapacityPoint, IsometricPlanarCapacityScan,
+       estimate_isometric_planar_capacity, scan_isometric_planar_capacity,
+       estimate_isometric_planar_crossings, IsometricPlanarScalingFit,
+       fit_isometric_planar_scaling, IsometricPlanarScalingDiagnostics,
+       diagnose_isometric_planar_scaling,
+       plot_isometric_planar_capacity,
+       plot_isometric_planar_scaling_diagnostics,
        Correction, DecodedTrajectory, plaquette_syndrome, decode_uf,
-       decode_syndrome, residual_errors, logical_failure, decode_trajectory,
-       plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan,
-       plot_open_code_capacity
+       logical_failure, decode_trajectory,
+       plot_peps_graph, plot_sequential_circuit, plot_trajectory_scan
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -42,6 +55,7 @@ include("trajectory.jl")
 include("code_capacity.jl")
 include("decoder.jl")
 include("trajectory_analysis.jl")
+include("isometric_planar_code.jl")
 include("visualization.jl")
 
 end

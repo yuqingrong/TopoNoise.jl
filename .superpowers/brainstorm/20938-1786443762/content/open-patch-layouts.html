@@ -1,0 +1,70 @@
+<div id="open-patch-layouts">
+  <h2>Choose the open code geometry</h2>
+  <p class="subtitle">Both choices are genuine open-boundary surface-code patches. The highlighted red U is why the old bond-only geometry cannot define the threshold.</p>
+
+  <div class="cards">
+    <div class="card" data-choice="rotated" onclick="toggleSelect(this)">
+      <div class="card-image">
+        <svg viewBox="0 0 340 230" role="img" aria-label="Rotated planar surface-code patch with data qubits in a square and opposite rough and smooth boundaries">
+          <rect x="37" y="23" width="266" height="178" fill="none" stroke="var(--border)" stroke-width="3"/>
+          <path d="M37 23H303M37 201H303" stroke="var(--viz-series-1)" stroke-width="7"/>
+          <path d="M37 23V201M303 23V201" stroke="var(--viz-series-2)" stroke-width="7"/>
+          <g fill="var(--foreground)">
+            <circle cx="70" cy="55" r="6"/><circle cx="120" cy="55" r="6"/><circle cx="170" cy="55" r="6"/><circle cx="220" cy="55" r="6"/><circle cx="270" cy="55" r="6"/>
+            <circle cx="70" cy="88" r="6"/><circle cx="120" cy="88" r="6"/><circle cx="170" cy="88" r="6"/><circle cx="220" cy="88" r="6"/><circle cx="270" cy="88" r="6"/>
+            <circle cx="70" cy="121" r="6"/><circle cx="120" cy="121" r="6"/><circle cx="170" cy="121" r="6"/><circle cx="220" cy="121" r="6"/><circle cx="270" cy="121" r="6"/>
+            <circle cx="70" cy="154" r="6"/><circle cx="120" cy="154" r="6"/><circle cx="170" cy="154" r="6"/><circle cx="220" cy="154" r="6"/><circle cx="270" cy="154" r="6"/>
+            <circle cx="70" cy="187" r="6"/><circle cx="120" cy="187" r="6"/><circle cx="170" cy="187" r="6"/><circle cx="220" cy="187" r="6"/><circle cx="270" cy="187" r="6"/>
+          </g>
+          <path d="M170 30V194" stroke="var(--viz-series-1)" stroke-width="2" stroke-dasharray="5 4"/>
+          <text x="170" y="17" text-anchor="middle" fill="var(--foreground)">rough</text>
+          <text x="16" y="115" text-anchor="middle" fill="var(--foreground)" transform="rotate(-90 16 115)">smooth</text>
+          <text x="170" y="222" text-anchor="middle" fill="var(--muted-foreground)">distance d grows with patch width</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>A — Rotated planar patch</h3>
+        <p>Recommended. Compact d×d data-qubit layout, explicit boundary types, and a direct check-matrix/PyMatching model.</p>
+      </div>
+    </div>
+
+    <div class="card" data-choice="unrotated" onclick="toggleSelect(this)">
+      <div class="card-image">
+        <svg viewBox="0 0 340 230" role="img" aria-label="Unrotated planar surface code with edge data qubits and star and plaquette checks">
+          <rect x="37" y="23" width="266" height="178" fill="none" stroke="var(--border)" stroke-width="3"/>
+          <path d="M37 23H303M37 201H303" stroke="var(--viz-series-1)" stroke-width="7"/>
+          <path d="M37 23V201M303 23V201" stroke="var(--viz-series-2)" stroke-width="7"/>
+          <g stroke="var(--border)" stroke-width="2">
+            <path d="M70 55H270M70 105H270M70 155H270"/>
+            <path d="M70 55V155M120 55V155M170 55V155M220 55V155M270 55V155"/>
+          </g>
+          <g fill="var(--foreground)">
+            <circle cx="95" cy="55" r="5"/><circle cx="145" cy="55" r="5"/><circle cx="195" cy="55" r="5"/><circle cx="245" cy="55" r="5"/>
+            <circle cx="95" cy="105" r="5"/><circle cx="145" cy="105" r="5"/><circle cx="195" cy="105" r="5"/><circle cx="245" cy="105" r="5"/>
+            <circle cx="95" cy="155" r="5"/><circle cx="145" cy="155" r="5"/><circle cx="195" cy="155" r="5"/><circle cx="245" cy="155" r="5"/>
+            <circle cx="70" cy="80" r="5"/><circle cx="120" cy="80" r="5"/><circle cx="170" cy="80" r="5"/><circle cx="220" cy="80" r="5"/><circle cx="270" cy="80" r="5"/>
+            <circle cx="70" cy="130" r="5"/><circle cx="120" cy="130" r="5"/><circle cx="170" cy="130" r="5"/><circle cx="220" cy="130" r="5"/><circle cx="270" cy="130" r="5"/>
+          </g>
+          <g fill="var(--viz-series-1)"><rect x="113" y="73" width="14" height="14"/><rect x="213" y="123" width="14" height="14"/></g>
+          <g fill="var(--viz-series-2)"><path d="M170 44l6 11h-12z"/><path d="M170 144l6 11h-12z"/></g>
+          <text x="170" y="184" text-anchor="middle" fill="var(--muted-foreground)">edge qubits • star + plaquette checks</text>
+          <text x="170" y="210" text-anchor="middle" fill="var(--muted-foreground)">closest to the original bond picture</text>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>B — Unrotated edge patch</h3>
+        <p>More visually related to the PEPS bonds, but requires both star and plaquette check families and more boundary bookkeeping.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <svg viewBox="0 0 620 95" role="img" aria-label="Old bond-only boundary U shown in red, demonstrating a local zero-syndrome operator">
+      <text x="0" y="20" fill="var(--foreground)">Old bond-only model: a local boundary U is zero syndrome but crosses the declared logical cut.</text>
+      <path d="M120 42H360M120 82H360M120 42V82M200 42V82M280 42V82M360 42V82" fill="none" stroke="var(--border)" stroke-width="2"/>
+      <path d="M200 42H120V82" fill="none" stroke="var(--red)" stroke-width="6"/>
+      <path d="M200 36V88" stroke="var(--viz-series-1)" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="388" y="66" fill="var(--red)">local U → false logical failure</text>
+    </svg>
+  </div>
+</div>

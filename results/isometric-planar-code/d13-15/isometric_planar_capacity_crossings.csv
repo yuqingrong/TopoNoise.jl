@@ -1,0 +1,2 @@
+small_distance,large_distance,estimate,ci_low,ci_high,confidence,valid_bootstrap_fraction,status
+13,15,0.10088685015290522,0.0975819842584133,0.10516421732572626,0.95,0.981,ok

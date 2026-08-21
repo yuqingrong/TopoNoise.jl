@@ -179,3 +179,66 @@ explicit status.
 This is a raw bond-percolation diagnostic of the sampled internal errors. It
 does not reconstruct spins, compute a Binder cumulant, or solve a Nishimori
 decoding problem; those require an additional Gibbs model or decoder.
+
+## Isometric planar-code virtual-bond capacity
+
+`IsometricPlanarCodeModel(d)` is an open planar logical-code experiment whose
+public size is the direct distance `d` (not a plaquette count). It prepares
+`|0_L⟩` with west/east `|+⟩` and south/north `|0⟩` virtual boundaries. The
+noise model is independent `X` noise on internal virtual carriers only;
+preparation, local gates, and parity checks are perfect.
+
+The decoder receives `(d-1)^2` plaquette checks plus one **local** north and
+south check for each horizontal boundary bond. The held-out logical frame is
+the parity of residual west-boundary vertical bonds. This makes a west-to-east
+virtual string the shortest odd logical path, with weight exactly `d`.
+
+```julia
+using TopoNoise, Random
+
+model = IsometricPlanarCodeModel(5)
+point = estimate_isometric_planar_capacity(
+    MersenneTwister(1234), model, 0.10; shots=10_000, batches=100)
+```
+
+`d=2` is supported as a diagnostic geometry with a fixed tie rule, but it is
+excluded from threshold fitting. For a finite-size-scaling fit, use at least
+three non-diagnostic distances; a useful production choice is
+`d=7,9,11,13,15`:
+
+```bash
+julia --project=. examples/scan_isometric_planar_threshold.jl \
+  --distances 7,9,11,13,15 \
+  --output-dir results/isometric-planar-code/d7-15
+```
+
+The command writes CSV, SVG, PNG, and PDF artifacts under
+`results/isometric-planar-code/`. Its defaults are `p=0:0.005:0.16`,
+100,000 shots per point, 100 batches, 2,000 bootstraps, and seed `1234`.
+Crossings with no unique interior intersection are reported as unstable.
+The publication figure marks the fitted `p_c` with a gray dashed line and
+adds a collapse inset. It fits a cubic master curve to points with logical failure rates from
+0.05 to 0.45 under
+`P_fail = F((p-p_c)d^(1/nu))`; the inset reports bootstrap one-sigma values
+for `p_c` and `nu`. The accompanying
+`isometric_planar_capacity_scaling_fit.csv` records the fit, fit window, and
+bootstrap count. Two-size smoke scans still render and record an
+`insufficient_sizes` fit status without an inset.
+
+For a reproducible fit audit, use
+`diagnose_isometric_planar_scaling(rng, scan)`. It returns the ordinary fit
+together with the bootstrap refits, the profiled `(p_c, nu)` loss surface,
+the running-best optimizer path, empirical batch variation, and nominal
+leave-one-distance-out and fit-window sensitivity results. The scan example
+writes the raw batch rates and each diagnostic table to CSV and produces a
+separate `isometric_planar_capacity_scaling_diagnostics.pdf`; the publication
+capacity figure remains uncluttered. A zero parenthetical bootstrap error is
+treated as a diagnostic condition and should be checked against the batch,
+optimizer, and loss-surface panels rather than interpreted as exact physical
+precision.
+
+`isometric_planar_encoder` retains terminal carriers as physical outputs and
+therefore has `4d²` output wires. `sample_isometric_planar_yao_trajectory` is
+kept only as a small-distance detector reference; the production estimator
+calculates the same detector parities algebraically and decodes batches with
+PyMatching rather than allocating an exponential Yao state vector.

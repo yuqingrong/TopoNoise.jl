@@ -132,13 +132,16 @@ end
 
 function synthetic_scan_point(size, error_rate, horizontal_probability)
     batches = fill(Float64(horizontal_probability), 4)
+    zero_batches = fill(0.0, 4)
     return TrajectoryScanPoint(
         size, Float64(error_rate), 100,
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
         0.0, 0.0,
         Float64(horizontal_probability), 0.0,
         0.0, 0.0,
-        batches)
+        0.0, 0.0,
+        0.0, 0.0,
+        batches, zero_batches, zero_batches)
 end
 
 function synthetic_spin_point(size, error_rate, binder; batches=4)
@@ -294,7 +297,11 @@ function with_horizontal_batches(point, batches)
         point.largest_cluster_mean, point.largest_cluster_se,
         point.horizontal_spanning_mean, point.horizontal_spanning_se,
         point.vertical_spanning_mean, point.vertical_spanning_se,
-        Float64[batches...])
+        point.logical_failure_ns_mean, point.logical_failure_ns_se,
+        point.logical_failure_ew_mean, point.logical_failure_ew_se,
+        Float64[batches...],
+        point.logical_failure_ns_batches,
+        point.logical_failure_ew_batches)
 end
 
 @testset "Finite-size spanning crossings" begin

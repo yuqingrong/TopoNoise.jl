@@ -16,38 +16,6 @@ function rendered_text(fig)
     return labels
 end
 
-@testset "Open code-capacity figure" begin
-    @test isdefined(TopoNoise, :plot_open_code_capacity)
-
-    if isdefined(TopoNoise, :plot_open_code_capacity)
-        scan = scan_open_code_capacity(
-            MersenneTwister(401), [3, 4], [0.05, 0.10];
-            shots=12, batches=3)
-        ns_crossings = estimate_open_code_crossings(
-            MersenneTwister(402), scan; sector=:north_south, bootstrap=12)
-        ew_crossings = estimate_open_code_crossings(
-            MersenneTwister(403), scan; sector=:east_west, bootstrap=12)
-        figure = plot_open_code_capacity(
-            scan, ns_crossings; ew_crossings=ew_crossings)
-        @test figure isa Figure
-
-        titles = [string(block.title[]) for block in figure.content
-                  if hasproperty(block, :title)]
-        @test "Logical failure (N-S)" in titles
-        @test "Logical failure (E-W)" in titles
-
-        mktempdir() do directory
-            for extension in ("svg", "pdf", "png")
-                path = joinpath(
-                    directory, "open_code_capacity_scan.$extension")
-                CairoMakie.save(path, figure)
-                @test isfile(path)
-                @test filesize(path) > 100
-            end
-        end
-    end
-end
-
 @testset "Rotated code-capacity figure" begin
     @test isdefined(TopoNoise, :plot_rotated_code_capacity)
 
@@ -77,6 +45,97 @@ end
     @test figure isa Figure
     @test occursin("p_c", labels)
     @test occursin("unbracketed", labels)
+end
+
+@testset "Isometric planar capacity scaling figure" begin
+    @test isdefined(TopoNoise, :fit_isometric_planar_scaling)
+    @test isdefined(TopoNoise, :plot_isometric_planar_scaling_diagnostics)
+
+    if isdefined(TopoNoise, :fit_isometric_planar_scaling) &&
+       isdefined(TopoNoise, :plot_isometric_planar_scaling_diagnostics)
+        scan = IsometricPlanarCapacityScan(
+            [5, 7, 9], [0.08, 0.10, 0.12], [
+                IsometricPlanarCapacityPoint(
+                    distance, rate, 400, round(Int, 400 * (0.25 + 4 * (rate - 0.10))),
+                    0.25 + 4 * (rate - 0.10), 0.01,
+                    fill(0.25 + 4 * (rate - 0.10), 4), false, 9)
+                for distance in [5, 7, 9] for rate in [0.08, 0.10, 0.12]
+            ])
+        fit = fit_isometric_planar_scaling(
+            MersenneTwister(73), scan; bootstrap=12)
+        crossings = [
+            CriticalCrossing(5, 7, 0.095, 0.09, 0.10, 0.95, 1.0, :ok),
+            CriticalCrossing(7, 9, 0.105, 0.10, 0.11, 0.95, 1.0, :ok),
+        ]
+        figure = plot_isometric_planar_capacity(
+            scan, crossings; scaling_fit=fit)
+        @test figure isa Figure
+        capacity_titles = [string(block.title[]) for block in figure.content
+                           if hasproperty(block, :title)]
+        @test !("Adjacent-distance crossing summary" in capacity_titles)
+        capacity_axis = only(block for block in figure.content
+                             if hasproperty(block, :title) &&
+                                string(block.title[]) ==
+                                "Isometric planar-code logical failure")
+        @test capacity_axis.limits[][2] == (-0.01, 0.51)
+        @test capacity_axis.yticks[] == 0.0:0.1:0.5
+        @test !capacity_axis.xgridvisible[]
+        @test !capacity_axis.ygridvisible[]
+        line_plots = [plot for plot in capacity_axis.scene.plots
+                      if occursin("Lines", string(typeof(plot)))]
+        @test length(line_plots) == length(scan.distances) + 1
+        @test !any(plot -> occursin("VLines", string(typeof(plot))),
+                   capacity_axis.scene.plots)
+        scaling_line_points = last(line_plots)[1][]
+        @test length(scaling_line_points) == 2
+        @test all(point -> all(isfinite, point), scaling_line_points)
+        @test first(scaling_line_points)[2] == -0.01
+        @test last(scaling_line_points)[2] == 0.51
+
+        diagnostics = diagnose_isometric_planar_scaling(
+            MersenneTwister(75), scan; bootstrap=12,
+            loss_grid_size=(11, 9), sensitivity=true)
+        diagnostic_figure = plot_isometric_planar_scaling_diagnostics(
+            scan, diagnostics)
+        @test diagnostic_figure isa Figure
+        diagnostic_titles = [string(block.title[]) for block in diagnostic_figure.content
+                             if hasproperty(block, :title)]
+        @test "Profiled loss surface" in diagnostic_titles
+        @test "Bootstrap parameter distribution" in diagnostic_titles
+        @test "Batch variation check" in diagnostic_titles
+        @test "Sensitivity: p_c" in diagnostic_titles
+        @test "Sensitivity: ν" in diagnostic_titles
+        diagnostic_labels = join(rendered_text(diagnostic_figure), "\n")
+        @test occursin("degenerate bootstrap", diagnostic_labels)
+        loss_axis = only(block for block in diagnostic_figure.content
+                         if hasproperty(block, :title) &&
+                            string(block.title[]) == "Profiled loss surface")
+        @test length(loss_axis.scene.plots) >= 4
+
+        short_fit = fit_isometric_planar_scaling(
+            MersenneTwister(74), IsometricPlanarCapacityScan(
+                [5, 7], scan.error_rates,
+                filter(point -> point.distance in (5, 7), scan.points)); bootstrap=12)
+        short_figure = plot_isometric_planar_capacity(
+            IsometricPlanarCapacityScan(
+                [5, 7], scan.error_rates,
+                filter(point -> point.distance in (5, 7), scan.points)),
+            CriticalCrossing[]; scaling_fit=short_fit)
+        @test any(occursin("fit unavailable", label) for label in rendered_text(short_figure))
+
+        short_diagnostics = diagnose_isometric_planar_scaling(
+            MersenneTwister(76), IsometricPlanarCapacityScan(
+                [5, 7], scan.error_rates,
+                filter(point -> point.distance in (5, 7), scan.points));
+            bootstrap=12, loss_grid_size=(11, 9), sensitivity=true)
+        short_diagnostic_figure = plot_isometric_planar_scaling_diagnostics(
+            IsometricPlanarCapacityScan(
+                [5, 7], scan.error_rates,
+                filter(point -> point.distance in (5, 7), scan.points)),
+            short_diagnostics)
+        @test any(occursin("diagnostics unavailable", label)
+                  for label in rendered_text(short_diagnostic_figure))
+    end
 end
 
 @testset "Trajectory scan figure" begin

@@ -7,6 +7,8 @@ struct TrajectoryObservables
     largest_cluster_fraction::Float64
     spans_horizontal::Bool
     spans_vertical::Bool
+    logical_failure_ns::Bool
+    logical_failure_ew::Bool
 end
 
 """Equal-weight spin moments after marginalizing mismatched internal edges."""
@@ -36,7 +38,13 @@ struct TrajectoryScanPoint
     horizontal_spanning_se::Float64
     vertical_spanning_mean::Float64
     vertical_spanning_se::Float64
+    logical_failure_ns_mean::Float64
+    logical_failure_ns_se::Float64
+    logical_failure_ew_mean::Float64
+    logical_failure_ew_se::Float64
     horizontal_span_batches::Vector{Float64}
+    logical_failure_ns_batches::Vector{Float64}
+    logical_failure_ew_batches::Vector{Float64}
 end
 
 """Marginalized spin summary for one square size and one error rate."""
@@ -80,36 +88,6 @@ struct CriticalCrossing
     confidence::Float64
     valid_bootstrap_fraction::Float64
     status::Symbol
-end
-
-"""
-    bond_mismatches(trajectory)
-
-Return the doubled-edge XOR records as `(horizontal, vertical)` bit matrices.
-Horizontal entries compare a site's east record with its right neighbor's west
-record. Vertical entries compare a lower site's north record with its upper
-neighbor's south record.
-"""
-function bond_mismatches(trajectory::ToricCodeTrajectory)
-    rows, cols, directions = size(trajectory.measurements)
-    directions == 4 || throw(DimensionMismatch(
-        "trajectory measurements must have four E/N/W/S entries per site, " *
-        "got size $(size(trajectory.measurements))"))
-    _validate_virtual_error_shapes(rows, cols, trajectory.errors)
-
-    horizontal = BitMatrix(undef, rows, cols - 1)
-    for row in 1:rows, col in 1:(cols - 1)
-        horizontal[row, col] = xor(
-            trajectory.measurements[row, col, 1],
-            trajectory.measurements[row, col + 1, 3])
-    end
-    vertical = BitMatrix(undef, rows - 1, cols)
-    for row in 1:(rows - 1), col in 1:cols
-        vertical[row, col] = xor(
-            trajectory.measurements[row + 1, col, 2],
-            trajectory.measurements[row, col, 4])
-    end
-    return (; horizontal, vertical)
 end
 
 function _find_root!(parent::Vector{Int}, vertex::Int)
@@ -267,9 +245,23 @@ function trajectory_observables(trajectory::ToricCodeTrajectory)
     largest, spans_horizontal, spans_vertical =
         _cluster_observables(mismatches.horizontal, mismatches.vertical)
 
+    if rows >= 2 && cols >= 2
+        model = ToricCodeTrajectoryModel(rows, cols)
+        correction_ns = decode_uf(model, mismatches; boundary=:north_south)
+        correction_ew = decode_uf(model, mismatches; boundary=:east_west)
+        failure_ns = logical_failure(
+            trajectory.errors, correction_ns; boundary=:north_south)
+        failure_ew = logical_failure(
+            trajectory.errors, correction_ew; boundary=:east_west)
+    else
+        failure_ns = false
+        failure_ew = false
+    end
+
     return TrajectoryObservables(
         sampled_error_density, boundary_error_density, mismatch_density,
-        frustration_density, largest, spans_horizontal, spans_vertical)
+        frustration_density, largest, spans_horizontal, spans_vertical,
+        failure_ns, failure_ew)
 end
 
 function _validate_strictly_increasing(values, name::AbstractString)
@@ -288,6 +280,8 @@ function _observable_values(observables::TrajectoryObservables)
         observables.largest_cluster_fraction,
         Float64(observables.spans_horizontal),
         Float64(observables.spans_vertical),
+        Float64(observables.logical_failure_ns),
+        Float64(observables.logical_failure_ew),
     )
 end
 
@@ -386,9 +380,11 @@ function scan_trajectories(
     for size in size_values
         model = ToricCodeTrajectoryModel(size, size)
         for error_rate in rate_values
-            accumulators = [_WelfordAccumulator() for _ in 1:7]
+            accumulators = [_WelfordAccumulator() for _ in 1:9]
             spin_accumulators = [_WelfordAccumulator() for _ in 1:3]
             horizontal_batch_totals = zeros(batch_count)
+            failure_ns_batch_totals = zeros(batch_count)
+            failure_ew_batch_totals = zeros(batch_count)
             second_batch_totals = zeros(batch_count)
             fourth_batch_totals = zeros(batch_count)
             batch_counts = zeros(Int, batch_count)
@@ -409,6 +405,8 @@ function scan_trajectories(
                 end
                 batch = fld((shot - 1) * batch_count, shot_count) + 1
                 horizontal_batch_totals[batch] += values[6]
+                failure_ns_batch_totals[batch] += values[8]
+                failure_ew_batch_totals[batch] += values[9]
                 second_batch_totals[batch] += spin.second_moment
                 fourth_batch_totals[batch] += spin.fourth_moment
                 batch_counts[batch] += 1
@@ -417,6 +415,8 @@ function scan_trajectories(
             standard_errors = _standard_error.(accumulators)
             horizontal_batches =
                 horizontal_batch_totals ./ batch_counts
+            failure_ns_batches = failure_ns_batch_totals ./ batch_counts
+            failure_ew_batches = failure_ew_batch_totals ./ batch_counts
             push!(points, TrajectoryScanPoint(
                 size, error_rate, shot_count,
                 means[1], standard_errors[1],
@@ -426,7 +426,10 @@ function scan_trajectories(
                 means[5], standard_errors[5],
                 means[6], standard_errors[6],
                 means[7], standard_errors[7],
-                horizontal_batches))
+                means[8], standard_errors[8],
+                means[9], standard_errors[9],
+                horizontal_batches,
+                failure_ns_batches, failure_ew_batches))
 
             spin_means = [
                 accumulator.mean for accumulator in spin_accumulators]
@@ -560,7 +563,8 @@ end
 """Estimate adjacent-size horizontal-spanning crossings with batch bootstrap."""
 function estimate_crossings(
         rng::Random.AbstractRNG, scan::TrajectoryScan;
-        bootstrap::Integer=2_000, confidence::Real=0.95)
+        bootstrap::Integer=2_000, confidence::Real=0.95,
+        curve::Symbol=:horizontal_spanning)
     length(scan.sizes) >= 2 || throw(ArgumentError(
         "at least two sizes are required for crossings"))
     length(scan.error_rates) >= 2 || throw(ArgumentError(
@@ -569,7 +573,18 @@ function estimate_crossings(
         "bootstrap must be positive, got $bootstrap"))
     isfinite(confidence) && 0 < confidence < 1 || throw(ArgumentError(
         "confidence must be strictly between 0 and 1, got $confidence"))
-    all(length(point.horizontal_span_batches) >= 2 for point in scan.points) ||
+    curve in (:horizontal_spanning, :logical_failure_ns, :logical_failure_ew) ||
+        throw(ArgumentError(
+            "curve must be :horizontal_spanning, :logical_failure_ns, or " *
+            ":logical_failure_ew, got $curve"))
+    mean_getter, batch_getter = if curve === :horizontal_spanning
+        (p -> p.horizontal_spanning_mean, p -> p.horizontal_span_batches)
+    elseif curve === :logical_failure_ns
+        (p -> p.logical_failure_ns_mean, p -> p.logical_failure_ns_batches)
+    else
+        (p -> p.logical_failure_ew_mean, p -> p.logical_failure_ew_batches)
+    end
+    all(length(batch_getter(point)) >= 2 for point in scan.points) ||
         throw(ArgumentError(
             "crossing estimation requires at least two batches per scan point"))
 
@@ -581,9 +596,9 @@ function estimate_crossings(
         large_points = [
             _scan_point(scan, large_size, rate) for rate in scan.error_rates]
         small_curve = _isotonic_non_decreasing(
-            [point.horizontal_spanning_mean for point in small_points])
+            [mean_getter(point) for point in small_points])
         large_curve = _isotonic_non_decreasing(
-            [point.horizontal_spanning_mean for point in large_points])
+            [mean_getter(point) for point in large_points])
         selected = _selected_crossing(
             scan.error_rates, small_curve, large_curve)
         if selected.status != :ok
@@ -597,11 +612,11 @@ function estimate_crossings(
         bootstrap_estimates = Float64[]
         for _ in 1:Int(bootstrap)
             small_sample = _isotonic_non_decreasing([
-                _bootstrap_batch_mean(rng, point.horizontal_span_batches)
+                _bootstrap_batch_mean(rng, batch_getter(point))
                 for point in small_points
             ])
             large_sample = _isotonic_non_decreasing([
-                _bootstrap_batch_mean(rng, point.horizontal_span_batches)
+                _bootstrap_batch_mean(rng, batch_getter(point))
                 for point in large_points
             ])
             sample_selection = _selected_crossing(

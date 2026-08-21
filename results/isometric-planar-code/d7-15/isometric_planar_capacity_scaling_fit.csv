@@ -1,0 +1,2 @@
+p_c,nu,p_c_se,nu_se,valid_bootstrap_fraction,status,failure_window_low,failure_window_high,distances,point_count,bootstrap
+0.09767943526405606,1.2893242586843072,0.0002014852093416785,0.010824954263775426,1.0,ok,0.05,0.45,7;9;11;13;15,81,2000

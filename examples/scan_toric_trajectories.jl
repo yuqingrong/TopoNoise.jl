@@ -140,7 +140,9 @@ function _write_scan_csv(path, scan)
         :frustration_mean, :frustration_se,
         :largest_cluster_mean, :largest_cluster_se,
         :horizontal_spanning_mean, :horizontal_spanning_se,
-        :vertical_spanning_mean, :vertical_spanning_se)
+        :vertical_spanning_mean, :vertical_spanning_se,
+        :logical_failure_ns_mean, :logical_failure_ns_se,
+        :logical_failure_ew_mean, :logical_failure_ew_se)
     spin_fields = (
         :absolute_magnetization_mean, :absolute_magnetization_se,
         :second_moment_mean, :second_moment_se,
@@ -155,6 +157,8 @@ function _write_scan_csv(path, scan)
         "largest_cluster_mean", "largest_cluster_se",
         "horizontal_spanning_mean", "horizontal_spanning_se",
         "vertical_spanning_mean", "vertical_spanning_se",
+        "logical_failure_ns_mean", "logical_failure_ns_se",
+        "logical_failure_ew_mean", "logical_failure_ew_se",
         "marginal_abs_magnetization_mean",
         "marginal_abs_magnetization_se",
         "marginal_m2_mean", "marginal_m2_se",
@@ -203,10 +207,18 @@ function run(options; io::IO=stdout)
         spin_samples=options.spin_samples)
     crossings = estimate_crossings(
         rng, scan; bootstrap=options.bootstrap, confidence=options.confidence)
+    logical_ns_crossings = estimate_crossings(
+        rng, scan; bootstrap=options.bootstrap, confidence=options.confidence,
+        curve=:logical_failure_ns)
+    logical_ew_crossings = estimate_crossings(
+        rng, scan; bootstrap=options.bootstrap, confidence=options.confidence,
+        curve=:logical_failure_ew)
     binder_crossings = estimate_binder_crossings(
         rng, scan; bootstrap=options.bootstrap, confidence=options.confidence)
     figure = plot_trajectory_scan(
-        scan, crossings; binder_crossings=binder_crossings)
+        scan, crossings; binder_crossings=binder_crossings,
+        logical_ns_crossings=logical_ns_crossings,
+        logical_ew_crossings=logical_ew_crossings)
 
     mkpath(options.output_dir)
     scan_path = abspath(joinpath(options.output_dir, "trajectory_scan.csv"))
@@ -214,10 +226,17 @@ function run(options; io::IO=stdout)
         options.output_dir, "trajectory_crossings.csv"))
     binder_crossing_path = abspath(joinpath(
         options.output_dir, "trajectory_binder_crossings.csv"))
+    logical_ns_path = abspath(joinpath(
+        options.output_dir, "trajectory_logical_ns_crossings.csv"))
+    logical_ew_path = abspath(joinpath(
+        options.output_dir, "trajectory_logical_ew_crossings.csv"))
     _write_scan_csv(scan_path, scan)
     _write_crossing_csv(crossing_path, crossings)
     _write_crossing_csv(binder_crossing_path, binder_crossings)
-    outputs = [scan_path, crossing_path, binder_crossing_path]
+    _write_crossing_csv(logical_ns_path, logical_ns_crossings)
+    _write_crossing_csv(logical_ew_path, logical_ew_crossings)
+    outputs = [scan_path, crossing_path, binder_crossing_path,
+               logical_ns_path, logical_ew_path]
     for extension in ("svg", "pdf", "png")
         path = abspath(joinpath(
             options.output_dir, "trajectory_scan.$extension"))
@@ -227,7 +246,8 @@ function run(options; io::IO=stdout)
     for path in outputs
         println(io, "wrote: $path")
     end
-    return (; scan, crossings, binder_crossings, figure, outputs)
+    return (; scan, crossings, binder_crossings,
+              logical_ns_crossings, logical_ew_crossings, figure, outputs)
 end
 
 function main(args=ARGS; io::IO=stdout, error_io::IO=stderr)

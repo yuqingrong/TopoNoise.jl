@@ -215,3 +215,33 @@ log2_postselection_probability(model::ToricCodeTrajectoryModel) =
 
 postselection_probability(model::ToricCodeTrajectoryModel) =
     exp2(float(log2_postselection_probability(model)))
+
+"""
+    bond_mismatches(trajectory)
+
+Return the doubled-edge XOR records as `(horizontal, vertical)` bit matrices.
+Horizontal entries compare a site's east record with its right neighbor's west
+record. Vertical entries compare a lower site's north record with its upper
+neighbor's south record.
+"""
+function bond_mismatches(trajectory::ToricCodeTrajectory)
+    rows, cols, directions = size(trajectory.measurements)
+    directions == 4 || throw(DimensionMismatch(
+        "trajectory measurements must have four E/N/W/S entries per site, " *
+        "got size $(size(trajectory.measurements))"))
+    _validate_virtual_error_shapes(rows, cols, trajectory.errors)
+
+    horizontal = BitMatrix(undef, rows, cols - 1)
+    for row in 1:rows, col in 1:(cols - 1)
+        horizontal[row, col] = xor(
+            trajectory.measurements[row, col, 1],
+            trajectory.measurements[row, col + 1, 3])
+    end
+    vertical = BitMatrix(undef, rows - 1, cols)
+    for row in 1:(rows - 1), col in 1:cols
+        vertical[row, col] = xor(
+            trajectory.measurements[row + 1, col, 2],
+            trajectory.measurements[row, col, 4])
+    end
+    return (; horizontal, vertical)
+end
