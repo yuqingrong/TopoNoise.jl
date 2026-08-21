@@ -15,6 +15,7 @@ makedocs(;
     pages=[
         "Home" => "index.md",
         "Noisy trajectories" => "trajectories.md",
+        "Isometric planar capacity" => "isometric_planar_code.md",
     ],
 )
 

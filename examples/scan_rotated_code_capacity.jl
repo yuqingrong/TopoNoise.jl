@@ -4,6 +4,9 @@ using TopoNoise
 import CairoMakie
 import Random
 
+const DEFAULT_OUTPUT_DIR = normpath(joinpath(
+    @__DIR__, "..", "results", "rotated-code-capacity"))
+
 const USAGE = """
 Usage: julia --project=. examples/scan_rotated_code_capacity.jl \\
   --p-min P --p-max P --p-step DP [options]
@@ -20,7 +23,7 @@ Options:
   --bootstrap N      bootstrap replicates (default: 2000)
   --confidence X     confidence level (default: 0.95)
   --seed N           random seed (default: 1234)
-  --output-dir PATH  output directory (default: examples/output)
+  --output-dir PATH  output directory (default: results/rotated-code-capacity)
 """
 
 const _KNOWN_OPTIONS = Set((
@@ -116,7 +119,7 @@ function _parse_options(args)
         Float64, get(options, "--confidence", "0.95"), "--confidence")
     isfinite(confidence) && 0 < confidence < 1 || throw(ArgumentError(
         "--confidence must be strictly between 0 and 1"))
-    output_dir = get(options, "--output-dir", joinpath(@__DIR__, "output"))
+    output_dir = get(options, "--output-dir", DEFAULT_OUTPUT_DIR)
     isempty(output_dir) && throw(ArgumentError("--output-dir must not be empty"))
     return (; rates, sizes, shots, batches, bootstrap, seed, confidence,
             output_dir)

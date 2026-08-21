@@ -7,6 +7,10 @@ const _EXAMPLE_PATH = joinpath(
     if isfile(_EXAMPLE_PATH)
         include(_EXAMPLE_PATH)
 
+        default_output = GenerateToricCircuitExample.generate(1, 1).outputs
+        @test all(startswith(path, normpath(joinpath(
+            @__DIR__, "..", "results", "toric-circuit"))) for path in default_output)
+
         mktempdir() do directory
             output = IOBuffer()
             @test GenerateToricCircuitExample.main(

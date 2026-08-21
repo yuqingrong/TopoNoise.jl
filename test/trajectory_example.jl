@@ -7,13 +7,17 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
     if isfile(_TRAJECTORY_EXAMPLE_PATH)
         include(_TRAJECTORY_EXAMPLE_PATH)
 
+        defaults = ScanToricTrajectoriesExample._parse_options([
+            "--p-min", "0", "--p-max", "1", "--p-step", "1"])
+        @test defaults.output_dir == normpath(joinpath(
+            @__DIR__, "..", "results", "toric-trajectories"))
+
         mktempdir() do directory
             output = IOBuffer()
             arguments = [
                 "--p-min", "0", "--p-max", "1", "--p-step", "1",
                 "--sizes", "2,3", "--shots", "8", "--batches", "2",
                 "--bootstrap", "4", "--seed", "1234",
-                "--spin-samples", "3",
                 "--output-dir", directory,
             ]
             @test ScanToricTrajectoriesExample.main(
@@ -22,14 +26,7 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
 
             scan_path = joinpath(directory, "trajectory_scan.csv")
             crossing_path = joinpath(directory, "trajectory_crossings.csv")
-            binder_crossing_path = joinpath(
-                directory, "trajectory_binder_crossings.csv")
-            logical_ns_path = joinpath(
-                directory, "trajectory_logical_ns_crossings.csv")
-            logical_ew_path = joinpath(
-                directory, "trajectory_logical_ew_crossings.csv")
-            for path in (scan_path, crossing_path, binder_crossing_path,
-                         logical_ns_path, logical_ew_path)
+            for path in (scan_path, crossing_path)
                 @test isfile(path)
                 @test filesize(path) > 100
                 @test contains(text, "wrote: $(abspath(path))")
@@ -51,36 +48,14 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
                 "frustration_mean", "frustration_se",
                 "largest_cluster_mean", "largest_cluster_se",
                 "horizontal_spanning_mean", "horizontal_spanning_se",
-                "vertical_spanning_mean", "vertical_spanning_se",
-                "logical_failure_ns_mean", "logical_failure_ns_se",
-                "logical_failure_ew_mean", "logical_failure_ew_se",
-                "marginal_abs_magnetization_mean",
-                "marginal_abs_magnetization_se",
-                "marginal_m2_mean", "marginal_m2_se",
-                "marginal_m4_mean", "marginal_m4_se",
-                "binder_cumulant", "binder_cumulant_se"), ",")
+                "vertical_spanning_mean", "vertical_spanning_se"), ",")
             crossing_lines = readlines(crossing_path)
-            binder_crossing_lines = readlines(binder_crossing_path)
-            logical_ns_lines = readlines(logical_ns_path)
-            logical_ew_lines = readlines(logical_ew_path)
             @test length(crossing_lines) == 2
-            @test length(binder_crossing_lines) == 2
-            @test length(logical_ns_lines) == 2
-            @test length(logical_ew_lines) == 2
             @test first(crossing_lines) == join((
                 "small_size", "large_size", "estimate", "ci_low",
                 "ci_high", "confidence", "valid_bootstrap_fraction",
                 "status"), ",")
-            @test first(binder_crossing_lines) == first(crossing_lines)
-            @test first(logical_ns_lines) == first(crossing_lines)
-            @test first(logical_ew_lines) == first(crossing_lines)
             @test last(split(last(crossing_lines), ',')) in
-                  ("ok", "unbracketed", "unstable")
-            @test last(split(last(binder_crossing_lines), ',')) in
-                  ("ok", "unbracketed", "unstable")
-            @test last(split(last(logical_ns_lines), ',')) in
-                  ("ok", "unbracketed", "unstable")
-            @test last(split(last(logical_ew_lines), ',')) in
                   ("ok", "unbracketed", "unstable")
         end
 
@@ -94,7 +69,7 @@ const _TRAJECTORY_EXAMPLE_PATH = joinpath(
                 ["--p-min", "0", "--p-max", "1", "--p-step", "1",
                  "--shots", "10", "--batches", "1"],
                 ["--p-min", "0", "--p-max", "1", "--p-step", "1",
-                 "--spin-samples", "0"],
+                 "--spin-samples", "1"],
                 ["--p-min", "0", "--p-max", "1", "--p-step", "1",
                  "--unknown", "value"])
             output = IOBuffer()

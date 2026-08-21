@@ -9,6 +9,11 @@ const _ROTATED_CODE_CAPACITY_EXAMPLE_PATH = joinpath(
     if isfile(_ROTATED_CODE_CAPACITY_EXAMPLE_PATH)
         include(_ROTATED_CODE_CAPACITY_EXAMPLE_PATH)
 
+        defaults = ScanRotatedCodeCapacityExample._parse_options([
+            "--p-min", "0.05", "--p-max", "0.10", "--p-step", "0.05"])
+        @test defaults.output_dir == normpath(joinpath(
+            @__DIR__, "..", "results", "rotated-code-capacity"))
+
         mktempdir() do directory
             output = IOBuffer()
             status = ScanRotatedCodeCapacityExample.main([
@@ -24,8 +29,6 @@ const _ROTATED_CODE_CAPACITY_EXAMPLE_PATH = joinpath(
                 "rotated_code_capacity_scan.svg",
                 "rotated_code_capacity_scan.pdf",
                 "rotated_code_capacity_scan.png"))
-            @test occursin("open rotated planar code", read(
-                joinpath(directory, "rotated_code_capacity_scan.svg"), String))
             @test occursin("unbracketed", String(take!(output)))
             @test startswith(read(joinpath(
                 directory, "rotated_code_capacity_scan.svg"), String), "<?xml")

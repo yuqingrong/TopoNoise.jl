@@ -4,6 +4,9 @@ using TopoNoise
 import CairoMakie
 import Random
 
+const DEFAULT_OUTPUT_DIR = normpath(joinpath(
+    @__DIR__, "..", "results", "isometric-planar-code"))
+
 const USAGE = """
 Usage: julia --project=. examples/scan_isometric_planar_threshold.jl [options]
 
@@ -93,8 +96,7 @@ function _parse_options(args)
     bootstrap > 0 || throw(ArgumentError("--bootstrap must be positive"))
     isfinite(confidence) && 0 < confidence < 1 || throw(ArgumentError(
         "--confidence must be strictly between 0 and 1"))
-    output_dir = get(raw, "--output-dir", joinpath(
-        @__DIR__, "..", "results", "isometric-planar-code"))
+    output_dir = get(raw, "--output-dir", DEFAULT_OUTPUT_DIR)
     isempty(output_dir) && throw(ArgumentError("--output-dir must not be empty"))
     return (; rates, distances, shots, batches, bootstrap, seed, confidence, output_dir)
 end

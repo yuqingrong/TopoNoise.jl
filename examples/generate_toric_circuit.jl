@@ -3,6 +3,9 @@ module GenerateToricCircuitExample
 using TopoNoise
 import Yao
 
+const DEFAULT_OUTPUT_DIR = normpath(joinpath(
+    @__DIR__, "..", "results", "toric-circuit"))
+
 const USAGE =
     "Usage: julia --project=. examples/generate_toric_circuit.jl " *
     "[rows cols] (rows and cols must be positive integers)"
@@ -28,7 +31,7 @@ end
 
 function generate(
         rows::Integer, cols::Integer;
-        output_dir::AbstractString=joinpath(@__DIR__, "output"),
+        output_dir::AbstractString=DEFAULT_OUTPUT_DIR,
         io::IO=stdout)
     peps = toric_code_peps(rows, cols)
     circuit = sequential_circuit_graph(peps)
@@ -54,7 +57,7 @@ end
 
 function main(
         args=ARGS;
-        output_dir::AbstractString=joinpath(@__DIR__, "output"),
+        output_dir::AbstractString=DEFAULT_OUTPUT_DIR,
         io::IO=stdout,
         error_io::IO=stderr)
     dimensions = try

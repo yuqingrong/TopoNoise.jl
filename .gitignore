@@ -4,7 +4,6 @@
 /Manifest*.toml
 /docs/Manifest*.toml
 /docs/build/
-/examples/output/
 *.pdf
 *.png
 *.svg
@@ -17,3 +16,8 @@
 *.blg
 *.aux
 *.log
+.DS_Store
+.CondaPkg/
+*.fdb_latexmk
+*.fls
+*.synctex.gz

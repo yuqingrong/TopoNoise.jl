@@ -2,8 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Despite the directory name `admin-dashboard`, this repository is **TopoNoise.jl**, a Julia
-package for simulating noisy measured trajectories of the doubled-edge toric-code PEPS.
+**TopoNoise.jl** is a Julia package for simulating noisy measured trajectories
+of the doubled-edge toric-code PEPS and studying planar-code capacity.
 
 ## Commands
 
@@ -64,16 +64,21 @@ convention. Understanding that shared ordering is the key to reading any file he
    `VirtualBondErrors` even though `X|+⟩=|+⟩` / `⟨+|X=⟨+|` make them invisible to physical
    records; downstream percolation/spin analysis relies on them being present.
    `sample_yao_trajectory` is a small-system Yao reference (guard with `max_qubits`).
-6. **`trajectory_analysis.jl` — observables, scans, crossings.** Derives
-   `TrajectoryObservables` (mismatch/frustration/cluster/spanning densities) and
-   `MarginalSpinObservables` (equal-weight spin moments after marginalizing mismatched
-   edges) from a trajectory. `scan_trajectories` produces `TrajectoryScan` sweeps over
-   `(L, p)` grids with batch bootstrapping; `estimate_crossings` / `estimate_binder_crossings`
-   report adjacent-size crossings with monotone-smoothed horizontal-spanning curves.
-   Unbracketed/unstable results are kept in the output with an explicit status field.
-7. **`visualization.jl` — CairoMakie plots.** `plot_peps_graph`, `plot_sequential_circuit`
-   (with `expand_physical_buses` option), `plot_trajectory_scan`. Yao's native
-   `Yao.vizcircuit` is preferred for raw circuit diagrams.
+6. **`trajectory_analysis.jl` — raw observables, scans, crossings.** Derives
+   `TrajectoryObservables` (sampled/mismatch/frustration/cluster/spanning
+   diagnostics) from a trajectory. `scan_trajectories` produces `TrajectoryScan`
+   sweeps over `(L, p)` grids with batch bootstrapping; `estimate_crossings` reports
+   adjacent-size crossings from monotone-smoothed horizontal-spanning curves.
+   Unbracketed/unstable results are retained with an explicit status field.
+7. **`rotated_code_capacity.jl` — rotated planar-code capacity.** Provides the
+   rotated-code experiment, estimator, scanner, and crossing analysis.
+8. **`isometric_planar_code.jl` — isometric planar-code dispatcher.** Its focused
+   `core.jl`, `decoder.jl`, `capacity.jl`, and `scaling.jl` files separate geometry,
+   decoding, capacity scans, and finite-size scaling.
+9. **`visualization.jl` — CairoMakie plot dispatcher.** Focused files provide
+   PEPS, sequential-circuit, raw trajectory, rotated-capacity, and
+   isometric-capacity figures. Yao's native `Yao.vizcircuit` is preferred for raw
+   circuit diagrams.
 
 ### Cross-cutting conventions
 
@@ -85,9 +90,9 @@ convention. Understanding that shared ordering is the key to reading any file he
 - **Observable syndromes** on internal doubled edges are
   `E[r,c] ⊻ W[r,c+1]` (horizontal) and `N[r+1,c] ⊻ S[r,c]` (vertical); these are the
   ground truth used by tests and analysis.
-- **The scan pipeline is a raw bond-percolation diagnostic**, not a Nishimori decoder or
-  Binder-with-Gibbs analysis. Don't conflate them when extending observables — the
-  marginal-spin path is the separate `MarginalSpinObservables` branch.
+- **The trajectory scan pipeline is a raw bond-percolation diagnostic**, not a
+  Nishimori decoder or a Gibbs-model analysis. Keep decoder-based logical-failure
+  studies in their dedicated capacity modules.
 - **Never allocate the global state vector.** The sequential circuit deliberately keeps only
   the reusable local-gate core in `yao_unitary`. The measurement/reset trajectory model
   uses four reusable ancillas plus carriers. Reference-comparison paths (`sample_yao_trajectory`)
@@ -95,6 +100,6 @@ convention. Understanding that shared ordering is the key to reading any file he
 
 ### Tests
 
-`test/runtests.jl` includes one file per source module plus `example.jl` and
-`trajectory_example.jl` (end-to-end smoke tests of the runnable examples). When adding a
-source module, add a matching test file and include it in `runtests.jl`.
+`test/runtests.jl` groups focused tests by source responsibility and includes
+end-to-end smoke tests for the runnable examples. When adding a source module,
+add or extend the matching focused test and include it in `runtests.jl`.

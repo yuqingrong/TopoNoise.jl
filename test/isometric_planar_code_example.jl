@@ -12,6 +12,8 @@ const _ISOMETRIC_PLANAR_CODE_EXAMPLE_PATH = joinpath(
         @test defaults.rates == collect(0.0:0.005:0.16)
         @test defaults.shots == 100_000
         @test defaults.batches == 100
+        @test defaults.output_dir == normpath(joinpath(
+            @__DIR__, "..", "results", "isometric-planar-code"))
         mktempdir() do directory
             output = IOBuffer()
             status = ScanIsometricPlanarThresholdExample.main([

@@ -86,8 +86,9 @@ julia --project=. examples/generate_toric_circuit.jl 2 2
 ```
 
 Omit `2 2` to use the default lattice size. The script prints the diagonal
-schedule and writes SVG, PDF, and PNG files to `examples/output/`. It builds
-and draws the circuit without allocating the exponentially large state vector.
+schedule and writes SVG, PDF, and PNG files to `results/toric-circuit/`. It
+builds and draws the circuit without allocating the exponentially large state
+vector.
 
 Yao's native view uses one line per qubit and its standard circuit layout. For
 a publication-style diagram with grouped physical buses, diagonal layer bands,
@@ -171,10 +172,10 @@ julia --project=. examples/scan_toric_trajectories.jl \
 
 Defaults are sizes `4,8,16,32`, 10,000 shots per point, seed `1234`, and
 2,000 bootstrap replicates. The script writes `trajectory_scan.csv`,
-`trajectory_crossings.csv`, and `trajectory_scan.{svg,pdf,png}`. Adjacent-size
-crossings use monotone-smoothed horizontal-spanning curves and batch bootstrap
-intervals; unbracketed or unstable results remain in the output with an
-explicit status.
+`trajectory_crossings.csv`, and `trajectory_scan.{svg,pdf,png}` to
+`results/toric-trajectories/`. Adjacent-size crossings use monotone-smoothed
+horizontal-spanning curves and batch bootstrap intervals; unbracketed or
+unstable results remain in the output with an explicit status.
 
 This is a raw bond-percolation diagnostic of the sampled internal errors. It
 does not reconstruct spins, compute a Binder cumulant, or solve a Nishimori
