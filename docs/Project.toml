@@ -1,3 +1,6 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 TopoNoise = "e4d92942-b8aa-4e68-9ea0-8f8172a401ff"
+
+[compat]
+Documenter = "1.19.0"
