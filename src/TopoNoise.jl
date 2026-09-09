@@ -3,8 +3,10 @@ module TopoNoise
 using ITensors: ITensors, ITensor, Index
 using ITensorNetworks: ITensorNetwork
 using LinearAlgebra: I, nullspace
+using Random
 import SparseArrays
-using Yao: H, X, chain, control, matblock, put, repeat, subroutine
+using Yao: H, X, Z, ResetTo, apply!, chain, control, matblock, measure!, put,
+           repeat, subroutine, zero_state
 import CairoMakie
 import ITensorNetworks
 
@@ -20,7 +22,11 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        a_s_check_matrix, b_p_check_matrix, stabilizer_check_matrix,
        logical_x_support, logical_z_support,
        PlaquetteEncoder, rotated_planar_encoder, plaquette_blocks,
-       gate_layers, yao_encoder, verify_encoder_tableau
+       gate_layers, yao_encoder, verify_encoder_tableau,
+       CircuitPauliNoise, CircuitFaultStep, CircuitFaultRecord,
+       sample_fault_record, PauliFrame, SyndromeRecord,
+       propagate_pauli_frame, measure_syndrome, syndrome_bits,
+       sample_yao_syndrome
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -29,5 +35,6 @@ include("sequential_circuit.jl")
 include("visualization.jl")
 include("rotated_planar/geometry.jl")
 include("rotated_planar/encoder.jl")
+include("rotated_planar/noise.jl")
 
 end
