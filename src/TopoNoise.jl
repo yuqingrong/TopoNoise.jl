@@ -4,7 +4,9 @@ using ITensors: ITensors, ITensor, Index
 using ITensorNetworks: ITensorNetwork
 using LinearAlgebra: I, nullspace
 using Random
+using Statistics
 import SparseArrays
+import PythonCall
 using Yao: H, X, Z, ResetTo, apply!, chain, control, matblock, measure!, put,
            repeat, subroutine, zero_state
 import CairoMakie
@@ -26,7 +28,9 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        CircuitPauliNoise, CircuitFaultStep, CircuitFaultRecord,
        sample_fault_record, with_pauli_fault, PauliFrame, SyndromeRecord,
        propagate_pauli_frame, measure_syndrome, syndrome_bits,
-       sample_yao_syndrome
+       sample_yao_syndrome,
+       MatchingDecoders, build_matching_decoders, decode_logical_parities,
+       LogicalFailurePoint, estimate_logical_failure
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -36,5 +40,6 @@ include("visualization.jl")
 include("rotated_planar/geometry.jl")
 include("rotated_planar/encoder.jl")
 include("rotated_planar/noise.jl")
+include("rotated_planar/decoder.jl")
 
 end
