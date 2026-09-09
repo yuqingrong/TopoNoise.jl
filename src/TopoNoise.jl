@@ -4,7 +4,7 @@ using ITensors: ITensors, ITensor, Index
 using ITensorNetworks: ITensorNetwork
 using LinearAlgebra: I, nullspace
 import SparseArrays
-using Yao: H, chain, matblock, repeat, subroutine
+using Yao: H, X, chain, control, matblock, put, repeat, subroutine
 import CairoMakie
 import ITensorNetworks
 
@@ -18,7 +18,9 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        data_qubit_count, data_qubit_index, data_qubit_coordinate,
        data_qubit_coordinates, a_s_checks, b_p_checks, stabilizers,
        a_s_check_matrix, b_p_check_matrix, stabilizer_check_matrix,
-       logical_x_support, logical_z_support
+       logical_x_support, logical_z_support,
+       PlaquetteEncoder, rotated_planar_encoder, plaquette_blocks,
+       gate_layers, yao_encoder, verify_encoder_tableau
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -26,5 +28,6 @@ include("network_graph.jl")
 include("sequential_circuit.jl")
 include("visualization.jl")
 include("rotated_planar/geometry.jl")
+include("rotated_planar/encoder.jl")
 
 end
