@@ -40,9 +40,31 @@ struct CircuitFaultStep
     step_index::Int
     block_kind::Symbol
     block_order::Int
-    support::Vector{Int}
-    x::BitVector
-    z::BitVector
+    support::Tuple
+    x::Tuple
+    z::Tuple
+
+    function CircuitFaultStep(
+            step_index::Integer, block_kind::Symbol, block_order::Integer,
+            support::Union{AbstractVector,Tuple},
+            x::Union{AbstractVector,Tuple}, z::Union{AbstractVector,Tuple})
+        step_index >= 1 || throw(ArgumentError("fault-step index must be positive"))
+        block_kind in (:logical_sector, :plaquette) ||
+            throw(ArgumentError("fault-step block kind is unsupported"))
+        block_order >= 0 ||
+            throw(ArgumentError("fault-step block order must be nonnegative"))
+        all(qubit -> qubit isa Integer && qubit >= 1, support) ||
+            throw(ArgumentError("fault-step support must contain positive integers"))
+        length(unique(support)) == length(support) ||
+            throw(ArgumentError("fault-step support must not contain duplicates"))
+        length(x) == length(support) && length(z) == length(support) ||
+            throw(ArgumentError("fault-step bit patterns must match its support"))
+        all(bit -> bit isa Bool, x) && all(bit -> bit isa Bool, z) ||
+            throw(ArgumentError("fault-step patterns must contain Bool values"))
+        return new(
+            Int(step_index), block_kind, Int(block_order),
+            Tuple(Int(qubit) for qubit in support), Tuple(x), Tuple(z))
+    end
 end
 
 """An authoritative sampled circuit-fault record tied to one encoder."""
@@ -52,7 +74,30 @@ struct CircuitFaultRecord
     boundary_orientation::Symbol
     construction::Symbol
     logical_state::Symbol
-    steps::Vector{CircuitFaultStep}
+    steps::Tuple
+
+    function CircuitFaultRecord(
+            clock::Symbol, distance::Integer, boundary_orientation::Symbol,
+            construction::Symbol, logical_state::Symbol,
+            steps::Union{AbstractVector,Tuple})
+        clock in (:gate_layer, :plaquette) ||
+            throw(ArgumentError("fault-record clock must be :gate_layer or :plaquette"))
+        distance >= 3 && isodd(distance) ||
+            throw(ArgumentError("fault-record distance must be an odd integer at least 3"))
+        boundary_orientation in (:x_ns, :x_ew) ||
+            throw(ArgumentError("fault-record boundary orientation is unsupported"))
+        construction in (:as, :bp) ||
+            throw(ArgumentError("fault-record construction is unsupported"))
+        logical_state in (:zero, :one, :plus, :minus) ||
+            throw(ArgumentError("fault-record logical state is unsupported"))
+        all(step -> step isa CircuitFaultStep, steps) ||
+            throw(ArgumentError("fault-record steps must be CircuitFaultStep values"))
+        all(pair -> pair[2].step_index == pair[1], enumerate(steps)) ||
+            throw(ArgumentError("fault-record step indices must be consecutive"))
+        return new(
+            clock, Int(distance), boundary_orientation, construction,
+            logical_state, Tuple(steps))
+    end
 end
 
 Base.:(==)(left::CircuitFaultStep, right::CircuitFaultStep) =
@@ -102,6 +147,39 @@ function sample_fault_record(
     return CircuitFaultRecord(
         noise.clock, distance(code), boundary_orientation(code),
         encoder.construction, encoder.logical_state, steps)
+end
+
+"""
+    with_pauli_fault(record, step_index, qubit, pauli) -> CircuitFaultRecord
+
+Return a new immutable record with `:X`, `:Z`, or `:Y` composed into one
+eligible data-qubit event. This is the validated construction path for manual
+fault fixtures; the input record is never modified.
+"""
+function with_pauli_fault(
+        record::CircuitFaultRecord, step_index::Integer, qubit::Integer,
+        pauli::Symbol)
+    pauli in (:X, :Z, :Y) ||
+        throw(ArgumentError("pauli must be :X, :Z, or :Y"))
+    1 <= step_index <= length(record.steps) ||
+        throw(ArgumentError("fault step index is outside the record"))
+    step = record.steps[Int(step_index)]
+    position = findfirst(==(Int(qubit)), step.support)
+    isnothing(position) &&
+        throw(ArgumentError("qubit is not active at the selected fault step"))
+
+    x = collect(step.x)
+    z = collect(step.z)
+    pauli in (:X, :Y) && (x[position] = !x[position])
+    pauli in (:Z, :Y) && (z[position] = !z[position])
+    replacement = CircuitFaultStep(
+        step.step_index, step.block_kind, step.block_order,
+        step.support, x, z)
+    steps = collect(record.steps)
+    steps[Int(step_index)] = replacement
+    return CircuitFaultRecord(
+        record.clock, record.distance, record.boundary_orientation,
+        record.construction, record.logical_state, steps)
 end
 
 """Phase-free binary X/Z support on all data qubits."""
@@ -156,7 +234,7 @@ function _validate_fault_record(
     for (step, (index, block_kind, block_order, support)) in
         zip(record.steps, expected)
         step.step_index == index && step.block_kind === block_kind &&
-            step.block_order == block_order && step.support == support ||
+            step.block_order == block_order && step.support == Tuple(support) ||
             throw(ArgumentError("fault-record step identity or support is incompatible"))
         length(step.x) == length(support) && length(step.z) == length(support) ||
             throw(ArgumentError("fault-record bit patterns do not match step support"))
@@ -277,7 +355,7 @@ end
 
 function _measure_yao_check!(
         rng::Random.AbstractRNG, register, qubit_count::Int, ancilla::Int,
-        support::Vector{Int}, pauli::Symbol)
+        support, pauli::Symbol)
     if pauli === :Z
         for data_qubit in support
             apply!(register, control(qubit_count, data_qubit, ancilla => X))

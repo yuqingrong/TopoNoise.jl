@@ -24,7 +24,7 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        PlaquetteEncoder, rotated_planar_encoder, plaquette_blocks,
        gate_layers, yao_encoder, verify_encoder_tableau,
        CircuitPauliNoise, CircuitFaultStep, CircuitFaultRecord,
-       sample_fault_record, PauliFrame, SyndromeRecord,
+       sample_fault_record, with_pauli_fault, PauliFrame, SyndromeRecord,
        propagate_pauli_frame, measure_syndrome, syndrome_bits,
        sample_yao_syndrome
 

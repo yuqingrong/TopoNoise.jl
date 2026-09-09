@@ -50,7 +50,8 @@
                      for (i, block) in enumerate(filter(
                          candidate -> candidate.kind === :plaquette,
                          plaquette_blocks(encoder)))]
-                actual = [(step.step_index, step.block_kind, step.block_order, step.support)
+                actual = [(step.step_index, step.block_kind, step.block_order,
+                           collect(step.support))
                           for step in record.steps]
                 @test actual == expected
                 @test all(step -> length(step.x) == length(step.support) &&
@@ -104,9 +105,66 @@ end
 function _record_with_fault(encoder, step_index, pauli)
     record = sample_fault_record(
         MersenneTwister(1), encoder, CircuitPauliNoise(0; clock=:gate_layer))
-    pauli in (:X, :Y) && (record.steps[step_index].x[1] = true)
-    pauli in (:Z, :Y) && (record.steps[step_index].z[1] = true)
-    return record
+    qubit = record.steps[step_index].support[1]
+    return with_pauli_fault(record, step_index, qubit, pauli)
+end
+
+function _with_test_fault(record, step_index, pauli)
+    qubit = record.steps[step_index].support[1]
+    return with_pauli_fault(record, step_index, qubit, pauli)
+end
+
+@testset "Fault records are authoritative immutable values" begin
+    @test isdefined(TopoNoise, :with_pauli_fault)
+
+    encoder = rotated_planar_encoder(RotatedPlanarCode(3))
+    sampled = sample_fault_record(
+        MersenneTwister(70), encoder, CircuitPauliNoise(0))
+    source_step = sampled.steps[end]
+
+    support_input = collect(source_step.support)
+    x_input = collect(source_step.x)
+    z_input = collect(source_step.z)
+    original_support = Tuple(support_input)
+    step = CircuitFaultStep(
+        source_step.step_index, source_step.block_kind, source_step.block_order,
+        support_input, x_input, z_input)
+    support_input[1] = support_input[1] == 1 ? 2 : 1
+    x_input[1] = true
+    z_input[1] = true
+    @test Tuple(step.support) == original_support
+    @test !any(step.x)
+    @test !any(step.z)
+
+    steps_input = collect(sampled.steps)
+    record = CircuitFaultRecord(
+        sampled.clock, sampled.distance, sampled.boundary_orientation,
+        sampled.construction, sampled.logical_state, steps_input)
+    replay_before = propagate_pauli_frame(encoder, record)
+    steps_input[end] = CircuitFaultStep(
+        source_step.step_index, source_step.block_kind, source_step.block_order,
+        collect(source_step.support), trues(length(source_step.support)),
+        falses(length(source_step.support)))
+    @test propagate_pauli_frame(encoder, record) == replay_before
+
+    @test record.steps isa Tuple
+    @test record.steps[end].support isa Tuple
+    @test record.steps[end].x isa Tuple
+    @test record.steps[end].z isa Tuple
+    @test_throws MethodError setindex!(record.steps, source_step, 1)
+    @test_throws MethodError setindex!(record.steps[end].x, true, 1)
+
+    qubit = record.steps[end].support[1]
+    x_record = with_pauli_fault(record, length(record.steps), qubit, :X)
+    y_record = with_pauli_fault(record, length(record.steps), qubit, :Y)
+    @test !record.steps[end].x[1] && !record.steps[end].z[1]
+    @test x_record.steps[end].x[1] && !x_record.steps[end].z[1]
+    @test y_record.steps[end].x[1] && y_record.steps[end].z[1]
+    @test_throws ArgumentError with_pauli_fault(
+        record, length(record.steps), qubit, :W)
+    @test_throws ArgumentError with_pauli_fault(record, 0, qubit, :X)
+    @test_throws ArgumentError with_pauli_fault(
+        record, length(record.steps), 99, :X)
 end
 
 @testset "Rotated planar Pauli propagation and syndrome" begin
@@ -212,11 +270,12 @@ end
             z[1] = true
             coincident_step = CircuitFaultStep(
                 final_step.step_index, final_step.block_kind,
-                final_step.block_order, copy(final_step.support), x, z)
+                final_step.block_order, collect(final_step.support), x, z)
+            manual_steps = collect(record.steps)
+            manual_steps[end] = coincident_step
             manual_record = CircuitFaultRecord(
                 record.clock, record.distance, record.boundary_orientation,
-                record.construction, record.logical_state,
-                [record.steps[1:end-1]; coincident_step])
+                record.construction, record.logical_state, manual_steps)
             qubit = coincident_step.support[1]
             frame = propagate_pauli_frame(encoder, manual_record)
             @test frame.x[qubit] && frame.z[qubit]
@@ -233,15 +292,10 @@ end
                 record.construction, record.logical_state, record.steps)
             @test_throws ArgumentError propagate_pauli_frame(encoder, wrong_distance)
 
-            bad_step = CircuitFaultStep(
+            @test_throws ArgumentError CircuitFaultStep(
                 record.steps[1].step_index, record.steps[1].block_kind,
                 record.steps[1].block_order, record.steps[1].support,
                 falses(length(record.steps[1].support) + 1), record.steps[1].z)
-            bad_dimensions = CircuitFaultRecord(
-                record.clock, record.distance, record.boundary_orientation,
-                record.construction, record.logical_state,
-                [bad_step; record.steps[2:end]])
-            @test_throws ArgumentError propagate_pauli_frame(encoder, bad_dimensions)
             @test_throws ArgumentError measure_syndrome(
                 encoder.code, PauliFrame(falses(8), falses(8)))
         end
@@ -261,8 +315,7 @@ end
                     code; construction=construction, logical_state=logical_state)
                 record = sample_fault_record(
                     MersenneTwister(20), encoder, CircuitPauliNoise(0; clock=clock))
-                pauli in (:X, :Y) && (record.steps[end].x[1] = true)
-                pauli in (:Z, :Y) && (record.steps[end].z[1] = true)
+                record = _with_test_fault(record, length(record.steps), pauli)
                 algebraic = measure_syndrome(
                     code, propagate_pauli_frame(encoder, record))
                 @test sample_yao_syndrome(
