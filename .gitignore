@@ -5,6 +5,7 @@
 /docs/Manifest*.toml
 /docs/build/
 /examples/output/
+/.worktrees/
 *.pdf
 *.png
 *.svg
