@@ -58,7 +58,9 @@ end
 
 function _value(arguments, index, option)
     index < length(arguments) || throw(ArgumentError("$option requires a value"))
-    return arguments[index + 1]
+    value = arguments[index + 1]
+    startswith(value, "--") && throw(ArgumentError("$option requires a value"))
+    return value
 end
 
 function _parse_integer(value, option)

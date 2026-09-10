@@ -143,5 +143,19 @@ const _COMPARISON_CLI = joinpath(
             @test RotatedPlanarConstructionComparison.main(arguments; error_io=errors) == 1
             @test contains(String(take!(errors)), "error:")
         end
+        for option in ("--basename", "--output-dir")
+            @test_throws ArgumentError RotatedPlanarConstructionComparison._parse_arguments([
+                "--distances", "3", "--error-rates", "0", "--shots", "2",
+                "--batch-size", "2", "--no-fit", option, "--help",
+            ])
+            output, errors = IOBuffer(), IOBuffer()
+            result = RotatedPlanarConstructionComparison.main([
+                "--distances", "3", "--error-rates", "0", "--shots", "2",
+                "--batch-size", "2", "--no-fit", option, "--help",
+            ]; io=output, error_io=errors)
+            @test result == 1
+            @test isempty(String(take!(output)))
+            @test contains(String(take!(errors)), "requires a value")
+        end
     end
 end
