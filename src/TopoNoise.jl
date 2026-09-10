@@ -32,7 +32,11 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        MatchingDecoders, build_matching_decoders, decode_logical_parities,
        LogicalFailurePoint, estimate_logical_failure,
        LogicalFailureScan, scan_logical_failure, write_logical_failure_csv,
-       plot_logical_failure_scan, save_logical_failure_scan
+       plot_logical_failure_scan, save_logical_failure_scan,
+       ChannelFailureScan, ConstructionChannelComparison,
+       scan_channel_logical_failure, run_construction_channel_comparison,
+       comparison_series, channel_failure_count, channel_failure_rate,
+       channel_failure_standard_error
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -44,5 +48,6 @@ include("rotated_planar/encoder.jl")
 include("rotated_planar/noise.jl")
 include("rotated_planar/decoder.jl")
 include("rotated_planar/scan.jl")
+include("rotated_planar/comparison.jl")
 
 end
