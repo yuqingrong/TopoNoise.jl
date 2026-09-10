@@ -14,12 +14,29 @@ struct ThresholdFit
     crossings::Vector{PairCrossing}
     p_c::Union{Nothing,Float64}
     p_c_standard_error::Union{Nothing,Float64}
+    p_c_bootstrap_interval::Union{Nothing,Tuple{Float64,Float64}}
     nu::Union{Nothing,Float64}
     nu_standard_error::Union{Nothing,Float64}
+    nu_bootstrap_interval::Union{Nothing,Tuple{Float64,Float64}}
     bootstrap_replicates::Int
     bootstrap_successes::Int
     bootstrap_seed::UInt64
     exploratory::Bool
+end
+
+"""Compatibility constructor for the original no-interval fit representation."""
+function ThresholdFit(
+        construction::Symbol, error_channel::Symbol, logical_observable::Symbol,
+        status::Symbol, diagnostic::AbstractString, crossings::Vector{PairCrossing},
+        p_c::Union{Nothing,Float64}, p_c_standard_error::Union{Nothing,Float64},
+        nu::Union{Nothing,Float64}, nu_standard_error::Union{Nothing,Float64},
+        bootstrap_replicates::Int, bootstrap_successes::Int,
+        bootstrap_seed::UInt64, exploratory::Bool)
+    return ThresholdFit(
+        construction, error_channel, logical_observable, status, String(diagnostic),
+        crossings, p_c, p_c_standard_error, nothing, nu, nu_standard_error,
+        nothing, bootstrap_replicates, bootstrap_successes, bootstrap_seed,
+        exploratory)
 end
 
 struct FittedConstructionChannelComparison
@@ -94,7 +111,12 @@ end
 function _aggregate_crossings(crossings::Vector{PairCrossing})
     length(crossings) >= 2 || return nothing
     weights = 1.0 ./ getfield.(crossings, :standard_error).^2
-    p_c = sum(weights .* getfield.(crossings, :p)) / sum(weights)
+    maximum_weight = maximum(weights)
+    isfinite(maximum_weight) && maximum_weight > 0 || return nothing
+    normalized_weights = weights ./ maximum_weight
+    normalized_sum = sum(normalized_weights)
+    isfinite(normalized_sum) && normalized_sum > 0 || return nothing
+    p_c = sum(normalized_weights .* getfield.(crossings, :p)) / normalized_sum
     return p_c, sqrt(inv(sum(weights)))
 end
 
@@ -142,28 +164,48 @@ end
 
 function _fit_nu(scan::ChannelFailureScan, p_c::Float64)
     curves = _scan_curves(scan)
-    best_nu = nothing
-    best_objective = Inf
+    candidates = Tuple{Float64,Float64}[]
     for nu in 0.50:0.01:3.00
         objective = _collapse_objective(curves, p_c, nu)
         objective === nothing && continue
-        if objective < best_objective
-            best_nu = Float64(nu)
-            best_objective = objective
-        end
+        push!(candidates, (Float64(nu), objective))
     end
-    return best_nu
+    isempty(candidates) && return nothing,
+        "scaling-collapse objective has no finite common domain"
+    best_index = argmin(last.(candidates))
+    objectives = last.(candidates)
+    profile_floor = sqrt(eps(Float64)) * max(1.0, abs(minimum(objectives)))
+    if !(isfinite(maximum(objectives) - minimum(objectives)) &&
+            maximum(objectives) - minimum(objectives) > profile_floor)
+        return nothing,
+            "scaling-collapse profile is flat or lacks identifiable local contrast"
+    end
+    if best_index == firstindex(candidates) || best_index == lastindex(candidates)
+        return nothing, "scaling-collapse minimum lies on the nu grid boundary"
+    end
+    best_objective = candidates[best_index][2]
+    left_objective = candidates[best_index - 1][2]
+    right_objective = candidates[best_index + 1][2]
+    contrast = min(left_objective - best_objective, right_objective - best_objective)
+    contrast_floor = sqrt(eps(Float64)) * max(1.0, abs(best_objective))
+    if !(isfinite(contrast) && contrast > contrast_floor)
+        return nothing,
+            "scaling-collapse profile is flat or lacks identifiable local contrast"
+    end
+    return candidates[best_index][1], nothing
 end
 
 function _unavailable_fit(
         scan::ChannelFailureScan, diagnostic::AbstractString;
         crossings::Vector{PairCrossing}=PairCrossing[],
         bootstrap_replicates::Int=0,
+        bootstrap_successes::Int=0,
         bootstrap_seed::UInt64=UInt64(0))
     return ThresholdFit(
         scan.construction, scan.error_channel, scan.logical_observable,
         :unavailable, String(diagnostic), crossings, nothing, nothing, nothing,
-        nothing, bootstrap_replicates, 0, bootstrap_seed, true)
+        nothing, nothing, nothing, bootstrap_replicates, bootstrap_successes,
+        bootstrap_seed, true)
 end
 
 function _raw_threshold_fit(scan::ChannelFailureScan)
@@ -173,13 +215,14 @@ function _raw_threshold_fit(scan::ChannelFailureScan)
     aggregate === nothing && return _unavailable_fit(
         scan, "at least two adjacent-pair crossings are required"; crossings)
     p_c, p_c_standard_error = aggregate
-    nu = _fit_nu(scan, p_c)
-    nu === nothing && return _unavailable_fit(
-        scan, "scaling-collapse objective has no finite common domain"; crossings)
+    isfinite(p_c) || return _unavailable_fit(
+        scan, "crossing aggregation produced a non-finite threshold"; crossings)
+    nu, diagnostic = _fit_nu(scan, p_c)
+    nu === nothing && return _unavailable_fit(scan, diagnostic; crossings)
     return ThresholdFit(
         scan.construction, scan.error_channel, scan.logical_observable,
         :success, "exploratory crossing and collapse fit", crossings, p_c,
-        p_c_standard_error, nu, nothing, 0, 0, UInt64(0), true)
+        p_c_standard_error, nothing, nu, nothing, nothing, 0, 0, UInt64(0), true)
 end
 
 function _with_selected_channel_count(
@@ -256,13 +299,24 @@ function fit_channel_threshold(
         push!(bootstrap_nu, something(bootstrap.nu))
     end
     successes = length(bootstrap_p_c)
+    if replicate_count > 0 && successes < 2
+        return _unavailable_fit(
+            scan,
+            "bootstrap requested $(replicate_count) replicates but only $(successes) successful fits were available";
+            crossings=raw.crossings,
+            bootstrap_replicates=replicate_count,
+            bootstrap_successes=successes,
+            bootstrap_seed=seed)
+    end
     p_c_standard_error = successes >= 2 ? std(bootstrap_p_c) : raw.p_c_standard_error
     nu_standard_error = successes >= 2 ? std(bootstrap_nu) : nothing
+    p_c_interval = successes >= 2 ? Tuple(quantile(bootstrap_p_c, (0.025, 0.975))) : nothing
+    nu_interval = successes >= 2 ? Tuple(quantile(bootstrap_nu, (0.025, 0.975))) : nothing
     return ThresholdFit(
         raw.construction, raw.error_channel, raw.logical_observable,
         raw.status, raw.diagnostic, raw.crossings, raw.p_c,
-        p_c_standard_error, raw.nu, nu_standard_error, replicate_count,
-        successes, seed, true)
+        p_c_standard_error, p_c_interval, raw.nu, nu_standard_error, nu_interval,
+        replicate_count, successes, seed, true)
 end
 
 """Fit all stored construction/channel scans in their canonical order."""
@@ -270,13 +324,15 @@ function fit_construction_channel_comparison(
         rng::Random.AbstractRNG,
         raw::ConstructionChannelComparison;
         bootstrap_replicates::Integer=500)::FittedConstructionChannelComparison
+    root_seed = rand(rng, UInt64)
     fits = ThresholdFit[]
     sizehint!(fits, length(raw.series))
     for scan in raw.series
         push!(fits, fit_channel_threshold(
             scan;
             bootstrap_replicates,
-            bootstrap_seed=rand(rng, UInt64)))
+            bootstrap_seed=_comparison_series_seed(
+                root_seed, (scan.construction, scan.error_channel))))
     end
     return FittedConstructionChannelComparison(raw, fits)
 end

@@ -228,5 +228,6 @@ exploratory `p_c` and `nu` collapse. The `d=3,5,7` fit values are exploratory
 diagnostics, not threshold claims. Use `--no-fit` to preserve the raw curves
 and write explicit unavailable-fit records without attempting the fit.
 
-Version 1 intentionally excludes threshold fitting, repeated syndrome rounds,
-measurement noise, periodic layouts, holes, and multi-logical-qubit patches.
+Version 1 intentionally excludes repeated syndrome rounds, measurement noise,
+periodic layouts, holes, and multi-logical-qubit patches. Its three-distance
+scaling fits are exploratory diagnostics, not threshold claims.

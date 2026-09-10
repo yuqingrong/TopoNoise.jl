@@ -28,8 +28,12 @@ const _COMPARISON_FIT_CSV_COLUMNS = (
     :crossing_standard_error,
     :p_c,
     :p_c_standard_error,
+    :p_c_bootstrap_interval_lower,
+    :p_c_bootstrap_interval_upper,
     :nu,
     :nu_standard_error,
+    :nu_bootstrap_interval_lower,
+    :nu_bootstrap_interval_upper,
     :bootstrap_replicates,
     :bootstrap_successes,
     :bootstrap_seed,
@@ -71,6 +75,8 @@ function write_comparison_raw_csv(
 end
 
 function _fit_csv_row(fit::ThresholdFit, crossing::Union{Nothing,PairCrossing})
+    p_c_interval = fit.p_c_bootstrap_interval
+    nu_interval = fit.nu_bootstrap_interval
     return (
         fit.construction,
         fit.error_channel,
@@ -83,8 +89,12 @@ function _fit_csv_row(fit::ThresholdFit, crossing::Union{Nothing,PairCrossing})
         crossing === nothing ? nothing : crossing.standard_error,
         fit.p_c,
         fit.p_c_standard_error,
+        p_c_interval === nothing ? nothing : first(p_c_interval),
+        p_c_interval === nothing ? nothing : last(p_c_interval),
         fit.nu,
         fit.nu_standard_error,
+        nu_interval === nothing ? nothing : first(nu_interval),
+        nu_interval === nothing ? nothing : last(nu_interval),
         fit.bootstrap_replicates,
         fit.bootstrap_successes,
         fit.bootstrap_seed,

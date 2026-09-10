@@ -2,6 +2,47 @@ const _COMPARISON_SERIES_ORDER = (
     (:as, :x_only), (:as, :z_only), (:bp, :x_only), (:bp, :z_only),
 )
 
+const _AS_SERIES_TAG = UInt64(0x243f6a8885a308d3)
+const _BP_SERIES_TAG = UInt64(0x13198a2e03707344)
+const _X_ONLY_SERIES_TAG = UInt64(0xa4093822299f31d0)
+const _Z_ONLY_SERIES_TAG = UInt64(0x082efa98ec4e6c89)
+
+@inline function _mix_uint64(value::UInt64)
+    value ⊻= value >> 30
+    value *= UInt64(0xbf58476d1ce4e5b9)
+    value ⊻= value >> 27
+    value *= UInt64(0x94d049bb133111eb)
+    return value ⊻ (value >> 31)
+end
+
+function _stable_symbol_tag(symbol::Symbol)
+    tag = UInt64(0x9e3779b97f4a7c15)
+    for byte in codeunits(String(symbol))
+        tag = _mix_uint64(tag ⊻ UInt64(byte))
+    end
+    return tag
+end
+
+function _construction_series_tag(construction::Symbol)
+    construction === :as && return _AS_SERIES_TAG
+    construction === :bp && return _BP_SERIES_TAG
+    return _stable_symbol_tag(construction)
+end
+
+function _channel_series_tag(channel::Symbol)
+    channel === :x_only && return _X_ONLY_SERIES_TAG
+    channel === :z_only && return _Z_ONLY_SERIES_TAG
+    return _stable_symbol_tag(channel)
+end
+
+"""Derive a stable independent RNG seed for one construction/channel key."""
+function _comparison_series_seed(
+        root_seed::UInt64, key::Tuple{Symbol,Symbol})::UInt64
+    construction, channel = key
+    return _mix_uint64(root_seed ⊻ _construction_series_tag(construction) ⊻
+        _mix_uint64(_channel_series_tag(channel)))
+end
+
 struct ChannelFailureScan
     construction::Symbol
     error_channel::Symbol
@@ -145,10 +186,12 @@ function run_construction_channel_comparison(
         _channel_noise(first(error_rate_values), error_channel, clock)
     end
 
+    root_seed = rand(rng, UInt64)
     series = ChannelFailureScan[]
     sizehint!(series, length(_COMPARISON_SERIES_ORDER))
     for (construction, error_channel) in _COMPARISON_SERIES_ORDER
-        series_seed = rand(rng, UInt64)
+        series_seed = _comparison_series_seed(
+            root_seed, (construction, error_channel))
         series_rng = MersenneTwister(series_seed)
         push!(series, scan_channel_logical_failure(
             series_rng;

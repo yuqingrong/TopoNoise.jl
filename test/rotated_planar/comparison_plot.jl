@@ -37,7 +37,8 @@ function synthetic_fitted_comparison()
         push!(fits, ThresholdFit(
             construction, error_channel, observable, :success,
             "exploratory \"synthetic\" fit", crossings, 0.10, 0.002,
-            1.25, 0.10, 20, 19, UInt64(42 + index), true))
+            (0.09, 0.11), 1.25, 0.10, (1.15, 1.35),
+            20, 19, UInt64(42 + index), true))
     end
     raw = ConstructionChannelComparison(
         :zero, :x_ns, :gate_layer, distances, error_rates, shots, shots, 1234, series)
@@ -66,9 +67,12 @@ end
             @test readlines(paths.raw_csv)[1] ==
                 "construction,error_channel,logical_observable,distance,p_x,p_z,shots,master_seed,series_seed,logical_failures,logical_failure_rate,logical_failure_standard_error,logical_state,boundary_orientation,clock"
             @test readlines(paths.fits_csv)[1] ==
-                "construction,error_channel,logical_observable,status,diagnostic,crossing_lower_distance,crossing_upper_distance,crossing_p,crossing_standard_error,p_c,p_c_standard_error,nu,nu_standard_error,bootstrap_replicates,bootstrap_successes,bootstrap_seed,exploratory"
+                "construction,error_channel,logical_observable,status,diagnostic,crossing_lower_distance,crossing_upper_distance,crossing_p,crossing_standard_error,p_c,p_c_standard_error,p_c_bootstrap_interval_lower,p_c_bootstrap_interval_upper,nu,nu_standard_error,nu_bootstrap_interval_lower,nu_bootstrap_interval_upper,bootstrap_replicates,bootstrap_successes,bootstrap_seed,exploratory"
             @test length(readlines(paths.raw_csv)) == 1 + 4 * 3 * 3
             @test length(readlines(paths.fits_csv)) == 1 + 4 * 2
+            @test occursin(
+                ",0.09,0.11,1.25,0.1,1.15,1.35,",
+                first(filter(row -> startswith(row, "as,x_only"), readlines(paths.fits_csv)[2:end])))
             @test length(paths.panels) == 4
             for group in (paths.combined, values(paths.panels)...), path in values(group)
                 @test isfile(path)
@@ -87,7 +91,7 @@ end
         unavailable.fits[1] = ThresholdFit(
             :as, :x_only, :logical_x, :unavailable,
             "missing \"crossing\"", PairCrossing[], nothing, nothing,
-            nothing, nothing, 0, 0, UInt64(0), true)
+            nothing, nothing, nothing, nothing, 0, 0, UInt64(0), true)
         mktempdir() do directory
             raw_path = joinpath(directory, "raw.csv")
             fits_path = joinpath(directory, "fits.csv")

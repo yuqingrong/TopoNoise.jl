@@ -214,7 +214,8 @@ function _disabled_fitted_comparison(raw::ConstructionChannelComparison)
         push!(fits, ThresholdFit(
             scan.construction, scan.error_channel, scan.logical_observable,
             :unavailable, "fit disabled by --no-fit", PairCrossing[],
-            nothing, nothing, nothing, nothing, 0, 0, UInt64(0), true))
+            nothing, nothing, nothing, nothing, nothing, nothing,
+            0, 0, UInt64(0), true))
     end
     return FittedConstructionChannelComparison(raw, fits)
 end

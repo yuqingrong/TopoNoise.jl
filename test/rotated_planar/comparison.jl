@@ -86,5 +86,24 @@
             @test [project(scan) for scan in first.series] ==
                   [project(scan) for scan in repeated.series]
         end
+
+        @testset "keyed series seeds are independent of collection order" begin
+            root_seed = UInt64(0x123456789abcdef0)
+            canonical = Dict(
+                key => TopoNoise._comparison_series_seed(root_seed, key)
+                for key in ((:as, :x_only), (:as, :z_only), (:bp, :x_only), (:bp, :z_only))
+            )
+            reordered = Dict(
+                key => TopoNoise._comparison_series_seed(root_seed, key)
+                for key in reverse(((:as, :x_only), (:as, :z_only), (:bp, :x_only), (:bp, :z_only)))
+            )
+            extended = Dict(
+                key => TopoNoise._comparison_series_seed(root_seed, key)
+                for key in ((:unused, :other), (:as, :x_only), (:as, :z_only), (:bp, :x_only), (:bp, :z_only))
+            )
+            @test canonical == reordered
+            @test all(key -> canonical[key] == extended[key], keys(canonical))
+            @test length(unique(values(canonical))) == 4
+        end
     end
 end

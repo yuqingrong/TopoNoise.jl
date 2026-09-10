@@ -1,19 +1,26 @@
-function synthetic_channel_scan(; crossing::Union{Nothing,Float64}=0.1)
+function synthetic_channel_scan(; crossing::Union{Nothing,Float64}=0.1,
+        nu::Float64=1.25, profile::Symbol=:identifiable,
+        error_scale::Float64=1.0)
     distances = [3, 5, 7]
-    error_rates = [0.05, 0.1, 0.15]
-    shots = 10_000
+    error_rates = [0.04, 0.07, 0.1, 0.13, 0.16]
+    shots = 100_000_000
     slopes = Dict(3 => 1.0, 5 => 0.8, 7 => 0.6)
     points = LogicalFailurePoint[]
     for distance_value in distances, error_rate in error_rates
         selected_rate = if crossing === nothing
             0.20 + 0.01 * ((distance_value - 1) ÷ 2) +
                 0.5 * (error_rate - 0.1)
-        else
+        elseif profile === :identifiable
+            0.25 + 0.025 * (error_rate - crossing) * distance_value^(1 / nu)
+        elseif profile === :boundary || profile === :flat
             0.25 + slopes[distance_value] * (error_rate - crossing)
+        else
+            error("unknown synthetic profile")
         end
         selected_count = round(Int, shots * selected_rate)
         selected_rate = selected_count / shots
-        selected_error = sqrt(selected_rate * (1 - selected_rate) / shots)
+        selected_error = profile === :flat ? 1e153 :
+            error_scale * sqrt(selected_rate * (1 - selected_rate) / shots)
         push!(points, LogicalFailurePoint(
             distance_value, :x_ns, :as, :zero, :gate_layer,
             error_rate, 0.0, shots, 17,
@@ -51,22 +58,30 @@ end
     @test isdefined(TopoNoise, :fit_construction_channel_comparison)
     @test isdefined(TopoNoise, :scaled_error_rate)
 
-    scan = synthetic_channel_scan(; crossing=0.1)
-    fit = fit_channel_threshold(scan; bootstrap_replicates=20, bootstrap_seed=7)
+    scan = synthetic_channel_scan(; crossing=0.1, nu=1.25)
+    fit = fit_channel_threshold(scan; bootstrap_replicates=0, bootstrap_seed=7)
     @test fit.status === :success
     @test isapprox(fit.p_c, 0.1; atol=1e-10)
-    @test 0.5 <= fit.nu <= 3.0
+    @test isapprox(fit.nu, 1.25; atol=0.01)
     @test length(fit.crossings) == 2
-    @test fit.bootstrap_replicates == 20
+    @test fit.bootstrap_replicates == 0
+    @test fit.p_c_bootstrap_interval === nothing
+    @test fit.nu_bootstrap_interval === nothing
     @test fit.exploratory
     @test scaled_error_rate(0.11, 5, fit) ==
         (0.11 - fit.p_c) * 5^(1 / fit.nu)
 
     endpoint_fit = fit_channel_threshold(
-        synthetic_channel_scan(; crossing=0.15);
+        synthetic_channel_scan(; crossing=0.1, profile=:boundary);
         bootstrap_replicates=0, bootstrap_seed=9)
-    @test endpoint_fit.status === :success
-    @test isapprox(endpoint_fit.p_c, 0.15; atol=1e-10)
+    @test endpoint_fit.status === :unavailable
+    @test occursin("boundary", endpoint_fit.diagnostic)
+
+    flat_fit = fit_channel_threshold(
+        synthetic_channel_scan(; crossing=0.1, profile=:flat);
+        bootstrap_replicates=0, bootstrap_seed=9)
+    @test flat_fit.status === :unavailable
+    @test occursin("identifiable", flat_fit.diagnostic)
 
     unavailable = synthetic_channel_scan(; crossing=nothing)
     failed = fit_channel_threshold(unavailable; bootstrap_replicates=10, bootstrap_seed=8)
@@ -80,7 +95,7 @@ end
     for index in eachindex(ambiguous.points)
         point = ambiguous.points[index]
         if point.distance == 3
-            rate = [0.15, 0.30, 0.15][findfirst(==(point.p_x), ambiguous.error_rates)]
+            rate = [0.15, 0.30, 0.15, 0.30, 0.15][findfirst(==(point.p_x), ambiguous.error_rates)]
             ambiguous.points[index] = with_logical_x_rate(point, rate)
         elseif point.distance == 5
             ambiguous.points[index] = with_logical_x_rate(point, 0.20)
@@ -95,10 +110,21 @@ end
     @test (
         first.status, first.p_c, first.p_c_standard_error, first.nu,
         first.nu_standard_error, first.bootstrap_successes,
+        first.p_c_bootstrap_interval, first.nu_bootstrap_interval,
     ) == (
         second.status, second.p_c, second.p_c_standard_error, second.nu,
         second.nu_standard_error, second.bootstrap_successes,
+        second.p_c_bootstrap_interval, second.nu_bootstrap_interval,
     )
+    @test first.status === :success
+    @test first.bootstrap_successes >= 2
+    @test first.p_c_bootstrap_interval !== nothing
+    @test first.nu_bootstrap_interval !== nothing
+
+    insufficient_bootstrap = fit_channel_threshold(
+        scan; bootstrap_replicates=1, bootstrap_seed=42)
+    @test insufficient_bootstrap.status === :unavailable
+    @test occursin("bootstrap", insufficient_bootstrap.diagnostic)
 
     synthetic_series = [
         ChannelFailureScan(
