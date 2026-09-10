@@ -114,3 +114,95 @@ expanded = plot_sequential_circuit(circuit; expand_physical_buses=true)
 `yao_circuit(circuit)` also prepares the carriers in `|+⟩`. The final
 carrier `⟨+|` projections remain explicit model metadata and are not part of
 the executable unitary block. The global circuit matrix is never materialized.
+
+## Rotated planar logical-failure scans
+
+The rotated planar implementation uses the authoritative CSS convention
+
+```math
+A_s = \prod_{q \in s} Z_q, \qquad B_p = \prod_{q \in p} X_q.
+```
+
+It supports one logical qubit on odd square patches with distance `d >= 3`.
+The `construction` keyword selects how the Clifford encoder is synthesized;
+it is independent of `logical_state`. Both `construction=:as` and `:bp`
+prepare the same requested state from `:zero`, `:one`, `:plus`, or `:minus`.
+The default is `logical_state=:zero`, namely `|0_L>`.
+
+Conceptually, the two default-state constructions are the projector formulas
+
+```math
+|0_L\rangle \propto (I + \bar Z)\prod_s(I + A_s)|+\rangle^{\otimes n},
+\qquad
+|0_L\rangle \propto \prod_p(I + B_p)|0\rangle^{\otimes n}.
+```
+
+The stored encoder is a deterministic local Clifford schedule implementing
+these states without materializing either projector. `clock=:gate_layer`
+injects independent X and Z faults after every elementary encoder layer;
+`clock=:plaquette` injects once after every completed source-check block.
+Both models use ideal preparation and a final perfect stabilizer measurement:
+there are no repeated syndrome rounds or measurement errors.
+
+### PyMatching setup
+
+The production estimator sends only final CSS syndrome batches to independent
+PyMatching decoders. Python and PyMatching are managed by `CondaPkg.toml`:
+
+```bash
+julia --project=. -e 'using Pkg; Pkg.instantiate()'
+julia --project=. -e 'import CondaPkg; CondaPkg.resolve()'
+```
+
+`sample_yao_syndrome` is a small state-vector oracle restricted to `d=3` so
+that accidental exponential allocations fail early. Logical-failure estimates
+and scans use the binary Pauli-frame engine and support every implemented odd
+distance.
+
+### Run a seeded scan
+
+From Julia, pass an RNG explicitly. The optional `seed` keyword records the
+seed in the scan and CSV metadata; it never reseeds or replaces that RNG.
+
+```julia
+using Random
+using TopoNoise
+
+scan = scan_logical_failure(
+    MersenneTwister(1234);
+    distances=[3, 5, 7], error_rates=collect(0:0.01:0.1),
+    shots=10_000, batch_size=10_000, seed=1234,
+)
+paths = save_logical_failure_scan(scan, "results/rotated-planar")
+```
+
+The convenience scan uses equal independent physical rates, `p_x == p_z`, at
+each grid point. Use `estimate_logical_failure` directly with
+`CircuitPauliNoise(p; p_x=..., p_z=...)` for an unequal-rate experiment.
+
+The example defaults to distances `3,5,7`, physical error rates
+`0:0.01:0.1`, `|0_L>`, the B_p construction, north/south X boundaries, the
+gate-layer noise clock, 10,000 shots per point, and seed 1234:
+
+```bash
+julia --project=. examples/scan_rotated_planar.jl
+```
+
+An explicit small scan looks like:
+
+```bash
+julia --project=. examples/scan_rotated_planar.jl \
+  --distances 3,5,7 --error-rates 0,0.01,0.02 \
+  --state zero --construction bp --boundary-orientation x_ns \
+  --clock gate_layer --shots 10000 --batch-size 10000 --seed 1234 \
+  --output-dir results/rotated-planar --basename logical-failure
+```
+
+Use `--p-min`, `--p-max`, and `--p-step` instead of `--error-rates` to build
+an evenly spaced grid, and run with `--help` for all options. The command
+creates the output directory and writes a tidy CSV plus matching SVG, PDF, and
+PNG plots. The three plot panels report logical-X, logical-Z, and
+either-logical failure rates, with one error-bar curve per distance.
+
+Version 1 intentionally excludes threshold fitting, repeated syndrome rounds,
+measurement noise, periodic layouts, holes, and multi-logical-qubit patches.
