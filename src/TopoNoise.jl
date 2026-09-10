@@ -40,7 +40,10 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        channel_failure_standard_error,
        PairCrossing, ThresholdFit, FittedConstructionChannelComparison,
        fit_channel_threshold, fit_construction_channel_comparison,
-       scaled_error_rate
+       scaled_error_rate,
+       write_comparison_raw_csv, write_comparison_fit_csv,
+       plot_construction_channel_comparison, plot_construction_channel_panel,
+       save_construction_channel_comparison
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -54,5 +57,6 @@ include("rotated_planar/decoder.jl")
 include("rotated_planar/scan.jl")
 include("rotated_planar/comparison.jl")
 include("rotated_planar/scaling.jl")
+include("rotated_planar/comparison_plot.jl")
 
 end
