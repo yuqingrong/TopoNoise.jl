@@ -2,6 +2,7 @@ module TopoNoise
 
 using ITensors: ITensors, ITensor, Index
 using ITensorNetworks: ITensorNetwork
+using Distributions: Binomial
 using LinearAlgebra: I, nullspace
 using Random
 using Statistics
@@ -36,7 +37,10 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        ChannelFailureScan, ConstructionChannelComparison,
        scan_channel_logical_failure, run_construction_channel_comparison,
        comparison_series, channel_failure_count, channel_failure_rate,
-       channel_failure_standard_error
+       channel_failure_standard_error,
+       PairCrossing, ThresholdFit, FittedConstructionChannelComparison,
+       fit_channel_threshold, fit_construction_channel_comparison,
+       scaled_error_rate
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -49,5 +53,6 @@ include("rotated_planar/noise.jl")
 include("rotated_planar/decoder.jl")
 include("rotated_planar/scan.jl")
 include("rotated_planar/comparison.jl")
+include("rotated_planar/scaling.jl")
 
 end
