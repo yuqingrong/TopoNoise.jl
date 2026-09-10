@@ -9,8 +9,8 @@ end
     RotatedPlanarCode(distance; boundary_orientation=:x_ns)
 
 Geometry for an odd-distance rotated planar surface code.  `:x_ns` has
-Z-type A_s boundary checks on the north and south edges; `:x_ew` is its
-90-degree clockwise rotation.
+X-type B_p boundary checks on the north and south edges and Z-type A_s
+boundary checks on the east and west edges; `:x_ew` is its 90-degree rotation.
 """
 struct RotatedPlanarCode
     distance::Int
@@ -27,8 +27,8 @@ function RotatedPlanarCode(distance::Integer; boundary_orientation::Symbol=:x_ns
         throw(ArgumentError("boundary_orientation must be :x_ns or :x_ew"))
 
     d = Int(distance)
-    a_s, b_p = _x_ns_checks(d)
-    if boundary_orientation === :x_ew
+    a_s, b_p = _x_ew_checks(d)
+    if boundary_orientation === :x_ns
         a_s = [_rotate_clockwise(support, d) for support in a_s]
         b_p = [_rotate_clockwise(support, d) for support in b_p]
     end
@@ -76,20 +76,20 @@ stabilizer_check_matrix(code::RotatedPlanarCode; sparse::Bool=false) =
 function logical_x_support(code::RotatedPlanarCode)
     d = distance(code)
     if boundary_orientation(code) === :x_ns
-        return [data_qubit_index(code, 1, column) for column in 1:d]
+        return [data_qubit_index(code, row, d) for row in 1:d]
     end
-    return [data_qubit_index(code, row, d) for row in 1:d]
+    return [data_qubit_index(code, 1, column) for column in 1:d]
 end
 
 function logical_z_support(code::RotatedPlanarCode)
     d = distance(code)
     if boundary_orientation(code) === :x_ns
-        return [data_qubit_index(code, row, 1) for row in 1:d]
+        return [data_qubit_index(code, 1, column) for column in 1:d]
     end
-    return [data_qubit_index(code, 1, column) for column in 1:d]
+    return [data_qubit_index(code, row, 1) for row in 1:d]
 end
 
-function _x_ns_checks(d::Int)
+function _x_ew_checks(d::Int)
     a_s = Vector{Vector{Int}}()
     b_p = Vector{Vector{Int}}()
     q(row, column) = (row - 1) * d + column

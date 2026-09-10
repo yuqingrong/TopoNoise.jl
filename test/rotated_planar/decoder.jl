@@ -136,7 +136,7 @@ end
     end
 
     @testset "partial batches, RNG ownership, rates, and state selection" begin
-        code = RotatedPlanarCode(3)
+        code = RotatedPlanarCode(3; boundary_orientation=:x_ew)
         noise = CircuitPauliNoise(0; p_x=0.04, p_z=0.37, clock=:gate_layer)
         plus_encoder = rotated_planar_encoder(
             code; construction=:bp, logical_state=:plus)
@@ -208,34 +208,34 @@ end
 @testset "Syndrome-only batch logical decoding" begin
     a_s_fixtures = Dict(
         :x_ns => Bool[
-            1 1 0 1 1 0 0 0 0
-            0 0 0 0 1 1 0 1 1
-            0 1 1 0 0 0 0 0 0
-            0 0 0 0 0 0 1 1 0
-        ],
-        :x_ew => Bool[
             0 1 1 0 1 1 0 0 0
             0 0 0 1 1 0 1 1 0
             0 0 0 0 0 1 0 0 1
             1 0 0 1 0 0 0 0 0
+        ],
+        :x_ew => Bool[
+            1 1 0 1 1 0 0 0 0
+            0 0 0 0 1 1 0 1 1
+            0 1 1 0 0 0 0 0 0
+            0 0 0 0 0 0 1 1 0
         ],
     )
     b_p_fixtures = Dict(
         :x_ns => Bool[
-            0 1 1 0 1 1 0 0 0
-            0 0 0 1 1 0 1 1 0
-            1 0 0 1 0 0 0 0 0
-            0 0 0 0 0 1 0 0 1
-        ],
-        :x_ew => Bool[
             0 0 0 0 1 1 0 1 1
             1 1 0 1 1 0 0 0 0
             0 1 1 0 0 0 0 0 0
             0 0 0 0 0 0 1 1 0
         ],
+        :x_ew => Bool[
+            0 1 1 0 1 1 0 0 0
+            0 0 0 1 1 0 1 1 0
+            1 0 0 1 0 0 0 0 0
+            0 0 0 0 0 1 0 0 1
+        ],
     )
-    logical_z_fixtures = Dict(:x_ns => [1, 4, 7], :x_ew => [1, 2, 3])
-    logical_x_fixtures = Dict(:x_ns => [1, 2, 3], :x_ew => [3, 6, 9])
+    logical_z_fixtures = Dict(:x_ns => [1, 2, 3], :x_ew => [1, 4, 7])
+    logical_x_fixtures = Dict(:x_ns => [3, 6, 9], :x_ew => [1, 2, 3])
 
     for orientation in (:x_ns, :x_ew)
         code = RotatedPlanarCode(3; boundary_orientation=orientation)

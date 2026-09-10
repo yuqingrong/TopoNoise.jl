@@ -36,25 +36,29 @@ end
 
         # These supports are derived directly from the 3-by-3 fixture, not
         # from geometry helpers.
-        @test a_s_checks(code) == [[1, 2, 4, 5], [5, 6, 8, 9], [2, 3], [7, 8]]
-        @test b_p_checks(code) == [[2, 3, 5, 6], [4, 5, 7, 8], [1, 4], [6, 9]]
+        @test a_s_checks(code) == [[2, 3, 5, 6], [4, 5, 7, 8], [6, 9], [1, 4]]
+        @test b_p_checks(code) == [[5, 6, 8, 9], [1, 2, 4, 5], [2, 3], [7, 8]]
         @test [(check.name, check.pauli, check.support) for check in stabilizers(code)] == [
-            (:A_s, :Z, [1, 2, 4, 5]), (:A_s, :Z, [5, 6, 8, 9]),
-            (:A_s, :Z, [2, 3]), (:A_s, :Z, [7, 8]),
-            (:B_p, :X, [2, 3, 5, 6]), (:B_p, :X, [4, 5, 7, 8]),
-            (:B_p, :X, [1, 4]), (:B_p, :X, [6, 9]),
+            (:A_s, :Z, [2, 3, 5, 6]), (:A_s, :Z, [4, 5, 7, 8]),
+            (:A_s, :Z, [6, 9]), (:A_s, :Z, [1, 4]),
+            (:B_p, :X, [5, 6, 8, 9]), (:B_p, :X, [1, 2, 4, 5]),
+            (:B_p, :X, [2, 3]), (:B_p, :X, [7, 8]),
         ]
+        @test filter(support -> length(support) == 2, b_p_checks(code)) == [[2, 3], [7, 8]]
+        @test filter(support -> length(support) == 2, a_s_checks(code)) == [[6, 9], [1, 4]]
         @test sort(length.(a_s_checks(code))) == [2, 2, 4, 4]
         @test sort(length.(b_p_checks(code))) == [2, 2, 4, 4]
     end
 
-    @testset "d=3 :x_ew is the rotated fixture" begin
+    @testset "d=3 :x_ew has orthogonal hand-checked supports" begin
         code = RotatedPlanarCode(3; boundary_orientation=:x_ew)
 
-        @test a_s_checks(code) == [[2, 3, 5, 6], [4, 5, 7, 8], [6, 9], [1, 4]]
-        @test b_p_checks(code) == [[5, 6, 8, 9], [1, 2, 4, 5], [2, 3], [7, 8]]
+        @test a_s_checks(code) == [[1, 2, 4, 5], [5, 6, 8, 9], [2, 3], [7, 8]]
+        @test b_p_checks(code) == [[2, 3, 5, 6], [4, 5, 7, 8], [1, 4], [6, 9]]
         @test [(check.name, check.pauli) for check in stabilizers(code)] ==
             vcat(fill((:A_s, :Z), 4), fill((:B_p, :X), 4))
+        @test filter(support -> length(support) == 2, b_p_checks(code)) == [[1, 4], [6, 9]]
+        @test filter(support -> length(support) == 2, a_s_checks(code)) == [[2, 3], [7, 8]]
         @test sort(length.(a_s_checks(code))) == [2, 2, 4, 4]
         @test sort(length.(b_p_checks(code))) == [2, 2, 4, 4]
     end
@@ -92,6 +96,8 @@ end
     end
 
     @testset "canonical logical strings have the required commutation" begin
+        logical_x_fixtures = Dict(:x_ns => [3, 6, 9], :x_ew => [1, 2, 3])
+        logical_z_fixtures = Dict(:x_ns => [1, 2, 3], :x_ew => [1, 4, 7])
         for d in (3, 5, 7), orientation in (:x_ns, :x_ew)
             code = RotatedPlanarCode(d; boundary_orientation=orientation)
             logical_x = logical_x_support(code)
@@ -99,6 +105,10 @@ end
 
             @test length(logical_x) == d
             @test length(logical_z) == d
+            if d == 3
+                @test logical_x == logical_x_fixtures[orientation]
+                @test logical_z == logical_z_fixtures[orientation]
+            end
             @test isodd(length(intersect(logical_x, logical_z)))
             for a_support in a_s_checks(code)
                 @test iseven(length(intersect(logical_x, a_support)))

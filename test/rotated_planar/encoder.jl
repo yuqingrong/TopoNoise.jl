@@ -76,14 +76,14 @@ end
                         plaquette_blocks(as)) == 1
 
             # Literal orders from the hand-checked d=3 check centers.
-            @test getproperty.(bp_plaquettes, :source_check_index) == [2, 3, 4, 1]
-            @test getproperty.(as_plaquettes, :source_check_index) == [4, 1, 2, 3]
-            @test !isempty(only(filter(
+            @test getproperty.(bp_plaquettes, :source_check_index) == [4, 2, 1, 3]
+            @test getproperty.(as_plaquettes, :source_check_index) == [2, 4, 3, 1]
+            @test isempty(only(filter(
                 block -> block.kind === :logical_sector,
                 plaquette_blocks(bp))).source_rows)
-            @test !isempty(only(filter(
+            @test only(filter(
                 block -> block.kind === :logical_sector,
-                plaquette_blocks(as))).source_rows)
+                plaquette_blocks(as))).source_rows == [1, 2, 3, 4]
             for d in (3, 5, 7), construction in (:as, :bp)
                 encoder = rotated_planar_encoder(
                     RotatedPlanarCode(d); construction=construction)
