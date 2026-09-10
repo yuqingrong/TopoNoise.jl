@@ -204,5 +204,29 @@ creates the output directory and writes a tidy CSV plus matching SVG, PDF, and
 PNG plots. The three plot panels report logical-X, logical-Z, and
 either-logical failure rates, with one error-bar curve per distance.
 
+## Construction/channel scaling comparison
+
+Compare the two encoder constructions under separate single-channel noise with
+the seeded production command:
+
+```bash
+julia --project=. examples/compare_rotated_planar_constructions.jl \
+  --distances 3,5,7 --p-min 0 --p-max 0.16 --p-step 0.01 \
+  --shots 10000 --batch-size 10000 --seed 1234 \
+  --output-dir results/rotated-planar-comparison
+```
+
+All panels prepare `|0_L>`. X-only noise means `p_x=p,p_z=0` and reports the
+logical-X failure rate; Z-only noise means `p_x=0,p_z=p` and reports the
+logical-Z failure rate. `As` and `Bp` choose the circuit construction only;
+they do not choose a different logical state.
+
+The command writes one combined 2×2 figure and four standalone figures
+(`As`/`Bp` × X-only/Z-only) in SVG, PDF, and PNG, along with raw and fit CSV
+files. When a fit is available, each panel includes an inset with its
+exploratory `p_c` and `nu` collapse. The `d=3,5,7` fit values are exploratory
+diagnostics, not threshold claims. Use `--no-fit` to preserve the raw curves
+and write explicit unavailable-fit records without attempting the fit.
+
 Version 1 intentionally excludes threshold fitting, repeated syndrome rounds,
 measurement noise, periodic layouts, holes, and multi-logical-qubit patches.

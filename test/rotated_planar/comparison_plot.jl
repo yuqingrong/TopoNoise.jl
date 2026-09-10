@@ -112,3 +112,36 @@ end
         end
     end
 end
+
+const _COMPARISON_CLI = joinpath(
+    @__DIR__, "..", "..", "examples", "compare_rotated_planar_constructions.jl")
+
+@testset "Construction/channel comparison CLI" begin
+    @test isfile(_COMPARISON_CLI)
+    if isfile(_COMPARISON_CLI)
+        include(_COMPARISON_CLI)
+        mktempdir() do directory
+            output, errors = IOBuffer(), IOBuffer()
+            result = RotatedPlanarConstructionComparison.main([
+                "--distances", "3", "--error-rates", "0", "--shots", "2",
+                "--batch-size", "2", "--bootstrap-replicates", "2", "--no-fit",
+                "--seed", "5", "--output-dir", directory, "--basename", "smoke",
+            ]; io=output, error_io=errors)
+            @test result == 0
+            @test isfile(joinpath(directory, "smoke-combined.svg"))
+            @test isfile(joinpath(directory, "smoke-as-x-only.png"))
+            @test contains(String(take!(output)), "fit unavailable")
+            @test isempty(String(take!(errors)))
+        end
+        for arguments in (
+                ["--bootstrap-replicates", "0"],
+                ["--error-rates", "0.1,0.1"],
+                ["--unknown"],
+                ["--basename", "../escape"],
+            )
+            errors = IOBuffer()
+            @test RotatedPlanarConstructionComparison.main(arguments; error_io=errors) == 1
+            @test contains(String(take!(errors)), "error:")
+        end
+    end
+end
