@@ -23,7 +23,10 @@ replacement.
 ## Authoritative d=3 circuits
 
 The literal gate lists in the two Typ files are golden schedules. Site names
-use the diagram's `siteXY` convention. The Bp construction is:
+use the diagram's `siteXY` convention, which maps to the row-major code
+coordinate `(row=d-Y+1, column=X)`. Under that map the diagrams are the
+direct template for `boundary_orientation=:x_ew`; `:x_ns` applies the same
+template after a 90-degree clockwise rotation. The Bp construction is:
 
 | Representative | Gates after its H | Block kind |
 |---|---|---|
@@ -41,9 +44,17 @@ The As construction is:
 | `site33` | `23 -> 33` | boundary, weight 2 |
 | `site31` | `21 -> 31`, `22 -> 31`, `32 -> 31` | bulk |
 
-These schedules, including CNOT direction, ordering, and fresh red
-representatives, supersede RREF pivots and reduced supports. The d=3 unit
-tests will compare the stored elementary operations exactly with these lists.
+For its sequential d=3 execution, the As blocks are ordered `site21`,
+`site22`, `site31`, `site33`: this is the southwest-to-northeast geometric
+order and agrees with the time offsets in the Typ drawing. The table retains
+the source-file grouping so every literal gate still has a visible home.
+
+These schedules, including the order *within a plaquette block*, CNOT
+direction, and fresh red representatives, supersede RREF pivots and reduced
+supports. Plaquette blocks execute to completion in the stated deterministic
+southwest-to-northeast order; gate heights in the Typ drawing are a visual
+layout, not a second overlapping execution clock. The d=3 unit tests will
+compare the stored elementary operations exactly with these lists.
 
 ## Geometry and growth rule
 
