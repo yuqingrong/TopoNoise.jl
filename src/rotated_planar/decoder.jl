@@ -72,10 +72,10 @@ function build_matching_decoders(code::RotatedPlanarCode)
 end
 
 function _prediction_bits(predictions)
-    values = PythonCall.pyconvert(Matrix{UInt8}, predictions)
-    size(values, 2) == 1 ||
-        throw(ErrorException("PyMatching returned an unexpected logical-observable shape"))
-    return BitVector(vec(values) .!= 0)
+    numpy = PythonCall.pyimport("numpy")
+    values = numpy.ascontiguousarray(predictions; dtype=numpy.uint8).reshape(-1)
+    bytes = PythonCall.pyconvert(Vector{UInt8}, values.tobytes())
+    return BitVector(bytes .!= 0)
 end
 
 """
@@ -164,6 +164,8 @@ function _propagate_frame_batch_operation!(
         @views x[:, qubit] .= z[:, qubit]
         @views z[:, qubit] .= previous_x
     elseif operation.gate === :X
+        nothing
+    elseif operation.gate === :Z
         nothing
     elseif operation.gate === :CNOT
         control_qubit, target_qubit = operation.qubits

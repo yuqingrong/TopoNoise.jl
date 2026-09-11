@@ -138,7 +138,11 @@ Conceptually, the two default-state constructions are the projector formulas
 ```
 
 The stored encoder is a deterministic local Clifford schedule implementing
-these states without materializing either projector. `clock=:gate_layer`
+these states without materializing either projector. At `d=3` it replays the
+literal As/Bp plaquette circuits; larger patches use deterministic reverse
+shelling so each plaquette obtains a fresh local representative. The Bp core
+directly prepares `|0_L>`; the As core is converted locally from its natural
+`|+_L>` preparation to the requested logical basis. `clock=:gate_layer`
 injects independent X and Z faults after every elementary encoder layer;
 `clock=:plaquette` injects once after every completed source-check block.
 Both models use ideal preparation and a final perfect stabilizer measurement:

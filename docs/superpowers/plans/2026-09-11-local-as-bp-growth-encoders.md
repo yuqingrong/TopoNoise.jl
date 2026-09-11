@@ -10,6 +10,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-11-local-as-bp-growth-encoder-design.md`
 
+> **Validated implementation amendment:** d=3 retains the literal Typ time
+> order. For d>=5 the fresh-representative condition requires deterministic
+> reverse shelling rather than sorting every executed block by diagonal. The
+> final scheduler peels eligible checks by unique-qubit count and check index,
+> reverses that order, and is tableau-tested at d=3, 5, and 7.
+
 ## Global Constraints
 
 - Preserve CSS meanings exactly: `A_s = product(Z)` and `B_p = product(X)`.

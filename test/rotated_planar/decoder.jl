@@ -33,6 +33,13 @@ using PythonCall
         end
         @test pyconvert(Bool, sys.modules.__contains__("pymatching"))
 
+        @testset "NumPy prediction dtypes convert through Python lists" begin
+            numpy = pyimport("numpy")
+            predictions = numpy.asarray([0, 1, 1]; dtype=numpy.int64).reshape((3, 1))
+            @test TopoNoise._prediction_bits(predictions) ==
+                  BitVector([false, true, true])
+        end
+
         nongraphlike = RotatedPlanarCode(
             3, :x_ns, [[1], [1], [1]], [[2]])
         @test_throws ArgumentError build_matching_decoders(nongraphlike)

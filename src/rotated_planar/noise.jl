@@ -249,6 +249,8 @@ function _propagate_frame_operation!(
         x[qubit], z[qubit] = z[qubit], x[qubit]
     elseif operation.gate === :X
         nothing
+    elseif operation.gate === :Z
+        nothing
     elseif operation.gate === :CNOT
         control_qubit, target_qubit = operation.qubits
         x[target_qubit] = xor(x[target_qubit], x[control_qubit])

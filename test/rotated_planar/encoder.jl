@@ -6,6 +6,13 @@ function _operation_signature(operation)
     return (operation.gate, Tuple(operation.qubits))
 end
 
+_block_signature(block) = [
+    _operation_signature(operation)
+    for layer in block.layers for operation in layer.operations
+]
+
+_typ_site(code, x, y) = data_qubit_index(code, distance(code) - y + 1, x)
+
 function _yao_operation_signature(block)
     if hasproperty(block, :ctrl_locs)
         return (:CNOT, (only(block.ctrl_locs), only(block.locs)))
@@ -55,7 +62,7 @@ end
             @test_throws ArgumentError rotated_planar_encoder(code; construction=:mixed)
         end
 
-        @testset "family metadata, direction, and diagonal order" begin
+        @testset "family metadata, direction, and deterministic shell order" begin
             code = RotatedPlanarCode(3)
             bp = rotated_planar_encoder(code; construction=:bp)
             as = rotated_planar_encoder(code; construction=:as)
@@ -73,25 +80,118 @@ end
             @test count(block -> block.kind === :logical_sector,
                         plaquette_blocks(bp)) == 1
             @test count(block -> block.kind === :logical_sector,
-                        plaquette_blocks(as)) == 1
+                        plaquette_blocks(as)) >= 1
 
-            # Literal orders from the hand-checked d=3 check centers.
-            @test getproperty.(bp_plaquettes, :source_check_index) == [4, 2, 1, 3]
-            @test getproperty.(as_plaquettes, :source_check_index) == [2, 4, 3, 1]
-            @test isempty(only(filter(
-                block -> block.kind === :logical_sector,
-                plaquette_blocks(bp))).source_rows)
+            # Literal execution order of the rotated d=3 template, expressed
+            # in the default x_ns check enumeration.
+            @test getproperty.(bp_plaquettes, :source_check_index) == [2, 3, 4, 1]
+            @test getproperty.(as_plaquettes, :source_check_index) == [4, 1, 2, 3]
             @test only(filter(
-                block -> block.kind === :logical_sector,
-                plaquette_blocks(as))).source_rows == [1, 2, 3, 4]
+                block -> block.source_check === :logical,
+                plaquette_blocks(bp))).source_support == logical_x_support(code)
+            @test only(filter(
+                block -> block.source_check === :logical,
+                plaquette_blocks(as))).source_support == logical_z_support(code)
             for d in (3, 5, 7), construction in (:as, :bp)
-                encoder = rotated_planar_encoder(
-                    RotatedPlanarCode(d); construction=construction)
+                code = RotatedPlanarCode(d)
+                encoder = rotated_planar_encoder(code; construction=construction)
+                repeat_encoder = rotated_planar_encoder(code; construction=construction)
                 plaquettes = filter(
                     block -> block.kind === :plaquette, plaquette_blocks(encoder))
-                @test issorted(getproperty.(plaquettes, :geometric_key))
                 @test getproperty.(plaquettes, :geometric_order) ==
                       collect(eachindex(plaquettes))
+                @test getproperty.(plaquettes, :source_check_index) ==
+                      getproperty.(filter(
+                          block -> block.kind === :plaquette,
+                          plaquette_blocks(repeat_encoder)), :source_check_index)
+                for block in plaquettes
+                    expected_checks = construction === :bp ?
+                        b_p_checks(code) : a_s_checks(code)
+                    @test block.source_support in expected_checks
+                    @test block.representative in block.source_support
+                    @test sort!(unique!([
+                        qubit for layer in block.layers for operation in layer.operations
+                        for qubit in operation.qubits])) == sort(block.source_support)
+                end
+                # In the B_p/X construction the H-control is a newly introduced
+                # qubit.  The literal A_s/Z diagram instead reuses controls, so
+                # imposing this B_p causal invariant on A_s would reject the
+                # requested d=3 Typ circuit.
+                if construction === :bp
+                    touched = Set{Int}()
+                    for block in plaquettes
+                        @test !(block.representative in touched)
+                        union!(touched, block.source_support)
+                    end
+                end
+            end
+        end
+
+        @testset "all requested logical states retain source-check blocks" begin
+            for d in (3, 5, 7), construction in (:as, :bp),
+                logical_state in (:zero, :one, :plus, :minus)
+                encoder = rotated_planar_encoder(
+                    RotatedPlanarCode(d); construction=construction,
+                    logical_state=logical_state)
+                plaquettes = filter(
+                    block -> block.kind === :plaquette, plaquette_blocks(encoder))
+                expected_checks = construction === :bp ?
+                    b_p_checks(encoder.code) : a_s_checks(encoder.code)
+                @test all(block -> block.source_support in expected_checks &&
+                                  block.representative in block.source_support,
+                          plaquettes)
+            end
+        end
+
+        @testset "d=3 Typ local growth gates" begin
+            code = RotatedPlanarCode(3; boundary_orientation=:x_ew)
+            q(x, y) = _typ_site(code, x, y)
+            bp_blocks = filter(
+                block -> block.kind === :plaquette,
+                plaquette_blocks(rotated_planar_encoder(code; construction=:bp)))
+            as_blocks = filter(
+                block -> block.kind === :plaquette,
+                plaquette_blocks(rotated_planar_encoder(code; construction=:as)))
+
+            @test [_block_signature(block) for block in bp_blocks] == [
+                [(:H, (q(2, 1),)), (:CNOT, (q(2, 1), q(1, 1))),
+                 (:CNOT, (q(2, 1), q(2, 2))), (:CNOT, (q(2, 2), q(1, 2)))],
+                [(:H, (q(1, 3),)), (:CNOT, (q(1, 3), q(1, 2)))],
+                [(:H, (q(3, 1),)), (:CNOT, (q(3, 1), q(3, 2)))],
+                [(:H, (q(3, 3),)), (:CNOT, (q(3, 3), q(3, 2))),
+                 (:CNOT, (q(3, 3), q(2, 3))), (:CNOT, (q(2, 3), q(2, 2)))],
+            ]
+            @test [_block_signature(block) for block in as_blocks] == [
+                [(:H, (q(2, 1),)), (:CNOT, (q(1, 1), q(2, 1)))],
+                [(:H, (q(2, 2),)), (:CNOT, (q(1, 2), q(2, 2))),
+                 (:CNOT, (q(1, 3), q(2, 2))), (:CNOT, (q(2, 3), q(2, 2)))],
+                [(:H, (q(3, 1),)), (:CNOT, (q(2, 1), q(3, 1))),
+                 (:CNOT, (q(2, 2), q(3, 1))), (:CNOT, (q(3, 2), q(3, 1)))],
+                [(:H, (q(3, 3),)), (:CNOT, (q(2, 3), q(3, 3)))],
+            ]
+            @test getproperty.(bp_blocks, :representative) ==
+                  [q(2, 1), q(1, 3), q(3, 1), q(3, 3)]
+            @test getproperty.(as_blocks, :representative) ==
+                  [q(2, 1), q(2, 2), q(3, 1), q(3, 3)]
+
+            rotated = RotatedPlanarCode(3; boundary_orientation=:x_ns)
+            rotate(qubit) = begin
+                row, column = data_qubit_coordinate(code, qubit)
+                data_qubit_index(rotated, column, distance(rotated) + 1 - row)
+            end
+            for construction in (:as, :bp)
+                xew_blocks = filter(
+                    block -> block.kind === :plaquette,
+                    plaquette_blocks(rotated_planar_encoder(
+                        code; construction=construction)))
+                xns_blocks = filter(
+                    block -> block.kind === :plaquette,
+                    plaquette_blocks(rotated_planar_encoder(
+                        rotated; construction=construction)))
+                expected = [[(operation.gate, Tuple(rotate.(operation.qubits)))
+                             for layer in block.layers for operation in layer.operations]
+                            for block in xew_blocks]
+                @test [_block_signature(block) for block in xns_blocks] == expected
             end
         end
 
@@ -112,8 +212,8 @@ end
                                 encoder.code, operation.qubits[1])
                             second_coordinate = data_qubit_coordinate(
                                 encoder.code, operation.qubits[2])
-                            @test abs(first_coordinate[1] - second_coordinate[1]) +
-                                  abs(first_coordinate[2] - second_coordinate[2]) == 1
+                            @test max(abs(first_coordinate[1] - second_coordinate[1]),
+                                      abs(first_coordinate[2] - second_coordinate[2])) == 1
                         end
                     end
                 end

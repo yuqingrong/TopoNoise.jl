@@ -97,7 +97,7 @@ function _literal_encoder(operations)
         for operation in operations
     ]
     block = TopoNoise.PlaquetteEncoderBlock(
-        :logical_sector, :bp, :logical, 0, Int[], Int[], Int[], 1,
+        :logical_sector, :bp, :logical, 0, Int[], 1,
         (0, 0), 0, (typemin(Int), 0, 0, 0), 0, :outgoing_control, layers)
     return PlaquetteEncoder(code, :zero, :bp, [block], layers)
 end

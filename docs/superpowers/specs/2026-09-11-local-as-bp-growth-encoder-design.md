@@ -63,10 +63,17 @@ Same-family plaquettes are checkerboard-separated: no two share an edge, but
 diagonal plaquettes may share one corner data qubit. Bulk checks have weight
 four and exposed boundary checks have weight two.
 
-For each construction the generator will enumerate local checkerboard paths
-in the diagram's southwest-to-northeast sweep order. A path contains one
-representative and either one boundary edge or three local CNOT edges forming
-a bulk tree. The first operation of every path is H on the representative.
+For d=3, each construction follows the literal southwest-to-northeast Typ
+order exactly, including after the orientation rotation. For d>=5, the
+generator uses a deterministic reverse-shell order: it peels removable
+checks by their still-unique data-qubit count and check index, then reverses
+that list for execution. This preserves a fresh local representative and,
+for a bulk check, a fresh adjacent continuation. `geometric_order` records
+execution order; it is not required to sort geometric keys.
+
+A path contains one representative and either one boundary edge or three
+local CNOT edges forming a bulk tree. The first operation is H on the
+representative.
 
 - Bp paths use outgoing CNOT flow from the fresh representative, with the
   diagram's prescribed directed continuation through an older shared corner.
@@ -86,11 +93,14 @@ boundary orientations.
 
 ## State and noise semantics
 
-The Bp circuit's fresh representative starts in \(|0\rangle\); H creates
-its X-basis seed before the directed local tree. The As circuit uses its own
-diagrammatic H and incoming-control tree. Each construction must prepare the
-same requested final \(|0_L\rangle\), \(|1_L\rangle\), \(|+_L\rangle\), or
-\(|-_L\rangle\).
+The Bp core maps the all-zero product state to \(|0_L\rangle\). The As
+core, preceded by H on every data qubit, maps it to \(|+_L\rangle\). The
+encoder retains both literal cores but applies a local state-specific basis
+conversion when necessary: `As†; H_all; Bp` after an As core produces
+\(|0_L\rangle\), and `Bp†; H_all; As` after a Bp core produces
+\(|+_L\rangle\). Logical X or Z strings then produce \(|1_L\rangle\) or
+\(|-_L\rangle\), respectively. Thus `construction` changes the circuit,
+not the requested final logical state.
 
 Circuit Pauli noise remains unchanged operationally: a `:plaquette` fault is
 sampled after each completed local block on exactly that block's physical
