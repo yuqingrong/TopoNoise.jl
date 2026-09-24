@@ -1,0 +1,17 @@
+{
+  "batch_size": 1000,
+  "channel": "y_only",
+  "counts": [
+    27496,
+    1199,
+    20348,
+    957
+  ],
+  "distance": 11,
+  "fingerprint": "abe3841a16fb1274f5135cb4858433437a2f764455d8d75415819046825ef72e",
+  "p": 0.024,
+  "root_seed": 20260923,
+  "seconds": 2.2313510411186144,
+  "shots": 50000,
+  "stage": "production"
+}

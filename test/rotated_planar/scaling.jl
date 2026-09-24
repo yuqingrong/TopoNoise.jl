@@ -50,6 +50,35 @@ function with_logical_x_rate(point::LogicalFailurePoint, rate::Float64)
         point.state_standard_error)
 end
 
+"""A scan with a zero-failure plateau and one spurious low-p crossing."""
+function plateau_crossing_scan()
+    distances = [3, 5, 7]
+    error_rates = [0.0, 0.005, 0.01, 0.04, 0.06, 0.07, 0.1]
+    rates = Dict(
+        3 => [0.0, 0.0, 0.006, 0.019, 0.070, 0.125, 0.200],
+        5 => [0.0, 0.0, 0.005, 0.020, 0.075, 0.120, 0.220],
+        7 => [0.0, 0.0, 0.004, 0.015, 0.070, 0.125, 0.240],
+    )
+    shots = 1_000_000
+    points = LogicalFailurePoint[]
+    for distance_value in distances, (index, error_rate) in enumerate(error_rates)
+        rate = rates[distance_value][index]
+        count = round(Int, shots * rate)
+        standard_error = sqrt(rate * (1 - rate) / shots)
+        push!(points, LogicalFailurePoint(
+            distance_value, :x_ns, :as, :zero, :gate_layer,
+            error_rate, 0.0, shots, 23,
+            count, rate, standard_error,
+            count, rate, standard_error,
+            count, rate, standard_error,
+            count, rate, standard_error,
+        ))
+    end
+    return ChannelFailureScan(
+        :as, :x_only, :logical_x, :zero, :x_ns, :gate_layer,
+        distances, error_rates, shots, shots, 23, UInt64(23), points)
+end
+
 @testset "Exploratory scaling fit" begin
     @test isdefined(TopoNoise, :PairCrossing)
     @test isdefined(TopoNoise, :ThresholdFit)
@@ -57,6 +86,20 @@ end
     @test isdefined(TopoNoise, :fit_channel_threshold)
     @test isdefined(TopoNoise, :fit_construction_channel_comparison)
     @test isdefined(TopoNoise, :scaled_error_rate)
+
+    state_point = LogicalFailurePoint(
+        3, :x_ns, :as, :zero, :gate_layer, 0.0, 0.1, 10, 31,
+        1, 0.1, sqrt(0.1 * 0.9 / 10),
+        7, 0.7, sqrt(0.7 * 0.3 / 10),
+        7, 0.7, sqrt(0.7 * 0.3 / 10),
+        1, 0.1, sqrt(0.1 * 0.9 / 10),
+    )
+    state_resampled = TopoNoise._with_selected_channel_count(
+        state_point, :state_failure, 2)
+    @test state_resampled.logical_x_failures == 1
+    @test state_resampled.logical_z_failures == 7
+    @test state_resampled.state_failures == 2
+    @test state_resampled.state_failure_rate == 0.2
 
     scan = synthetic_channel_scan(; crossing=0.1, nu=1.25)
     fit = fit_channel_threshold(scan; bootstrap_replicates=0, bootstrap_seed=7)
@@ -103,7 +146,13 @@ end
     end
     ambiguous_fit = fit_channel_threshold(ambiguous; bootstrap_replicates=5)
     @test ambiguous_fit.status === :unavailable
-    @test occursin("ambiguous", ambiguous_fit.diagnostic)
+    @test !isempty(ambiguous_fit.diagnostic)
+
+    plateau_crossings, plateau_diagnostic = TopoNoise._adjacent_crossings(
+        plateau_crossing_scan())
+    @test plateau_diagnostic === nothing
+    @test length(plateau_crossings) == 2
+    @test all(crossing -> 0.06 < crossing.p < 0.07, plateau_crossings)
 
     first = fit_channel_threshold(scan; bootstrap_replicates=20, bootstrap_seed=42)
     second = fit_channel_threshold(scan; bootstrap_replicates=20, bootstrap_seed=42)

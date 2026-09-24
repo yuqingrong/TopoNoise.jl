@@ -1,0 +1,17 @@
+{
+  "batch_size": 1000,
+  "channel": "hadamard",
+  "counts": [
+    23402,
+    3277,
+    20429,
+    2892
+  ],
+  "distance": 13,
+  "fingerprint": "abe3841a16fb1274f5135cb4858433437a2f764455d8d75415819046825ef72e",
+  "p": 0.066,
+  "root_seed": 20260923,
+  "seconds": 65.08817916328553,
+  "shots": 50000,
+  "stage": "production"
+}

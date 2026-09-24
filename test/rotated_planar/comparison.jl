@@ -25,7 +25,7 @@
                 error_channel=:z_only, shots=2, batch_size=2, seed=22)
 
             @test x_scan isa ChannelFailureScan
-            @test x_scan.logical_state === :zero
+            @test x_scan.logical_state === :plus
             @test x_scan.logical_observable === :logical_x
             @test z_scan.logical_state === :zero
             @test z_scan.logical_observable === :logical_z
@@ -44,12 +44,44 @@
                 shots=2, batch_size=2)
         end
 
+        @testset "state-failure scans select the prepared-state metric" begin
+            state_scan = scan_channel_logical_failure(
+                MersenneTwister(24);
+                distances=[3], error_rates=[0.0], construction=:bp,
+                error_channel=:z_only, failure_metric=:state_failure,
+                shots=2, batch_size=2, seed=24)
+            @test state_scan.logical_observable === :state_failure
+
+            point = LogicalFailurePoint(
+                3, :x_ns, :bp, :zero, :plaquette, 0.0, 0.1, 10, 24,
+                1, 0.1, sqrt(0.1 * 0.9 / 10),
+                7, 0.7, sqrt(0.7 * 0.3 / 10),
+                7, 0.7, sqrt(0.7 * 0.3 / 10),
+                1, 0.1, sqrt(0.1 * 0.9 / 10),
+            )
+            selector = ChannelFailureScan(
+                :bp, :z_only, :state_failure, :zero, :x_ns, :plaquette,
+                [3], [0.1], 10, 10, 24, UInt64(24), [point])
+            @test channel_failure_count(selector, point) == 1
+            @test channel_failure_rate(selector, point) == 0.1
+            @test channel_failure_standard_error(selector, point) ==
+                  sqrt(0.1 * 0.9 / 10)
+            @test_throws ArgumentError scan_channel_logical_failure(
+                MersenneTwister(25);
+                distances=[3], error_rates=[0.0], error_channel=:z_only,
+                failure_metric=:invalid, shots=2, batch_size=2)
+        end
+
         @testset "comparison ordering and independently seeded series are reproducible" begin
             comparison = run_construction_channel_comparison(
                 MersenneTwister(99);
                 distances=[3], error_rates=[0.0], shots=2, batch_size=2, seed=99)
             @test comparison isa ConstructionChannelComparison
-            @test comparison.logical_state === :zero
+            @test comparison.logical_state === :native
+            @test [scan.logical_state for scan in comparison.series] ==
+                  [:plus, :plus, :zero, :zero]
+            @test all(point.logical_state === scan.logical_state
+                      for scan in comparison.series for point in scan.points)
             @test [(scan.construction, scan.error_channel) for scan in comparison.series] == [
                 (:as, :x_only), (:as, :z_only), (:bp, :x_only), (:bp, :z_only),
             ]
@@ -85,6 +117,49 @@
             ]
             @test [project(scan) for scan in first.series] ==
                   [project(scan) for scan in repeated.series]
+        end
+
+        @testset "native preparation reports logical errors even when the state is unchanged" begin
+            for (construction, channel, state, observable) in
+                ((:as, :x_only, :plus, :logical_x), (:bp, :z_only, :zero, :logical_z))
+                scan = scan_channel_logical_failure(MersenneTwister(72);
+                    distances=[3], error_rates=[0.15], construction,
+                    error_channel=channel, shots=512, batch_size=256)
+                point = only(scan.points)
+                @test scan.logical_state === point.logical_state === state
+                @test scan.logical_observable === observable
+                @test point.state_failures == 0
+                @test channel_failure_count(scan, point) > 0
+                @test channel_failure_rate(scan, point) ==
+                      channel_failure_count(scan, point) / point.shots
+            end
+        end
+
+        @testset "plus-state Z scans measure phase-sensitive state failure" begin
+            scan = scan_channel_logical_failure(
+                MersenneTwister(73);
+                distances=[3], error_rates=[0.0, 0.12], construction=:as,
+                logical_state=:plus, error_channel=:z_only,
+                failure_metric=:state_failure, shots=128, batch_size=64)
+            @test scan.logical_state === :plus
+            @test all(point.logical_state === :plus for point in scan.points)
+            @test first(scan.points).state_failures == 0
+            noisy = last(scan.points)
+            @test noisy.logical_x_failures == 0
+            @test noisy.logical_z_failures > 0
+            @test noisy.state_failures == noisy.logical_z_failures
+            @test channel_failure_count(scan, noisy) == noisy.logical_z_failures
+
+            comparison = run_construction_channel_comparison(
+                MersenneTwister(74); logical_state=:plus,
+                distances=[3], error_rates=[0.0], shots=2, batch_size=2)
+            @test comparison.logical_state === :plus
+            @test all(series.logical_state === :plus for series in comparison.series)
+            @test all(only(series.points).logical_state === :plus
+                      for series in comparison.series)
+            @test_throws ArgumentError scan_channel_logical_failure(
+                MersenneTwister(75); logical_state=:invalid,
+                distances=[3], error_rates=[0.0], error_channel=:z_only, shots=2)
         end
 
         @testset "keyed series seeds are independent of collection order" begin

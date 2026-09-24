@@ -1,0 +1,46 @@
+{
+  "batch_size": 1000,
+  "boundary_orientation": "x_ns",
+  "channels": {
+    "hadamard": "(1-p)rho + p H rho H; H=(X+Z)/sqrt(2), exact trajectories",
+    "y_only": "(1-p)rho + p Y rho Y; shared X/Z event"
+  },
+  "clock": "gate_layer",
+  "construction": "bp",
+  "count_order": [
+    "00",
+    "10",
+    "01",
+    "11"
+  ],
+  "decoder": "independent uniform-weight CSS PyMatching; enable_correlations=False",
+  "distances": [
+    9,
+    11,
+    13,
+    15
+  ],
+  "final_measurements": "ideal A_s, B_p, Z_L Z_R, X_L X_R",
+  "fingerprint": "abe3841a16fb1274f5135cb4858433437a2f764455d8d75415819046825ef72e",
+  "initialization": "ideal Bell preimage; ideal reference qubit",
+  "pilot_shots": 2000,
+  "production_shots": 50000,
+  "refinement_shots": 10000,
+  "root_seed": 20260923,
+  "sampling_complete": true,
+  "saved_points": 256,
+  "saved_shots": 5056000,
+  "source_hashes": {
+    "circuits.toml": "4f5c55e312cd6d3a24d4a704906f1ac8e0eab43681b11fab48c1470a60cd7d8a",
+    "sampler.py": "69c5fd8bfa5b9e8e7327757787de866675864401d51115ec7ceb02e73f712bea",
+    "source_hashes.toml": "7238ac078e94b484b5decb5096b2acbcd2868585e57f749925ba3dd15804ef4c"
+  },
+  "versions": {
+    "machine": "arm64",
+    "numpy": "2.5.1",
+    "platform": "macOS-14.6-arm64-arm-64bit",
+    "pymatching": "2.4.0",
+    "python": "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:06:14) [Clang 19.1.7 ]",
+    "stim": "1.16.0"
+  }
+}

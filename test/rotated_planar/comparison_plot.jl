@@ -108,6 +108,25 @@ end
             @test plot_construction_channel_panel(unavailable, :as, :x_only) isa CairoMakie.Figure
         end
 
+        @testset "phase-sensitive preparation is identified in plot labels" begin
+            scan = scan_channel_logical_failure(MersenneTwister(76);
+                distances=[3], error_rates=[0.0], logical_state=:plus,
+                construction=:as, error_channel=:z_only,
+                failure_metric=:state_failure, shots=2, batch_size=2)
+            raw = ConstructionChannelComparison(:plus, :x_ns, :gate_layer,
+                [3], [0.0], 2, 2, nothing, [scan])
+            plus_fitted = FittedConstructionChannelComparison(raw,
+                [TopoNoise._unavailable_fit(scan, "single-distance plot")])
+            figure = plot_construction_channel_panel(plus_fitted, :as, :z_only)
+            axis = only(item for item in figure.content if item isa CairoMakie.Axis)
+            @test occursin("|+_L>", axis.ylabel[])
+            @test occursin("|+_L>", axis.title[])
+
+            bp_z = plot_construction_channel_panel(fitted, :bp, :z_only)
+            @test any(item isa CairoMakie.Axis && item.ylabel[] == "Logical Z error rate"
+                      for item in bp_z.content)
+        end
+
         mktempdir() do directory
             for basename in ("", ".", "..", "../escape", "a/b", "a\\b")
                 @test_throws ArgumentError save_construction_channel_comparison(
@@ -134,13 +153,34 @@ const _COMPARISON_CLI = joinpath(
             @test result == 0
             @test isfile(joinpath(directory, "smoke-combined.svg"))
             @test isfile(joinpath(directory, "smoke-as-x-only.png"))
+            raw_rows = split.(readlines(joinpath(directory, "smoke-raw.csv"))[2:end], ',')
+            @test [row[13] for row in raw_rows] == ["plus", "plus", "zero", "zero"]
+            @test [row[3] for row in raw_rows] ==
+                  ["logical_x", "logical_z", "logical_x", "logical_z"]
             @test contains(String(take!(output)), "fit unavailable")
+            @test isempty(String(take!(errors)))
+        end
+        mktempdir() do directory
+            output, errors = IOBuffer(), IOBuffer()
+            result = RotatedPlanarConstructionComparison.main([
+                "--distances", "3", "--error-rates", "0", "--shots", "2",
+                "--batch-size", "2", "--bootstrap-replicates", "2", "--no-fit",
+                "--metric", "state_failure", "--logical-state", "plus", "--seed", "6",
+                "--output-dir", directory, "--basename", "state-smoke",
+            ]; io=output, error_io=errors)
+            @test result == 0
+            raw_rows = readlines(joinpath(directory, "state-smoke-raw.csv"))
+            @test any(
+                row -> startswith(row, "as,z_only,state_failure,"), raw_rows[2:end])
+            @test all(row -> split(row, ',')[13] == "plus", raw_rows[2:end])
+            @test isfile(joinpath(directory, "state-smoke-as-z-only.png"))
             @test isempty(String(take!(errors)))
         end
         for arguments in (
                 ["--bootstrap-replicates", "0"],
                 ["--error-rates", "0.1,0.1"],
                 ["--unknown"],
+                ["--logical-state", "invalid"],
                 ["--basename", "../escape"],
             )
             errors = IOBuffer()

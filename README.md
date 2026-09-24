@@ -125,28 +125,90 @@ A_s = \prod_{q \in s} Z_q, \qquad B_p = \prod_{q \in p} X_q.
 
 It supports one logical qubit on odd square patches with distance `d >= 3`.
 The `construction` keyword selects how the Clifford encoder is synthesized;
-it is independent of `logical_state`. Both `construction=:as` and `:bp`
-prepare the same requested state from `:zero`, `:one`, `:plus`, or `:minus`.
-The default is `logical_state=:zero`, namely `|0_L>`.
+the default `logical_state=:native` uses each circuit's direct preparation:
+As prepares `|+_L>` and Bp prepares `|0_L>`. An explicit `logical_state` of
+`:zero`, `:one`, `:plus`, or `:minus` overrides that choice.
 
 Conceptually, the two default-state constructions are the projector formulas
 
 ```math
-|0_L\rangle \propto (I + \bar Z)\prod_s(I + A_s)|+\rangle^{\otimes n},
+|+_L\rangle \propto \prod_s(I + A_s)|+\rangle^{\otimes n},
 \qquad
 |0_L\rangle \propto \prod_p(I + B_p)|0\rangle^{\otimes n}.
 ```
 
-The stored encoder is a deterministic local Clifford schedule implementing
-these states without materializing either projector. At `d=3` it replays the
-literal As/Bp plaquette circuits; larger patches use deterministic reverse
-shelling so each plaquette obtains a fresh local representative. The Bp core
-directly prepares `|0_L>`; the As core is converted locally from its natural
-`|+_L>` preparation to the requested logical basis. `clock=:gate_layer`
-injects independent X and Z faults after every elementary encoder layer;
-`clock=:plaquette` injects once after every completed source-check block.
-Both models use ideal preparation and a final perfect stabilizer measurement:
-there are no repeated syndrome rounds or measurement errors.
+The stored encoder is a deterministic Clifford schedule implementing these
+states without materializing either projector. Bp follows its diagram at
+`d=3`; larger Bp patches use deterministic reverse shelling so each plaquette
+obtains a fresh representative. As is derived from this same Bp schedule:
+rotate every qubit clockwise by 90 degrees and reverse each CNOT's control
+and target, keeping the complete execution order. Boundary checks, trees,
+and representatives all follow that mapping at every supported distance
+and in both boundary orientations. The old independent As `d=3` template
+and independent As shelling are no longer used. The Bp core directly
+prepares `|0_L>`.
+
+The default As encoder starts directly in the ideal product state
+`|+>^⊗n` (`encoder.input_state == :plus`). Each source-check block applies
+H to its fresh representative and then its incoming CNOT tree, preparing
+`|+_L>`. Bp starts in ideal `|0>^⊗n` and uses the paired H and outgoing
+CNOT tree. Every native H and CNOT noise location is now matched under
+rotation and X/Z exchange. An explicit As `:minus` adds a final logical Z.
+
+`yao_encoder(encoder; prepare_input=false)` returns just those stored gates
+for a register already in the declared product input. The default
+`prepare_input=true` includes ideal input preparation so existing calls on
+`zero_state(n)` still work. That ideal prefix is outside the noisy schedule;
+the representative H gates inside the schedule remain noisy.
+
+Explicit As `:zero`/`:one` requests retain the separate all-zero-input
+parity construction. For `:zero`, one free input stays in `|0>`
+and incoming CNOTs set even parity on the input support obtained by
+propagating logical Z backwards through the core. `:one` also adds a final
+logical X. This optional preparation is separate from the native As circuit.
+
+Gate counts with the default `:x_ns` orientation:
+
+| Distance | Native As (`plus`) | Explicit As `zero` | Native Bp (`zero`) |
+|---|---:|---:|---:|
+| 3 | 12 (4 H + 8 CNOT) | 13 (4 H + 9 CNOT) | 12 |
+| 5 | 40 (12 H + 28 CNOT) | 42 (12 H + 30 CNOT) | 40 |
+| 7 | 84 (24 H + 60 CNOT) | 87 (24 H + 63 CNOT) | 84 |
+
+The As parity CNOTs are exposed as a separate `source_check=:logical_parity`
+preparation block, with their actual input support and target. At larger
+distances they can connect nonadjacent data qubits; the counts above do not
+include hardware routing. The plaquette CNOTs stay inside their source
+checks. See the [direct As preparation derivation](docs/superpowers/specs/2026-09-12-direct-as-preparation.md)
+for the input-parity method; its literal gate examples predate the matched
+lattice schedule.
+
+`clock=:gate_layer` injects independent X and Z faults after every elementary
+encoder layer, including the initial H and parity CNOTs. `clock=:plaquette`
+injects once after each completed source-check block and excludes logical
+preparation/correction blocks. Both models use ideal initial product inputs and a
+final perfect stabilizer measurement, with no repeated syndrome rounds or
+measurement errors. For native states, the complete `:gate_layer` noise,
+including H faults, and the `:plaquette` noise exchange logical X and Z
+under the lattice rotation when `p_x` and `p_z` are exchanged. Thus As/Z and Bp/X have equal distributions,
+as do As/X and Bp/Z. Independent Monte Carlo estimates fluctuate;
+properly mapped copies of the same faults give identical decoded outcomes.
+Earlier As scans started from all-zero with noisy H gates on free inputs;
+those archived results describe a different preparation-noise model.
+
+`clock=:post_encoding` is a separate code-capacity model: prepare the full
+encoded state perfectly, then sample one independent X/Z event per data
+qubit before the perfect final syndrome round. For IID bit flips only, use:
+
+```julia
+noise = CircuitPauliNoise(0.1; p_x=0.1, p_z=0, clock=:post_encoding)
+```
+
+There is no preparation, gate, idle, or measurement noise in this model.
+For the same geometry and logical state, As and Bp therefore have the same
+failure distribution. Replaying the same seeded post-encoding errors gives
+identical outcomes; such paired samples must not be counted as independent
+extra shots when fitting a threshold.
 
 ### PyMatching setup
 
@@ -220,10 +282,47 @@ julia --project=. examples/compare_rotated_planar_constructions.jl \
   --output-dir results/rotated-planar-comparison
 ```
 
-All panels prepare `|0_L>`. X-only noise means `p_x=p,p_z=0` and reports the
-logical-X failure rate; Z-only noise means `p_x=0,p_z=p` and reports the
-logical-Z failure rate. `As` and `Bp` choose the circuit construction only;
-they do not choose a different logical state.
+By default (`--logical-state native`), both As panels prepare `|+_L>` directly
+and both Bp panels prepare `|0_L>`. Use `--logical-state zero`, `one`, `plus`,
+or `minus` to prepare the same explicit state in all panels.
+X-only noise means `p_x=p,p_z=0` and reports the
+logical X error rate; Z-only noise means `p_x=0,p_z=p` and reports the
+logical Z error rate after decoding.
+
+This default `channel_logical` metric diagnoses residual logical parity in the
+noise channel. To measure survival of the selected prepared state in both
+noise channels, add `--metric state_failure`; it reports residual logical-X
+failure for `zero`/`one` and residual logical-Z failure for `plus`/`minus`.
+Logical-Z failure can be nonzero on `|0_L>` even though that state is unchanged.
+Likewise, logical-X failure can be nonzero on As `|+_L>` while its state
+failure is zero. The default plots count those residual logical errors.
+
+The [all-plus-input As comparison](results/rotated-planar-plus-input-2026-09-22/README.md)
+uses ideal As `|+>^⊗n` and Bp `|0>^⊗n` inputs with every noisy H/CNOT gate
+matched. It resamples As at distances 9, 11, 13, 15 with 50,000 shots per
+point and retains the unchanged, independently sampled Bp data.
+
+The archived [matched-CNOT logical-error figure](results/rotated-planar-matched-lattice-2026-09-22/README.md)
+uses As `|+_L>` and Bp `|0_L>` at distances 9, 11, 13, 15 with 50,000 shots
+per point. Both As panels are resampled with the matched CNOT schedule;
+the unchanged Bp data are reused after exact schedule and model checks.
+Those As data use the earlier all-zero input with noisy H gates on free
+inputs, so they do not represent the current all-plus input. A separate archived
+[near-critical fitting analysis](results/rotated-planar-matched-lattice-2026-09-22/critical-window-fit/README.md)
+adds joint local fits for As/Z and Bp/X, with bootstrap uncertainty and
+window/model/distance sensitivity checks. The earlier
+[native-state figure](results/rotated-planar-native-logical-errors-2026-09-22/README.md)
+is retained as an archive of the independent As schedule.
+
+For an As-only Z-noise scan, the single-series API avoids sampling the other
+panels:
+
+```julia
+as_plus_z = scan_channel_logical_failure(MersenneTwister(1235);
+    construction=:as, logical_state=:plus, error_channel=:z_only,
+    distances=[9, 11, 13, 15], error_rates=0:0.002:0.1,
+    shots=50_000, batch_size=10_000, seed=1235)
+```
 
 The command writes one combined 2×2 figure and four standalone figures
 (`As`/`Bp` × X-only/Z-only) in SVG, PDF, and PNG, along with raw and fit CSV
@@ -232,6 +331,6 @@ exploratory `p_c` and `nu` collapse. The `d=3,5,7` fit values are exploratory
 diagnostics, not threshold claims. Use `--no-fit` to preserve the raw curves
 and write explicit unavailable-fit records without attempting the fit.
 
-Version 1 intentionally excludes repeated syndrome rounds, measurement noise,
+The comparison API excludes repeated syndrome rounds, measurement noise,
 periodic layouts, holes, and multi-logical-qubit patches. Its three-distance
 scaling fits are exploratory diagnostics, not threshold claims.

@@ -1,0 +1,1010 @@
+[
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.0,
+    "shots": 2000,
+    "counts": [
+      2000,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.005,
+    "shots": 2000,
+    "counts": [
+      1719,
+      0,
+      281,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.01,
+    "shots": 2000,
+    "counts": [
+      1579,
+      0,
+      421,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.015,
+    "shots": 2000,
+    "counts": [
+      1482,
+      1,
+      515,
+      2
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.02,
+    "shots": 2000,
+    "counts": [
+      1366,
+      5,
+      628,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.025,
+    "shots": 2000,
+    "counts": [
+      1320,
+      10,
+      666,
+      4
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.03,
+    "shots": 2000,
+    "counts": [
+      1304,
+      13,
+      682,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.035,
+    "shots": 2000,
+    "counts": [
+      1223,
+      13,
+      749,
+      15
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.04,
+    "shots": 2000,
+    "counts": [
+      1194,
+      27,
+      757,
+      22
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.045,
+    "shots": 2000,
+    "counts": [
+      1205,
+      51,
+      710,
+      34
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.05,
+    "shots": 2000,
+    "counts": [
+      1184,
+      59,
+      720,
+      37
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.055,
+    "shots": 2000,
+    "counts": [
+      1098,
+      70,
+      774,
+      58
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.06,
+    "shots": 2000,
+    "counts": [
+      1090,
+      113,
+      738,
+      59
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.065,
+    "shots": 2000,
+    "counts": [
+      1035,
+      117,
+      752,
+      96
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.07,
+    "shots": 2000,
+    "counts": [
+      978,
+      138,
+      770,
+      114
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.075,
+    "shots": 2000,
+    "counts": [
+      968,
+      153,
+      742,
+      137
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.08,
+    "shots": 2000,
+    "counts": [
+      933,
+      181,
+      751,
+      135
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.085,
+    "shots": 2000,
+    "counts": [
+      896,
+      205,
+      737,
+      162
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.09,
+    "shots": 2000,
+    "counts": [
+      868,
+      226,
+      739,
+      167
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.095,
+    "shots": 2000,
+    "counts": [
+      881,
+      222,
+      712,
+      185
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 9,
+    "p": 0.1,
+    "shots": 2000,
+    "counts": [
+      816,
+      277,
+      658,
+      249
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.0,
+    "shots": 2000,
+    "counts": [
+      2000,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.005,
+    "shots": 2000,
+    "counts": [
+      1616,
+      0,
+      384,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.01,
+    "shots": 2000,
+    "counts": [
+      1359,
+      0,
+      641,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.015,
+    "shots": 2000,
+    "counts": [
+      1373,
+      1,
+      626,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.02,
+    "shots": 2000,
+    "counts": [
+      1271,
+      2,
+      726,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.025,
+    "shots": 2000,
+    "counts": [
+      1284,
+      6,
+      709,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.03,
+    "shots": 2000,
+    "counts": [
+      1233,
+      11,
+      749,
+      7
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.035,
+    "shots": 2000,
+    "counts": [
+      1183,
+      12,
+      793,
+      12
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.04,
+    "shots": 2000,
+    "counts": [
+      1119,
+      20,
+      830,
+      31
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.045,
+    "shots": 2000,
+    "counts": [
+      1136,
+      35,
+      790,
+      39
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.05,
+    "shots": 2000,
+    "counts": [
+      1108,
+      58,
+      799,
+      35
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.055,
+    "shots": 2000,
+    "counts": [
+      1069,
+      77,
+      808,
+      46
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.06,
+    "shots": 2000,
+    "counts": [
+      1021,
+      90,
+      817,
+      72
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.065,
+    "shots": 2000,
+    "counts": [
+      990,
+      150,
+      771,
+      89
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.07,
+    "shots": 2000,
+    "counts": [
+      973,
+      153,
+      752,
+      122
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.075,
+    "shots": 2000,
+    "counts": [
+      894,
+      148,
+      806,
+      152
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.08,
+    "shots": 2000,
+    "counts": [
+      860,
+      204,
+      753,
+      183
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.085,
+    "shots": 2000,
+    "counts": [
+      843,
+      211,
+      756,
+      190
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.09,
+    "shots": 2000,
+    "counts": [
+      827,
+      261,
+      677,
+      235
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.095,
+    "shots": 2000,
+    "counts": [
+      803,
+      261,
+      665,
+      271
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 11,
+    "p": 0.1,
+    "shots": 2000,
+    "counts": [
+      748,
+      285,
+      689,
+      278
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.0,
+    "shots": 2000,
+    "counts": [
+      2000,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.005,
+    "shots": 2000,
+    "counts": [
+      1524,
+      0,
+      476,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.01,
+    "shots": 2000,
+    "counts": [
+      1321,
+      0,
+      679,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.015,
+    "shots": 2000,
+    "counts": [
+      1261,
+      0,
+      738,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.02,
+    "shots": 2000,
+    "counts": [
+      1248,
+      2,
+      749,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.025,
+    "shots": 2000,
+    "counts": [
+      1183,
+      1,
+      816,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.03,
+    "shots": 2000,
+    "counts": [
+      1129,
+      13,
+      855,
+      3
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.035,
+    "shots": 2000,
+    "counts": [
+      1109,
+      18,
+      866,
+      7
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.04,
+    "shots": 2000,
+    "counts": [
+      1115,
+      20,
+      842,
+      23
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.045,
+    "shots": 2000,
+    "counts": [
+      1078,
+      26,
+      864,
+      32
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.05,
+    "shots": 2000,
+    "counts": [
+      1054,
+      45,
+      855,
+      46
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.055,
+    "shots": 2000,
+    "counts": [
+      1006,
+      69,
+      869,
+      56
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.06,
+    "shots": 2000,
+    "counts": [
+      946,
+      102,
+      883,
+      69
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.065,
+    "shots": 2000,
+    "counts": [
+      941,
+      113,
+      841,
+      105
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.07,
+    "shots": 2000,
+    "counts": [
+      897,
+      163,
+      798,
+      142
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.075,
+    "shots": 2000,
+    "counts": [
+      895,
+      180,
+      781,
+      144
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.08,
+    "shots": 2000,
+    "counts": [
+      830,
+      209,
+      759,
+      202
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.085,
+    "shots": 2000,
+    "counts": [
+      786,
+      223,
+      766,
+      225
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.09,
+    "shots": 2000,
+    "counts": [
+      809,
+      261,
+      712,
+      218
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.095,
+    "shots": 2000,
+    "counts": [
+      731,
+      258,
+      735,
+      276
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 13,
+    "p": 0.1,
+    "shots": 2000,
+    "counts": [
+      708,
+      336,
+      677,
+      279
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.0,
+    "shots": 2000,
+    "counts": [
+      2000,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.005,
+    "shots": 2000,
+    "counts": [
+      1413,
+      0,
+      587,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.01,
+    "shots": 2000,
+    "counts": [
+      1272,
+      0,
+      728,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.015,
+    "shots": 2000,
+    "counts": [
+      1253,
+      0,
+      746,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.02,
+    "shots": 2000,
+    "counts": [
+      1182,
+      1,
+      817,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.025,
+    "shots": 2000,
+    "counts": [
+      1164,
+      1,
+      834,
+      1
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.03,
+    "shots": 2000,
+    "counts": [
+      1157,
+      3,
+      840,
+      0
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.035,
+    "shots": 2000,
+    "counts": [
+      1089,
+      12,
+      889,
+      10
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.04,
+    "shots": 2000,
+    "counts": [
+      1071,
+      16,
+      901,
+      12
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.045,
+    "shots": 2000,
+    "counts": [
+      1072,
+      39,
+      863,
+      26
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.05,
+    "shots": 2000,
+    "counts": [
+      1020,
+      49,
+      877,
+      54
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.055,
+    "shots": 2000,
+    "counts": [
+      978,
+      73,
+      882,
+      67
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.06,
+    "shots": 2000,
+    "counts": [
+      962,
+      115,
+      836,
+      87
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.065,
+    "shots": 2000,
+    "counts": [
+      937,
+      125,
+      815,
+      123
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.07,
+    "shots": 2000,
+    "counts": [
+      848,
+      155,
+      832,
+      165
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.075,
+    "shots": 2000,
+    "counts": [
+      840,
+      186,
+      798,
+      176
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.08,
+    "shots": 2000,
+    "counts": [
+      800,
+      231,
+      752,
+      217
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.085,
+    "shots": 2000,
+    "counts": [
+      794,
+      249,
+      711,
+      246
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.09,
+    "shots": 2000,
+    "counts": [
+      713,
+      308,
+      719,
+      260
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.095,
+    "shots": 2000,
+    "counts": [
+      725,
+      315,
+      651,
+      309
+    ]
+  },
+  {
+    "channel": "hadamard",
+    "distance": 15,
+    "p": 0.1,
+    "shots": 2000,
+    "counts": [
+      649,
+      346,
+      642,
+      363
+    ]
+  }
+]

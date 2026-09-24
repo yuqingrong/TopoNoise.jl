@@ -52,6 +52,14 @@ end
             @test default_encoder.code === code
             @test default_encoder.logical_state === :zero
             @test default_encoder.construction === :bp
+            as_encoder = rotated_planar_encoder(code; construction=:as)
+            @test as_encoder.logical_state === :plus
+            as_state = zero_state(9)
+            apply!(as_state, yao_encoder(as_encoder))
+            @test _pauli_expectation(statevec(as_state), logical_x_support(code), :X) ≈ 1
+            @test _pauli_expectation(statevec(as_state), logical_z_support(code), :Z) ≈ 0 atol=1e-12
+            @test all(block.source_check ∉ (:logical_parity, :logical_conversion)
+                      for block in plaquette_blocks(as_encoder))
             for logical_state in (:zero, :one, :plus, :minus), construction in (:as, :bp)
                 encoder = rotated_planar_encoder(
                     code; logical_state=logical_state, construction=construction)
@@ -85,7 +93,7 @@ end
             # Literal execution order of the rotated d=3 template, expressed
             # in the default x_ns check enumeration.
             @test getproperty.(bp_plaquettes, :source_check_index) == [2, 3, 4, 1]
-            @test getproperty.(as_plaquettes, :source_check_index) == [4, 1, 2, 3]
+            @test getproperty.(as_plaquettes, :source_check_index) == [1, 3, 4, 2]
             @test only(filter(
                 block -> block.source_check === :logical,
                 plaquette_blocks(bp))).source_support == logical_x_support(code)
@@ -113,16 +121,11 @@ end
                         qubit for layer in block.layers for operation in layer.operations
                         for qubit in operation.qubits])) == sort(block.source_support)
                 end
-                # In the B_p/X construction the H-control is a newly introduced
-                # qubit.  The literal A_s/Z diagram instead reuses controls, so
-                # imposing this B_p causal invariant on A_s would reject the
-                # requested d=3 Typ circuit.
-                if construction === :bp
-                    touched = Set{Int}()
-                    for block in plaquettes
-                        @test !(block.representative in touched)
-                        union!(touched, block.source_support)
-                    end
+                # Each representative is untouched before its own H gate.
+                touched = Set{Int}()
+                for block in plaquettes
+                    @test !(block.representative in touched)
+                    union!(touched, block.source_support)
                 end
             end
         end
@@ -143,7 +146,7 @@ end
             end
         end
 
-        @testset "d=3 Typ local growth gates" begin
+        @testset "d=3 Bp template and rotated As dual" begin
             code = RotatedPlanarCode(3; boundary_orientation=:x_ew)
             q(x, y) = _typ_site(code, x, y)
             bp_blocks = filter(
@@ -161,18 +164,20 @@ end
                 [(:H, (q(3, 3),)), (:CNOT, (q(3, 3), q(3, 2))),
                  (:CNOT, (q(3, 3), q(2, 3))), (:CNOT, (q(2, 3), q(2, 2)))],
             ]
+            # Rotate the Bp template clockwise and reverse each arrow;
+            # starting in all-plus also pairs the representative H gates.
             @test [_block_signature(block) for block in as_blocks] == [
-                [(:H, (q(2, 1),)), (:CNOT, (q(1, 1), q(2, 1)))],
-                [(:H, (q(2, 2),)), (:CNOT, (q(1, 2), q(2, 2))),
-                 (:CNOT, (q(1, 3), q(2, 2))), (:CNOT, (q(2, 3), q(2, 2)))],
-                [(:H, (q(3, 1),)), (:CNOT, (q(2, 1), q(3, 1))),
-                 (:CNOT, (q(2, 2), q(3, 1))), (:CNOT, (q(3, 2), q(3, 1)))],
+                [(:H, (q(1, 2),)), (:CNOT, (q(1, 3), q(1, 2))),
+                 (:CNOT, (q(2, 2), q(1, 2))), (:CNOT, (q(2, 3), q(2, 2)))],
                 [(:H, (q(3, 3),)), (:CNOT, (q(2, 3), q(3, 3)))],
+                [(:H, (q(1, 1),)), (:CNOT, (q(2, 1), q(1, 1)))],
+                [(:H, (q(3, 1),)), (:CNOT, (q(2, 1), q(3, 1))),
+                 (:CNOT, (q(3, 2), q(3, 1))), (:CNOT, (q(2, 2), q(3, 2)))],
             ]
             @test getproperty.(bp_blocks, :representative) ==
                   [q(2, 1), q(1, 3), q(3, 1), q(3, 3)]
             @test getproperty.(as_blocks, :representative) ==
-                  [q(2, 1), q(2, 2), q(3, 1), q(3, 3)]
+                  [q(1, 2), q(3, 3), q(1, 1), q(3, 1)]
 
             rotated = RotatedPlanarCode(3; boundary_orientation=:x_ns)
             rotate(qubit) = begin
@@ -195,7 +200,33 @@ end
             end
         end
 
-        @testset "stored layers are exact, local, and bounded" begin
+        @testset "As zero uses parity initialization and one CNOT core" begin
+            encoder = rotated_planar_encoder(RotatedPlanarCode(3);
+                construction=:as, logical_state=:zero)
+            @test [_operation_signature(op) for layer in gate_layers(encoder)
+                   for op in layer.operations] == [
+                (:H, (3,)), (:H, (5,)), (:H, (6,)), (:H, (8,)),
+                (:CNOT, (5, 4)), (:CNOT, (3, 2)), (:CNOT, (5, 2)),
+                (:CNOT, (6, 5)), (:CNOT, (6, 9)), (:CNOT, (4, 1)),
+                (:CNOT, (4, 7)), (:CNOT, (8, 7)), (:CNOT, (5, 8)),
+            ]
+            for (d, zero_gates, plus_gates) in ((3, 13, 12), (5, 42, 40), (7, 87, 84))
+                for (logical_state, expected_gates) in
+                    ((:zero, zero_gates), (:one, zero_gates + d),
+                     (:plus, plus_gates), (:minus, plus_gates + d))
+                    encoder = rotated_planar_encoder(
+                        RotatedPlanarCode(d); construction=:as, logical_state=logical_state)
+                    @test length(gate_layers(encoder)) == expected_gates
+                    @test all(block.source_check !== :logical_conversion
+                              for block in plaquette_blocks(encoder))
+                    parity_blocks = filter(block -> block.source_check === :logical_parity,
+                                           plaquette_blocks(encoder))
+                    @test length(parity_blocks) == (logical_state in (:zero, :one) ? 1 : 0)
+                end
+            end
+        end
+
+        @testset "stored layers are exact and core gates stay within plaquettes" begin
             for d in (3, 5, 7), construction in (:as, :bp)
                 encoder = rotated_planar_encoder(
                     RotatedPlanarCode(d); construction=construction)
@@ -212,11 +243,74 @@ end
                                 encoder.code, operation.qubits[1])
                             second_coordinate = data_qubit_coordinate(
                                 encoder.code, operation.qubits[2])
-                            @test max(abs(first_coordinate[1] - second_coordinate[1]),
-                                      abs(first_coordinate[2] - second_coordinate[2])) == 1
+                            if layer.block_kind === :plaquette
+                                row_delta = abs(first_coordinate[1] - second_coordinate[1])
+                                column_delta = abs(first_coordinate[2] - second_coordinate[2])
+                                @test d == 3 ? max(row_delta, column_delta) == 1 :
+                                               row_delta + column_delta == 1
+                            end
                         end
                     end
                 end
+            end
+            # Larger As parity seeds can connect distant inputs; their true
+            # support must be visible outside the local source-check blocks.
+            encoder = rotated_planar_encoder(RotatedPlanarCode(5);
+                construction=:as, logical_state=:zero)
+            parity_blocks = filter(block -> block.source_check === :logical_parity,
+                                   plaquette_blocks(encoder))
+            @test length(parity_blocks) == 1
+            if length(parity_blocks) == 1
+                parity = only(parity_blocks)
+                @test parity.kind === :logical_sector
+                @test parity.source_support == [6, 8, 10]
+                @test parity.representative == 8
+                @test _block_signature(parity) == [
+                    (:CNOT, (6, 8)), (:CNOT, (10, 8))]
+            end
+        end
+
+        @testset "direct As states remain valid on larger patches" begin
+            for d in (9, 11, 13, 15), orientation in (:x_ns, :x_ew),
+                logical_state in (:zero, :one, :plus, :minus)
+                encoder = rotated_planar_encoder(
+                    RotatedPlanarCode(d; boundary_orientation=orientation);
+                    construction=:as, logical_state=logical_state)
+                @test verify_encoder_tableau(encoder)
+            end
+        end
+
+        @testset "As zero equals the logical-Z and As projection of all-plus" begin
+            for orientation in (:x_ns, :x_ew)
+                code = RotatedPlanarCode(3; boundary_orientation=orientation)
+                # Diagonal projectors select bitstrings of even check/logical
+                # parity from the uniform all-plus state, independently of gates.
+                supports = vcat(a_s_checks(code), [logical_z_support(code)])
+                masks = [sum(1 << (q - 1) for q in support) for support in supports]
+                projected = [all(iseven(count_ones(bits & mask)) for mask in masks) ?
+                             1.0 : 0.0 for bits in 0:511]
+                projected ./= sqrt(sum(abs2, projected))
+                register = zero_state(9)
+                apply!(register, yao_encoder(rotated_planar_encoder(
+                    code; construction=:as, logical_state=:zero)))
+                @test abs(dot(projected, statevec(register))) ≈ 1 atol=1e-12
+            end
+        end
+
+        @testset "As native gates encode an independently prepared all-plus input" begin
+            for orientation in (:x_ns, :x_ew)
+                code = RotatedPlanarCode(3; boundary_orientation=orientation)
+                encoder = rotated_planar_encoder(code; construction=:as)
+                register = zero_state(9)
+                for q in 1:9
+                    apply!(register, Yao.put(9, q => Yao.H))
+                end
+                apply!(register, yao_encoder(encoder; prepare_input=false))
+                masks = [sum(1 << (q - 1) for q in support) for support in a_s_checks(code)]
+                projected = [all(iseven(count_ones(bits & mask)) for mask in masks) ?
+                             1.0 : 0.0 for bits in 0:511]
+                projected ./= sqrt(sum(abs2, projected))
+                @test abs(dot(projected, statevec(register))) ≈ 1 atol=1e-12
             end
         end
 
@@ -243,7 +337,11 @@ end
                         _operation_signature(operation)
                         for layer in gate_layers(encoder) for operation in layer.operations
                     ]
-                    @test _yao_operation_signature.(block.blocks) == stored_operations
+                    core = yao_encoder(encoder; prepare_input=false)
+                    @test _yao_operation_signature.(core.blocks) == stored_operations
+                    prefix = encoder.input_state === :plus ?
+                        [(:H, (q,)) for q in 1:9] : []
+                    @test _yao_operation_signature.(block.blocks) == vcat(prefix, stored_operations)
 
                     register = zero_state(9)
                     apply!(register, block)

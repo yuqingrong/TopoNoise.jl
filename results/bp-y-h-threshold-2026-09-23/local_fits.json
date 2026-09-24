@@ -1,0 +1,131 @@
+{
+  "bootstrap": "Multinomial joint-count resampling, shared across X/Z marginals",
+  "goodness_of_fit_minimum_p": 0.01,
+  "method": "Joint weighted local quadratic finite-size scaling",
+  "model": "P_L=A+B*x+C*x^2; x=(p-p_c)*d^(1/nu)",
+  "nu_search_bounds": [
+    0.3,
+    5.0
+  ],
+  "numpy_version": "2.5.1",
+  "primary_fits": {
+    "hadamard/x": {
+      "bootstrap_failures": 0,
+      "bootstrap_replicates": 1000,
+      "bootstrap_seed": 5380466477607136838,
+      "bootstrap_successes": 1000,
+      "chi_square": 24.978022156223943,
+      "coefficients": [
+        0.06254189301323176,
+        0.8165454972083279,
+        3.0698155046034343
+      ],
+      "degree": 2,
+      "degrees_of_freedom": 23,
+      "distances": [
+        9,
+        11,
+        13,
+        15
+      ],
+      "goodness_of_fit_p": 0.35141952463771947,
+      "jacobian_condition": 852.7617296107956,
+      "nu": 1.575067879013075,
+      "nu_covariance_se": 0.17415612601198102,
+      "nu_interval_95": [
+        1.2988386442062534,
+        1.987074557625629
+      ],
+      "nu_standard_error": 0.1838719748282875,
+      "p_c": 0.05367549504690509,
+      "p_c_covariance_se": 0.0005152091363478746,
+      "p_c_interval_95": [
+        0.05258353969411054,
+        0.054647052093640736
+      ],
+      "p_c_standard_error": 0.000532575831382752,
+      "parameters": 5,
+      "points": 28,
+      "reduced_chi_square": 1.0860009633140846,
+      "start_objective_range": 3.375077994860476e-14,
+      "status": "success",
+      "theta_internal": [
+        5.367549504690508,
+        1.575067879013075,
+        0.06254189301323176,
+        0.03742429243039496,
+        0.0064484998602033
+      ],
+      "window": [
+        0.05,
+        0.062
+      ]
+    },
+    "hadamard/z": {
+      "reason": "No unsaturated crossing for every adjacent distance pair",
+      "status": "unresolved"
+    },
+    "y_only/x": {
+      "bootstrap_failures": 0,
+      "bootstrap_replicates": 1000,
+      "bootstrap_seed": 7064666253196532006,
+      "bootstrap_successes": 1000,
+      "chi_square": 17.2345295766943,
+      "coefficients": [
+        0.059667360721977515,
+        1.6572145123083981,
+        10.879266712717895
+      ],
+      "degree": 2,
+      "degrees_of_freedom": 23,
+      "distances": [
+        9,
+        11,
+        13,
+        15
+      ],
+      "goodness_of_fit_p": 0.7975861856455562,
+      "jacobian_condition": 453.65818066225626,
+      "nu": 1.6114701313964572,
+      "nu_covariance_se": 0.0902430338030439,
+      "nu_interval_95": [
+        1.4550069250286104,
+        1.796147088002193
+      ],
+      "nu_standard_error": 0.08975464251732118,
+      "p_c": 0.026213900203899358,
+      "p_c_covariance_se": 0.0002484473034911119,
+      "p_c_interval_95": [
+        0.025717478058746895,
+        0.026680096793113225
+      ],
+      "p_c_standard_error": 0.0002503168360359525,
+      "parameters": 5,
+      "points": 28,
+      "reduced_chi_square": 0.7493273728997522,
+      "start_objective_range": 3.197442310920451e-14,
+      "status": "success",
+      "theta_internal": [
+        2.621390020389936,
+        1.6114701313964572,
+        0.059667360721977515,
+        0.07338653568786398,
+        0.021334130227907505
+      ],
+      "window": [
+        0.022,
+        0.034
+      ]
+    },
+    "y_only/z": {
+      "reason": "No unsaturated crossing for every adjacent distance pair",
+      "status": "unresolved"
+    }
+  },
+  "raw_sha256": "f2ba5802c008e4ed2c191149440601860f7fea90d932ebed9687aa2860ec4d79",
+  "reference": "https://panqec.readthedocs.io/en/latest/tutorials/Computing%20threshold.html",
+  "scipy_version": "1.18.0",
+  "script_sha256": "ecf5c2d7bba3e53a7d3ae685829b3cda7acacf524f4d8a4b3d27d187ff532f3a",
+  "selection_sha256": "1df42c0a14526b45bf75dc8a51f9c7152d80537d21588aad9862390bf94881e8",
+  "uncertainty": "Statistical, conditional on frozen pilot windows and scaling model"
+}

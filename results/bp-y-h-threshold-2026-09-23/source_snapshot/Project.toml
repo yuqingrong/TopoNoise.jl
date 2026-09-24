@@ -1,0 +1,34 @@
+name = "TopoNoise"
+uuid = "e4d92942-b8aa-4e68-9ea0-8f8172a401ff"
+authors = ["yuqingrong"]
+version = "1.0.0-DEV"
+
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+ITensors = "9136182c-28ba-11e9-034c-db9fb085ebd5"
+ITensorNetworks = "2919e153-833c-4bdc-8836-1ea460a35fc7"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Yao = "5872b779-8223-5990-8dd0-5abbb0748c8c"
+
+[compat]
+CairoMakie = "0.15"
+CondaPkg = "0.2"
+Distributions = "0.25"
+ITensors = "0.9.6"
+ITensorNetworks = "0.21"
+PythonCall = "0.9"
+Statistics = "1"
+Yao = "0.9"
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

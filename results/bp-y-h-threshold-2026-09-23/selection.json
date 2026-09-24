@@ -1,0 +1,115 @@
+{
+  "center_grid": 0.002,
+  "frozen": true,
+  "panels": {
+    "hadamard/x": {
+      "adjacent_pair_candidates": [
+        [
+          0.05152671755725191
+        ],
+        [
+          0.047592592592592596,
+          0.055,
+          0.09447368421052632
+        ],
+        [
+          0.05560606060606061
+        ]
+      ],
+      "center": 0.056,
+      "centers": [
+        0.056
+      ],
+      "channel": "hadamard",
+      "component": "x",
+      "crossings": [
+        0.05152671755725191,
+        0.055,
+        0.05560606060606061
+      ],
+      "ordering_z_scores": [
+        3.4928672691969758,
+        4.998087000138495
+      ],
+      "pilot_rate_cut": [
+        0.005,
+        0.45
+      ],
+      "refine_rates": [],
+      "status": "selected"
+    },
+    "hadamard/z": {
+      "adjacent_pair_candidates": [
+        [],
+        [],
+        []
+      ],
+      "centers": [],
+      "channel": "hadamard",
+      "component": "z",
+      "pilot_rate_cut": [
+        0.005,
+        0.45
+      ],
+      "reason": "No unsaturated crossing for every adjacent distance pair",
+      "refine_rates": [],
+      "status": "unresolved"
+    },
+    "y_only/x": {
+      "adjacent_pair_candidates": [
+        [
+          0.0275531914893617
+        ],
+        [
+          0.023333333333333338
+        ],
+        [
+          0.02,
+          0.02833333333333334
+        ]
+      ],
+      "center": 0.028,
+      "centers": [
+        0.028
+      ],
+      "channel": "y_only",
+      "component": "x",
+      "crossings": [
+        0.0275531914893617,
+        0.023333333333333338,
+        0.02833333333333334
+      ],
+      "ordering_z_scores": [
+        2.5677917485858344,
+        4.387956793396451
+      ],
+      "pilot_rate_cut": [
+        0.005,
+        0.45
+      ],
+      "refine_rates": [],
+      "status": "selected"
+    },
+    "y_only/z": {
+      "adjacent_pair_candidates": [
+        [],
+        [],
+        []
+      ],
+      "centers": [],
+      "channel": "y_only",
+      "component": "z",
+      "pilot_rate_cut": [
+        0.005,
+        0.45
+      ],
+      "reason": "No unsaturated crossing for every adjacent distance pair",
+      "refine_rates": [],
+      "status": "unresolved"
+    }
+  },
+  "pilot_counts_sha256": "effb3151535266a5f4b0654edad6e3612bf3630953eac335ca4fe1e31aaee9fd",
+  "policy": "Frozen from independent pilot before production; see analysis.select_crossing",
+  "primary_halfwidth": 0.006,
+  "production_halfwidth": 0.01
+}

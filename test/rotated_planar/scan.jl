@@ -25,6 +25,13 @@ const _SCAN_CSV_HEADER =
     end
 
     if all(name -> isdefined(TopoNoise, name), scan_api)
+        @testset "As scans inherit the native plus preparation" begin
+            scan = scan_logical_failure(MersenneTwister(12);
+                distances=[3], error_rates=[0.0], construction=:as, shots=2)
+            @test scan.logical_state === :plus
+            @test only(scan.points).logical_state === :plus
+        end
+
         @testset "axes are validated before simulation" begin
             invalid_distances = (Int[], [2], [3, 4], [3, 3], [5, 3])
             for distances in invalid_distances

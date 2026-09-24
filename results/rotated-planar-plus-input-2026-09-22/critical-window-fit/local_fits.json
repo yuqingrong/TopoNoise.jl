@@ -1,0 +1,119 @@
+{
+  "method": "Joint weighted least-squares quadratic finite-size scaling",
+  "model": "P_L = A + B*x + C*x^2, x=(p-p_c)*d^(1/nu)",
+  "method_reference": "https://panqec.readthedocs.io/en/latest/tutorials/Computing%20threshold.html",
+  "weights": "Inverse observed binomial variances; recomputed in every count-bootstrap replicate",
+  "bootstrap": "Independent Binomial(N, observed K/N) resampling at each data point",
+  "uncertainty_scope": "Statistical only, conditional on window and scaling model; no finite-size correction term",
+  "raw_csv": "plus_input_logical_errors-raw.csv",
+  "raw_sha256": "75a8bbbf7b17892035453520421560a309f271643d6c7a5067ba5f5e7845f871",
+  "script_sha256": "cf792a36ccb3c6fba207fd9fd2e0f53c2d25e567d158337af0a3691f33e7dc92",
+  "numpy_version": "2.5.1",
+  "scipy_version": "1.18.0",
+  "internal_p_scale": 0.01,
+  "internal_d_reference": 11.0,
+  "primary_fits": {
+    "as/z_only": {
+      "window": [
+        0.02,
+        0.032
+      ],
+      "degree": 2,
+      "distances": [
+        9,
+        11,
+        13,
+        15
+      ],
+      "points": 28,
+      "parameters": 5,
+      "theta_internal": [
+        2.671572500434737,
+        1.5648780632239214,
+        0.06318052654886296,
+        0.0756568682237571,
+        0.024114903798413783
+      ],
+      "coefficients": [
+        0.06318052654886296,
+        1.6344433533970686,
+        11.25456103162064
+      ],
+      "p_c": 0.026715725004347372,
+      "nu": 1.5648780632239214,
+      "p_c_covariance_se": 0.00022500651799718088,
+      "nu_covariance_se": 0.08871794379096752,
+      "chi_square": 22.63408821525791,
+      "degrees_of_freedom": 23,
+      "reduced_chi_square": 0.9840907919677353,
+      "goodness_of_fit_p": 0.4822999894347928,
+      "start_objective_range": 3.552713678800501e-14,
+      "jacobian_condition": 545.6184764350835,
+      "bootstrap_replicates": 1000,
+      "bootstrap_successes": 1000,
+      "bootstrap_failures": 0,
+      "bootstrap_seed": 20260924,
+      "p_c_standard_error": 0.00022479999877780577,
+      "nu_standard_error": 0.0865553795110205,
+      "p_c_interval_95": [
+        0.026255955528297813,
+        0.027143157364517435
+      ],
+      "nu_interval_95": [
+        1.4128358146713837,
+        1.7473784337089902
+      ]
+    },
+    "bp/x_only": {
+      "window": [
+        0.02,
+        0.032
+      ],
+      "degree": 2,
+      "distances": [
+        9,
+        11,
+        13,
+        15
+      ],
+      "points": 28,
+      "parameters": 5,
+      "theta_internal": [
+        2.619780558346329,
+        1.5394587857634283,
+        0.05962901562592137,
+        0.07329164227566602,
+        0.021773480040664962
+      ],
+      "coefficients": [
+        0.05962901562592137,
+        1.5437881424831552,
+        9.660382953698159
+      ],
+      "p_c": 0.026197805583463293,
+      "nu": 1.5394587857634283,
+      "p_c_covariance_se": 0.00021882665322730123,
+      "nu_covariance_se": 0.08344740703103772,
+      "chi_square": 17.74325010461349,
+      "degrees_of_freedom": 23,
+      "reduced_chi_square": 0.7714456567223257,
+      "goodness_of_fit_p": 0.7712632563266808,
+      "start_objective_range": 4.085620730620576e-14,
+      "jacobian_condition": 504.8458686921485,
+      "bootstrap_replicates": 1000,
+      "bootstrap_successes": 1000,
+      "bootstrap_failures": 0,
+      "bootstrap_seed": 20260923,
+      "p_c_standard_error": 0.00022141685860076313,
+      "nu_standard_error": 0.08436202750665743,
+      "p_c_interval_95": [
+        0.025748249349246438,
+        0.026647155200188705
+      ],
+      "nu_interval_95": [
+        1.3855857346932787,
+        1.7114772443506607
+      ]
+    }
+  }
+}

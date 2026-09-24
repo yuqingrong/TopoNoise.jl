@@ -1,0 +1,830 @@
+[
+  {
+    "chi_square": 14.531251817770004,
+    "coefficients": [
+      0.060031227414101496,
+      1.6264906314492127,
+      10.254973776758135
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 15,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.48567818099280624,
+    "halfwidth": 0.004,
+    "jacobian_condition": 594.8092794422192,
+    "kind": "window",
+    "nu": 1.5842745542824996,
+    "nu_covariance_se": 0.1471057971367317,
+    "p_c": 0.026263638278806872,
+    "p_c_covariance_se": 0.00030620901607241276,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 20,
+    "reduced_chi_square": 0.968750121184667,
+    "start_objective_range": 2.842170943040401e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.626363827880687,
+      1.5842745542824996,
+      0.060031227414101496,
+      0.07388946262830871,
+      0.021163935932607396
+    ],
+    "window": [
+      0.024,
+      0.032
+    ]
+  },
+  {
+    "chi_square": 17.2345295766943,
+    "coefficients": [
+      0.059667360721977515,
+      1.6572145123083981,
+      10.879266712717895
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 23,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.7975861856455562,
+    "halfwidth": 0.006,
+    "jacobian_condition": 453.65818066225626,
+    "kind": "window",
+    "nu": 1.6114701313964572,
+    "nu_covariance_se": 0.0902430338030439,
+    "p_c": 0.026213900203899358,
+    "p_c_covariance_se": 0.0002484473034911119,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 28,
+    "reduced_chi_square": 0.7493273728997522,
+    "start_objective_range": 3.197442310920451e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.621390020389936,
+      1.6114701313964572,
+      0.059667360721977515,
+      0.07338653568786398,
+      0.021334130227907505
+    ],
+    "window": [
+      0.022,
+      0.034
+    ]
+  },
+  {
+    "chi_square": 27.645598293773265,
+    "coefficients": [
+      0.058509797867402916,
+      1.6485465910883679,
+      10.817266962229365
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 31,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.6393964380814898,
+    "halfwidth": 0.008,
+    "jacobian_condition": 393.72210646649785,
+    "kind": "window",
+    "nu": 1.6249640426549845,
+    "nu_covariance_se": 0.062416729368836917,
+    "p_c": 0.026050916167742258,
+    "p_c_covariance_se": 0.0002164861322264536,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 36,
+    "reduced_chi_square": 0.8917934933475247,
+    "start_objective_range": 4.440892098500626e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.6050916167742257,
+      1.6249640426549845,
+      0.058509797867402916,
+      0.07210617256889891,
+      0.020694740445665345
+    ],
+    "window": [
+      0.02,
+      0.036
+    ]
+  },
+  {
+    "chi_square": 59.882655202810284,
+    "coefficients": [
+      0.058498852718127346,
+      1.585857253468387,
+      10.554707118644954
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 39,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.01734712967325027,
+    "halfwidth": 0.01,
+    "jacobian_condition": 389.50048324050664,
+    "kind": "window",
+    "nu": 1.6021713455494633,
+    "nu_covariance_se": 0.04573457788238259,
+    "p_c": 0.026068852623554448,
+    "p_c_covariance_se": 0.0001948163563087732,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 44,
+    "reduced_chi_square": 1.535452697507956,
+    "start_objective_range": 1.4566126083082054e-13,
+    "status": "fitted",
+    "theta_internal": [
+      2.6068852623554446,
+      1.6021713455494633,
+      0.058498852718127346,
+      0.07083573880049118,
+      0.021058278085532997
+    ],
+    "window": [
+      0.018,
+      0.038
+    ]
+  },
+  {
+    "chi_square": 13.520909989368523,
+    "coefficients": [
+      0.05971174446525256,
+      1.7396807297718166,
+      7.358565175036555,
+      208.9900718490577
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 14,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.48597808225861205,
+    "halfwidth": 0.004,
+    "jacobian_condition": 721.9705234190809,
+    "kind": "window",
+    "nu": 1.6739441798415617,
+    "nu_covariance_se": 0.17815363393558056,
+    "p_c": 0.026182082775141922,
+    "p_c_covariance_se": 0.0003230528108849241,
+    "panel": "y_only/x",
+    "parameters": 6,
+    "points": 20,
+    "reduced_chi_square": 0.9657792849548945,
+    "start_objective_range": 2.4868995751603507e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.618208277514192,
+      1.6739441798415617,
+      0.05971174446525256,
+      0.07287669617253954,
+      0.012913125945333559,
+      0.01536324740517583
+    ],
+    "window": [
+      0.024,
+      0.032
+    ]
+  },
+  {
+    "chi_square": 17.202220970644134,
+    "coefficients": [
+      0.05970671485254964,
+      1.6482896429175313,
+      10.853698112236096,
+      -7.640558554934728
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 22,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.7521030421586173,
+    "halfwidth": 0.006,
+    "jacobian_condition": 511.38825078760476,
+    "kind": "window",
+    "nu": 1.6028769999720447,
+    "nu_covariance_se": 0.10167732644603177,
+    "p_c": 0.026222091958471153,
+    "p_c_covariance_se": 0.0002511638824719714,
+    "panel": "y_only/x",
+    "parameters": 6,
+    "points": 28,
+    "reduced_chi_square": 0.7819191350292788,
+    "start_objective_range": 3.907985046680551e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.622209195847115,
+      1.6028769999720447,
+      0.05970671485254964,
+      0.07357592185805249,
+      0.02162629400414977,
+      -0.0006795660214692878
+    ],
+    "window": [
+      0.022,
+      0.034
+    ]
+  },
+  {
+    "chi_square": 23.738064611908083,
+    "coefficients": [
+      0.058912676292202794,
+      1.5869142356621533,
+      10.0324852481645,
+      -27.57212444842232
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 30,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.7837439906876341,
+    "halfwidth": 0.008,
+    "jacobian_condition": 425.7739247944148,
+    "kind": "window",
+    "nu": 1.562395363690799,
+    "nu_covariance_se": 0.06740512219444306,
+    "p_c": 0.02611631883638691,
+    "p_c_covariance_se": 0.00021261433011102594,
+    "panel": "y_only/x",
+    "parameters": 6,
+    "points": 36,
+    "reduced_chi_square": 0.7912688203969361,
+    "start_objective_range": 6.394884621840902e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.611631883638691,
+      1.562395363690799,
+      0.058912676292202794,
+      0.07363586801771112,
+      0.021601327381478654,
+      -0.002754724006463705
+    ],
+    "window": [
+      0.02,
+      0.036
+    ]
+  },
+  {
+    "chi_square": 31.36376454640058,
+    "coefficients": [
+      0.059342768499515516,
+      1.4759602816671158,
+      8.586570725536236,
+      -26.008196598509386
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 38,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.7682058903818177,
+    "halfwidth": 0.01,
+    "jacobian_condition": 416.5087143885225,
+    "kind": "window",
+    "nu": 1.4909616882836703,
+    "nu_covariance_se": 0.047091251862662525,
+    "p_c": 0.026167144173645764,
+    "p_c_covariance_se": 0.00018521135983294468,
+    "panel": "y_only/x",
+    "parameters": 6,
+    "points": 44,
+    "reduced_chi_square": 0.8253622249052784,
+    "start_objective_range": 1.1368683772161603e-13,
+    "status": "fitted",
+    "theta_internal": [
+      2.616714417364576,
+      1.4909616882836703,
+      0.059342768499515516,
+      0.07371317594634329,
+      0.021417099609766614,
+      -0.0032398253336979282
+    ],
+    "window": [
+      0.018,
+      0.038
+    ]
+  },
+  {
+    "chi_square": 11.481586267679505,
+    "coefficients": [
+      0.05908749701819727,
+      1.600170065706429,
+      10.227530527978384
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 16,
+    "distances": [
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.7788299642136692,
+    "jacobian_condition": 615.9976762282056,
+    "kind": "distance",
+    "nu": 1.5818253411716838,
+    "nu_covariance_se": 0.1404283568158006,
+    "p_c": 0.026143946298879738,
+    "p_c_covariance_se": 0.00039655957992545254,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 21,
+    "reduced_chi_square": 0.7175991417299691,
+    "start_objective_range": 3.552713678800501e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.6143946298879737,
+      1.5818253411716838,
+      0.05908749701819727,
+      0.07286431050296974,
+      0.021206462072079928
+    ],
+    "window": [
+      0.022,
+      0.034
+    ]
+  },
+  {
+    "chi_square": 14.403683681430097,
+    "coefficients": [
+      0.06118470433911015,
+      1.7375114259997606,
+      11.281193597598609
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 16,
+    "distances": [
+      9,
+      11,
+      13
+    ],
+    "goodness_of_fit_p": 0.5686675749296657,
+    "jacobian_condition": 620.0000846079575,
+    "kind": "distance",
+    "nu": 1.6498547324028618,
+    "nu_covariance_se": 0.14351535345080121,
+    "p_c": 0.026416202094319576,
+    "p_c_covariance_se": 0.0003777114207009627,
+    "panel": "y_only/x",
+    "parameters": 5,
+    "points": 21,
+    "reduced_chi_square": 0.9002302300893811,
+    "start_objective_range": 4.529709940470639e-14,
+    "status": "fitted",
+    "theta_internal": [
+      2.6416202094319576,
+      1.6498547324028618,
+      0.06118470433911015,
+      0.07432421360946892,
+      0.020642408084609293
+    ],
+    "window": [
+      0.022,
+      0.034
+    ]
+  },
+  {
+    "chi_square": 19.398787114714732,
+    "coefficients": [
+      0.059622705749867465,
+      0.9802218759018885,
+      4.104157895756851
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 15,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.19622811915379346,
+    "halfwidth": 0.004,
+    "jacobian_condition": 1612.6240552210688,
+    "kind": "window",
+    "nu": 1.8034256533904158,
+    "nu_covariance_se": 0.3858519290361879,
+    "p_c": 0.05293373007065095,
+    "p_c_covariance_se": 0.0008607913966111734,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 20,
+    "reduced_chi_square": 1.2932524743143154,
+    "start_objective_range": 1.9539925233402755e-13,
+    "status": "fitted",
+    "theta_internal": [
+      5.293373007065095,
+      1.8034256533904158,
+      0.059622705749867465,
+      0.03704903570821127,
+      0.005863124244038545
+    ],
+    "window": [
+      0.052,
+      0.06
+    ]
+  },
+  {
+    "chi_square": 24.978022156223943,
+    "coefficients": [
+      0.06254189301323176,
+      0.8165454972083279,
+      3.0698155046034343
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 23,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.35141952463771947,
+    "halfwidth": 0.006,
+    "jacobian_condition": 852.7617296107956,
+    "kind": "window",
+    "nu": 1.575067879013075,
+    "nu_covariance_se": 0.17415612601198102,
+    "p_c": 0.05367549504690509,
+    "p_c_covariance_se": 0.0005152091363478746,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 28,
+    "reduced_chi_square": 1.0860009633140846,
+    "start_objective_range": 3.375077994860476e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.367549504690508,
+      1.575067879013075,
+      0.06254189301323176,
+      0.03742429243039496,
+      0.0064484998602033
+    ],
+    "window": [
+      0.05,
+      0.062
+    ]
+  },
+  {
+    "chi_square": 32.036702569282156,
+    "coefficients": [
+      0.06224445374407205,
+      0.8147354059865654,
+      1.9244280668610694
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 31,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.4149678618437296,
+    "halfwidth": 0.008,
+    "jacobian_condition": 674.2857940979616,
+    "kind": "window",
+    "nu": 1.5643858815353036,
+    "nu_covariance_se": 0.11693723242783051,
+    "p_c": 0.05352536183117569,
+    "p_c_covariance_se": 0.00042057441352696105,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 36,
+    "reduced_chi_square": 1.0334420183639406,
+    "start_objective_range": 7.815970093361102e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.352536183117569,
+      1.5643858815353036,
+      0.06224445374407205,
+      0.037731532687162964,
+      0.004127407951006058
+    ],
+    "window": [
+      0.048,
+      0.064
+    ]
+  },
+  {
+    "chi_square": 43.45037894610473,
+    "coefficients": [
+      0.0624461846158301,
+      0.7611837691762203,
+      1.9038565864640922
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 39,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.28746426146410825,
+    "halfwidth": 0.01,
+    "jacobian_condition": 557.5867893212715,
+    "kind": "window",
+    "nu": 1.5152201216968955,
+    "nu_covariance_se": 0.08187171855261889,
+    "p_c": 0.053578090067614506,
+    "p_c_covariance_se": 0.0003662527706206074,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 44,
+    "reduced_chi_square": 1.114112280669352,
+    "start_objective_range": 3.907985046680551e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.3578090067614506,
+      1.5152201216968955,
+      0.0624461846158301,
+      0.037049092173097424,
+      0.004510350932773321
+    ],
+    "window": [
+      0.046,
+      0.066
+    ]
+  },
+  {
+    "chi_square": 17.882329614339152,
+    "coefficients": [
+      0.05839143264784703,
+      1.2821960752257837,
+      -13.83081019741811,
+      563.5719974669604
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 14,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.21219282113880872,
+    "halfwidth": 0.004,
+    "jacobian_condition": 2041.667645325918,
+    "kind": "window",
+    "nu": 2.0528455318160304,
+    "nu_covariance_se": 0.4789204229700816,
+    "p_c": 0.052576162777463485,
+    "p_c_covariance_se": 0.0009510820724382758,
+    "panel": "hadamard/x",
+    "parameters": 6,
+    "points": 20,
+    "reduced_chi_square": 1.2773092581670824,
+    "start_objective_range": 2.078337502098293e-13,
+    "status": "fitted",
+    "theta_internal": [
+      5.257616277746348,
+      2.0528455318160304,
+      0.05839143264784703,
+      0.04123316962855704,
+      -0.014303165915055205,
+      0.018742444711063344
+    ],
+    "window": [
+      0.052,
+      0.06
+    ]
+  },
+  {
+    "chi_square": 24.781588274956494,
+    "coefficients": [
+      0.062482509849384825,
+      0.8404825187846958,
+      2.704147030891074,
+      19.313816316729532
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 22,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.30763312799869347,
+    "halfwidth": 0.006,
+    "jacobian_condition": 991.1179062104949,
+    "kind": "window",
+    "nu": 1.613182499377344,
+    "nu_covariance_se": 0.20076152938072633,
+    "p_c": 0.05363609178490439,
+    "p_c_covariance_se": 0.0005330029141798826,
+    "panel": "hadamard/x",
+    "parameters": 6,
+    "points": 28,
+    "reduced_chi_square": 1.1264358306798405,
+    "start_objective_range": 2.398081733190338e-13,
+    "status": "fitted",
+    "theta_internal": [
+      5.363609178490439,
+      1.613182499377344,
+      0.062482509849384825,
+      0.03716039936551309,
+      0.005286079337642812,
+      0.001669256823005163
+    ],
+    "window": [
+      0.05,
+      0.062
+    ]
+  },
+  {
+    "chi_square": 30.801971016269214,
+    "coefficients": [
+      0.062382896411953125,
+      0.7744665503150273,
+      2.1137961776348733,
+      -13.088270223495751
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 30,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.4251887239087972,
+    "halfwidth": 0.008,
+    "jacobian_condition": 743.2093922842822,
+    "kind": "window",
+    "nu": 1.499208534153658,
+    "nu_covariance_se": 0.12595071093942836,
+    "p_c": 0.05359903963433804,
+    "p_c_covariance_se": 0.0004141347431152187,
+    "panel": "hadamard/x",
+    "parameters": 6,
+    "points": 36,
+    "reduced_chi_square": 1.0267323672089739,
+    "start_objective_range": 5.1514348342607263e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.359903963433804,
+      1.499208534153658,
+      0.062382896411953125,
+      0.03833813404805212,
+      0.005179880267951467,
+      -0.0015876953485671474
+    ],
+    "window": [
+      0.048,
+      0.064
+    ]
+  },
+  {
+    "chi_square": 38.48672613713396,
+    "coefficients": [
+      0.06272098629809157,
+      0.7062844284821449,
+      1.8328971104877503,
+      -9.47124303333942
+    ],
+    "degree": 3,
+    "degrees_of_freedom": 38,
+    "distances": [
+      9,
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.44746040583802216,
+    "halfwidth": 0.01,
+    "jacobian_condition": 620.7969669105255,
+    "kind": "window",
+    "nu": 1.4227008722916208,
+    "nu_covariance_se": 0.0865348959408004,
+    "p_c": 0.05369338595118194,
+    "p_c_covariance_se": 0.0003533388717941834,
+    "panel": "hadamard/x",
+    "parameters": 6,
+    "points": 44,
+    "reduced_chi_square": 1.0128085825561568,
+    "start_objective_range": 3.552713678800501e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.369338595118194,
+      1.4227008722916208,
+      0.06272098629809157,
+      0.03810329329936425,
+      0.0053346244506774524,
+      -0.0014871529184708222
+    ],
+    "window": [
+      0.046,
+      0.066
+    ]
+  },
+  {
+    "chi_square": 14.28024739576444,
+    "coefficients": [
+      0.06082787275912001,
+      0.8054515894448124,
+      2.8527575185019045
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 16,
+    "distances": [
+      11,
+      13,
+      15
+    ],
+    "goodness_of_fit_p": 0.5778446751644659,
+    "jacobian_condition": 1210.841757946981,
+    "kind": "distance",
+    "nu": 1.571635078233026,
+    "nu_covariance_se": 0.27858589888051105,
+    "p_c": 0.053259643288263714,
+    "p_c_covariance_se": 0.0008643452215669555,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 21,
+    "reduced_chi_square": 0.8925154622352774,
+    "start_objective_range": 7.105427357601002e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.325964328826371,
+      1.571635078233026,
+      0.06082787275912001,
+      0.03703879098530336,
+      0.006032531203985989
+    ],
+    "window": [
+      0.05,
+      0.062
+    ]
+  },
+  {
+    "chi_square": 21.770349698755176,
+    "coefficients": [
+      0.0629030817261784,
+      0.8925132471766325,
+      3.4690943237932292
+    ],
+    "degree": 2,
+    "degrees_of_freedom": 16,
+    "distances": [
+      9,
+      11,
+      13
+    ],
+    "goodness_of_fit_p": 0.15076262360582182,
+    "jacobian_condition": 1246.6125740827467,
+    "kind": "distance",
+    "nu": 1.6679273961035825,
+    "nu_covariance_se": 0.2963002129038381,
+    "p_c": 0.05376887260139054,
+    "p_c_covariance_se": 0.0008220147646303673,
+    "panel": "hadamard/x",
+    "parameters": 5,
+    "points": 21,
+    "reduced_chi_square": 1.3606468561721985,
+    "start_objective_range": 5.861977570020827e-14,
+    "status": "fitted",
+    "theta_internal": [
+      5.376887260139053,
+      1.6679273961035825,
+      0.0629030817261784,
+      0.037581835740192346,
+      0.006150957789080889
+    ],
+    "window": [
+      0.05,
+      0.062
+    ]
+  }
+]

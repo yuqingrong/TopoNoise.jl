@@ -1,0 +1,6703 @@
+[[circuits]]
+a_s = [[2, 3, 5, 6], [4, 5, 7, 8], [6, 9], [1, 4]]
+b_p = [[5, 6, 8, 9], [1, 2, 4, 5], [2, 3], [7, 8]]
+boundary_orientation = "x_ns"
+clock = "gate_layer"
+construction = "bp"
+distance = 3
+input_state = "zero"
+logical_x = [3, 6, 9]
+logical_z = [1, 2, 3]
+
+    [[circuits.layers]]
+    active_qubits = [4]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [4]
+    [[circuits.layers]]
+    active_qubits = [1, 4]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 1]
+    [[circuits.layers]]
+    active_qubits = [4, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 5]
+    [[circuits.layers]]
+    active_qubits = [2, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [5, 2]
+    [[circuits.layers]]
+    active_qubits = [3]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [3]
+    [[circuits.layers]]
+    active_qubits = [2, 3]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [3, 2]
+    [[circuits.layers]]
+    active_qubits = [7]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [7]
+    [[circuits.layers]]
+    active_qubits = [7, 8]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [7, 8]
+    [[circuits.layers]]
+    active_qubits = [9]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [9]
+    [[circuits.layers]]
+    active_qubits = [8, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 8]
+    [[circuits.layers]]
+    active_qubits = [6, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 6]
+    [[circuits.layers]]
+    active_qubits = [5, 6]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 5]
+[[circuits]]
+a_s = [[8, 9, 17, 18], [26, 27, 35, 36], [44, 45, 53, 54], [62, 63, 71, 72], [16, 17, 25, 26], [34, 35, 43, 44], [52, 53, 61, 62], [70, 71, 79, 80], [6, 7, 15, 16], [24, 25, 33, 34], [42, 43, 51, 52], [60, 61, 69, 70], [14, 15, 23, 24], [32, 33, 41, 42], [50, 51, 59, 60], [68, 69, 77, 78], [4, 5, 13, 14], [22, 23, 31, 32], [40, 41, 49, 50], [58, 59, 67, 68], [12, 13, 21, 22], [30, 31, 39, 40], [48, 49, 57, 58], [66, 67, 75, 76], [2, 3, 11, 12], [20, 21, 29, 30], [38, 39, 47, 48], [56, 57, 65, 66], [10, 11, 19, 20], [28, 29, 37, 38], [46, 47, 55, 56], [64, 65, 73, 74], [18, 27], [36, 45], [54, 63], [72, 81], [1, 10], [19, 28], [37, 46], [55, 64]]
+b_p = [[17, 18, 26, 27], [35, 36, 44, 45], [53, 54, 62, 63], [71, 72, 80, 81], [7, 8, 16, 17], [25, 26, 34, 35], [43, 44, 52, 53], [61, 62, 70, 71], [15, 16, 24, 25], [33, 34, 42, 43], [51, 52, 60, 61], [69, 70, 78, 79], [5, 6, 14, 15], [23, 24, 32, 33], [41, 42, 50, 51], [59, 60, 68, 69], [13, 14, 22, 23], [31, 32, 40, 41], [49, 50, 58, 59], [67, 68, 76, 77], [3, 4, 12, 13], [21, 22, 30, 31], [39, 40, 48, 49], [57, 58, 66, 67], [11, 12, 20, 21], [29, 30, 38, 39], [47, 48, 56, 57], [65, 66, 74, 75], [1, 2, 10, 11], [19, 20, 28, 29], [37, 38, 46, 47], [55, 56, 64, 65], [8, 9], [6, 7], [4, 5], [2, 3], [79, 80], [77, 78], [75, 76], [73, 74]]
+boundary_orientation = "x_ns"
+clock = "gate_layer"
+construction = "bp"
+distance = 9
+input_state = "zero"
+logical_x = [9, 18, 27, 36, 45, 54, 63, 72, 81]
+logical_z = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    [[circuits.layers]]
+    active_qubits = [55]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [55]
+    [[circuits.layers]]
+    active_qubits = [55, 56]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [55, 56]
+    [[circuits.layers]]
+    active_qubits = [55, 64]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [55, 64]
+    [[circuits.layers]]
+    active_qubits = [56, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [56, 65]
+    [[circuits.layers]]
+    active_qubits = [37]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [37]
+    [[circuits.layers]]
+    active_qubits = [37, 38]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [37, 38]
+    [[circuits.layers]]
+    active_qubits = [37, 46]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [37, 46]
+    [[circuits.layers]]
+    active_qubits = [38, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 47]
+    [[circuits.layers]]
+    active_qubits = [19]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [19]
+    [[circuits.layers]]
+    active_qubits = [19, 20]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [19, 20]
+    [[circuits.layers]]
+    active_qubits = [19, 28]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [19, 28]
+    [[circuits.layers]]
+    active_qubits = [20, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 29]
+    [[circuits.layers]]
+    active_qubits = [1]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [1]
+    [[circuits.layers]]
+    active_qubits = [1, 2]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 2]
+    [[circuits.layers]]
+    active_qubits = [1, 10]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 10]
+    [[circuits.layers]]
+    active_qubits = [2, 11]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [2, 11]
+    [[circuits.layers]]
+    active_qubits = [66]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [66]
+    [[circuits.layers]]
+    active_qubits = [66, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 75]
+    [[circuits.layers]]
+    active_qubits = [65, 66]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 65]
+    [[circuits.layers]]
+    active_qubits = [74, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [75, 74]
+    [[circuits.layers]]
+    active_qubits = [48]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [48]
+    [[circuits.layers]]
+    active_qubits = [48, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 57]
+    [[circuits.layers]]
+    active_qubits = [47, 48]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 47]
+    [[circuits.layers]]
+    active_qubits = [56, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [57, 56]
+    [[circuits.layers]]
+    active_qubits = [30]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [30]
+    [[circuits.layers]]
+    active_qubits = [30, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 39]
+    [[circuits.layers]]
+    active_qubits = [29, 30]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 29]
+    [[circuits.layers]]
+    active_qubits = [38, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [39, 38]
+    [[circuits.layers]]
+    active_qubits = [12]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [12]
+    [[circuits.layers]]
+    active_qubits = [12, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 21]
+    [[circuits.layers]]
+    active_qubits = [11, 12]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 11]
+    [[circuits.layers]]
+    active_qubits = [20, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [21, 20]
+    [[circuits.layers]]
+    active_qubits = [58]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [58]
+    [[circuits.layers]]
+    active_qubits = [58, 67]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 67]
+    [[circuits.layers]]
+    active_qubits = [57, 58]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 57]
+    [[circuits.layers]]
+    active_qubits = [66, 67]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [67, 66]
+    [[circuits.layers]]
+    active_qubits = [40]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [40]
+    [[circuits.layers]]
+    active_qubits = [40, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 49]
+    [[circuits.layers]]
+    active_qubits = [39, 40]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 39]
+    [[circuits.layers]]
+    active_qubits = [48, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [49, 48]
+    [[circuits.layers]]
+    active_qubits = [22]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [22]
+    [[circuits.layers]]
+    active_qubits = [22, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 31]
+    [[circuits.layers]]
+    active_qubits = [21, 22]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 21]
+    [[circuits.layers]]
+    active_qubits = [30, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [31, 30]
+    [[circuits.layers]]
+    active_qubits = [3]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [3]
+    [[circuits.layers]]
+    active_qubits = [2, 3]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [3, 2]
+    [[circuits.layers]]
+    active_qubits = [4]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [4]
+    [[circuits.layers]]
+    active_qubits = [4, 13]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 13]
+    [[circuits.layers]]
+    active_qubits = [3, 4]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 3]
+    [[circuits.layers]]
+    active_qubits = [12, 13]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [13, 12]
+    [[circuits.layers]]
+    active_qubits = [76]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [76]
+    [[circuits.layers]]
+    active_qubits = [75, 76]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [76, 75]
+    [[circuits.layers]]
+    active_qubits = [68]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [68]
+    [[circuits.layers]]
+    active_qubits = [68, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 77]
+    [[circuits.layers]]
+    active_qubits = [67, 68]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 67]
+    [[circuits.layers]]
+    active_qubits = [76, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [77, 76]
+    [[circuits.layers]]
+    active_qubits = [50]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [50]
+    [[circuits.layers]]
+    active_qubits = [50, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 59]
+    [[circuits.layers]]
+    active_qubits = [49, 50]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 49]
+    [[circuits.layers]]
+    active_qubits = [58, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [59, 58]
+    [[circuits.layers]]
+    active_qubits = [32]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [32]
+    [[circuits.layers]]
+    active_qubits = [32, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 41]
+    [[circuits.layers]]
+    active_qubits = [31, 32]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 31]
+    [[circuits.layers]]
+    active_qubits = [40, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [41, 40]
+    [[circuits.layers]]
+    active_qubits = [14]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [14]
+    [[circuits.layers]]
+    active_qubits = [14, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 23]
+    [[circuits.layers]]
+    active_qubits = [13, 14]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 13]
+    [[circuits.layers]]
+    active_qubits = [22, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [23, 22]
+    [[circuits.layers]]
+    active_qubits = [60]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [60]
+    [[circuits.layers]]
+    active_qubits = [60, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 69]
+    [[circuits.layers]]
+    active_qubits = [59, 60]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 59]
+    [[circuits.layers]]
+    active_qubits = [68, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [69, 68]
+    [[circuits.layers]]
+    active_qubits = [42]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [42]
+    [[circuits.layers]]
+    active_qubits = [42, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 51]
+    [[circuits.layers]]
+    active_qubits = [41, 42]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 41]
+    [[circuits.layers]]
+    active_qubits = [50, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [51, 50]
+    [[circuits.layers]]
+    active_qubits = [24]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [24]
+    [[circuits.layers]]
+    active_qubits = [24, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 33]
+    [[circuits.layers]]
+    active_qubits = [23, 24]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 23]
+    [[circuits.layers]]
+    active_qubits = [32, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [33, 32]
+    [[circuits.layers]]
+    active_qubits = [5]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [5]
+    [[circuits.layers]]
+    active_qubits = [4, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [5, 4]
+    [[circuits.layers]]
+    active_qubits = [6]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [6]
+    [[circuits.layers]]
+    active_qubits = [6, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 15]
+    [[circuits.layers]]
+    active_qubits = [5, 6]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 5]
+    [[circuits.layers]]
+    active_qubits = [14, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [15, 14]
+    [[circuits.layers]]
+    active_qubits = [78]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [78]
+    [[circuits.layers]]
+    active_qubits = [77, 78]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [78, 77]
+    [[circuits.layers]]
+    active_qubits = [70]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [70]
+    [[circuits.layers]]
+    active_qubits = [70, 79]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 79]
+    [[circuits.layers]]
+    active_qubits = [69, 70]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 69]
+    [[circuits.layers]]
+    active_qubits = [78, 79]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [79, 78]
+    [[circuits.layers]]
+    active_qubits = [52]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [52]
+    [[circuits.layers]]
+    active_qubits = [52, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 61]
+    [[circuits.layers]]
+    active_qubits = [51, 52]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 51]
+    [[circuits.layers]]
+    active_qubits = [60, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [61, 60]
+    [[circuits.layers]]
+    active_qubits = [34]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [34]
+    [[circuits.layers]]
+    active_qubits = [34, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 43]
+    [[circuits.layers]]
+    active_qubits = [33, 34]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 33]
+    [[circuits.layers]]
+    active_qubits = [42, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [43, 42]
+    [[circuits.layers]]
+    active_qubits = [16]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [16]
+    [[circuits.layers]]
+    active_qubits = [16, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 25]
+    [[circuits.layers]]
+    active_qubits = [15, 16]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 15]
+    [[circuits.layers]]
+    active_qubits = [24, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [25, 24]
+    [[circuits.layers]]
+    active_qubits = [62]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [62]
+    [[circuits.layers]]
+    active_qubits = [62, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 71]
+    [[circuits.layers]]
+    active_qubits = [61, 62]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 61]
+    [[circuits.layers]]
+    active_qubits = [70, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [71, 70]
+    [[circuits.layers]]
+    active_qubits = [44]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [44]
+    [[circuits.layers]]
+    active_qubits = [44, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 53]
+    [[circuits.layers]]
+    active_qubits = [43, 44]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 43]
+    [[circuits.layers]]
+    active_qubits = [52, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [53, 52]
+    [[circuits.layers]]
+    active_qubits = [26]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [26]
+    [[circuits.layers]]
+    active_qubits = [26, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 35]
+    [[circuits.layers]]
+    active_qubits = [25, 26]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 25]
+    [[circuits.layers]]
+    active_qubits = [34, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [35, 34]
+    [[circuits.layers]]
+    active_qubits = [7]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [7]
+    [[circuits.layers]]
+    active_qubits = [6, 7]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [7, 6]
+    [[circuits.layers]]
+    active_qubits = [8]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [8]
+    [[circuits.layers]]
+    active_qubits = [8, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 17]
+    [[circuits.layers]]
+    active_qubits = [7, 8]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 7]
+    [[circuits.layers]]
+    active_qubits = [16, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [17, 16]
+    [[circuits.layers]]
+    active_qubits = [80]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [80]
+    [[circuits.layers]]
+    active_qubits = [79, 80]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 79]
+    [[circuits.layers]]
+    active_qubits = [72]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [72]
+    [[circuits.layers]]
+    active_qubits = [72, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 81]
+    [[circuits.layers]]
+    active_qubits = [71, 72]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 71]
+    [[circuits.layers]]
+    active_qubits = [80, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [81, 80]
+    [[circuits.layers]]
+    active_qubits = [54]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [54]
+    [[circuits.layers]]
+    active_qubits = [54, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 63]
+    [[circuits.layers]]
+    active_qubits = [53, 54]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 53]
+    [[circuits.layers]]
+    active_qubits = [62, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [63, 62]
+    [[circuits.layers]]
+    active_qubits = [36]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [36]
+    [[circuits.layers]]
+    active_qubits = [36, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 45]
+    [[circuits.layers]]
+    active_qubits = [35, 36]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 35]
+    [[circuits.layers]]
+    active_qubits = [44, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [45, 44]
+    [[circuits.layers]]
+    active_qubits = [18]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [18]
+    [[circuits.layers]]
+    active_qubits = [18, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 27]
+    [[circuits.layers]]
+    active_qubits = [17, 18]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 17]
+    [[circuits.layers]]
+    active_qubits = [26, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [27, 26]
+    [[circuits.layers]]
+    active_qubits = [73]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [73]
+    [[circuits.layers]]
+    active_qubits = [73, 74]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [73, 74]
+    [[circuits.layers]]
+    active_qubits = [9]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [9]
+    [[circuits.layers]]
+    active_qubits = [8, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 8]
+[[circuits]]
+a_s = [[10, 11, 21, 22], [32, 33, 43, 44], [54, 55, 65, 66], [76, 77, 87, 88], [98, 99, 109, 110], [20, 21, 31, 32], [42, 43, 53, 54], [64, 65, 75, 76], [86, 87, 97, 98], [108, 109, 119, 120], [8, 9, 19, 20], [30, 31, 41, 42], [52, 53, 63, 64], [74, 75, 85, 86], [96, 97, 107, 108], [18, 19, 29, 30], [40, 41, 51, 52], [62, 63, 73, 74], [84, 85, 95, 96], [106, 107, 117, 118], [6, 7, 17, 18], [28, 29, 39, 40], [50, 51, 61, 62], [72, 73, 83, 84], [94, 95, 105, 106], [16, 17, 27, 28], [38, 39, 49, 50], [60, 61, 71, 72], [82, 83, 93, 94], [104, 105, 115, 116], [4, 5, 15, 16], [26, 27, 37, 38], [48, 49, 59, 60], [70, 71, 81, 82], [92, 93, 103, 104], [14, 15, 25, 26], [36, 37, 47, 48], [58, 59, 69, 70], [80, 81, 91, 92], [102, 103, 113, 114], [2, 3, 13, 14], [24, 25, 35, 36], [46, 47, 57, 58], [68, 69, 79, 80], [90, 91, 101, 102], [12, 13, 23, 24], [34, 35, 45, 46], [56, 57, 67, 68], [78, 79, 89, 90], [100, 101, 111, 112], [22, 33], [44, 55], [66, 77], [88, 99], [110, 121], [1, 12], [23, 34], [45, 56], [67, 78], [89, 100]]
+b_p = [[21, 22, 32, 33], [43, 44, 54, 55], [65, 66, 76, 77], [87, 88, 98, 99], [109, 110, 120, 121], [9, 10, 20, 21], [31, 32, 42, 43], [53, 54, 64, 65], [75, 76, 86, 87], [97, 98, 108, 109], [19, 20, 30, 31], [41, 42, 52, 53], [63, 64, 74, 75], [85, 86, 96, 97], [107, 108, 118, 119], [7, 8, 18, 19], [29, 30, 40, 41], [51, 52, 62, 63], [73, 74, 84, 85], [95, 96, 106, 107], [17, 18, 28, 29], [39, 40, 50, 51], [61, 62, 72, 73], [83, 84, 94, 95], [105, 106, 116, 117], [5, 6, 16, 17], [27, 28, 38, 39], [49, 50, 60, 61], [71, 72, 82, 83], [93, 94, 104, 105], [15, 16, 26, 27], [37, 38, 48, 49], [59, 60, 70, 71], [81, 82, 92, 93], [103, 104, 114, 115], [3, 4, 14, 15], [25, 26, 36, 37], [47, 48, 58, 59], [69, 70, 80, 81], [91, 92, 102, 103], [13, 14, 24, 25], [35, 36, 46, 47], [57, 58, 68, 69], [79, 80, 90, 91], [101, 102, 112, 113], [1, 2, 12, 13], [23, 24, 34, 35], [45, 46, 56, 57], [67, 68, 78, 79], [89, 90, 100, 101], [10, 11], [8, 9], [6, 7], [4, 5], [2, 3], [119, 120], [117, 118], [115, 116], [113, 114], [111, 112]]
+boundary_orientation = "x_ns"
+clock = "gate_layer"
+construction = "bp"
+distance = 11
+input_state = "zero"
+logical_x = [11, 22, 33, 44, 55, 66, 77, 88, 99, 110, 121]
+logical_z = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+    [[circuits.layers]]
+    active_qubits = [89]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [89]
+    [[circuits.layers]]
+    active_qubits = [89, 90]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [89, 90]
+    [[circuits.layers]]
+    active_qubits = [89, 100]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [89, 100]
+    [[circuits.layers]]
+    active_qubits = [90, 101]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [90, 101]
+    [[circuits.layers]]
+    active_qubits = [67]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [67]
+    [[circuits.layers]]
+    active_qubits = [67, 68]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [67, 68]
+    [[circuits.layers]]
+    active_qubits = [67, 78]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [67, 78]
+    [[circuits.layers]]
+    active_qubits = [68, 79]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 79]
+    [[circuits.layers]]
+    active_qubits = [45]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [45]
+    [[circuits.layers]]
+    active_qubits = [45, 46]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [45, 46]
+    [[circuits.layers]]
+    active_qubits = [45, 56]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [45, 56]
+    [[circuits.layers]]
+    active_qubits = [46, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [46, 57]
+    [[circuits.layers]]
+    active_qubits = [23]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [23]
+    [[circuits.layers]]
+    active_qubits = [23, 24]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [23, 24]
+    [[circuits.layers]]
+    active_qubits = [23, 34]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [23, 34]
+    [[circuits.layers]]
+    active_qubits = [24, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 35]
+    [[circuits.layers]]
+    active_qubits = [1]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [1]
+    [[circuits.layers]]
+    active_qubits = [1, 2]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 2]
+    [[circuits.layers]]
+    active_qubits = [1, 12]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 12]
+    [[circuits.layers]]
+    active_qubits = [2, 13]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [2, 13]
+    [[circuits.layers]]
+    active_qubits = [102]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [102]
+    [[circuits.layers]]
+    active_qubits = [102, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 113]
+    [[circuits.layers]]
+    active_qubits = [101, 102]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 101]
+    [[circuits.layers]]
+    active_qubits = [112, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [113, 112]
+    [[circuits.layers]]
+    active_qubits = [80]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [80]
+    [[circuits.layers]]
+    active_qubits = [80, 91]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 91]
+    [[circuits.layers]]
+    active_qubits = [79, 80]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 79]
+    [[circuits.layers]]
+    active_qubits = [90, 91]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [91, 90]
+    [[circuits.layers]]
+    active_qubits = [58]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [58]
+    [[circuits.layers]]
+    active_qubits = [58, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 69]
+    [[circuits.layers]]
+    active_qubits = [57, 58]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 57]
+    [[circuits.layers]]
+    active_qubits = [68, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [69, 68]
+    [[circuits.layers]]
+    active_qubits = [36]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [36]
+    [[circuits.layers]]
+    active_qubits = [36, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 47]
+    [[circuits.layers]]
+    active_qubits = [35, 36]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 35]
+    [[circuits.layers]]
+    active_qubits = [46, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [47, 46]
+    [[circuits.layers]]
+    active_qubits = [14]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [14]
+    [[circuits.layers]]
+    active_qubits = [14, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 25]
+    [[circuits.layers]]
+    active_qubits = [13, 14]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 13]
+    [[circuits.layers]]
+    active_qubits = [24, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [25, 24]
+    [[circuits.layers]]
+    active_qubits = [92]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [92]
+    [[circuits.layers]]
+    active_qubits = [92, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [92, 103]
+    [[circuits.layers]]
+    active_qubits = [91, 92]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [92, 91]
+    [[circuits.layers]]
+    active_qubits = [102, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [103, 102]
+    [[circuits.layers]]
+    active_qubits = [70]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [70]
+    [[circuits.layers]]
+    active_qubits = [70, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 81]
+    [[circuits.layers]]
+    active_qubits = [69, 70]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 69]
+    [[circuits.layers]]
+    active_qubits = [80, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [81, 80]
+    [[circuits.layers]]
+    active_qubits = [48]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [48]
+    [[circuits.layers]]
+    active_qubits = [48, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 59]
+    [[circuits.layers]]
+    active_qubits = [47, 48]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 47]
+    [[circuits.layers]]
+    active_qubits = [58, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [59, 58]
+    [[circuits.layers]]
+    active_qubits = [26]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [26]
+    [[circuits.layers]]
+    active_qubits = [26, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 37]
+    [[circuits.layers]]
+    active_qubits = [25, 26]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 25]
+    [[circuits.layers]]
+    active_qubits = [36, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [37, 36]
+    [[circuits.layers]]
+    active_qubits = [3]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [3]
+    [[circuits.layers]]
+    active_qubits = [2, 3]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [3, 2]
+    [[circuits.layers]]
+    active_qubits = [4]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [4]
+    [[circuits.layers]]
+    active_qubits = [4, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 15]
+    [[circuits.layers]]
+    active_qubits = [3, 4]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 3]
+    [[circuits.layers]]
+    active_qubits = [14, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [15, 14]
+    [[circuits.layers]]
+    active_qubits = [114]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [114]
+    [[circuits.layers]]
+    active_qubits = [113, 114]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [114, 113]
+    [[circuits.layers]]
+    active_qubits = [104]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [104]
+    [[circuits.layers]]
+    active_qubits = [104, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 115]
+    [[circuits.layers]]
+    active_qubits = [103, 104]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 103]
+    [[circuits.layers]]
+    active_qubits = [114, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [115, 114]
+    [[circuits.layers]]
+    active_qubits = [82]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [82]
+    [[circuits.layers]]
+    active_qubits = [82, 93]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 93]
+    [[circuits.layers]]
+    active_qubits = [81, 82]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 81]
+    [[circuits.layers]]
+    active_qubits = [92, 93]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [93, 92]
+    [[circuits.layers]]
+    active_qubits = [60]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [60]
+    [[circuits.layers]]
+    active_qubits = [60, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 71]
+    [[circuits.layers]]
+    active_qubits = [59, 60]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 59]
+    [[circuits.layers]]
+    active_qubits = [70, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [71, 70]
+    [[circuits.layers]]
+    active_qubits = [38]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [38]
+    [[circuits.layers]]
+    active_qubits = [38, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 49]
+    [[circuits.layers]]
+    active_qubits = [37, 38]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 37]
+    [[circuits.layers]]
+    active_qubits = [48, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [49, 48]
+    [[circuits.layers]]
+    active_qubits = [16]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [16]
+    [[circuits.layers]]
+    active_qubits = [16, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 27]
+    [[circuits.layers]]
+    active_qubits = [15, 16]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 15]
+    [[circuits.layers]]
+    active_qubits = [26, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [27, 26]
+    [[circuits.layers]]
+    active_qubits = [94]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [94]
+    [[circuits.layers]]
+    active_qubits = [94, 105]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 105]
+    [[circuits.layers]]
+    active_qubits = [93, 94]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 93]
+    [[circuits.layers]]
+    active_qubits = [104, 105]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [105, 104]
+    [[circuits.layers]]
+    active_qubits = [72]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [72]
+    [[circuits.layers]]
+    active_qubits = [72, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 83]
+    [[circuits.layers]]
+    active_qubits = [71, 72]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 71]
+    [[circuits.layers]]
+    active_qubits = [82, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [83, 82]
+    [[circuits.layers]]
+    active_qubits = [50]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [50]
+    [[circuits.layers]]
+    active_qubits = [50, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 61]
+    [[circuits.layers]]
+    active_qubits = [49, 50]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 49]
+    [[circuits.layers]]
+    active_qubits = [60, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [61, 60]
+    [[circuits.layers]]
+    active_qubits = [28]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [28]
+    [[circuits.layers]]
+    active_qubits = [28, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [28, 39]
+    [[circuits.layers]]
+    active_qubits = [27, 28]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [28, 27]
+    [[circuits.layers]]
+    active_qubits = [38, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [39, 38]
+    [[circuits.layers]]
+    active_qubits = [5]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [5]
+    [[circuits.layers]]
+    active_qubits = [4, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [5, 4]
+    [[circuits.layers]]
+    active_qubits = [6]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [6]
+    [[circuits.layers]]
+    active_qubits = [6, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 17]
+    [[circuits.layers]]
+    active_qubits = [5, 6]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 5]
+    [[circuits.layers]]
+    active_qubits = [16, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [17, 16]
+    [[circuits.layers]]
+    active_qubits = [116]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [116]
+    [[circuits.layers]]
+    active_qubits = [115, 116]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [116, 115]
+    [[circuits.layers]]
+    active_qubits = [106]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [106]
+    [[circuits.layers]]
+    active_qubits = [106, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [106, 117]
+    [[circuits.layers]]
+    active_qubits = [105, 106]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [106, 105]
+    [[circuits.layers]]
+    active_qubits = [116, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [117, 116]
+    [[circuits.layers]]
+    active_qubits = [84]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [84]
+    [[circuits.layers]]
+    active_qubits = [84, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 95]
+    [[circuits.layers]]
+    active_qubits = [83, 84]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 83]
+    [[circuits.layers]]
+    active_qubits = [94, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [95, 94]
+    [[circuits.layers]]
+    active_qubits = [62]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [62]
+    [[circuits.layers]]
+    active_qubits = [62, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 73]
+    [[circuits.layers]]
+    active_qubits = [61, 62]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 61]
+    [[circuits.layers]]
+    active_qubits = [72, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [73, 72]
+    [[circuits.layers]]
+    active_qubits = [40]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [40]
+    [[circuits.layers]]
+    active_qubits = [40, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 51]
+    [[circuits.layers]]
+    active_qubits = [39, 40]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 39]
+    [[circuits.layers]]
+    active_qubits = [50, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [51, 50]
+    [[circuits.layers]]
+    active_qubits = [18]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [18]
+    [[circuits.layers]]
+    active_qubits = [18, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 29]
+    [[circuits.layers]]
+    active_qubits = [17, 18]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 17]
+    [[circuits.layers]]
+    active_qubits = [28, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [29, 28]
+    [[circuits.layers]]
+    active_qubits = [96]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [96]
+    [[circuits.layers]]
+    active_qubits = [96, 107]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 107]
+    [[circuits.layers]]
+    active_qubits = [95, 96]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 95]
+    [[circuits.layers]]
+    active_qubits = [106, 107]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [107, 106]
+    [[circuits.layers]]
+    active_qubits = [74]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [74]
+    [[circuits.layers]]
+    active_qubits = [74, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 85]
+    [[circuits.layers]]
+    active_qubits = [73, 74]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 73]
+    [[circuits.layers]]
+    active_qubits = [84, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [85, 84]
+    [[circuits.layers]]
+    active_qubits = [52]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [52]
+    [[circuits.layers]]
+    active_qubits = [52, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 63]
+    [[circuits.layers]]
+    active_qubits = [51, 52]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 51]
+    [[circuits.layers]]
+    active_qubits = [62, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [63, 62]
+    [[circuits.layers]]
+    active_qubits = [30]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [30]
+    [[circuits.layers]]
+    active_qubits = [30, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 41]
+    [[circuits.layers]]
+    active_qubits = [29, 30]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 29]
+    [[circuits.layers]]
+    active_qubits = [40, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [41, 40]
+    [[circuits.layers]]
+    active_qubits = [7]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [7]
+    [[circuits.layers]]
+    active_qubits = [6, 7]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [7, 6]
+    [[circuits.layers]]
+    active_qubits = [8]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [8]
+    [[circuits.layers]]
+    active_qubits = [8, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 19]
+    [[circuits.layers]]
+    active_qubits = [7, 8]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 7]
+    [[circuits.layers]]
+    active_qubits = [18, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [19, 18]
+    [[circuits.layers]]
+    active_qubits = [118]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [118]
+    [[circuits.layers]]
+    active_qubits = [117, 118]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [118, 117]
+    [[circuits.layers]]
+    active_qubits = [108]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [108]
+    [[circuits.layers]]
+    active_qubits = [108, 119]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 119]
+    [[circuits.layers]]
+    active_qubits = [107, 108]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 107]
+    [[circuits.layers]]
+    active_qubits = [118, 119]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [119, 118]
+    [[circuits.layers]]
+    active_qubits = [86]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [86]
+    [[circuits.layers]]
+    active_qubits = [86, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 97]
+    [[circuits.layers]]
+    active_qubits = [85, 86]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 85]
+    [[circuits.layers]]
+    active_qubits = [96, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [97, 96]
+    [[circuits.layers]]
+    active_qubits = [64]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [64]
+    [[circuits.layers]]
+    active_qubits = [64, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 75]
+    [[circuits.layers]]
+    active_qubits = [63, 64]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 63]
+    [[circuits.layers]]
+    active_qubits = [74, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [75, 74]
+    [[circuits.layers]]
+    active_qubits = [42]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [42]
+    [[circuits.layers]]
+    active_qubits = [42, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 53]
+    [[circuits.layers]]
+    active_qubits = [41, 42]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 41]
+    [[circuits.layers]]
+    active_qubits = [52, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [53, 52]
+    [[circuits.layers]]
+    active_qubits = [20]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [20]
+    [[circuits.layers]]
+    active_qubits = [20, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 31]
+    [[circuits.layers]]
+    active_qubits = [19, 20]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 19]
+    [[circuits.layers]]
+    active_qubits = [30, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [31, 30]
+    [[circuits.layers]]
+    active_qubits = [98]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [98]
+    [[circuits.layers]]
+    active_qubits = [98, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 109]
+    [[circuits.layers]]
+    active_qubits = [97, 98]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 97]
+    [[circuits.layers]]
+    active_qubits = [108, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [109, 108]
+    [[circuits.layers]]
+    active_qubits = [76]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [76]
+    [[circuits.layers]]
+    active_qubits = [76, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [76, 87]
+    [[circuits.layers]]
+    active_qubits = [75, 76]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [76, 75]
+    [[circuits.layers]]
+    active_qubits = [86, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [87, 86]
+    [[circuits.layers]]
+    active_qubits = [54]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [54]
+    [[circuits.layers]]
+    active_qubits = [54, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 65]
+    [[circuits.layers]]
+    active_qubits = [53, 54]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 53]
+    [[circuits.layers]]
+    active_qubits = [64, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [65, 64]
+    [[circuits.layers]]
+    active_qubits = [32]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [32]
+    [[circuits.layers]]
+    active_qubits = [32, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 43]
+    [[circuits.layers]]
+    active_qubits = [31, 32]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 31]
+    [[circuits.layers]]
+    active_qubits = [42, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [43, 42]
+    [[circuits.layers]]
+    active_qubits = [9]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [9]
+    [[circuits.layers]]
+    active_qubits = [8, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 8]
+    [[circuits.layers]]
+    active_qubits = [10]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [10]
+    [[circuits.layers]]
+    active_qubits = [10, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 21]
+    [[circuits.layers]]
+    active_qubits = [9, 10]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 9]
+    [[circuits.layers]]
+    active_qubits = [20, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [21, 20]
+    [[circuits.layers]]
+    active_qubits = [120]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [120]
+    [[circuits.layers]]
+    active_qubits = [119, 120]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [120, 119]
+    [[circuits.layers]]
+    active_qubits = [110]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [110]
+    [[circuits.layers]]
+    active_qubits = [110, 121]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 121]
+    [[circuits.layers]]
+    active_qubits = [109, 110]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 109]
+    [[circuits.layers]]
+    active_qubits = [120, 121]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [121, 120]
+    [[circuits.layers]]
+    active_qubits = [88]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [88]
+    [[circuits.layers]]
+    active_qubits = [88, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 99]
+    [[circuits.layers]]
+    active_qubits = [87, 88]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 87]
+    [[circuits.layers]]
+    active_qubits = [98, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [99, 98]
+    [[circuits.layers]]
+    active_qubits = [66]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [66]
+    [[circuits.layers]]
+    active_qubits = [66, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 77]
+    [[circuits.layers]]
+    active_qubits = [65, 66]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 65]
+    [[circuits.layers]]
+    active_qubits = [76, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [77, 76]
+    [[circuits.layers]]
+    active_qubits = [44]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [44]
+    [[circuits.layers]]
+    active_qubits = [44, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 55]
+    [[circuits.layers]]
+    active_qubits = [43, 44]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 43]
+    [[circuits.layers]]
+    active_qubits = [54, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [55, 54]
+    [[circuits.layers]]
+    active_qubits = [22]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [22]
+    [[circuits.layers]]
+    active_qubits = [22, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 33]
+    [[circuits.layers]]
+    active_qubits = [21, 22]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 21]
+    [[circuits.layers]]
+    active_qubits = [32, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [33, 32]
+    [[circuits.layers]]
+    active_qubits = [111]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [111]
+    [[circuits.layers]]
+    active_qubits = [111, 112]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [111, 112]
+    [[circuits.layers]]
+    active_qubits = [11]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [11]
+    [[circuits.layers]]
+    active_qubits = [10, 11]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [11, 10]
+[[circuits]]
+a_s = [[12, 13, 25, 26], [38, 39, 51, 52], [64, 65, 77, 78], [90, 91, 103, 104], [116, 117, 129, 130], [142, 143, 155, 156], [24, 25, 37, 38], [50, 51, 63, 64], [76, 77, 89, 90], [102, 103, 115, 116], [128, 129, 141, 142], [154, 155, 167, 168], [10, 11, 23, 24], [36, 37, 49, 50], [62, 63, 75, 76], [88, 89, 101, 102], [114, 115, 127, 128], [140, 141, 153, 154], [22, 23, 35, 36], [48, 49, 61, 62], [74, 75, 87, 88], [100, 101, 113, 114], [126, 127, 139, 140], [152, 153, 165, 166], [8, 9, 21, 22], [34, 35, 47, 48], [60, 61, 73, 74], [86, 87, 99, 100], [112, 113, 125, 126], [138, 139, 151, 152], [20, 21, 33, 34], [46, 47, 59, 60], [72, 73, 85, 86], [98, 99, 111, 112], [124, 125, 137, 138], [150, 151, 163, 164], [6, 7, 19, 20], [32, 33, 45, 46], [58, 59, 71, 72], [84, 85, 97, 98], [110, 111, 123, 124], [136, 137, 149, 150], [18, 19, 31, 32], [44, 45, 57, 58], [70, 71, 83, 84], [96, 97, 109, 110], [122, 123, 135, 136], [148, 149, 161, 162], [4, 5, 17, 18], [30, 31, 43, 44], [56, 57, 69, 70], [82, 83, 95, 96], [108, 109, 121, 122], [134, 135, 147, 148], [16, 17, 29, 30], [42, 43, 55, 56], [68, 69, 81, 82], [94, 95, 107, 108], [120, 121, 133, 134], [146, 147, 159, 160], [2, 3, 15, 16], [28, 29, 41, 42], [54, 55, 67, 68], [80, 81, 93, 94], [106, 107, 119, 120], [132, 133, 145, 146], [14, 15, 27, 28], [40, 41, 53, 54], [66, 67, 79, 80], [92, 93, 105, 106], [118, 119, 131, 132], [144, 145, 157, 158], [26, 39], [52, 65], [78, 91], [104, 117], [130, 143], [156, 169], [1, 14], [27, 40], [53, 66], [79, 92], [105, 118], [131, 144]]
+b_p = [[25, 26, 38, 39], [51, 52, 64, 65], [77, 78, 90, 91], [103, 104, 116, 117], [129, 130, 142, 143], [155, 156, 168, 169], [11, 12, 24, 25], [37, 38, 50, 51], [63, 64, 76, 77], [89, 90, 102, 103], [115, 116, 128, 129], [141, 142, 154, 155], [23, 24, 36, 37], [49, 50, 62, 63], [75, 76, 88, 89], [101, 102, 114, 115], [127, 128, 140, 141], [153, 154, 166, 167], [9, 10, 22, 23], [35, 36, 48, 49], [61, 62, 74, 75], [87, 88, 100, 101], [113, 114, 126, 127], [139, 140, 152, 153], [21, 22, 34, 35], [47, 48, 60, 61], [73, 74, 86, 87], [99, 100, 112, 113], [125, 126, 138, 139], [151, 152, 164, 165], [7, 8, 20, 21], [33, 34, 46, 47], [59, 60, 72, 73], [85, 86, 98, 99], [111, 112, 124, 125], [137, 138, 150, 151], [19, 20, 32, 33], [45, 46, 58, 59], [71, 72, 84, 85], [97, 98, 110, 111], [123, 124, 136, 137], [149, 150, 162, 163], [5, 6, 18, 19], [31, 32, 44, 45], [57, 58, 70, 71], [83, 84, 96, 97], [109, 110, 122, 123], [135, 136, 148, 149], [17, 18, 30, 31], [43, 44, 56, 57], [69, 70, 82, 83], [95, 96, 108, 109], [121, 122, 134, 135], [147, 148, 160, 161], [3, 4, 16, 17], [29, 30, 42, 43], [55, 56, 68, 69], [81, 82, 94, 95], [107, 108, 120, 121], [133, 134, 146, 147], [15, 16, 28, 29], [41, 42, 54, 55], [67, 68, 80, 81], [93, 94, 106, 107], [119, 120, 132, 133], [145, 146, 158, 159], [1, 2, 14, 15], [27, 28, 40, 41], [53, 54, 66, 67], [79, 80, 92, 93], [105, 106, 118, 119], [131, 132, 144, 145], [12, 13], [10, 11], [8, 9], [6, 7], [4, 5], [2, 3], [167, 168], [165, 166], [163, 164], [161, 162], [159, 160], [157, 158]]
+boundary_orientation = "x_ns"
+clock = "gate_layer"
+construction = "bp"
+distance = 13
+input_state = "zero"
+logical_x = [13, 26, 39, 52, 65, 78, 91, 104, 117, 130, 143, 156, 169]
+logical_z = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+
+    [[circuits.layers]]
+    active_qubits = [131]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [131]
+    [[circuits.layers]]
+    active_qubits = [131, 132]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [131, 132]
+    [[circuits.layers]]
+    active_qubits = [131, 144]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [131, 144]
+    [[circuits.layers]]
+    active_qubits = [132, 145]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [132, 145]
+    [[circuits.layers]]
+    active_qubits = [105]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [105]
+    [[circuits.layers]]
+    active_qubits = [105, 106]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [105, 106]
+    [[circuits.layers]]
+    active_qubits = [105, 118]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [105, 118]
+    [[circuits.layers]]
+    active_qubits = [106, 119]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [106, 119]
+    [[circuits.layers]]
+    active_qubits = [79]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [79]
+    [[circuits.layers]]
+    active_qubits = [79, 80]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [79, 80]
+    [[circuits.layers]]
+    active_qubits = [79, 92]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [79, 92]
+    [[circuits.layers]]
+    active_qubits = [80, 93]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 93]
+    [[circuits.layers]]
+    active_qubits = [53]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [53]
+    [[circuits.layers]]
+    active_qubits = [53, 54]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [53, 54]
+    [[circuits.layers]]
+    active_qubits = [53, 66]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [53, 66]
+    [[circuits.layers]]
+    active_qubits = [54, 67]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 67]
+    [[circuits.layers]]
+    active_qubits = [27]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [27]
+    [[circuits.layers]]
+    active_qubits = [27, 28]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [27, 28]
+    [[circuits.layers]]
+    active_qubits = [27, 40]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [27, 40]
+    [[circuits.layers]]
+    active_qubits = [28, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [28, 41]
+    [[circuits.layers]]
+    active_qubits = [1]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [1]
+    [[circuits.layers]]
+    active_qubits = [1, 2]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 2]
+    [[circuits.layers]]
+    active_qubits = [1, 14]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 14]
+    [[circuits.layers]]
+    active_qubits = [2, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [2, 15]
+    [[circuits.layers]]
+    active_qubits = [146]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [146]
+    [[circuits.layers]]
+    active_qubits = [146, 159]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [146, 159]
+    [[circuits.layers]]
+    active_qubits = [145, 146]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [146, 145]
+    [[circuits.layers]]
+    active_qubits = [158, 159]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [159, 158]
+    [[circuits.layers]]
+    active_qubits = [120]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [120]
+    [[circuits.layers]]
+    active_qubits = [120, 133]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [120, 133]
+    [[circuits.layers]]
+    active_qubits = [119, 120]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [120, 119]
+    [[circuits.layers]]
+    active_qubits = [132, 133]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [133, 132]
+    [[circuits.layers]]
+    active_qubits = [94]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [94]
+    [[circuits.layers]]
+    active_qubits = [94, 107]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 107]
+    [[circuits.layers]]
+    active_qubits = [93, 94]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 93]
+    [[circuits.layers]]
+    active_qubits = [106, 107]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [107, 106]
+    [[circuits.layers]]
+    active_qubits = [68]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [68]
+    [[circuits.layers]]
+    active_qubits = [68, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 81]
+    [[circuits.layers]]
+    active_qubits = [67, 68]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 67]
+    [[circuits.layers]]
+    active_qubits = [80, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [81, 80]
+    [[circuits.layers]]
+    active_qubits = [42]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [42]
+    [[circuits.layers]]
+    active_qubits = [42, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 55]
+    [[circuits.layers]]
+    active_qubits = [41, 42]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 41]
+    [[circuits.layers]]
+    active_qubits = [54, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [55, 54]
+    [[circuits.layers]]
+    active_qubits = [16]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [16]
+    [[circuits.layers]]
+    active_qubits = [16, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 29]
+    [[circuits.layers]]
+    active_qubits = [15, 16]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [16, 15]
+    [[circuits.layers]]
+    active_qubits = [28, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [29, 28]
+    [[circuits.layers]]
+    active_qubits = [134]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [134]
+    [[circuits.layers]]
+    active_qubits = [134, 147]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [134, 147]
+    [[circuits.layers]]
+    active_qubits = [133, 134]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [134, 133]
+    [[circuits.layers]]
+    active_qubits = [146, 147]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [147, 146]
+    [[circuits.layers]]
+    active_qubits = [108]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [108]
+    [[circuits.layers]]
+    active_qubits = [108, 121]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 121]
+    [[circuits.layers]]
+    active_qubits = [107, 108]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 107]
+    [[circuits.layers]]
+    active_qubits = [120, 121]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [121, 120]
+    [[circuits.layers]]
+    active_qubits = [82]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [82]
+    [[circuits.layers]]
+    active_qubits = [82, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 95]
+    [[circuits.layers]]
+    active_qubits = [81, 82]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 81]
+    [[circuits.layers]]
+    active_qubits = [94, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [95, 94]
+    [[circuits.layers]]
+    active_qubits = [56]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [56]
+    [[circuits.layers]]
+    active_qubits = [56, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [56, 69]
+    [[circuits.layers]]
+    active_qubits = [55, 56]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [56, 55]
+    [[circuits.layers]]
+    active_qubits = [68, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [69, 68]
+    [[circuits.layers]]
+    active_qubits = [30]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [30]
+    [[circuits.layers]]
+    active_qubits = [30, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 43]
+    [[circuits.layers]]
+    active_qubits = [29, 30]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 29]
+    [[circuits.layers]]
+    active_qubits = [42, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [43, 42]
+    [[circuits.layers]]
+    active_qubits = [3]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [3]
+    [[circuits.layers]]
+    active_qubits = [2, 3]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [3, 2]
+    [[circuits.layers]]
+    active_qubits = [4]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [4]
+    [[circuits.layers]]
+    active_qubits = [4, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 17]
+    [[circuits.layers]]
+    active_qubits = [3, 4]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 3]
+    [[circuits.layers]]
+    active_qubits = [16, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [17, 16]
+    [[circuits.layers]]
+    active_qubits = [160]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [160]
+    [[circuits.layers]]
+    active_qubits = [159, 160]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [160, 159]
+    [[circuits.layers]]
+    active_qubits = [148]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [148]
+    [[circuits.layers]]
+    active_qubits = [148, 161]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [148, 161]
+    [[circuits.layers]]
+    active_qubits = [147, 148]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [148, 147]
+    [[circuits.layers]]
+    active_qubits = [160, 161]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [161, 160]
+    [[circuits.layers]]
+    active_qubits = [122]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [122]
+    [[circuits.layers]]
+    active_qubits = [122, 135]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [122, 135]
+    [[circuits.layers]]
+    active_qubits = [121, 122]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [122, 121]
+    [[circuits.layers]]
+    active_qubits = [134, 135]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [135, 134]
+    [[circuits.layers]]
+    active_qubits = [96]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [96]
+    [[circuits.layers]]
+    active_qubits = [96, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 109]
+    [[circuits.layers]]
+    active_qubits = [95, 96]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 95]
+    [[circuits.layers]]
+    active_qubits = [108, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [109, 108]
+    [[circuits.layers]]
+    active_qubits = [70]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [70]
+    [[circuits.layers]]
+    active_qubits = [70, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 83]
+    [[circuits.layers]]
+    active_qubits = [69, 70]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 69]
+    [[circuits.layers]]
+    active_qubits = [82, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [83, 82]
+    [[circuits.layers]]
+    active_qubits = [44]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [44]
+    [[circuits.layers]]
+    active_qubits = [44, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 57]
+    [[circuits.layers]]
+    active_qubits = [43, 44]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 43]
+    [[circuits.layers]]
+    active_qubits = [56, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [57, 56]
+    [[circuits.layers]]
+    active_qubits = [18]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [18]
+    [[circuits.layers]]
+    active_qubits = [18, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 31]
+    [[circuits.layers]]
+    active_qubits = [17, 18]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 17]
+    [[circuits.layers]]
+    active_qubits = [30, 31]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [31, 30]
+    [[circuits.layers]]
+    active_qubits = [136]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [136]
+    [[circuits.layers]]
+    active_qubits = [136, 149]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [136, 149]
+    [[circuits.layers]]
+    active_qubits = [135, 136]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [136, 135]
+    [[circuits.layers]]
+    active_qubits = [148, 149]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [149, 148]
+    [[circuits.layers]]
+    active_qubits = [110]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [110]
+    [[circuits.layers]]
+    active_qubits = [110, 123]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 123]
+    [[circuits.layers]]
+    active_qubits = [109, 110]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 109]
+    [[circuits.layers]]
+    active_qubits = [122, 123]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [123, 122]
+    [[circuits.layers]]
+    active_qubits = [84]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [84]
+    [[circuits.layers]]
+    active_qubits = [84, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 97]
+    [[circuits.layers]]
+    active_qubits = [83, 84]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 83]
+    [[circuits.layers]]
+    active_qubits = [96, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [97, 96]
+    [[circuits.layers]]
+    active_qubits = [58]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [58]
+    [[circuits.layers]]
+    active_qubits = [58, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 71]
+    [[circuits.layers]]
+    active_qubits = [57, 58]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 57]
+    [[circuits.layers]]
+    active_qubits = [70, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [71, 70]
+    [[circuits.layers]]
+    active_qubits = [32]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [32]
+    [[circuits.layers]]
+    active_qubits = [32, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 45]
+    [[circuits.layers]]
+    active_qubits = [31, 32]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 31]
+    [[circuits.layers]]
+    active_qubits = [44, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [45, 44]
+    [[circuits.layers]]
+    active_qubits = [5]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [5]
+    [[circuits.layers]]
+    active_qubits = [4, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [5, 4]
+    [[circuits.layers]]
+    active_qubits = [6]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [6]
+    [[circuits.layers]]
+    active_qubits = [6, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 19]
+    [[circuits.layers]]
+    active_qubits = [5, 6]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 5]
+    [[circuits.layers]]
+    active_qubits = [18, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [19, 18]
+    [[circuits.layers]]
+    active_qubits = [162]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [162]
+    [[circuits.layers]]
+    active_qubits = [161, 162]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [162, 161]
+    [[circuits.layers]]
+    active_qubits = [150]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [150]
+    [[circuits.layers]]
+    active_qubits = [150, 163]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [150, 163]
+    [[circuits.layers]]
+    active_qubits = [149, 150]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [150, 149]
+    [[circuits.layers]]
+    active_qubits = [162, 163]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [163, 162]
+    [[circuits.layers]]
+    active_qubits = [124]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [124]
+    [[circuits.layers]]
+    active_qubits = [124, 137]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [124, 137]
+    [[circuits.layers]]
+    active_qubits = [123, 124]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [124, 123]
+    [[circuits.layers]]
+    active_qubits = [136, 137]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [137, 136]
+    [[circuits.layers]]
+    active_qubits = [98]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [98]
+    [[circuits.layers]]
+    active_qubits = [98, 111]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 111]
+    [[circuits.layers]]
+    active_qubits = [97, 98]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 97]
+    [[circuits.layers]]
+    active_qubits = [110, 111]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [111, 110]
+    [[circuits.layers]]
+    active_qubits = [72]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [72]
+    [[circuits.layers]]
+    active_qubits = [72, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 85]
+    [[circuits.layers]]
+    active_qubits = [71, 72]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 71]
+    [[circuits.layers]]
+    active_qubits = [84, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [85, 84]
+    [[circuits.layers]]
+    active_qubits = [46]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [46]
+    [[circuits.layers]]
+    active_qubits = [46, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [46, 59]
+    [[circuits.layers]]
+    active_qubits = [45, 46]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [46, 45]
+    [[circuits.layers]]
+    active_qubits = [58, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [59, 58]
+    [[circuits.layers]]
+    active_qubits = [20]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [20]
+    [[circuits.layers]]
+    active_qubits = [20, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 33]
+    [[circuits.layers]]
+    active_qubits = [19, 20]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 19]
+    [[circuits.layers]]
+    active_qubits = [32, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [33, 32]
+    [[circuits.layers]]
+    active_qubits = [138]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [138]
+    [[circuits.layers]]
+    active_qubits = [138, 151]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [138, 151]
+    [[circuits.layers]]
+    active_qubits = [137, 138]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [138, 137]
+    [[circuits.layers]]
+    active_qubits = [150, 151]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [151, 150]
+    [[circuits.layers]]
+    active_qubits = [112]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [112]
+    [[circuits.layers]]
+    active_qubits = [112, 125]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [112, 125]
+    [[circuits.layers]]
+    active_qubits = [111, 112]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [112, 111]
+    [[circuits.layers]]
+    active_qubits = [124, 125]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [125, 124]
+    [[circuits.layers]]
+    active_qubits = [86]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [86]
+    [[circuits.layers]]
+    active_qubits = [86, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 99]
+    [[circuits.layers]]
+    active_qubits = [85, 86]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 85]
+    [[circuits.layers]]
+    active_qubits = [98, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [99, 98]
+    [[circuits.layers]]
+    active_qubits = [60]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [60]
+    [[circuits.layers]]
+    active_qubits = [60, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 73]
+    [[circuits.layers]]
+    active_qubits = [59, 60]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 59]
+    [[circuits.layers]]
+    active_qubits = [72, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [73, 72]
+    [[circuits.layers]]
+    active_qubits = [34]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [34]
+    [[circuits.layers]]
+    active_qubits = [34, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 47]
+    [[circuits.layers]]
+    active_qubits = [33, 34]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 33]
+    [[circuits.layers]]
+    active_qubits = [46, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [47, 46]
+    [[circuits.layers]]
+    active_qubits = [7]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [7]
+    [[circuits.layers]]
+    active_qubits = [6, 7]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [7, 6]
+    [[circuits.layers]]
+    active_qubits = [8]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [8]
+    [[circuits.layers]]
+    active_qubits = [8, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 21]
+    [[circuits.layers]]
+    active_qubits = [7, 8]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 7]
+    [[circuits.layers]]
+    active_qubits = [20, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [21, 20]
+    [[circuits.layers]]
+    active_qubits = [164]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [164]
+    [[circuits.layers]]
+    active_qubits = [163, 164]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [164, 163]
+    [[circuits.layers]]
+    active_qubits = [152]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [152]
+    [[circuits.layers]]
+    active_qubits = [152, 165]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [152, 165]
+    [[circuits.layers]]
+    active_qubits = [151, 152]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [152, 151]
+    [[circuits.layers]]
+    active_qubits = [164, 165]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [165, 164]
+    [[circuits.layers]]
+    active_qubits = [126]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [126]
+    [[circuits.layers]]
+    active_qubits = [126, 139]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [126, 139]
+    [[circuits.layers]]
+    active_qubits = [125, 126]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [126, 125]
+    [[circuits.layers]]
+    active_qubits = [138, 139]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [139, 138]
+    [[circuits.layers]]
+    active_qubits = [100]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [100]
+    [[circuits.layers]]
+    active_qubits = [100, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [100, 113]
+    [[circuits.layers]]
+    active_qubits = [99, 100]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [100, 99]
+    [[circuits.layers]]
+    active_qubits = [112, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [113, 112]
+    [[circuits.layers]]
+    active_qubits = [74]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [74]
+    [[circuits.layers]]
+    active_qubits = [74, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 87]
+    [[circuits.layers]]
+    active_qubits = [73, 74]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 73]
+    [[circuits.layers]]
+    active_qubits = [86, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [87, 86]
+    [[circuits.layers]]
+    active_qubits = [48]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [48]
+    [[circuits.layers]]
+    active_qubits = [48, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 61]
+    [[circuits.layers]]
+    active_qubits = [47, 48]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 47]
+    [[circuits.layers]]
+    active_qubits = [60, 61]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [61, 60]
+    [[circuits.layers]]
+    active_qubits = [22]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [22]
+    [[circuits.layers]]
+    active_qubits = [22, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 35]
+    [[circuits.layers]]
+    active_qubits = [21, 22]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 21]
+    [[circuits.layers]]
+    active_qubits = [34, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [35, 34]
+    [[circuits.layers]]
+    active_qubits = [140]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [140]
+    [[circuits.layers]]
+    active_qubits = [140, 153]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [140, 153]
+    [[circuits.layers]]
+    active_qubits = [139, 140]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [140, 139]
+    [[circuits.layers]]
+    active_qubits = [152, 153]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [153, 152]
+    [[circuits.layers]]
+    active_qubits = [114]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [114]
+    [[circuits.layers]]
+    active_qubits = [114, 127]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [114, 127]
+    [[circuits.layers]]
+    active_qubits = [113, 114]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [114, 113]
+    [[circuits.layers]]
+    active_qubits = [126, 127]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [127, 126]
+    [[circuits.layers]]
+    active_qubits = [88]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [88]
+    [[circuits.layers]]
+    active_qubits = [88, 101]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 101]
+    [[circuits.layers]]
+    active_qubits = [87, 88]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 87]
+    [[circuits.layers]]
+    active_qubits = [100, 101]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [101, 100]
+    [[circuits.layers]]
+    active_qubits = [62]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [62]
+    [[circuits.layers]]
+    active_qubits = [62, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 75]
+    [[circuits.layers]]
+    active_qubits = [61, 62]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 61]
+    [[circuits.layers]]
+    active_qubits = [74, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [75, 74]
+    [[circuits.layers]]
+    active_qubits = [36]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [36]
+    [[circuits.layers]]
+    active_qubits = [36, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 49]
+    [[circuits.layers]]
+    active_qubits = [35, 36]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 35]
+    [[circuits.layers]]
+    active_qubits = [48, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [49, 48]
+    [[circuits.layers]]
+    active_qubits = [9]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [9]
+    [[circuits.layers]]
+    active_qubits = [8, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 8]
+    [[circuits.layers]]
+    active_qubits = [10]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [10]
+    [[circuits.layers]]
+    active_qubits = [10, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 23]
+    [[circuits.layers]]
+    active_qubits = [9, 10]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 9]
+    [[circuits.layers]]
+    active_qubits = [22, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [23, 22]
+    [[circuits.layers]]
+    active_qubits = [166]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [166]
+    [[circuits.layers]]
+    active_qubits = [165, 166]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [166, 165]
+    [[circuits.layers]]
+    active_qubits = [154]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [154]
+    [[circuits.layers]]
+    active_qubits = [154, 167]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [154, 167]
+    [[circuits.layers]]
+    active_qubits = [153, 154]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [154, 153]
+    [[circuits.layers]]
+    active_qubits = [166, 167]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [167, 166]
+    [[circuits.layers]]
+    active_qubits = [128]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [128]
+    [[circuits.layers]]
+    active_qubits = [128, 141]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [128, 141]
+    [[circuits.layers]]
+    active_qubits = [127, 128]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [128, 127]
+    [[circuits.layers]]
+    active_qubits = [140, 141]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [141, 140]
+    [[circuits.layers]]
+    active_qubits = [102]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [102]
+    [[circuits.layers]]
+    active_qubits = [102, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 115]
+    [[circuits.layers]]
+    active_qubits = [101, 102]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 101]
+    [[circuits.layers]]
+    active_qubits = [114, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [115, 114]
+    [[circuits.layers]]
+    active_qubits = [76]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [76]
+    [[circuits.layers]]
+    active_qubits = [76, 89]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [76, 89]
+    [[circuits.layers]]
+    active_qubits = [75, 76]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [76, 75]
+    [[circuits.layers]]
+    active_qubits = [88, 89]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [89, 88]
+    [[circuits.layers]]
+    active_qubits = [50]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [50]
+    [[circuits.layers]]
+    active_qubits = [50, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 63]
+    [[circuits.layers]]
+    active_qubits = [49, 50]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 49]
+    [[circuits.layers]]
+    active_qubits = [62, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [63, 62]
+    [[circuits.layers]]
+    active_qubits = [24]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [24]
+    [[circuits.layers]]
+    active_qubits = [24, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 37]
+    [[circuits.layers]]
+    active_qubits = [23, 24]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 23]
+    [[circuits.layers]]
+    active_qubits = [36, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [37, 36]
+    [[circuits.layers]]
+    active_qubits = [142]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [142]
+    [[circuits.layers]]
+    active_qubits = [142, 155]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [142, 155]
+    [[circuits.layers]]
+    active_qubits = [141, 142]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [142, 141]
+    [[circuits.layers]]
+    active_qubits = [154, 155]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [155, 154]
+    [[circuits.layers]]
+    active_qubits = [116]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [116]
+    [[circuits.layers]]
+    active_qubits = [116, 129]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [116, 129]
+    [[circuits.layers]]
+    active_qubits = [115, 116]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [116, 115]
+    [[circuits.layers]]
+    active_qubits = [128, 129]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [129, 128]
+    [[circuits.layers]]
+    active_qubits = [90]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [90]
+    [[circuits.layers]]
+    active_qubits = [90, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [90, 103]
+    [[circuits.layers]]
+    active_qubits = [89, 90]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [90, 89]
+    [[circuits.layers]]
+    active_qubits = [102, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [103, 102]
+    [[circuits.layers]]
+    active_qubits = [64]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [64]
+    [[circuits.layers]]
+    active_qubits = [64, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 77]
+    [[circuits.layers]]
+    active_qubits = [63, 64]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 63]
+    [[circuits.layers]]
+    active_qubits = [76, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [77, 76]
+    [[circuits.layers]]
+    active_qubits = [38]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [38]
+    [[circuits.layers]]
+    active_qubits = [38, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 51]
+    [[circuits.layers]]
+    active_qubits = [37, 38]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 37]
+    [[circuits.layers]]
+    active_qubits = [50, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [51, 50]
+    [[circuits.layers]]
+    active_qubits = [11]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [11]
+    [[circuits.layers]]
+    active_qubits = [10, 11]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [11, 10]
+    [[circuits.layers]]
+    active_qubits = [12]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [12]
+    [[circuits.layers]]
+    active_qubits = [12, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 25]
+    [[circuits.layers]]
+    active_qubits = [11, 12]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 11]
+    [[circuits.layers]]
+    active_qubits = [24, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [25, 24]
+    [[circuits.layers]]
+    active_qubits = [168]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [168]
+    [[circuits.layers]]
+    active_qubits = [167, 168]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [168, 167]
+    [[circuits.layers]]
+    active_qubits = [156]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [156]
+    [[circuits.layers]]
+    active_qubits = [156, 169]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [156, 169]
+    [[circuits.layers]]
+    active_qubits = [155, 156]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [156, 155]
+    [[circuits.layers]]
+    active_qubits = [168, 169]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [169, 168]
+    [[circuits.layers]]
+    active_qubits = [130]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [130]
+    [[circuits.layers]]
+    active_qubits = [130, 143]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [130, 143]
+    [[circuits.layers]]
+    active_qubits = [129, 130]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [130, 129]
+    [[circuits.layers]]
+    active_qubits = [142, 143]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [143, 142]
+    [[circuits.layers]]
+    active_qubits = [104]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [104]
+    [[circuits.layers]]
+    active_qubits = [104, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 117]
+    [[circuits.layers]]
+    active_qubits = [103, 104]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 103]
+    [[circuits.layers]]
+    active_qubits = [116, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [117, 116]
+    [[circuits.layers]]
+    active_qubits = [78]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [78]
+    [[circuits.layers]]
+    active_qubits = [78, 91]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [78, 91]
+    [[circuits.layers]]
+    active_qubits = [77, 78]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [78, 77]
+    [[circuits.layers]]
+    active_qubits = [90, 91]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [91, 90]
+    [[circuits.layers]]
+    active_qubits = [52]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [52]
+    [[circuits.layers]]
+    active_qubits = [52, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 65]
+    [[circuits.layers]]
+    active_qubits = [51, 52]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 51]
+    [[circuits.layers]]
+    active_qubits = [64, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [65, 64]
+    [[circuits.layers]]
+    active_qubits = [26]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [26]
+    [[circuits.layers]]
+    active_qubits = [26, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 39]
+    [[circuits.layers]]
+    active_qubits = [25, 26]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 25]
+    [[circuits.layers]]
+    active_qubits = [38, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [39, 38]
+    [[circuits.layers]]
+    active_qubits = [157]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [157]
+    [[circuits.layers]]
+    active_qubits = [157, 158]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [157, 158]
+    [[circuits.layers]]
+    active_qubits = [13]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [13]
+    [[circuits.layers]]
+    active_qubits = [12, 13]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [13, 12]
+[[circuits]]
+a_s = [[14, 15, 29, 30], [44, 45, 59, 60], [74, 75, 89, 90], [104, 105, 119, 120], [134, 135, 149, 150], [164, 165, 179, 180], [194, 195, 209, 210], [28, 29, 43, 44], [58, 59, 73, 74], [88, 89, 103, 104], [118, 119, 133, 134], [148, 149, 163, 164], [178, 179, 193, 194], [208, 209, 223, 224], [12, 13, 27, 28], [42, 43, 57, 58], [72, 73, 87, 88], [102, 103, 117, 118], [132, 133, 147, 148], [162, 163, 177, 178], [192, 193, 207, 208], [26, 27, 41, 42], [56, 57, 71, 72], [86, 87, 101, 102], [116, 117, 131, 132], [146, 147, 161, 162], [176, 177, 191, 192], [206, 207, 221, 222], [10, 11, 25, 26], [40, 41, 55, 56], [70, 71, 85, 86], [100, 101, 115, 116], [130, 131, 145, 146], [160, 161, 175, 176], [190, 191, 205, 206], [24, 25, 39, 40], [54, 55, 69, 70], [84, 85, 99, 100], [114, 115, 129, 130], [144, 145, 159, 160], [174, 175, 189, 190], [204, 205, 219, 220], [8, 9, 23, 24], [38, 39, 53, 54], [68, 69, 83, 84], [98, 99, 113, 114], [128, 129, 143, 144], [158, 159, 173, 174], [188, 189, 203, 204], [22, 23, 37, 38], [52, 53, 67, 68], [82, 83, 97, 98], [112, 113, 127, 128], [142, 143, 157, 158], [172, 173, 187, 188], [202, 203, 217, 218], [6, 7, 21, 22], [36, 37, 51, 52], [66, 67, 81, 82], [96, 97, 111, 112], [126, 127, 141, 142], [156, 157, 171, 172], [186, 187, 201, 202], [20, 21, 35, 36], [50, 51, 65, 66], [80, 81, 95, 96], [110, 111, 125, 126], [140, 141, 155, 156], [170, 171, 185, 186], [200, 201, 215, 216], [4, 5, 19, 20], [34, 35, 49, 50], [64, 65, 79, 80], [94, 95, 109, 110], [124, 125, 139, 140], [154, 155, 169, 170], [184, 185, 199, 200], [18, 19, 33, 34], [48, 49, 63, 64], [78, 79, 93, 94], [108, 109, 123, 124], [138, 139, 153, 154], [168, 169, 183, 184], [198, 199, 213, 214], [2, 3, 17, 18], [32, 33, 47, 48], [62, 63, 77, 78], [92, 93, 107, 108], [122, 123, 137, 138], [152, 153, 167, 168], [182, 183, 197, 198], [16, 17, 31, 32], [46, 47, 61, 62], [76, 77, 91, 92], [106, 107, 121, 122], [136, 137, 151, 152], [166, 167, 181, 182], [196, 197, 211, 212], [30, 45], [60, 75], [90, 105], [120, 135], [150, 165], [180, 195], [210, 225], [1, 16], [31, 46], [61, 76], [91, 106], [121, 136], [151, 166], [181, 196]]
+b_p = [[29, 30, 44, 45], [59, 60, 74, 75], [89, 90, 104, 105], [119, 120, 134, 135], [149, 150, 164, 165], [179, 180, 194, 195], [209, 210, 224, 225], [13, 14, 28, 29], [43, 44, 58, 59], [73, 74, 88, 89], [103, 104, 118, 119], [133, 134, 148, 149], [163, 164, 178, 179], [193, 194, 208, 209], [27, 28, 42, 43], [57, 58, 72, 73], [87, 88, 102, 103], [117, 118, 132, 133], [147, 148, 162, 163], [177, 178, 192, 193], [207, 208, 222, 223], [11, 12, 26, 27], [41, 42, 56, 57], [71, 72, 86, 87], [101, 102, 116, 117], [131, 132, 146, 147], [161, 162, 176, 177], [191, 192, 206, 207], [25, 26, 40, 41], [55, 56, 70, 71], [85, 86, 100, 101], [115, 116, 130, 131], [145, 146, 160, 161], [175, 176, 190, 191], [205, 206, 220, 221], [9, 10, 24, 25], [39, 40, 54, 55], [69, 70, 84, 85], [99, 100, 114, 115], [129, 130, 144, 145], [159, 160, 174, 175], [189, 190, 204, 205], [23, 24, 38, 39], [53, 54, 68, 69], [83, 84, 98, 99], [113, 114, 128, 129], [143, 144, 158, 159], [173, 174, 188, 189], [203, 204, 218, 219], [7, 8, 22, 23], [37, 38, 52, 53], [67, 68, 82, 83], [97, 98, 112, 113], [127, 128, 142, 143], [157, 158, 172, 173], [187, 188, 202, 203], [21, 22, 36, 37], [51, 52, 66, 67], [81, 82, 96, 97], [111, 112, 126, 127], [141, 142, 156, 157], [171, 172, 186, 187], [201, 202, 216, 217], [5, 6, 20, 21], [35, 36, 50, 51], [65, 66, 80, 81], [95, 96, 110, 111], [125, 126, 140, 141], [155, 156, 170, 171], [185, 186, 200, 201], [19, 20, 34, 35], [49, 50, 64, 65], [79, 80, 94, 95], [109, 110, 124, 125], [139, 140, 154, 155], [169, 170, 184, 185], [199, 200, 214, 215], [3, 4, 18, 19], [33, 34, 48, 49], [63, 64, 78, 79], [93, 94, 108, 109], [123, 124, 138, 139], [153, 154, 168, 169], [183, 184, 198, 199], [17, 18, 32, 33], [47, 48, 62, 63], [77, 78, 92, 93], [107, 108, 122, 123], [137, 138, 152, 153], [167, 168, 182, 183], [197, 198, 212, 213], [1, 2, 16, 17], [31, 32, 46, 47], [61, 62, 76, 77], [91, 92, 106, 107], [121, 122, 136, 137], [151, 152, 166, 167], [181, 182, 196, 197], [14, 15], [12, 13], [10, 11], [8, 9], [6, 7], [4, 5], [2, 3], [223, 224], [221, 222], [219, 220], [217, 218], [215, 216], [213, 214], [211, 212]]
+boundary_orientation = "x_ns"
+clock = "gate_layer"
+construction = "bp"
+distance = 15
+input_state = "zero"
+logical_x = [15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225]
+logical_z = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+    [[circuits.layers]]
+    active_qubits = [181]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [181]
+    [[circuits.layers]]
+    active_qubits = [181, 182]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [181, 182]
+    [[circuits.layers]]
+    active_qubits = [181, 196]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [181, 196]
+    [[circuits.layers]]
+    active_qubits = [182, 197]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [182, 197]
+    [[circuits.layers]]
+    active_qubits = [151]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [151]
+    [[circuits.layers]]
+    active_qubits = [151, 152]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [151, 152]
+    [[circuits.layers]]
+    active_qubits = [151, 166]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [151, 166]
+    [[circuits.layers]]
+    active_qubits = [152, 167]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [152, 167]
+    [[circuits.layers]]
+    active_qubits = [121]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [121]
+    [[circuits.layers]]
+    active_qubits = [121, 122]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [121, 122]
+    [[circuits.layers]]
+    active_qubits = [121, 136]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [121, 136]
+    [[circuits.layers]]
+    active_qubits = [122, 137]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [122, 137]
+    [[circuits.layers]]
+    active_qubits = [91]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [91]
+    [[circuits.layers]]
+    active_qubits = [91, 92]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [91, 92]
+    [[circuits.layers]]
+    active_qubits = [91, 106]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [91, 106]
+    [[circuits.layers]]
+    active_qubits = [92, 107]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [92, 107]
+    [[circuits.layers]]
+    active_qubits = [61]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [61]
+    [[circuits.layers]]
+    active_qubits = [61, 62]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [61, 62]
+    [[circuits.layers]]
+    active_qubits = [61, 76]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [61, 76]
+    [[circuits.layers]]
+    active_qubits = [62, 77]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [62, 77]
+    [[circuits.layers]]
+    active_qubits = [31]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [31]
+    [[circuits.layers]]
+    active_qubits = [31, 32]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [31, 32]
+    [[circuits.layers]]
+    active_qubits = [31, 46]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [31, 46]
+    [[circuits.layers]]
+    active_qubits = [32, 47]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [32, 47]
+    [[circuits.layers]]
+    active_qubits = [1]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [1]
+    [[circuits.layers]]
+    active_qubits = [1, 2]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 2]
+    [[circuits.layers]]
+    active_qubits = [1, 16]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [1, 16]
+    [[circuits.layers]]
+    active_qubits = [2, 17]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [2, 17]
+    [[circuits.layers]]
+    active_qubits = [198]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [198]
+    [[circuits.layers]]
+    active_qubits = [198, 213]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [198, 213]
+    [[circuits.layers]]
+    active_qubits = [197, 198]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [198, 197]
+    [[circuits.layers]]
+    active_qubits = [212, 213]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [213, 212]
+    [[circuits.layers]]
+    active_qubits = [168]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [168]
+    [[circuits.layers]]
+    active_qubits = [168, 183]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [168, 183]
+    [[circuits.layers]]
+    active_qubits = [167, 168]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [168, 167]
+    [[circuits.layers]]
+    active_qubits = [182, 183]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [183, 182]
+    [[circuits.layers]]
+    active_qubits = [138]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [138]
+    [[circuits.layers]]
+    active_qubits = [138, 153]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [138, 153]
+    [[circuits.layers]]
+    active_qubits = [137, 138]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [138, 137]
+    [[circuits.layers]]
+    active_qubits = [152, 153]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [153, 152]
+    [[circuits.layers]]
+    active_qubits = [108]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [108]
+    [[circuits.layers]]
+    active_qubits = [108, 123]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 123]
+    [[circuits.layers]]
+    active_qubits = [107, 108]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [108, 107]
+    [[circuits.layers]]
+    active_qubits = [122, 123]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [123, 122]
+    [[circuits.layers]]
+    active_qubits = [78]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [78]
+    [[circuits.layers]]
+    active_qubits = [78, 93]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [78, 93]
+    [[circuits.layers]]
+    active_qubits = [77, 78]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [78, 77]
+    [[circuits.layers]]
+    active_qubits = [92, 93]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [93, 92]
+    [[circuits.layers]]
+    active_qubits = [48]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [48]
+    [[circuits.layers]]
+    active_qubits = [48, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 63]
+    [[circuits.layers]]
+    active_qubits = [47, 48]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [48, 47]
+    [[circuits.layers]]
+    active_qubits = [62, 63]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [63, 62]
+    [[circuits.layers]]
+    active_qubits = [18]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [18]
+    [[circuits.layers]]
+    active_qubits = [18, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 33]
+    [[circuits.layers]]
+    active_qubits = [17, 18]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [18, 17]
+    [[circuits.layers]]
+    active_qubits = [32, 33]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [33, 32]
+    [[circuits.layers]]
+    active_qubits = [184]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [184]
+    [[circuits.layers]]
+    active_qubits = [184, 199]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [184, 199]
+    [[circuits.layers]]
+    active_qubits = [183, 184]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [184, 183]
+    [[circuits.layers]]
+    active_qubits = [198, 199]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [199, 198]
+    [[circuits.layers]]
+    active_qubits = [154]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [154]
+    [[circuits.layers]]
+    active_qubits = [154, 169]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [154, 169]
+    [[circuits.layers]]
+    active_qubits = [153, 154]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [154, 153]
+    [[circuits.layers]]
+    active_qubits = [168, 169]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [169, 168]
+    [[circuits.layers]]
+    active_qubits = [124]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [124]
+    [[circuits.layers]]
+    active_qubits = [124, 139]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [124, 139]
+    [[circuits.layers]]
+    active_qubits = [123, 124]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [124, 123]
+    [[circuits.layers]]
+    active_qubits = [138, 139]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [139, 138]
+    [[circuits.layers]]
+    active_qubits = [94]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [94]
+    [[circuits.layers]]
+    active_qubits = [94, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 109]
+    [[circuits.layers]]
+    active_qubits = [93, 94]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [94, 93]
+    [[circuits.layers]]
+    active_qubits = [108, 109]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [109, 108]
+    [[circuits.layers]]
+    active_qubits = [64]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [64]
+    [[circuits.layers]]
+    active_qubits = [64, 79]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 79]
+    [[circuits.layers]]
+    active_qubits = [63, 64]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [64, 63]
+    [[circuits.layers]]
+    active_qubits = [78, 79]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [79, 78]
+    [[circuits.layers]]
+    active_qubits = [34]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [34]
+    [[circuits.layers]]
+    active_qubits = [34, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 49]
+    [[circuits.layers]]
+    active_qubits = [33, 34]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [34, 33]
+    [[circuits.layers]]
+    active_qubits = [48, 49]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [49, 48]
+    [[circuits.layers]]
+    active_qubits = [3]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [3]
+    [[circuits.layers]]
+    active_qubits = [2, 3]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [3, 2]
+    [[circuits.layers]]
+    active_qubits = [4]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [4]
+    [[circuits.layers]]
+    active_qubits = [4, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 19]
+    [[circuits.layers]]
+    active_qubits = [3, 4]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [4, 3]
+    [[circuits.layers]]
+    active_qubits = [18, 19]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [19, 18]
+    [[circuits.layers]]
+    active_qubits = [214]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [214]
+    [[circuits.layers]]
+    active_qubits = [213, 214]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [214, 213]
+    [[circuits.layers]]
+    active_qubits = [200]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [200]
+    [[circuits.layers]]
+    active_qubits = [200, 215]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [200, 215]
+    [[circuits.layers]]
+    active_qubits = [199, 200]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [200, 199]
+    [[circuits.layers]]
+    active_qubits = [214, 215]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [215, 214]
+    [[circuits.layers]]
+    active_qubits = [170]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [170]
+    [[circuits.layers]]
+    active_qubits = [170, 185]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [170, 185]
+    [[circuits.layers]]
+    active_qubits = [169, 170]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [170, 169]
+    [[circuits.layers]]
+    active_qubits = [184, 185]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [185, 184]
+    [[circuits.layers]]
+    active_qubits = [140]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [140]
+    [[circuits.layers]]
+    active_qubits = [140, 155]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [140, 155]
+    [[circuits.layers]]
+    active_qubits = [139, 140]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [140, 139]
+    [[circuits.layers]]
+    active_qubits = [154, 155]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [155, 154]
+    [[circuits.layers]]
+    active_qubits = [110]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [110]
+    [[circuits.layers]]
+    active_qubits = [110, 125]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 125]
+    [[circuits.layers]]
+    active_qubits = [109, 110]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [110, 109]
+    [[circuits.layers]]
+    active_qubits = [124, 125]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [125, 124]
+    [[circuits.layers]]
+    active_qubits = [80]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [80]
+    [[circuits.layers]]
+    active_qubits = [80, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 95]
+    [[circuits.layers]]
+    active_qubits = [79, 80]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [80, 79]
+    [[circuits.layers]]
+    active_qubits = [94, 95]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [95, 94]
+    [[circuits.layers]]
+    active_qubits = [50]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [50]
+    [[circuits.layers]]
+    active_qubits = [50, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 65]
+    [[circuits.layers]]
+    active_qubits = [49, 50]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [50, 49]
+    [[circuits.layers]]
+    active_qubits = [64, 65]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [65, 64]
+    [[circuits.layers]]
+    active_qubits = [20]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [20]
+    [[circuits.layers]]
+    active_qubits = [20, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 35]
+    [[circuits.layers]]
+    active_qubits = [19, 20]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [20, 19]
+    [[circuits.layers]]
+    active_qubits = [34, 35]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [35, 34]
+    [[circuits.layers]]
+    active_qubits = [186]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [186]
+    [[circuits.layers]]
+    active_qubits = [186, 201]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [186, 201]
+    [[circuits.layers]]
+    active_qubits = [185, 186]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [186, 185]
+    [[circuits.layers]]
+    active_qubits = [200, 201]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [201, 200]
+    [[circuits.layers]]
+    active_qubits = [156]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [156]
+    [[circuits.layers]]
+    active_qubits = [156, 171]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [156, 171]
+    [[circuits.layers]]
+    active_qubits = [155, 156]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [156, 155]
+    [[circuits.layers]]
+    active_qubits = [170, 171]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [171, 170]
+    [[circuits.layers]]
+    active_qubits = [126]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [126]
+    [[circuits.layers]]
+    active_qubits = [126, 141]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [126, 141]
+    [[circuits.layers]]
+    active_qubits = [125, 126]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [126, 125]
+    [[circuits.layers]]
+    active_qubits = [140, 141]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [141, 140]
+    [[circuits.layers]]
+    active_qubits = [96]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [96]
+    [[circuits.layers]]
+    active_qubits = [96, 111]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 111]
+    [[circuits.layers]]
+    active_qubits = [95, 96]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [96, 95]
+    [[circuits.layers]]
+    active_qubits = [110, 111]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [111, 110]
+    [[circuits.layers]]
+    active_qubits = [66]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [66]
+    [[circuits.layers]]
+    active_qubits = [66, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 81]
+    [[circuits.layers]]
+    active_qubits = [65, 66]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [66, 65]
+    [[circuits.layers]]
+    active_qubits = [80, 81]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [81, 80]
+    [[circuits.layers]]
+    active_qubits = [36]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [36]
+    [[circuits.layers]]
+    active_qubits = [36, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 51]
+    [[circuits.layers]]
+    active_qubits = [35, 36]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [36, 35]
+    [[circuits.layers]]
+    active_qubits = [50, 51]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [51, 50]
+    [[circuits.layers]]
+    active_qubits = [5]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [5]
+    [[circuits.layers]]
+    active_qubits = [4, 5]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [5, 4]
+    [[circuits.layers]]
+    active_qubits = [6]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [6]
+    [[circuits.layers]]
+    active_qubits = [6, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 21]
+    [[circuits.layers]]
+    active_qubits = [5, 6]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [6, 5]
+    [[circuits.layers]]
+    active_qubits = [20, 21]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [21, 20]
+    [[circuits.layers]]
+    active_qubits = [216]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [216]
+    [[circuits.layers]]
+    active_qubits = [215, 216]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [216, 215]
+    [[circuits.layers]]
+    active_qubits = [202]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [202]
+    [[circuits.layers]]
+    active_qubits = [202, 217]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [202, 217]
+    [[circuits.layers]]
+    active_qubits = [201, 202]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [202, 201]
+    [[circuits.layers]]
+    active_qubits = [216, 217]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [217, 216]
+    [[circuits.layers]]
+    active_qubits = [172]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [172]
+    [[circuits.layers]]
+    active_qubits = [172, 187]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [172, 187]
+    [[circuits.layers]]
+    active_qubits = [171, 172]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [172, 171]
+    [[circuits.layers]]
+    active_qubits = [186, 187]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [187, 186]
+    [[circuits.layers]]
+    active_qubits = [142]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [142]
+    [[circuits.layers]]
+    active_qubits = [142, 157]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [142, 157]
+    [[circuits.layers]]
+    active_qubits = [141, 142]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [142, 141]
+    [[circuits.layers]]
+    active_qubits = [156, 157]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [157, 156]
+    [[circuits.layers]]
+    active_qubits = [112]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [112]
+    [[circuits.layers]]
+    active_qubits = [112, 127]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [112, 127]
+    [[circuits.layers]]
+    active_qubits = [111, 112]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [112, 111]
+    [[circuits.layers]]
+    active_qubits = [126, 127]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [127, 126]
+    [[circuits.layers]]
+    active_qubits = [82]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [82]
+    [[circuits.layers]]
+    active_qubits = [82, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 97]
+    [[circuits.layers]]
+    active_qubits = [81, 82]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [82, 81]
+    [[circuits.layers]]
+    active_qubits = [96, 97]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [97, 96]
+    [[circuits.layers]]
+    active_qubits = [52]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [52]
+    [[circuits.layers]]
+    active_qubits = [52, 67]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 67]
+    [[circuits.layers]]
+    active_qubits = [51, 52]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [52, 51]
+    [[circuits.layers]]
+    active_qubits = [66, 67]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [67, 66]
+    [[circuits.layers]]
+    active_qubits = [22]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [22]
+    [[circuits.layers]]
+    active_qubits = [22, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 37]
+    [[circuits.layers]]
+    active_qubits = [21, 22]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [22, 21]
+    [[circuits.layers]]
+    active_qubits = [36, 37]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [37, 36]
+    [[circuits.layers]]
+    active_qubits = [188]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [188]
+    [[circuits.layers]]
+    active_qubits = [188, 203]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [188, 203]
+    [[circuits.layers]]
+    active_qubits = [187, 188]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [188, 187]
+    [[circuits.layers]]
+    active_qubits = [202, 203]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [203, 202]
+    [[circuits.layers]]
+    active_qubits = [158]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [158]
+    [[circuits.layers]]
+    active_qubits = [158, 173]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [158, 173]
+    [[circuits.layers]]
+    active_qubits = [157, 158]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [158, 157]
+    [[circuits.layers]]
+    active_qubits = [172, 173]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [173, 172]
+    [[circuits.layers]]
+    active_qubits = [128]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [128]
+    [[circuits.layers]]
+    active_qubits = [128, 143]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [128, 143]
+    [[circuits.layers]]
+    active_qubits = [127, 128]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [128, 127]
+    [[circuits.layers]]
+    active_qubits = [142, 143]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [143, 142]
+    [[circuits.layers]]
+    active_qubits = [98]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [98]
+    [[circuits.layers]]
+    active_qubits = [98, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 113]
+    [[circuits.layers]]
+    active_qubits = [97, 98]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [98, 97]
+    [[circuits.layers]]
+    active_qubits = [112, 113]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [113, 112]
+    [[circuits.layers]]
+    active_qubits = [68]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [68]
+    [[circuits.layers]]
+    active_qubits = [68, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 83]
+    [[circuits.layers]]
+    active_qubits = [67, 68]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [68, 67]
+    [[circuits.layers]]
+    active_qubits = [82, 83]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [83, 82]
+    [[circuits.layers]]
+    active_qubits = [38]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [38]
+    [[circuits.layers]]
+    active_qubits = [38, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 53]
+    [[circuits.layers]]
+    active_qubits = [37, 38]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [38, 37]
+    [[circuits.layers]]
+    active_qubits = [52, 53]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [53, 52]
+    [[circuits.layers]]
+    active_qubits = [7]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [7]
+    [[circuits.layers]]
+    active_qubits = [6, 7]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [7, 6]
+    [[circuits.layers]]
+    active_qubits = [8]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [8]
+    [[circuits.layers]]
+    active_qubits = [8, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 23]
+    [[circuits.layers]]
+    active_qubits = [7, 8]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [8, 7]
+    [[circuits.layers]]
+    active_qubits = [22, 23]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [23, 22]
+    [[circuits.layers]]
+    active_qubits = [218]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [218]
+    [[circuits.layers]]
+    active_qubits = [217, 218]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [218, 217]
+    [[circuits.layers]]
+    active_qubits = [204]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [204]
+    [[circuits.layers]]
+    active_qubits = [204, 219]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [204, 219]
+    [[circuits.layers]]
+    active_qubits = [203, 204]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [204, 203]
+    [[circuits.layers]]
+    active_qubits = [218, 219]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [219, 218]
+    [[circuits.layers]]
+    active_qubits = [174]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [174]
+    [[circuits.layers]]
+    active_qubits = [174, 189]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [174, 189]
+    [[circuits.layers]]
+    active_qubits = [173, 174]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [174, 173]
+    [[circuits.layers]]
+    active_qubits = [188, 189]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [189, 188]
+    [[circuits.layers]]
+    active_qubits = [144]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [144]
+    [[circuits.layers]]
+    active_qubits = [144, 159]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [144, 159]
+    [[circuits.layers]]
+    active_qubits = [143, 144]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [144, 143]
+    [[circuits.layers]]
+    active_qubits = [158, 159]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [159, 158]
+    [[circuits.layers]]
+    active_qubits = [114]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [114]
+    [[circuits.layers]]
+    active_qubits = [114, 129]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [114, 129]
+    [[circuits.layers]]
+    active_qubits = [113, 114]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [114, 113]
+    [[circuits.layers]]
+    active_qubits = [128, 129]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [129, 128]
+    [[circuits.layers]]
+    active_qubits = [84]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [84]
+    [[circuits.layers]]
+    active_qubits = [84, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 99]
+    [[circuits.layers]]
+    active_qubits = [83, 84]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [84, 83]
+    [[circuits.layers]]
+    active_qubits = [98, 99]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [99, 98]
+    [[circuits.layers]]
+    active_qubits = [54]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [54]
+    [[circuits.layers]]
+    active_qubits = [54, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 69]
+    [[circuits.layers]]
+    active_qubits = [53, 54]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [54, 53]
+    [[circuits.layers]]
+    active_qubits = [68, 69]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [69, 68]
+    [[circuits.layers]]
+    active_qubits = [24]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [24]
+    [[circuits.layers]]
+    active_qubits = [24, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 39]
+    [[circuits.layers]]
+    active_qubits = [23, 24]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [24, 23]
+    [[circuits.layers]]
+    active_qubits = [38, 39]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [39, 38]
+    [[circuits.layers]]
+    active_qubits = [190]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [190]
+    [[circuits.layers]]
+    active_qubits = [190, 205]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [190, 205]
+    [[circuits.layers]]
+    active_qubits = [189, 190]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [190, 189]
+    [[circuits.layers]]
+    active_qubits = [204, 205]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [205, 204]
+    [[circuits.layers]]
+    active_qubits = [160]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [160]
+    [[circuits.layers]]
+    active_qubits = [160, 175]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [160, 175]
+    [[circuits.layers]]
+    active_qubits = [159, 160]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [160, 159]
+    [[circuits.layers]]
+    active_qubits = [174, 175]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [175, 174]
+    [[circuits.layers]]
+    active_qubits = [130]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [130]
+    [[circuits.layers]]
+    active_qubits = [130, 145]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [130, 145]
+    [[circuits.layers]]
+    active_qubits = [129, 130]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [130, 129]
+    [[circuits.layers]]
+    active_qubits = [144, 145]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [145, 144]
+    [[circuits.layers]]
+    active_qubits = [100]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [100]
+    [[circuits.layers]]
+    active_qubits = [100, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [100, 115]
+    [[circuits.layers]]
+    active_qubits = [99, 100]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [100, 99]
+    [[circuits.layers]]
+    active_qubits = [114, 115]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [115, 114]
+    [[circuits.layers]]
+    active_qubits = [70]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [70]
+    [[circuits.layers]]
+    active_qubits = [70, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 85]
+    [[circuits.layers]]
+    active_qubits = [69, 70]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [70, 69]
+    [[circuits.layers]]
+    active_qubits = [84, 85]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [85, 84]
+    [[circuits.layers]]
+    active_qubits = [40]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [40]
+    [[circuits.layers]]
+    active_qubits = [40, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 55]
+    [[circuits.layers]]
+    active_qubits = [39, 40]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [40, 39]
+    [[circuits.layers]]
+    active_qubits = [54, 55]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [55, 54]
+    [[circuits.layers]]
+    active_qubits = [9]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [9]
+    [[circuits.layers]]
+    active_qubits = [8, 9]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [9, 8]
+    [[circuits.layers]]
+    active_qubits = [10]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [10]
+    [[circuits.layers]]
+    active_qubits = [10, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 25]
+    [[circuits.layers]]
+    active_qubits = [9, 10]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [10, 9]
+    [[circuits.layers]]
+    active_qubits = [24, 25]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [25, 24]
+    [[circuits.layers]]
+    active_qubits = [220]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [220]
+    [[circuits.layers]]
+    active_qubits = [219, 220]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [220, 219]
+    [[circuits.layers]]
+    active_qubits = [206]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [206]
+    [[circuits.layers]]
+    active_qubits = [206, 221]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [206, 221]
+    [[circuits.layers]]
+    active_qubits = [205, 206]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [206, 205]
+    [[circuits.layers]]
+    active_qubits = [220, 221]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [221, 220]
+    [[circuits.layers]]
+    active_qubits = [176]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [176]
+    [[circuits.layers]]
+    active_qubits = [176, 191]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [176, 191]
+    [[circuits.layers]]
+    active_qubits = [175, 176]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [176, 175]
+    [[circuits.layers]]
+    active_qubits = [190, 191]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [191, 190]
+    [[circuits.layers]]
+    active_qubits = [146]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [146]
+    [[circuits.layers]]
+    active_qubits = [146, 161]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [146, 161]
+    [[circuits.layers]]
+    active_qubits = [145, 146]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [146, 145]
+    [[circuits.layers]]
+    active_qubits = [160, 161]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [161, 160]
+    [[circuits.layers]]
+    active_qubits = [116]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [116]
+    [[circuits.layers]]
+    active_qubits = [116, 131]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [116, 131]
+    [[circuits.layers]]
+    active_qubits = [115, 116]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [116, 115]
+    [[circuits.layers]]
+    active_qubits = [130, 131]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [131, 130]
+    [[circuits.layers]]
+    active_qubits = [86]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [86]
+    [[circuits.layers]]
+    active_qubits = [86, 101]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 101]
+    [[circuits.layers]]
+    active_qubits = [85, 86]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [86, 85]
+    [[circuits.layers]]
+    active_qubits = [100, 101]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [101, 100]
+    [[circuits.layers]]
+    active_qubits = [56]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [56]
+    [[circuits.layers]]
+    active_qubits = [56, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [56, 71]
+    [[circuits.layers]]
+    active_qubits = [55, 56]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [56, 55]
+    [[circuits.layers]]
+    active_qubits = [70, 71]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [71, 70]
+    [[circuits.layers]]
+    active_qubits = [26]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [26]
+    [[circuits.layers]]
+    active_qubits = [26, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 41]
+    [[circuits.layers]]
+    active_qubits = [25, 26]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [26, 25]
+    [[circuits.layers]]
+    active_qubits = [40, 41]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [41, 40]
+    [[circuits.layers]]
+    active_qubits = [192]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [192]
+    [[circuits.layers]]
+    active_qubits = [192, 207]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [192, 207]
+    [[circuits.layers]]
+    active_qubits = [191, 192]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [192, 191]
+    [[circuits.layers]]
+    active_qubits = [206, 207]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [207, 206]
+    [[circuits.layers]]
+    active_qubits = [162]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [162]
+    [[circuits.layers]]
+    active_qubits = [162, 177]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [162, 177]
+    [[circuits.layers]]
+    active_qubits = [161, 162]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [162, 161]
+    [[circuits.layers]]
+    active_qubits = [176, 177]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [177, 176]
+    [[circuits.layers]]
+    active_qubits = [132]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [132]
+    [[circuits.layers]]
+    active_qubits = [132, 147]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [132, 147]
+    [[circuits.layers]]
+    active_qubits = [131, 132]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [132, 131]
+    [[circuits.layers]]
+    active_qubits = [146, 147]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [147, 146]
+    [[circuits.layers]]
+    active_qubits = [102]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [102]
+    [[circuits.layers]]
+    active_qubits = [102, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 117]
+    [[circuits.layers]]
+    active_qubits = [101, 102]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [102, 101]
+    [[circuits.layers]]
+    active_qubits = [116, 117]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [117, 116]
+    [[circuits.layers]]
+    active_qubits = [72]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [72]
+    [[circuits.layers]]
+    active_qubits = [72, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 87]
+    [[circuits.layers]]
+    active_qubits = [71, 72]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [72, 71]
+    [[circuits.layers]]
+    active_qubits = [86, 87]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [87, 86]
+    [[circuits.layers]]
+    active_qubits = [42]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [42]
+    [[circuits.layers]]
+    active_qubits = [42, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 57]
+    [[circuits.layers]]
+    active_qubits = [41, 42]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [42, 41]
+    [[circuits.layers]]
+    active_qubits = [56, 57]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [57, 56]
+    [[circuits.layers]]
+    active_qubits = [11]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [11]
+    [[circuits.layers]]
+    active_qubits = [10, 11]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [11, 10]
+    [[circuits.layers]]
+    active_qubits = [12]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [12]
+    [[circuits.layers]]
+    active_qubits = [12, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 27]
+    [[circuits.layers]]
+    active_qubits = [11, 12]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [12, 11]
+    [[circuits.layers]]
+    active_qubits = [26, 27]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [27, 26]
+    [[circuits.layers]]
+    active_qubits = [222]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [222]
+    [[circuits.layers]]
+    active_qubits = [221, 222]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [222, 221]
+    [[circuits.layers]]
+    active_qubits = [208]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [208]
+    [[circuits.layers]]
+    active_qubits = [208, 223]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [208, 223]
+    [[circuits.layers]]
+    active_qubits = [207, 208]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [208, 207]
+    [[circuits.layers]]
+    active_qubits = [222, 223]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [223, 222]
+    [[circuits.layers]]
+    active_qubits = [178]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [178]
+    [[circuits.layers]]
+    active_qubits = [178, 193]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [178, 193]
+    [[circuits.layers]]
+    active_qubits = [177, 178]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [178, 177]
+    [[circuits.layers]]
+    active_qubits = [192, 193]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [193, 192]
+    [[circuits.layers]]
+    active_qubits = [148]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [148]
+    [[circuits.layers]]
+    active_qubits = [148, 163]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [148, 163]
+    [[circuits.layers]]
+    active_qubits = [147, 148]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [148, 147]
+    [[circuits.layers]]
+    active_qubits = [162, 163]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [163, 162]
+    [[circuits.layers]]
+    active_qubits = [118]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [118]
+    [[circuits.layers]]
+    active_qubits = [118, 133]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [118, 133]
+    [[circuits.layers]]
+    active_qubits = [117, 118]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [118, 117]
+    [[circuits.layers]]
+    active_qubits = [132, 133]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [133, 132]
+    [[circuits.layers]]
+    active_qubits = [88]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [88]
+    [[circuits.layers]]
+    active_qubits = [88, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 103]
+    [[circuits.layers]]
+    active_qubits = [87, 88]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [88, 87]
+    [[circuits.layers]]
+    active_qubits = [102, 103]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [103, 102]
+    [[circuits.layers]]
+    active_qubits = [58]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [58]
+    [[circuits.layers]]
+    active_qubits = [58, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 73]
+    [[circuits.layers]]
+    active_qubits = [57, 58]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [58, 57]
+    [[circuits.layers]]
+    active_qubits = [72, 73]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [73, 72]
+    [[circuits.layers]]
+    active_qubits = [28]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [28]
+    [[circuits.layers]]
+    active_qubits = [28, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [28, 43]
+    [[circuits.layers]]
+    active_qubits = [27, 28]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [28, 27]
+    [[circuits.layers]]
+    active_qubits = [42, 43]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [43, 42]
+    [[circuits.layers]]
+    active_qubits = [194]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [194]
+    [[circuits.layers]]
+    active_qubits = [194, 209]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [194, 209]
+    [[circuits.layers]]
+    active_qubits = [193, 194]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [194, 193]
+    [[circuits.layers]]
+    active_qubits = [208, 209]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [209, 208]
+    [[circuits.layers]]
+    active_qubits = [164]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [164]
+    [[circuits.layers]]
+    active_qubits = [164, 179]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [164, 179]
+    [[circuits.layers]]
+    active_qubits = [163, 164]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [164, 163]
+    [[circuits.layers]]
+    active_qubits = [178, 179]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [179, 178]
+    [[circuits.layers]]
+    active_qubits = [134]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [134]
+    [[circuits.layers]]
+    active_qubits = [134, 149]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [134, 149]
+    [[circuits.layers]]
+    active_qubits = [133, 134]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [134, 133]
+    [[circuits.layers]]
+    active_qubits = [148, 149]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [149, 148]
+    [[circuits.layers]]
+    active_qubits = [104]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [104]
+    [[circuits.layers]]
+    active_qubits = [104, 119]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 119]
+    [[circuits.layers]]
+    active_qubits = [103, 104]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [104, 103]
+    [[circuits.layers]]
+    active_qubits = [118, 119]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [119, 118]
+    [[circuits.layers]]
+    active_qubits = [74]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [74]
+    [[circuits.layers]]
+    active_qubits = [74, 89]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 89]
+    [[circuits.layers]]
+    active_qubits = [73, 74]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [74, 73]
+    [[circuits.layers]]
+    active_qubits = [88, 89]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [89, 88]
+    [[circuits.layers]]
+    active_qubits = [44]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [44]
+    [[circuits.layers]]
+    active_qubits = [44, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 59]
+    [[circuits.layers]]
+    active_qubits = [43, 44]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [44, 43]
+    [[circuits.layers]]
+    active_qubits = [58, 59]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [59, 58]
+    [[circuits.layers]]
+    active_qubits = [13]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [13]
+    [[circuits.layers]]
+    active_qubits = [12, 13]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [13, 12]
+    [[circuits.layers]]
+    active_qubits = [14]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [14]
+    [[circuits.layers]]
+    active_qubits = [14, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 29]
+    [[circuits.layers]]
+    active_qubits = [13, 14]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [14, 13]
+    [[circuits.layers]]
+    active_qubits = [28, 29]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [29, 28]
+    [[circuits.layers]]
+    active_qubits = [224]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [224]
+    [[circuits.layers]]
+    active_qubits = [223, 224]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [224, 223]
+    [[circuits.layers]]
+    active_qubits = [210]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [210]
+    [[circuits.layers]]
+    active_qubits = [210, 225]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [210, 225]
+    [[circuits.layers]]
+    active_qubits = [209, 210]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [210, 209]
+    [[circuits.layers]]
+    active_qubits = [224, 225]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [225, 224]
+    [[circuits.layers]]
+    active_qubits = [180]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [180]
+    [[circuits.layers]]
+    active_qubits = [180, 195]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [180, 195]
+    [[circuits.layers]]
+    active_qubits = [179, 180]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [180, 179]
+    [[circuits.layers]]
+    active_qubits = [194, 195]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [195, 194]
+    [[circuits.layers]]
+    active_qubits = [150]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [150]
+    [[circuits.layers]]
+    active_qubits = [150, 165]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [150, 165]
+    [[circuits.layers]]
+    active_qubits = [149, 150]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [150, 149]
+    [[circuits.layers]]
+    active_qubits = [164, 165]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [165, 164]
+    [[circuits.layers]]
+    active_qubits = [120]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [120]
+    [[circuits.layers]]
+    active_qubits = [120, 135]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [120, 135]
+    [[circuits.layers]]
+    active_qubits = [119, 120]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [120, 119]
+    [[circuits.layers]]
+    active_qubits = [134, 135]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [135, 134]
+    [[circuits.layers]]
+    active_qubits = [90]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [90]
+    [[circuits.layers]]
+    active_qubits = [90, 105]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [90, 105]
+    [[circuits.layers]]
+    active_qubits = [89, 90]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [90, 89]
+    [[circuits.layers]]
+    active_qubits = [104, 105]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [105, 104]
+    [[circuits.layers]]
+    active_qubits = [60]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [60]
+    [[circuits.layers]]
+    active_qubits = [60, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 75]
+    [[circuits.layers]]
+    active_qubits = [59, 60]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [60, 59]
+    [[circuits.layers]]
+    active_qubits = [74, 75]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [75, 74]
+    [[circuits.layers]]
+    active_qubits = [30]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [30]
+    [[circuits.layers]]
+    active_qubits = [30, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 45]
+    [[circuits.layers]]
+    active_qubits = [29, 30]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [30, 29]
+    [[circuits.layers]]
+    active_qubits = [44, 45]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [45, 44]
+    [[circuits.layers]]
+    active_qubits = [211]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [211]
+    [[circuits.layers]]
+    active_qubits = [211, 212]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [211, 212]
+    [[circuits.layers]]
+    active_qubits = [15]
+
+        [[circuits.layers.operations]]
+        gate = "H"
+        qubits = [15]
+    [[circuits.layers]]
+    active_qubits = [14, 15]
+
+        [[circuits.layers.operations]]
+        gate = "CNOT"
+        qubits = [15, 14]

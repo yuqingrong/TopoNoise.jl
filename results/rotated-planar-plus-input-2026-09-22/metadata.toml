@@ -1,0 +1,120 @@
+archive_compatibility_verified = true
+archive_path = "results/rotated-planar-native-logical-errors-2026-09-22/native_logical_errors-raw.jls"
+archive_sha256 = "af5eb7c1f0cb2c932ff2ae845cf7481cf82e120a774e832fa02ebde6f13827c3"
+as_preparation = "Ideal all-plus input; H on fresh representatives followed by incoming CNOT trees; no logical-parity or basis-conversion block."
+as_state = "plus"
+batch_size = 10000
+bootstrap_replicates = 1000
+boundary_orientation = "x_ns"
+bp_state = "zero"
+clock = "gate_layer"
+cnot_matching = "As is the clockwise 90-degree rotation of Bp with every control/target exchanged and the complete execution order preserved, including boundary checks."
+completed_utc = "2026-09-22T09:15:05.850"
+decoder = "Independent uniform-weight CSS PyMatching decoders using final syndrome only."
+distances = [9, 11, 13, 15]
+error_rates = [0.0, 0.002, 0.004, 0.006, 0.008, 0.01, 0.012, 0.014, 0.016, 0.018, 0.02, 0.022, 0.024, 0.026, 0.028, 0.03, 0.032, 0.034, 0.036, 0.038, 0.04, 0.042, 0.044, 0.046, 0.048, 0.05, 0.052, 0.054, 0.056, 0.058, 0.06, 0.062, 0.064, 0.066, 0.068, 0.07, 0.072, 0.074, 0.076, 0.078, 0.08, 0.082, 0.084, 0.086, 0.088, 0.09, 0.092, 0.094, 0.096, 0.098, 0.1]
+initialization_noise = "Ideal all-plus input for As and all-zero input for Bp. Every noisy H and CNOT is paired under rotation and X/Z exchange; the native experiments are fully basis-dual."
+julia_version = "1.12.6"
+logical_state = "native"
+metric = "channel_logical"
+new_points = 408
+new_series = ["as/x_only/plus", "as/z_only/plus"]
+new_shots = 20400000
+noise = "Independent selected Pauli after each representative H and each CNOT operand; ideal native product inputs and final syndrome, no idle/readout noise."
+pymatching_version = "2.4.0"
+reused_points = 408
+reused_series = ["bp/x_only/zero", "bp/z_only/zero"]
+reused_shots = 20400000
+seed = 1235
+shots_per_point = 50000
+simulation_completed_utc = "2026-09-22T09:15:05.749"
+source_unchanged_during_run = true
+started_utc = "2026-09-22T09:05:37.632"
+
+[[schedules]]
+cnots = 104
+construction = "as"
+distance = 9
+fault_locations = 248
+gates = 144
+hadamards = 40
+input_state = "plus"
+logical_state = "plus"
+[[schedules]]
+cnots = 104
+construction = "bp"
+distance = 9
+fault_locations = 248
+gates = 144
+hadamards = 40
+input_state = "zero"
+logical_state = "zero"
+[[schedules]]
+cnots = 160
+construction = "as"
+distance = 11
+fault_locations = 380
+gates = 220
+hadamards = 60
+input_state = "plus"
+logical_state = "plus"
+[[schedules]]
+cnots = 160
+construction = "bp"
+distance = 11
+fault_locations = 380
+gates = 220
+hadamards = 60
+input_state = "zero"
+logical_state = "zero"
+[[schedules]]
+cnots = 228
+construction = "as"
+distance = 13
+fault_locations = 540
+gates = 312
+hadamards = 84
+input_state = "plus"
+logical_state = "plus"
+[[schedules]]
+cnots = 228
+construction = "bp"
+distance = 13
+fault_locations = 540
+gates = 312
+hadamards = 84
+input_state = "zero"
+logical_state = "zero"
+[[schedules]]
+cnots = 308
+construction = "as"
+distance = 15
+fault_locations = 728
+gates = 420
+hadamards = 112
+input_state = "plus"
+logical_state = "plus"
+[[schedules]]
+cnots = 308
+construction = "bp"
+distance = 15
+fault_locations = 728
+gates = 420
+hadamards = 112
+input_state = "zero"
+logical_state = "zero"
+
+[source_sha256]
+"CondaPkg.toml" = "ff9fa4da3b79ec1d768f07ea1920ffdbeb91c1ac7542aade324e72c589d656a5"
+"Project.toml" = "ca955a28554e8dd663afa1f26611b75fa8ac97f101a3d4c9493ba450397467d1"
+"src/TopoNoise.jl" = "87ec0f83041dec9e12a5e5ff655e59eabc972b7c5b41dfac33bf8ce007b1817d"
+"src/rotated_planar/comparison.jl" = "ceea86317417f2889cf21145c978986ab4ec94e5c1fd6fafb38776fc97336957"
+"src/rotated_planar/comparison_plot.jl" = "30370004e66758bbfb8c061ed863169b76787467b27bafcbe2f5d9eac9b4d524"
+"src/rotated_planar/decoder.jl" = "7d2be47c0883ce1f472813d28ba9980f325b213914eb1996fd46fa245ce72256"
+"src/rotated_planar/encoder.jl" = "d27be409b411ac2b7d32e9524522eb3725f7e402bb2e657a28c26e471538a703"
+"src/rotated_planar/geometry.jl" = "6f82c3bd05da708489ba6bb70912093a7b5be2e0765588f5cb133beb02521749"
+"src/rotated_planar/noise.jl" = "b2183690889a5978f1a339418eacfe22ae0baeba47f341531d819b7adfdbcdd5"
+"src/rotated_planar/scaling.jl" = "850f0d440d9e67cf333930d340afec3bd423e34b25b2aa80a218d8b7d74079b6"
+"src/rotated_planar/scan.jl" = "3c746911dc175610015ee7769bd9650d520753fa26dae67ac65191ba62656d48"
+"src/rotated_planar/verified_as.jl" = "e2290b59e927668d196b3fed4fb9016cc7d9eb76500f12b9d45898562b3a658f"
+"src/rotated_planar/verified_as_analysis.jl" = "429143ffca3968fe09794787e3754ac7f231031952ae69b96dc435ef162260c5"

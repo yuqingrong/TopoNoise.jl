@@ -1,0 +1,52 @@
+{
+  "bootstrap_fits": 2000,
+  "figures": [
+    {
+      "bytes": 562161,
+      "path": "logical_errors.png",
+      "sha256": "eb0316d3aa347b1990393aecdaa01335ca18f32a95a3025ef9b757567bf43433"
+    },
+    {
+      "bytes": 102095,
+      "path": "logical_errors.pdf",
+      "sha256": "24931ed52104ee4f65a3d646b60f9dfda65568dd7255b0fc49941e41fc8d80be"
+    },
+    {
+      "bytes": 387279,
+      "path": "logical_errors.svg",
+      "sha256": "2879214a1f73b5d002b59cb232b772977ac07163de5345f6cca3d935a93a1c09"
+    },
+    {
+      "bytes": 323122,
+      "path": "near_critical_scaling.png",
+      "sha256": "e9307999f6c4ccdaf27c5886d45577e2a47ae6df1267c1fee6b508d135b310c5"
+    },
+    {
+      "bytes": 52301,
+      "path": "near_critical_scaling.pdf",
+      "sha256": "a434a707bf89a816f4526b76fa969f8b3bebae136ff7a4d599a19963889a0726"
+    },
+    {
+      "bytes": 128558,
+      "path": "near_critical_scaling.svg",
+      "sha256": "7de58cf758e34ea9732b1889cf1960198923dbfafa3cb94a1ec45e7c8c364ecc"
+    }
+  ],
+  "plotted_marginals": 512,
+  "points": 256,
+  "sensitivity_fits": 20,
+  "shots": 5056000,
+  "source_files": 19,
+  "status": "passed",
+  "tests": {
+    "julia_assertions": 6464,
+    "julia_exit_code": 0,
+    "julia_log_sha256": "43f30ef4b116685e7000824c5170e43a01cd5558dfadc746806632dcae800045",
+    "julia_testsets": 34,
+    "python_exit_code": 0,
+    "python_log_sha256": "1a7efa3f78d289703dd99618e2e9b8891c81e22a9438d24e712b1f28bd5a8f68",
+    "python_tests": 10,
+    "statevector_fixtures": 73
+  },
+  "visual_inspection": "Recorded separately in README after viewing rendered PNGs"
+}

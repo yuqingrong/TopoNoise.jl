@@ -1,0 +1,32 @@
+{
+  "raw_sha256": "75a8bbbf7b17892035453520421560a309f271643d6c7a5067ba5f5e7845f871",
+  "original_counts_verified": 816,
+  "independent_new_as_shots": 20400000,
+  "verified_reused_bp_shots": 20400000,
+  "test_assertions_passed": 6464,
+  "testsets_passed": 34,
+  "exports_verified": 6,
+  "dual_curve_comparisons": [
+    {
+      "as_channel": "z_only",
+      "bp_channel": "x_only",
+      "points_used": 191,
+      "chi_square": 187.59234346386378,
+      "chi_square_per_point": 0.9821588663029518,
+      "approximate_agreement_p_value": 0.5561556980435758,
+      "max_absolute_standardized_difference": 3.0564675754065433
+    },
+    {
+      "as_channel": "x_only",
+      "bp_channel": "z_only",
+      "points_used": 200,
+      "chi_square": 189.08375961113353,
+      "chi_square_per_point": 0.9454187980556676,
+      "approximate_agreement_p_value": 0.6993652124738748,
+      "max_absolute_standardized_difference": 2.7245912418452525
+    }
+  ],
+  "threshold_difference_as_minus_bp": 0.0005179194208840797,
+  "threshold_difference_statistical_standard_error": 0.000315532034384992,
+  "threshold_difference_in_statistical_se": 1.6414162888201314
+}

@@ -1,0 +1,7 @@
+# Python 3.12.13, macOS arm64; original runtime recorded in metadata.json
+numpy==2.5.1
+scipy==1.18.0
+stim==1.16.0
+pymatching==2.4.0
+matplotlib==3.11.1
+Pillow==12.3.0

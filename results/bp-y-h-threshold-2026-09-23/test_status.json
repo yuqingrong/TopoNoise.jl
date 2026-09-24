@@ -1,0 +1,10 @@
+{
+  "julia_assertions": 6464,
+  "julia_exit_code": 0,
+  "julia_log_sha256": "43f30ef4b116685e7000824c5170e43a01cd5558dfadc746806632dcae800045",
+  "julia_testsets": 34,
+  "python_exit_code": 0,
+  "python_log_sha256": "1a7efa3f78d289703dd99618e2e9b8891c81e22a9438d24e712b1f28bd5a8f68",
+  "python_tests": 10,
+  "statevector_fixtures": 73
+}

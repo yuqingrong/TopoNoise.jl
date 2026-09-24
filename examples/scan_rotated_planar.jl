@@ -12,10 +12,10 @@ Options:
   --p-min VALUE                error-grid minimum (default: 0)
   --p-max VALUE                error-grid maximum (default: 0.1)
   --p-step VALUE               error-grid step (default: 0.01)
-  --state NAME                 zero, one, plus, or minus (default: zero)
+  --state NAME                 native, zero, one, plus, or minus (default: native: As plus, Bp zero)
   --construction NAME          bp or as (default: bp)
   --boundary-orientation NAME  x_ns or x_ew (default: x_ns)
-  --clock NAME                 gate_layer or plaquette (default: gate_layer)
+  --clock NAME                 gate_layer, plaquette, or post_encoding (default: gate_layer)
   --shots INTEGER              shots per scan point (default: 10000)
   --batch-size INTEGER         estimator batch size (default: 10000)
   --seed INTEGER               RNG seed, or nothing (default: 1234)
@@ -82,7 +82,7 @@ function _parse_arguments(arguments)
         :p_min => 0.0,
         :p_max => 0.1,
         :p_step => 0.01,
-        :logical_state => :zero,
+        :logical_state => :native,
         :construction => :bp,
         :boundary_orientation => :x_ns,
         :clock => :gate_layer,

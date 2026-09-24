@@ -7,7 +7,11 @@ const USAGE = """
 Usage: julia --project=. examples/compare_rotated_planar_constructions.jl [options]
 
 Compare As/Bp encoder constructions under X-only and Z-only circuit noise.
-Every panel prepares |0_L>.
+By default As prepares |+_L> from ideal all-plus input and Bp prepares |0_L>
+from ideal all-zero input. Their noisy H/CNOT schedules are basis-matched.
+An explicit logical state applies to all panels.
+`--metric channel_logical` reports channel-matched residual logical parity;
+`--metric state_failure` reports failure of the selected prepared state.
 
 Options:
   --distances LIST             comma-separated odd distances (default: 3,5,7)
@@ -19,7 +23,9 @@ Options:
   --batch-size INTEGER         estimator batch size (default: 10000)
   --seed INTEGER               RNG seed (default: 1234)
   --boundary-orientation NAME  x_ns or x_ew (default: x_ns)
-  --clock NAME                 gate_layer or plaquette (default: gate_layer)
+  --logical-state NAME         native, zero, one, plus, or minus (default: native)
+  --clock NAME                 gate_layer, plaquette, or post_encoding (default: gate_layer)
+  --metric NAME                channel_logical or state_failure (default: channel_logical)
   --bootstrap-replicates N     fitting bootstrap replicates (default: 500)
   --no-fit                     save raw data and figures without fitting
   --output-dir PATH            artifact directory (default: results/rotated-planar-comparison)
@@ -37,7 +43,9 @@ const _VALUE_OPTIONS = (
     "--batch-size",
     "--seed",
     "--boundary-orientation",
+    "--logical-state",
     "--clock",
+    "--metric",
     "--bootstrap-replicates",
     "--output-dir",
     "--basename",
@@ -138,7 +146,9 @@ function _parse_arguments(arguments)
         :batch_size => 10_000,
         :seed => 1234,
         :boundary_orientation => :x_ns,
+        :logical_state => :native,
         :clock => :gate_layer,
+        :metric => :channel_logical,
         :bootstrap_replicates => 500,
         :no_fit => false,
         :output_dir => joinpath("results", "rotated-planar-comparison"),
@@ -179,8 +189,12 @@ function _parse_arguments(arguments)
             settings[:seed] = _parse_integer(value, option)
         elseif option == "--boundary-orientation"
             settings[:boundary_orientation] = Symbol(value)
+        elseif option == "--logical-state"
+            settings[:logical_state] = Symbol(value)
         elseif option == "--clock"
             settings[:clock] = Symbol(value)
+        elseif option == "--metric"
+            settings[:metric] = Symbol(value)
         elseif option == "--bootstrap-replicates"
             settings[:bootstrap_replicates] = _parse_integer(value, option)
         elseif option == "--output-dir"
@@ -202,8 +216,12 @@ function _parse_arguments(arguments)
     _validate_positive(settings[:bootstrap_replicates], "--bootstrap-replicates")
     settings[:boundary_orientation] in (:x_ns, :x_ew) || throw(ArgumentError(
         "--boundary-orientation must be x_ns or x_ew"))
-    settings[:clock] in (:gate_layer, :plaquette) || throw(ArgumentError(
-        "--clock must be gate_layer or plaquette"))
+    settings[:logical_state] in (:native, :zero, :one, :plus, :minus) || throw(ArgumentError(
+        "--logical-state must be native, zero, one, plus, or minus"))
+    settings[:clock] in (:gate_layer, :plaquette, :post_encoding) || throw(ArgumentError(
+        "--clock must be gate_layer, plaquette, or post_encoding"))
+    settings[:metric] in (:channel_logical, :state_failure) || throw(ArgumentError(
+        "--metric must be channel_logical or state_failure"))
     settings[:basename] = _validate_basename(settings[:basename])
     return settings
 end
@@ -265,8 +283,10 @@ function main(args=ARGS; io::IO=stdout, error_io::IO=stderr)::Int
             rng;
             distances=settings[:distances],
             error_rates=settings[:error_rates],
+            logical_state=settings[:logical_state],
             boundary_orientation=settings[:boundary_orientation],
             clock=settings[:clock],
+            failure_metric=settings[:metric],
             shots=settings[:shots],
             batch_size=settings[:batch_size],
             seed=settings[:seed],

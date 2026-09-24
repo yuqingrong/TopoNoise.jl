@@ -81,6 +81,42 @@
             end
         end
 
+        @testset "direct As preparation faults enter the gate clock and propagate" begin
+            code = RotatedPlanarCode(3)
+            encoder = rotated_planar_encoder(code; construction=:as, logical_state=:zero)
+            record = sample_fault_record(
+                MersenneTwister(11), encoder, CircuitPauliNoise(0))
+            @test length(record.steps) == 13
+            @test sum(length(step.support) for step in record.steps) == 22
+            @test record.steps[5].block_kind === :logical_sector
+            @test record.steps[5].support == (4, 5)
+            # X3 after H3 spreads to q2. X4 after the parity CNOT(5,4)
+            # fans out to the left-column logical X on q1, q4, q7.
+            for (step, qubit, pauli, expected_x, expected_z) in (
+                (1, 3, :X, [2, 3], Int[]),
+                (5, 4, :X, [1, 4, 7], Int[]),
+                (5, 4, :Z, Int[], [4]),
+                (5, 4, :Y, [1, 4, 7], [4]),
+            )
+                faulty = with_pauli_fault(record, step, qubit, pauli)
+                frame = propagate_pauli_frame(encoder, faulty)
+                @test findall(frame.x) == expected_x
+                @test findall(frame.z) == expected_z
+                @test sample_yao_syndrome(MersenneTwister(12), code, encoder, faulty) ==
+                      measure_syndrome(code, frame)
+            end
+            logical_fault = propagate_pauli_frame(
+                encoder, with_pauli_fault(record, 5, 4, :X))
+            @test !any(syndrome_bits(measure_syndrome(code, logical_fault)))
+            @test isodd(count(logical_fault.x[logical_z_support(code)]))
+
+            plaquette_record = sample_fault_record(
+                MersenneTwister(11), encoder, CircuitPauliNoise(0; clock=:plaquette))
+            @test length(plaquette_record.steps) == 4
+            @test [step.support for step in plaquette_record.steps] ==
+                  [(2, 3, 5, 6), (6, 9), (1, 4), (4, 5, 7, 8)]
+        end
+
         @testset "coincident draws remain a Y event" begin
             step = CircuitFaultStep(1, :plaquette, 1, [5], trues(1), trues(1))
             @test step.x[1]

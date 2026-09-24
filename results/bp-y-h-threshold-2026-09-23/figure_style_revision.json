@@ -1,0 +1,16 @@
+{
+  "reference_figure": "results/rotated-planar-native-logical-errors-2026-09-22/native_logical_errors-combined.png",
+  "reference_script": "results/rotated-planar-native-logical-errors-2026-09-22/plot_results.py",
+  "unchanged_results_sha256": {
+    "raw_counts.csv": "f2ba5802c008e4ed2c191149440601860f7fea90d932ebed9687aa2860ec4d79",
+    "local_fits.json": "d52d1b9ec25087d7ad30b58d0aa64ec184eb9e5d18c063c433826b0270867165",
+    "fit_summary.csv": "58f994349f9154225be69110ec2dc6706419becc77593c9b8be223a4f742a3b1",
+    "bootstrap_samples.csv": "47167248f7b2a0faba9960296b3213a10af931424fdaa3b2192d79547db02d78",
+    "selection.json": "1df42c0a14526b45bf75dc8a51f9c7152d80537d21588aad9862390bf94881e8",
+    "sensitivity.json": "52505c22c2c457b8cb32e4fa90d87eda38d641dacdd5b2178831cb57c488fc2d",
+    "sensitivity.csv": "847853d14383f5fe32fc33fb40862291b2daea3728e8d523d7e6ca4b7fcecdd5",
+    "sampler.py": "69c5fd8bfa5b9e8e7327757787de866675864401d51115ec7ceb02e73f712bea",
+    "analysis.py": "ecf5c2d7bba3e53a7d3ae685829b3cda7acacf524f4d8a4b3d27d187ff532f3a",
+    "metadata.json": "fa218c6d1bc88a36b98d7407c19225c635a3887e1bccb3d60befa019343b6f1b"
+  }
+}

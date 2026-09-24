@@ -1,5 +1,10 @@
 # Local As/Bp plaquette-growth encoder
 
+The As initialization, representative H gates, and logical-basis conversion
+described below are superseded by the
+[2026-09-12 direct As preparation](2026-09-12-direct-as-preparation.md).
+Its source-check geometry and CNOT ordering remain as specified here.
+
 ## Goal
 
 Replace the current RREF-derived rotated-planar encoder schedule with the
