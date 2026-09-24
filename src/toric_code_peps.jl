@@ -28,7 +28,7 @@ function physicalinds(peps::ToricCodePEPS, row::Integer, col::Integer)
     return peps.physical_indices[row, col]
 end
 
-raw"""
+@doc raw"""
     toric_code_local_tensor([T=Float64])
 
 Return the rank-eight local tensor
