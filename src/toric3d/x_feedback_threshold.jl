@@ -74,3 +74,35 @@ function toric3d_x_threshold_outcome(decoder::Toric3DXThresholdDecoder,
         logical_1=logical_1, logical_2=logical_2,
         failure=logical_1 | logical_2)
 end
+
+"""Replay one X-only preparation fault record and apply the common final decoder."""
+function replay_toric3d_x_feedback(encoder::Toric3DSliceEncoder,
+        faults::Toric3DFaultRecord, slice_decoder::Toric3DSliceDecoder,
+        final_decoder::Toric3DXThresholdDecoder; feedback::Bool,
+        routing::Symbol=:one_step, record_history::Bool=false)::NamedTuple
+    encoded_lattice = final_decoder.code.lattice
+    lattice = encoder.code
+    (lattice.steps, lattice.Ly, lattice.Lz) ==
+        (encoded_lattice.steps, encoded_lattice.Ly, encoded_lattice.Lz) ||
+        throw(DimensionMismatch("final decoder and encoder dimensions differ"))
+    any(faults.z) && throw(ArgumentError("X-feedback replay requires an X-only fault record"))
+    prepared = replay_toric3d_slice(encoder, faults, slice_decoder;
+        feedback, routing, record_history)
+    outcome = toric3d_x_threshold_outcome(final_decoder, prepared.frame.x)
+    return (frame=prepared.frame, syndrome=outcome.syndrome,
+        recovery=outcome.recovery, residual=outcome.residual,
+        logical_1=outcome.logical_1, logical_2=outcome.logical_2,
+        failure=outcome.failure, history=prepared.history)
+end
+
+"""Replay identical sampled faults under final-only and slice-feedback protocols."""
+function toric3d_x_feedback_pair(encoder::Toric3DSliceEncoder,
+        faults::Toric3DFaultRecord, slice_decoder::Toric3DSliceDecoder,
+        final_decoder::Toric3DXThresholdDecoder; routing::Symbol=:one_step,
+        record_history::Bool=false)::NamedTuple{(:final_only,:slice_feedback)}
+    final_only = replay_toric3d_x_feedback(encoder, faults, slice_decoder,
+        final_decoder; feedback=false, routing, record_history)
+    slice_feedback = replay_toric3d_x_feedback(encoder, faults, slice_decoder,
+        final_decoder; feedback=true, routing, record_history)
+    return (final_only=final_only, slice_feedback=slice_feedback)
+end

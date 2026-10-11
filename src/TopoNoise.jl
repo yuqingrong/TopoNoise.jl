@@ -70,7 +70,8 @@ export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z
        build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
        toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold,
        Toric3DXThresholdDecoder, build_toric3d_x_threshold_decoder,
-       decode_toric3d_x, toric3d_x_threshold_outcome
+       decode_toric3d_x, toric3d_x_threshold_outcome,
+       replay_toric3d_x_feedback, toric3d_x_feedback_pair
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
