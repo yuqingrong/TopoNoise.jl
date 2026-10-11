@@ -6,6 +6,7 @@ using Distributions: Binomial
 using LinearAlgebra: I, nullspace
 using Random
 using Statistics
+import TOML
 import SparseArrays
 import PythonCall
 using Yao: H, X, Z, ResetTo, apply!, chain, control, matblock, measure!, put,
@@ -45,6 +46,29 @@ export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        plot_construction_channel_comparison, plot_construction_channel_panel,
        save_construction_channel_comparison
 
+export ToricCode3D, star_checks, plaquette_checks, star_check_matrix, plaquette_check_matrix,
+       toric3d_prefix, Toric3DEncoder, toric3d_encoder, verify_toric3d_encoder,
+       Toric3DFaultRecord, sample_toric3d_faults, with_toric3d_fault,
+       propagate_toric3d_segment!, toric3d_syndrome, toric3d_logical_parities,
+       Toric3DDecoderSettings, build_toric3d_decoder, decode_toric3d,
+       toric3d_decoder_metadata, Toric3DMetricEstimate, Toric3DComparisonPoint,
+       Toric3DComparison, replay_toric3d_feedback, compare_toric3d_feedback,
+       toric3d_z_lower_bound, plot_toric3d_comparison, save_toric3d_comparison
+
+export Toric3DSliceLattice, Toric3DSliceEncoder, toric3d_slice_qubits,
+       toric3d_slice_boundary_checks, toric3d_slice_checks, toric3d_slice_check_matrix,
+       toric3d_slice_encoder, verify_toric3d_slice_encoder,
+       build_toric3d_slice_decoder, decode_toric3d_slice, replay_toric3d_slice,
+       Toric3DSliceMetricEstimate, Toric3DSliceComparisonPoint, Toric3DSliceComparison,
+       toric3d_slice_diagnostics, compare_toric3d_slice_feedback,
+       plot_toric3d_slice_comparison, save_toric3d_slice_comparison
+
+export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z,
+       toric3d_encoded_seed_checks, toric3d_encoded_encoder, verify_toric3d_encoded_encoder,
+       build_toric3d_z_fault_model, sample_toric3d_z_frames,
+       build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
+       toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold
+
 include("toric_code_peps.jl")
 include("local_gate.jl")
 include("network_graph.jl")
@@ -58,5 +82,18 @@ include("rotated_planar/scan.jl")
 include("rotated_planar/comparison.jl")
 include("rotated_planar/scaling.jl")
 include("rotated_planar/comparison_plot.jl")
+
+include("toric3d/geometry.jl")
+include("toric3d/encoder.jl")
+include("toric3d/noise.jl")
+include("toric3d/decoder.jl")
+include("toric3d/scan.jl")
+include("toric3d/output.jl")
+include("toric3d/slice_geometry.jl")
+include("toric3d/slice_encoder.jl")
+include("toric3d/slice_feedback.jl")
+include("toric3d/slice_scan.jl")
+include("toric3d/encoded_slice_geometry.jl")
+include("toric3d/z_threshold.jl")
 
 end

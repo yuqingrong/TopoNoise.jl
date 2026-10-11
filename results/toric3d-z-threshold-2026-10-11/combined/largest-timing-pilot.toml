@@ -1,0 +1,8 @@
+estimated_scan_seconds = 10986.527523583
+pilot_p = 0.01
+pilot_seconds = 4.393502417
+pilot_setup_seconds = 2.771481083
+pilot_shots = 20
+pilot_size = 25
+warmup_seconds = 1.903678959
+estimate_caveat = "The pilot excluded object construction but included lazy first-decode setup, so its per-shot extrapolation overestimates runtime; raw CSV point timings are authoritative."

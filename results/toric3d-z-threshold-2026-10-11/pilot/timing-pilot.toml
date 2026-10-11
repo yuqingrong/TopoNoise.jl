@@ -1,0 +1,8 @@
+estimated_scan_seconds = 293.96823750000004
+pilot_p = 0.01
+pilot_seconds = 0.27996975
+pilot_shots = 20
+pilot_size = 9
+warmup_seconds = 1.20306875
+pilot_includes_setup = true
+estimate_caveat = "The early pilot included per-size construction and lazy decoder setup, so its per-shot extrapolation overestimates runtime; raw CSV point timings are authoritative."

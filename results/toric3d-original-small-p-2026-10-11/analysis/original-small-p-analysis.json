@@ -1,0 +1,154 @@
+{
+  "status": "zero_threshold_supported",
+  "conclusion": "No positive logical-Z diagnostic threshold: the fixed-failure pseudothreshold decreases with L, and the analytic lower bound tends to one half for every fixed p>0.",
+  "scope": "Original Cartesian x-sweep, Z-only circuit faults, final-only and full-prefix layer feedback; logical Z is not |0_L> preparation infidelity.",
+  "target_failure_rate": 0.01,
+  "interpolation": "piecewise linear in p between adjacent simulated rates bracketing the target",
+  "estimates": {
+    "final_only": {
+      "values": [
+        {
+          "L": 3,
+          "p_target": 0.00013802816901408452,
+          "p_target_times_L2": 0.0012422535211267607,
+          "bootstrap_interval": [
+            0.00011550387596899226,
+            0.0001378048780487805,
+            0.0001579320339830085
+          ]
+        },
+        {
+          "L": 5,
+          "p_target": 1.6595744680851064e-05,
+          "p_target_times_L2": 0.00041489361702127663,
+          "bootstrap_interval": [
+            1.3636363636363638e-05,
+            1.66e-05,
+            1.9574468085106384e-05
+          ]
+        },
+        {
+          "L": 7,
+          "p_target": 9.704225352112676e-06,
+          "p_target_times_L2": 0.0004755070422535211,
+          "bootstrap_interval": [
+            8.209302325581396e-06,
+            9.708333333333333e-06,
+            1.125985906173493e-05
+          ]
+        },
+        {
+          "L": 9,
+          "p_target": 2.9726027397260275e-06,
+          "p_target_times_L2": 0.00024078082191780824,
+          "bootstrap_interval": [
+            2.543462732919255e-06,
+            2.9724124809741252e-06,
+            3.494154086413326e-06
+          ]
+        }
+      ],
+      "power_law": {
+        "exponent": 3.337471512857802,
+        "coefficient": 0.0048710241134097354,
+        "log_residual_rms": 0.21668476934131306,
+        "bootstrap_exponent_interval": [
+          3.1287890664608846,
+          3.332100374213482,
+          3.516329962611394
+        ]
+      }
+    },
+    "layer_feedback": {
+      "values": [
+        {
+          "L": 3,
+          "p_target": 0.00013862068965517243,
+          "p_target_times_L2": 0.001247586206896552,
+          "bootstrap_interval": [
+            0.00011705426356589148,
+            0.0001389261744966443,
+            0.0001577777777777778
+          ]
+        },
+        {
+          "L": 5,
+          "p_target": 5.032258064516129e-05,
+          "p_target_times_L2": 0.0012580645161290322,
+          "bootstrap_interval": [
+            4.4309321692140176e-05,
+            5.037313432835821e-05,
+            5.646399143045485e-05
+          ]
+        },
+        {
+          "L": 7,
+          "p_target": 2.918918918918919e-05,
+          "p_target_times_L2": 0.0014302702702702703,
+          "bootstrap_interval": [
+            2.5116279069767442e-05,
+            2.9230769230769234e-05,
+            3.441183094859565e-05
+          ]
+        },
+        {
+          "L": 9,
+          "p_target": 1.5142857142857144e-05,
+          "p_target_times_L2": 0.0012265714285714286,
+          "bootstrap_interval": [
+            1.22046062992126e-05,
+            1.5185185185185187e-05,
+            1.773620283018867e-05
+          ]
+        }
+      ],
+      "power_law": {
+        "exponent": 1.9663743347953528,
+        "coefficient": 0.0012160694824532826,
+        "log_residual_rms": 0.059517434805409046,
+        "bootstrap_exponent_interval": [
+          1.7679004837475754,
+          1.9640573566875716,
+          2.1653460755204033
+        ]
+      }
+    }
+  },
+  "sensitivity": [
+    {
+      "target": 0.005,
+      "final_only_exponent": 3.238184078426819,
+      "layer_feedback_exponent": 2.0263109658585545
+    },
+    {
+      "target": 0.01,
+      "final_only_exponent": 3.337471512857802,
+      "layer_feedback_exponent": 1.9663743347953528
+    },
+    {
+      "target": 0.02,
+      "final_only_exponent": 3.3866546964446402,
+      "layer_feedback_exponent": 1.8778657444773066
+    }
+  ],
+  "bootstrap": {
+    "requested": 5000,
+    "accepted": 5000,
+    "seed": 24680,
+    "method": "independent binomial resampling at observed point rates; intervals are sampling uncertainty conditional on interpolation and power-law fit"
+  },
+  "analytic_bound": "P_LZ >= [1-(1-2p)^(L^2)]/2 for cubic L; hence lim_{L->infinity} P_LZ >= 1/2 at every fixed p>0",
+  "input_csv": "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-original-small-p-2026-10-11/toric3d-original-small-p-raw.csv",
+  "input_sha256": "cfd908fa60037adcefd858927dd72a50a0c04f199b9f853e0de563352581b215",
+  "script_sha256": "31dfafe78786a68c47a473ac5d43909fd3f82bc03abfb3077c6bb0281066dbf2",
+  "metadata": [
+    {
+      "path": "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-original-small-p-2026-10-11/toric3d-feedback-metadata.toml",
+      "sha256": "50bf4b153f86cb9e78b68ad331c4e7f69a6171e4b1c09adc2623c2a046b5adfa"
+    },
+    {
+      "path": "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-original-small-p-2026-10-11/toric3d-original-small-p-metadata.toml",
+      "sha256": "50bf4b153f86cb9e78b68ad331c4e7f69a6171e4b1c09adc2623c2a046b5adfa"
+    }
+  ]
+}

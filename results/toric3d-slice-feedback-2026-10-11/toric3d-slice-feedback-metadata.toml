@@ -1,0 +1,35 @@
+active_gate_outputs_per_vertex = 13
+bulk_star_density = "violated six-edge stars / ((steps-1)*Ly*Lz); excludes final frontier stars; zero at steps=1"
+channels = ["x_only", "z_only"]
+complete = true
+completed_channel_points = 36
+decoder = "PyMatching unit-weight active-slice compatibility graph"
+dimensions_steps_Ly_Lz = [[3, 3, 3], [5, 5, 5], [7, 7, 7]]
+error_rates = [0.0, 0.001, 0.003, 0.01, 0.03, 0.05]
+expected_channel_points = 36
+feedback = "measure old-slice Q; validate complete matching recovery; apply routed image F(C) only to fresh targets"
+final_recovery = "none"
+format_version = 1
+frontier_density = "violated final active-slice compatibility checks / (Ly*Lz)"
+gate_order = "vertices t,u,v; H(new1), CNOT(new1,new2), CNOT(new1,new3), two old K12 controls into new2, two old K13 controls into new3"
+gates_per_vertex = 7
+geometry = "diagonal cubic lattice t=x+y+z,u=x,v=y; periodic u,v; slices 0:steps"
+ideal_operations = ["initialization", "idles", "syndrome measurement", "Pauli feed-forward"]
+individual_interval = "approximate 95% normal interval from independent shot-level sample SEM, clipped to [0,1]"
+initial_state = "all-zero initial slice and fresh qubits; fixed boundary stabilizers; k=0"
+interpretation = "propagation and physical-syndrome diagnostics only; no logical error rate or threshold claim; global classical matching is not a constant-depth local channel"
+interval_limitations = "not Wilson intervals over correlated checks; constant samples give zero SEM; one shot gives undefined SEM; rare-event coverage is not guaranteed"
+julia_version = "1.12.6"
+noise = "independent Bernoulli p per participating qubit after every H/CNOT, X-only and Z-only separately"
+paired_interval = "approximate 95% normal interval from within-shot feedback-minus-unassisted differences, clipped to [-1,1]"
+paper_relation = "derived 3D slice construction inspired by arXiv:2609.13383; retained gate-output noise differs from the paper's slice-noise model"
+plaquette_cluster_extent = "maximum time extent max(t)-min(t)+1 of any violated-face component, divided by steps; shared-cube adjacency; empty=0"
+plaquette_density = "violated physical plaquettes / (3*steps*Ly*Lz)"
+protocols = ["unassisted", "slice_feedback"]
+pymatching_version = "2.4.0"
+rng_policy = "supplied RNG consumed continuously; identical faults replayed across each protocol pair"
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed_metadata = 1234
+shots_per_channel_point = 200
+started_at_unix = 1.791707494535783e9

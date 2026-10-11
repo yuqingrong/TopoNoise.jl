@@ -334,3 +334,167 @@ and write explicit unavailable-fit records without attempting the fit.
 The comparison API excludes repeated syndrome rounds, measurement noise,
 periodic layouts, holes, and multi-logical-qubit patches. Its three-distance
 scaling fits are exploratory diagnostics, not threshold claims.
+
+## 3D toric slab with layer feedback
+
+The 3D comparison uses a relative cubic slab: periodic $y,z$ directions and
+rough open $x$ ends. There are $L_x$ retained vertex planes, $x$ edges at
+$x=0,\ldots,L_x$, and transverse edges at $x=1,\ldots,L_x$. Periodic
+length-two cells remain distinct; boundary plaquettes are triangular. For
+$M=L_yL_z$, the code has $(3L_x+1)M$ edge qubits, one logical qubit,
+$d_Z=L_x+1$, and $d_X=M$.
+
+The encoder visits vertices in increasing $x,y,z$ order. Each fresh outgoing
+$x$ edge receives an H, then controls CNOTs to the incoming $x$ edge and the
+$+y,-y,+z,-z$ edges. It prepares
+$|0_L\rangle=2^{L_xM/2}\prod_v(I+A_v)/2\,|0\rangle^{\otimes n}$.
+The X-only or Z-only channel places independent Bernoulli-$p$ faults on every
+active H or CNOT output. Initialization, idle periods, syndrome measurements,
+and corrections are ideal.
+
+Each sampled fault record is replayed under two protocols. Final-only recovery
+decodes after the circuit; layer feedback decodes after every completed $x$
+layer on its prefix slab, including its moving triangular frontier, and
+corrects only existing qubits. Z recovery uses matching on star defects;
+X recovery uses belief propagation with ordered-statistics decoding on
+plaquette defects. The small-size exact backend minimizes data-recovery
+weight and does not perform circuit-level maximum-likelihood decoding.
+
+From the repository root, run the default 60-point paired comparison:
+
+```bash
+julia --project=. -e 'using Pkg; Pkg.instantiate()'
+julia --project=. examples/compare_toric3d_feedback.jl
+```
+
+The example warms up once, times an independent ten-shot pilot at the largest
+size and $p=0.03$, prints a rough full-scan time estimate, then runs 1000
+shots per point. Completed points are saved incrementally in
+`results/toric3d-feedback-2026-10-11`; final artifacts use the
+`toric3d-feedback` basename. A smaller run is:
+
+```bash
+julia --project=. examples/compare_toric3d_feedback.jl \
+  --sizes 2,3 --error-rates 0,0.01,0.03 --shots 20 \
+  --pilot-shots 10 --seed 1234 --output-dir results/toric3d-smoke
+```
+
+The Julia API also accepts independent dimensions and a caller-owned RNG:
+
+```julia
+using Random, TopoNoise
+
+code = ToricCode3D(3, 5, 7)
+encoder = toric3d_encoder(code)
+settings = Toric3DDecoderSettings()  # the study's fixed baseline
+decoder = build_toric3d_decoder(code; p=0.01, settings)
+
+comparison = compare_toric3d_feedback(MersenneTwister(1234);
+    sizes=[(3, 5, 7)], error_rates=[0.0, 0.01, 0.03], shots=1000,
+    seed=1234, settings, output_dir="results/toric3d-rectangular")
+save_toric3d_comparison(comparison, "results/toric3d-rectangular")
+```
+
+`seed` records provenance; the supplied RNG determines the actual draws.
+`sample_toric3d_faults(rng, encoder; p_x, p_z)` creates a replayable fault
+record independently of decoding. `decode_toric3d(decoder, stars, plaquettes)`
+returns a data-qubit `PauliFrame` and rejects a recovery whose syndrome does
+not match its input. Use `x_backend=:exact` only for the `(1,2,2)` and
+`(2,2,2)` reference geometries; the final reference enumerates 512 candidates.
+
+The baseline uses unit matching weights and uniform physical-`p` BP+OSD
+priors, with minimum-sum updates, 50 iterations, scaling factor 1, parallel
+updates, one thread, and `OSD_CS` order 2. These data-error priors neglect
+correlations caused by circuit propagation. `Toric3DDecoderSettings` exposes
+the decoder controls, and the output metadata records their values and the
+decoder package versions.
+
+The CSV and plots distinguish residual logical-X, logical-Z, either-logical,
+and prepared-state failure. Since the state is $|0_L\rangle$, its failure is
+logical X alone; logical Z is a useful Pauli diagnostic but does not change
+this state. The plotted analytic Z bound is
+$P_Z\geq[1-(1-2p)^{L_yL_z}]/2$. It follows from $L_yL_z$ disjoint fault-bit
+pairs: the two single-fault histories have identical checkpoint syndromes,
+while toggling both changes final logical Z. It is not a state-fidelity
+bound. The curves assume perfect
+measurements and the stated decoders, and no threshold is fitted.
+
+If CondaPkg's pixi cannot download its Conda-to-PyPI mapping on a machine
+that already has `.CondaPkg/.pixi/envs/default`, use that environment directly.
+Install the required decoder packages into its Python, then point PythonCall
+at the same interpreter for this run:
+
+```bash
+.CondaPkg/.pixi/envs/default/bin/uv pip install \
+  --python .CondaPkg/.pixi/envs/default/bin/python \
+  'pymatching>=2.3,<3' 'ldpc>=2.3,<3'
+JULIA_CONDAPKG_BACKEND=Null \
+  JULIA_PYTHONCALL_EXE="$PWD/.CondaPkg/.pixi/envs/default/bin/python" \
+  julia --project=. examples/compare_toric3d_feedback.jl
+```
+
+This local fallback bypasses dependency resolution; the usual command above
+remains the default when CondaPkg can reach its mapping service.
+
+## Diagonal-slice transfer with active-slice feedback
+
+A separate experimental construction transfers the state from old control
+qubits to new target triads along diagonal cubic slices. It retains the same
+independent post-H/CNOT-output noise convention. This gate direction confines
+every single Z output fault to at most three qubits in two adjacent slices.
+For X faults, measured six-edge compatibility checks form a triangular
+matching graph. The default feedback moves paired defects one graph edge
+toward each other per transfer, using ideal Pauli feed-forward on new targets.
+
+```bash
+julia --project=. examples/compare_toric3d_slice_feedback.jl
+```
+
+The example times a short pilot, then runs 200 paired shots at sizes 3, 5, 7
+and six probabilities, saving CSV, metadata, and PDF/SVG/PNG plots under
+`results/toric3d-slice-feedback-2026-10-11`. Use `--help` for scan settings;
+the `compare_toric3d_slice_feedback` API also accepts independent
+`(steps,Ly,Lz)` dimensions and an explicit RNG.
+
+This construction fixes a unique boundary state (`k=0`). Its plots report
+physical syndrome densities and longitudinal cluster extent, without a final
+global recovery. They test error propagation and feedback; they do not yet
+establish a nonzero threshold. The circuit, boundary algebra, routing options,
+statistical conventions, and relationship to the paper are derived in
+[the slice-feedback documentation](docs/superpowers/toric3d-slice-feedback.md).
+
+For a logical-Z threshold study, `Toric3DEncodedSlice` replaces the product
+boundary with a honeycomb toric-code seed. Noisy H gates followed by ideal
+compatibility measurements prepare logical `|++>`. This code has two logical
+qubits and `dZ=2min(Ly,Lz)`. Final unit-weight MWPM returns and validates full
+data recoveries; the observable is either residual logical-Z winding.
+
+```bash
+julia --project=. examples/scan_toric3d_z_threshold.jl
+```
+
+Use `--help` to select sizes, probabilities, shots, and output directory.
+The `scan_toric3d_z_threshold` Julia API also accepts rectangular dimensions
+and an explicit RNG. Sampling uses an exact sparse propagation map of every
+independent gate fault, retaining all circuit correlations. The fitter in
+`examples/fit_toric3d_z_threshold.py` produces binomial-bootstrap estimates,
+Wilson intervals, finite-size sensitivity checks, and PDF/SVG/PNG figures.
+See the [threshold derivation and conventions](docs/superpowers/toric3d-z-threshold.md).
+
+The completed 330,000-shot study at `L=9,13,17,21,25` estimates the Z-only
+threshold at **p ≈ 0.0052 (0.52% per active gate output)** for this encoded
+diagonal-slice circuit and unit-weight MWPM. Finite-size fit choices give
+estimates roughly 0.49%–0.54%; this spread is not a confidence interval.
+The original rough-slab circuit's logical-Z obstruction remains unchanged.
+Raw counts, metadata and statistical analyses are saved in
+[`results/toric3d-z-threshold-2026-10-11`](results/toric3d-z-threshold-2026-10-11).
+
+The original Cartesian x-sweep was also rerun at small rates
+`p=1e-6,...,3e-4`, with `L=3,5,7,9` and 10,000 paired shots per point.
+Layer feedback substantially lowers its finite-size logical-Z diagnostic,
+but the interpolated 1% pseudothreshold decreases approximately as
+`L^-1.97` (bootstrap exponent interval 1.77--2.17).  It therefore does not
+reveal a hidden positive threshold: the analytic lower bound still forces
+the asymptotic threshold to zero.  See the
+[small-p report](docs/superpowers/toric3d-original-small-p.md) and its
+[raw results](results/toric3d-original-small-p-2026-10-11).
