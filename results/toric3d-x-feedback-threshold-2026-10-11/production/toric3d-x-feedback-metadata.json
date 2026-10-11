@@ -1,0 +1,529 @@
+{
+  "assembly_script": "examples/assemble_toric3d_x_feedback_production.py",
+  "assembly_script_sha256": "d692c695e2fdf589618593a3351bfe2f048dc57a60c8d1c4573d0cedd1a806a3",
+  "decoder_limitations": "neglects nonuniform exposure and circuit/feedback correlations",
+  "decoder_prior": "uniform declared physical p on every final data qubit",
+  "decoder_settings": {
+    "bp_method": "minimum_sum",
+    "ldpc_version": "2.4.1",
+    "max_iter": "50",
+    "ms_scaling_factor": "1.0",
+    "omp_thread_count": "1",
+    "osd_method": "OSD_CS",
+    "osd_order": "2",
+    "schedule": "parallel"
+  },
+  "error_rates": [
+    0.01,
+    0.0125,
+    0.015,
+    0.0175,
+    0.02,
+    0.0225,
+    0.025
+  ],
+  "experiment": "encoded diagonal 3D toric-code X-feedback threshold",
+  "format_version": 1,
+  "ideal_operations": [
+    "initialization",
+    "idle qubits",
+    "syndrome measurements",
+    "classical processing",
+    "Pauli corrections"
+  ],
+  "logical_state": "encoded logical |00> on two logical qubits",
+  "metric_rows": 105,
+  "metrics": [
+    "logical_1",
+    "logical_2",
+    "state_failure"
+  ],
+  "noise": "independent Bernoulli X faults after each participating H/CNOT output",
+  "paired_shots_per_point": 1000,
+  "point_provenance": {
+    "L11:p=0.0100": [
+      {
+        "point_seed": "77f27e2be1497e58",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "0160fd8695319027",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0125": [
+      {
+        "point_seed": "c69a319c65343e5d",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "797c52fb2b8bb3ff",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0150": [
+      {
+        "point_seed": "aeef42d66901d5b9",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "3e3f430477b15af0",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0175": [
+      {
+        "point_seed": "741c7176eaeede6f",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "5d62bb2f91de8021",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0200": [
+      {
+        "point_seed": "1f1f3a44a5a0e828",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "f0c242dad63868c5",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0225": [
+      {
+        "point_seed": "ddb021b83e751032",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "35503c0006062836",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L11:p=0.0250": [
+      {
+        "point_seed": "89bc029b49b4acad",
+        "seed": "11011",
+        "shots": 200,
+        "source": "extended-scout/L11/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "848fc2ef2e4c8f6f",
+        "seed": "11111",
+        "shots": 800,
+        "source": "production-shards/L11/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0100": [
+      {
+        "point_seed": "a9c66068ebf3cf02",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "456bf9ab39449932",
+        "seed": "13131",
+        "shots": 800,
+        "source": "production-shards/L13a/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0125": [
+      {
+        "point_seed": "09caafd09977446c",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "6569f20e151b0fc8",
+        "seed": "13131",
+        "shots": 800,
+        "source": "production-shards/L13a/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0150": [
+      {
+        "point_seed": "2200f6fee4f3e102",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "156d2c319e1d80d5",
+        "seed": "13131",
+        "shots": 800,
+        "source": "production-shards/L13a/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0175": [
+      {
+        "point_seed": "6d316c068052cc48",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "981fbfe156fdb8c1",
+        "seed": "13132",
+        "shots": 800,
+        "source": "production-shards/L13b/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0200": [
+      {
+        "point_seed": "5c114108a299f2c4",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "90f23fb5bfec38fd",
+        "seed": "13132",
+        "shots": 800,
+        "source": "production-shards/L13b/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0225": [
+      {
+        "point_seed": "3bb8d320095cf7fd",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "bb71205a26d5ebab",
+        "seed": "13133",
+        "shots": 800,
+        "source": "production-shards/L13c/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L13:p=0.0250": [
+      {
+        "point_seed": "e525d905ba1b32e3",
+        "seed": "13013",
+        "shots": 200,
+        "source": "extended-scout/L13/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "93c6d7a8a657370f",
+        "seed": "13133",
+        "shots": 800,
+        "source": "production-shards/L13c/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0100": [
+      {
+        "point_seed": "aa9a8f3a9b30d235",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0125": [
+      {
+        "point_seed": "14903b4f62872b73",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0150": [
+      {
+        "point_seed": "2253ba2d8bb8a201",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0175": [
+      {
+        "point_seed": "dc7fb0ca5e07a5f4",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0200": [
+      {
+        "point_seed": "d82081b615b848d3",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0225": [
+      {
+        "point_seed": "ad9db091a6ebfbf8",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L5:p=0.0250": [
+      {
+        "point_seed": "7d75adce87afa840",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0100": [
+      {
+        "point_seed": "f03d288e0a919593",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0125": [
+      {
+        "point_seed": "dbca090500c78294",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0150": [
+      {
+        "point_seed": "0ada35f8c546e8c4",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0175": [
+      {
+        "point_seed": "27aa8f7b58f445c7",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0200": [
+      {
+        "point_seed": "3b9cfbb86de26925",
+        "seed": "1234",
+        "shots": 1000,
+        "source": "pilot/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0225": [
+      {
+        "point_seed": "022d7976c651d759",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L7:p=0.0250": [
+      {
+        "point_seed": "24af84dac0327170",
+        "seed": "57057",
+        "shots": 1000,
+        "source": "production-shards/L5-L7/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0100": [
+      {
+        "point_seed": "2aba05e83198c8f6",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "0ab9c3bf232d950a",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0125": [
+      {
+        "point_seed": "0de9332ef5f19e12",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "cffe1479cec08196",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0150": [
+      {
+        "point_seed": "bcc6de38769f8d0c",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "204bba15c1cd149d",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0175": [
+      {
+        "point_seed": "fe819e9ed5ae9ee3",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "afda8f5cfe153989",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0200": [
+      {
+        "point_seed": "aa26debd76ab27db",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "acc31765ab0c7abe",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0225": [
+      {
+        "point_seed": "aa0249af05942363",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "5b8213a064b732d3",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ],
+    "L9:p=0.0250": [
+      {
+        "point_seed": "76a58236353e591f",
+        "seed": "9009",
+        "shots": 200,
+        "source": "extended-scout/L9/toric3d-x-feedback-raw.csv"
+      },
+      {
+        "point_seed": "d651914572f5abba",
+        "seed": "99099",
+        "shots": 800,
+        "source": "production-shards/L9/toric3d-x-feedback-raw.csv"
+      }
+    ]
+  },
+  "production_csv_sha256": "b54d7b0fda4e61e380b41c5486418c4fb3af4496e77953820a668372155821e0",
+  "protocols": [
+    "final_only",
+    "slice_feedback"
+  ],
+  "routing": "one_step",
+  "sizes": [
+    5,
+    7,
+    9,
+    11,
+    13
+  ],
+  "sources": [
+    {
+      "path": "pilot/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 18,
+      "selected_metric_shots": 18000,
+      "sha256": "e8af4439887be2db1f76d469bbb83d5b21d5a5c2010b3470d56193e48f3601b6"
+    },
+    {
+      "path": "production-shards/L5-L7/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 24,
+      "selected_metric_shots": 24000,
+      "sha256": "349b13e1a883323bb0b27065112ea1afbc98b74e774916a48106cbdaf02e9cef"
+    },
+    {
+      "path": "extended-scout/L9/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 21,
+      "selected_metric_shots": 4200,
+      "sha256": "62c192d6b7fa60fb9af9e5c5c67b00d5f5b12b1d0d57634c77111194fb4783ef"
+    },
+    {
+      "path": "production-shards/L9/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 21,
+      "selected_metric_shots": 16800,
+      "sha256": "928fc74b64d2a96612989f0e414cb30e06853900d7a1881f6016a39993bab70c"
+    },
+    {
+      "path": "extended-scout/L11/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 21,
+      "selected_metric_shots": 4200,
+      "sha256": "97f7472d4ff3063e314e4447a3539b42e776578eae592f389c8bb69367db281e"
+    },
+    {
+      "path": "production-shards/L11/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 21,
+      "selected_metric_shots": 16800,
+      "sha256": "0112d986d029f7f9da9968e2826e37476ae39da314c60446cc29a88165f934f2"
+    },
+    {
+      "path": "extended-scout/L13/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 21,
+      "selected_metric_shots": 4200,
+      "sha256": "36023a3a816112a98c32e164c6064b41197f8937c25fed558eaf9447fd48e0a4"
+    },
+    {
+      "path": "production-shards/L13a/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 9,
+      "selected_metric_shots": 7200,
+      "sha256": "18a3928a8838b5b88aebdc00fe1d3b6651baf68406243fa201bd78cb4864bac8"
+    },
+    {
+      "path": "production-shards/L13b/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 6,
+      "selected_metric_shots": 4800,
+      "sha256": "c3ce1c9d5e58e6deed33bbf72d0e067413de45ada8ddbfc8b704420032e2998d"
+    },
+    {
+      "path": "production-shards/L13c/toric3d-x-feedback-raw.csv",
+      "selected_metric_rows": 6,
+      "selected_metric_shots": 4800,
+      "sha256": "4656948acf19e38f57eb4cee9490f8be31daefb9b2605964a12a31c367dbe238"
+    }
+  ],
+  "status": "complete",
+  "unique_paired_shots": 35000,
+  "unique_points": 35
+}

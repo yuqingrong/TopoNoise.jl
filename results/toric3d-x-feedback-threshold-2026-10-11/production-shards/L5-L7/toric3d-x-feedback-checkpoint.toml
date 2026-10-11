@@ -1,0 +1,79 @@
+format_version = 1
+point_seeds = ["14903b4f62872b73", "dc7fb0ca5e07a5f4", "ad9db091a6ebfbf8", "7d75adce87afa840", "dbca090500c78294", "27aa8f7b58f445c7", "022d7976c651d759", "24af84dac0327170"]
+started_at_unix = 1.791744856403823e9
+
+[config]
+batch_size = 250
+dimensions = [[5, 5, 5], [7, 7, 7]]
+error_rates = [0.0125, 0.0175, 0.0225, 0.025]
+point_rng_type = "Random.Xoshiro"
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed = 57057
+shots = 1000
+
+    [config.settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[[states]]
+both_counts = [16, 35, 56]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 6.234490871429443
+feedback_counts = [65, 132, 161]
+final_counts = [58, 89, 116]
+[[states]]
+both_counts = [39, 72, 108]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 7.50142502784729
+feedback_counts = [132, 219, 268]
+final_counts = [116, 151, 203]
+[[states]]
+both_counts = [87, 96, 194]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 9.58606505393982
+feedback_counts = [248, 310, 415]
+final_counts = [198, 225, 331]
+[[states]]
+both_counts = [81, 98, 194]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 11.522009134292603
+feedback_counts = [257, 310, 432]
+final_counts = [224, 245, 359]
+[[states]]
+both_counts = [20, 22, 46]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 47.546780824661255
+feedback_counts = [57, 93, 116]
+final_counts = [103, 132, 180]
+[[states]]
+both_counts = [44, 74, 137]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 59.23894715309143
+feedback_counts = [160, 251, 318]
+final_counts = [200, 241, 340]
+[[states]]
+both_counts = [111, 133, 265]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 63.44687294960022
+feedback_counts = [311, 359, 503]
+final_counts = [283, 322, 450]
+[[states]]
+both_counts = [114, 151, 281]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 69.27284288406372
+feedback_counts = [333, 395, 539]
+final_counts = [300, 352, 484]

@@ -1,0 +1,331 @@
+format_version = 1
+point_seeds = ["23fd3efe582fd968", "8468aa1acf36c022", "cd0b3707139bbadd", "bf31ffb33eb91d48", "05641b18c68dd5e1", "0040f37d604658d4", "91ec3c56a3f43f14", "e5844c80fda0b89a", "51c5a2cda25f52c3", "da66d5b34382bb0e", "c5471db75f00bfe1", "2d91cbf73eee9a33", "3e9b23b7842943bc", "6172b861226bfe92", "29db082fa403edb5", "f94df61ef8509aba", "e24605bc66cc79f5", "807f50082f77ac28", "04936adf2844930d", "aa9a8f3a9b30d235", "2253ba2d8bb8a201", "d82081b615b848d3", "b3794499234f8482", "24c636b85a878b36", "a46ed51009637570", "cf39322a48b2760d", "cea8c9db0a54d22a", "b41da695db507b6c", "38f99c4efe322c2c", "2dffcef095e8c55c", "f03d288e0a919593", "0ada35f8c546e8c4", "3b9cfbb86de26925", "76a94c3f8a627476", "828aed39310bce60", "d11ff015a75bf252", "b63d6d0e0f789d0a", "c0a6bddae894559d", "c985d15d299ce695", "15f0910817d75b4c", "d6b6f174a52caa9e", "6a06887d662d0923", "b50e361fea4af3eb", "7a2b84fb7b968e55"]
+started_at_unix = 1.791732651896172e9
+
+[config]
+batch_size = 256
+dimensions = [[3, 3, 3], [5, 5, 5], [7, 7, 7], [9, 9, 9]]
+error_rates = [0.0, 0.0001, 0.0003, 0.001, 0.002, 0.003, 0.005, 0.0075, 0.01, 0.015, 0.02]
+point_rng_type = "Random.Xoshiro"
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed = 1234
+shots = 1000
+
+    [config.settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.12373924255371094
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.09896492958068848
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.10223889350891113
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.12851691246032715
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 2, 2]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.14856767654418945
+feedback_counts = [4, 10, 10]
+final_counts = [0, 2, 2]
+[[states]]
+both_counts = [0, 2, 2]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.2658698558807373
+feedback_counts = [3, 6, 7]
+final_counts = [0, 3, 3]
+[[states]]
+both_counts = [8, 10, 12]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.1953749656677246
+feedback_counts = [16, 24, 29]
+final_counts = [9, 12, 15]
+[[states]]
+both_counts = [5, 12, 16]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.21302509307861328
+feedback_counts = [35, 54, 65]
+final_counts = [10, 20, 24]
+[[states]]
+both_counts = [6, 15, 21]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.2440650463104248
+feedback_counts = [56, 76, 94]
+final_counts = [11, 26, 34]
+[[states]]
+both_counts = [22, 37, 52]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.28435587882995605
+feedback_counts = [90, 137, 163]
+final_counts = [49, 65, 82]
+[[states]]
+both_counts = [29, 46, 73]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.3087890148162842
+feedback_counts = [116, 176, 215]
+final_counts = [72, 91, 121]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.736675500869751
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 0.9070048332214355
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 1.5726392269134521
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 1.6196379661560059
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 2.040327787399292
+feedback_counts = [1, 3, 3]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [1, 0, 1]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 2.024205446243286
+feedback_counts = [3, 3, 4]
+final_counts = [1, 1, 2]
+[[states]]
+both_counts = [1, 2, 2]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 2.380129814147949
+feedback_counts = [5, 9, 12]
+final_counts = [1, 3, 3]
+[[states]]
+both_counts = [3, 7, 8]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 2.939877986907959
+feedback_counts = [18, 32, 36]
+final_counts = [13, 25, 31]
+[[states]]
+both_counts = [14, 15, 24]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 2.7508769035339355
+feedback_counts = [54, 87, 107]
+final_counts = [37, 49, 66]
+[[states]]
+both_counts = [27, 53, 78]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 3.6015660762786865
+feedback_counts = [103, 183, 222]
+final_counts = [97, 118, 163]
+[[states]]
+both_counts = [57, 84, 151]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 4.111436128616333
+feedback_counts = [200, 262, 350]
+final_counts = [146, 194, 268]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 5.171094655990601
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 7.095328092575073
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 8.730376720428467
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 10.538423776626587
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 12.291974067687988
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 13.018236875534058
+feedback_counts = [0, 0, 0]
+final_counts = [1, 1, 1]
+[[states]]
+both_counts = [0, 1, 1]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 14.529198169708252
+feedback_counts = [2, 5, 5]
+final_counts = [6, 13, 15]
+[[states]]
+both_counts = [2, 4, 6]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 17.43733501434326
+feedback_counts = [6, 18, 19]
+final_counts = [27, 45, 51]
+[[states]]
+both_counts = [4, 12, 15]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 21.65766930580139
+feedback_counts = [27, 62, 67]
+final_counts = [63, 82, 113]
+[[states]]
+both_counts = [26, 64, 98]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 26.32737112045288
+feedback_counts = [126, 186, 248]
+final_counts = [164, 216, 287]
+[[states]]
+both_counts = [87, 117, 213]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 28.074580907821655
+feedback_counts = [237, 327, 434]
+final_counts = [256, 298, 412]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 31.318855047225952
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 49.25417494773865
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 59.145277976989746
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 63.99825477600098
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 68.1524760723114
+feedback_counts = [0, 0, 0]
+final_counts = [0, 0, 0]
+[[states]]
+both_counts = [0, 0, 0]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 80.76456475257874
+feedback_counts = [0, 0, 0]
+final_counts = [0, 1, 1]
+[[states]]
+both_counts = [1, 1, 1]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 93.11214208602905
+feedback_counts = [1, 1, 1]
+final_counts = [11, 18, 21]
+[[states]]
+both_counts = [1, 1, 1]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 103.42421507835388
+feedback_counts = [5, 10, 10]
+final_counts = [36, 56, 75]
+[[states]]
+both_counts = [4, 10, 14]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 111.34816670417786
+feedback_counts = [16, 38, 44]
+final_counts = [96, 140, 183]
+[[states]]
+both_counts = [38, 64, 113]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 123.5605080127716
+feedback_counts = [116, 181, 229]
+final_counts = [219, 277, 378]
+[[states]]
+both_counts = [104, 126, 260]
+completed_shots = 1000
+decoder_version = "2.4.1"
+elapsed_seconds = 134.35739254951477
+feedback_counts = [292, 368, 494]
+final_counts = [313, 336, 497]

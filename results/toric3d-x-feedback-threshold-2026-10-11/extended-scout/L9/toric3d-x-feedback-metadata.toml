@@ -1,0 +1,45 @@
+active_gate_outputs_per_transfer_cell = 13
+batch_size = 100
+checkpoint_filename = "toric3d-x-feedback-checkpoint.toml"
+complete = true
+completed_points = 12
+decoder_limitations = "uniform priors neglect nonuniform exposure across qubits and circuit/feedback correlations"
+decoder_prior = "uniform declared physical p on every final data qubit"
+dimensions_steps_Ly_Lz = [[9, 9, 9]]
+error_rates = [0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.03, 0.035, 0.04]
+expected_points = 12
+feedback = "ideal active-slice star measurement and MWPM correction after each diagonal slice"
+final_decoder = "full-plaquette BP+OSD X recovery, validated against the measured syndrome"
+format_version = 1
+geometry = "diagonal encoded slice with n=3(steps+1)LyLz and two logical qubits"
+ideal_operations = ["initialization", "idle qubits", "syndrome measurements", "classical processing", "Pauli corrections"]
+individual_interval = "95% Wilson score interval"
+initial_state = "logical |00> prepared by ideal X-star measurement and ideal Z correction"
+ldpc_versions = ["2.4.1"]
+logical_diagnostics = ["logical_1", "logical_2", "state_failure"]
+logical_qubits = 2
+noise = "independent Bernoulli X fault of rate p after each participating H/CNOT output"
+paired_difference = "slice_feedback minus final_only using paired discordances"
+paired_interval = "conservative approximate 95% interval from 97.5% Wilson discordance intervals"
+point_rng_type = "Random.Xoshiro"
+point_seeds_hex = ["5c337fd5121df6e8", "3de57b1dafb7e2c5", "2aba05e83198c8f6", "0de9332ef5f19e12", "bcc6de38769f8d0c", "fe819e9ed5ae9ee3", "aa26debd76ab27db", "aa0249af05942363", "76a58236353e591f", "9bb7a58d6fa92749", "2d933821521e4adf", "644ae768b9eb38ac"]
+protocols = ["final_only", "slice_feedback"]
+resume_supported = true
+resumed = false
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed_gate_fault_locations = 0
+seed_metadata = 9009
+shots_per_point = 200
+started_at_unix = 1.791734165289009e9
+state_failure = "either residual logical-X membrane parity after final recovery"
+transfer_schedule = "seven-gate diagonal transfer: H followed by six CNOTs"
+
+[decoder_settings]
+bp_method = "minimum_sum"
+max_iter = 50
+ms_scaling_factor = 1.0
+omp_thread_count = 1
+osd_method = "OSD_CS"
+osd_order = 2
+schedule = "parallel"

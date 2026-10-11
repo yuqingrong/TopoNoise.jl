@@ -1,0 +1,30 @@
+format_version = 1
+point_seeds = ["dadece616b9a64a5"]
+started_at_unix = 1.79175056301611e9
+
+[config]
+batch_size = 100
+dimensions = [[13, 13, 13]]
+error_rates = [0.015]
+point_rng_type = "Random.Xoshiro"
+rng_type = "Random.MersenneTwister"
+routing = "full_path"
+seed = 131515
+shots = 200
+
+    [config.settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[[states]]
+both_counts = [5, 18, 29]
+completed_shots = 200
+decoder_version = "2.4.1"
+elapsed_seconds = 240.8049020767212
+feedback_counts = [14, 37, 40]
+final_counts = [73, 76, 119]
