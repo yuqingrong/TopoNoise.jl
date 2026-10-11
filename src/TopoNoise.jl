@@ -68,7 +68,9 @@ export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z
        verify_toric3d_encoded_zero_encoder,
        build_toric3d_z_fault_model, sample_toric3d_z_frames,
        build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
-       toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold
+       toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold,
+       Toric3DXThresholdDecoder, build_toric3d_x_threshold_decoder,
+       decode_toric3d_x, toric3d_x_threshold_outcome
 
 include("toric_code_peps.jl")
 include("local_gate.jl")
@@ -96,5 +98,6 @@ include("toric3d/slice_feedback.jl")
 include("toric3d/slice_scan.jl")
 include("toric3d/encoded_slice_geometry.jl")
 include("toric3d/z_threshold.jl")
+include("toric3d/x_feedback_threshold.jl")
 
 end
