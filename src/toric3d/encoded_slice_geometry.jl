@@ -110,7 +110,7 @@ function _toric3d_encoded_in_row_space(vector::AbstractVector{Bool}, basis)
 end
 
 function _toric3d_encoded_pulled_to_seed(n, operations, pauli, support,
-                                        seed_qubits, seed_z, seed_z_basis)
+        seed_qubits, seed_x_constraint, seed_x_basis, seed_z_basis)
     x, z = falses(n), falses(n)
     (pauli === :X ? x : z)[support] .= true
     negative = Ref(false)
@@ -120,9 +120,14 @@ function _toric3d_encoded_pulled_to_seed(n, operations, pauli, support,
     end
     any(@view x[seed_qubits+1:end]) && return false
     xs, zs = @view(x[1:seed_qubits]), @view(z[1:seed_qubits])
-    # In the logical-plus seed, X stabilizers comprise ker(Q), while Z
-    # stabilizers comprise row(Q). All fresh qubits remain |0> at the input.
-    any(isodd(count(@view(seed_z[row, :]) .& xs)) for row in axes(seed_z, 1)) && return false
+    # `nothing` selects ker(seed_x_constraint), as used by logical plus.
+    # Otherwise the accepted X seed operators are the supplied row space.
+    if seed_x_basis === nothing
+        any(isodd(count(@view(seed_x_constraint[row, :]) .& xs))
+            for row in axes(seed_x_constraint, 1)) && return false
+    else
+        _toric3d_encoded_in_row_space(xs, seed_x_basis) || return false
+    end
     _toric3d_encoded_in_row_space(zs, seed_z_basis) || return false
     overlap = count(xs .& zs)
     iseven(overlap) || return false
@@ -131,13 +136,9 @@ function _toric3d_encoded_pulled_to_seed(n, operations, pauli, support,
     return negative[] == isodd(overlap ÷ 2)
 end
 
-"""
-Verify every prepared prefix against a honeycomb logical-`|++>` seed and
-fresh `|0>` targets using signed binary Clifford conjugation. Checks include
-all physical stabilizers, both logical X membranes, and active hexagons.
-"""
-function verify_toric3d_encoded_encoder(code::Toric3DEncodedSlice,
-        encoder::Toric3DSliceEncoder=toric3d_encoded_encoder(code))
+function _verify_toric3d_encoded_seed(code::Toric3DEncodedSlice,
+        encoder::Toric3DSliceEncoder, logical_pauli::Symbol, logical_checks,
+        seed_x_constraint::BitMatrix, seed_x_basis, seed_z_basis)
     lattice = code.lattice
     actual = encoder.code
     (actual.steps, actual.Ly, actual.Lz) ==
@@ -152,20 +153,53 @@ function verify_toric3d_encoded_encoder(code::Toric3DEncodedSlice,
         all(q -> 1 <= q <= n, operation.qubits) || return false
         length(unique(operation.qubits)) == required || return false
     end
-    seed_z = toric3d_slice_check_matrix(lattice)
-    basis = _toric3d_encoded_row_basis(seed_z)
     for t in 1:lattice.steps
         prefix = Toric3DEncodedSlice(t, lattice.Ly, lattice.Lz)
         operations = @view encoder.operations[1:encoder.checkpoints[t]]
         all(all(q -> q <= data_qubit_count(prefix), operation.qubits)
             for operation in operations) || return false
+        prefix_logicals = logical_checks(prefix)
         for (pauli, checks) in ((:X, star_checks(prefix)),
                                 (:Z, plaquette_checks(prefix)),
-                                (:X, toric3d_encoded_logical_x(prefix)),
+                                (logical_pauli, prefix_logicals),
                                 (:Z, toric3d_slice_checks(prefix.lattice, t)))
             all(_toric3d_encoded_pulled_to_seed(n, operations, pauli, support,
-                3m, seed_z, basis) for support in checks) || return false
+                3m, seed_x_constraint, seed_x_basis, seed_z_basis)
+                for support in checks) || return false
         end
     end
     return true
+end
+
+"""
+Verify every prepared prefix against a honeycomb logical-`|++>` seed and
+fresh `|0>` targets using signed binary Clifford conjugation. Checks include
+all physical stabilizers, both logical X membranes, and active hexagons.
+"""
+function verify_toric3d_encoded_encoder(code::Toric3DEncodedSlice,
+        encoder::Toric3DSliceEncoder=toric3d_encoded_encoder(code))
+    lattice = code.lattice
+    m = lattice.Ly * lattice.Lz
+    seed_z = toric3d_slice_check_matrix(lattice)
+    return _verify_toric3d_encoded_seed(code, encoder, :X,
+        toric3d_encoded_logical_x, seed_z, nothing,
+        _toric3d_encoded_row_basis(seed_z))
+end
+
+"""
+Verify every prepared prefix against a honeycomb logical-`|00>` seed made by
+ideal X-star projection and ideal Z correction from product zero. Checks
+include all physical stabilizers, both logical Z cycles, and active hexagons.
+"""
+function verify_toric3d_encoded_zero_encoder(code::Toric3DEncodedSlice,
+        encoder::Toric3DSliceEncoder=toric3d_encoded_encoder(code))
+    m = code.lattice.Ly * code.lattice.Lz
+    seed = toric3d_encoded_seed_checks(code)
+    seed_x = _check_matrix(seed.x, 3m; sparse=false)
+    seed_z = _check_matrix(vcat(seed.z, toric3d_encoded_logical_z(code)), 3m;
+        sparse=false)
+    return _verify_toric3d_encoded_seed(code, encoder, :Z,
+        toric3d_encoded_logical_z, seed_x,
+        _toric3d_encoded_row_basis(seed_x),
+        _toric3d_encoded_row_basis(seed_z))
 end

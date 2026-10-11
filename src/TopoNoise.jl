@@ -65,6 +65,7 @@ export Toric3DSliceLattice, Toric3DSliceEncoder, toric3d_slice_qubits,
 
 export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z,
        toric3d_encoded_seed_checks, toric3d_encoded_encoder, verify_toric3d_encoded_encoder,
+       verify_toric3d_encoded_zero_encoder,
        build_toric3d_z_fault_model, sample_toric3d_z_frames,
        build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
        toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold
