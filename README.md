@@ -489,6 +489,45 @@ The original rough-slab circuit's logical-Z obstruction remains unchanged.
 Raw counts, metadata and statistical analyses are saved in
 [`results/toric3d-z-threshold-2026-10-11`](results/toric3d-z-threshold-2026-10-11).
 
+For the complementary logical-X preparation study, the same encoded geometry
+is prepared in logical `|00>` by ideal seed-star measurement and ideal Z
+correction. Independent X faults occur only after the thirteen participating
+H/CNOT outputs per transfer cell. One-step feedback measures the active
+slice's Z compatibility checks, pairs their point defects with unit-weight
+MWPM, and propagates the local virtual correction to the fresh targets. A
+validated final BP+OSD recovery removes the complete plaquette syndrome;
+either residual logical-X membrane is state-preparation failure.
+
+```bash
+JULIA_CONDAPKG_BACKEND=Null \
+JULIA_PYTHONCALL_EXE="$PWD/.CondaPkg/.pixi/envs/default/bin/python" \
+julia --project=. examples/scan_toric3d_x_feedback_threshold.jl --help
+```
+
+The public `compare_toric3d_x_feedback_threshold` API accepts independent
+dimensions, probabilities, shots, RNG and seed provenance, batch/checkpoint
+settings, decoder settings, and `one_step` or `full_path` routing. The scan
+replays each sampled fault record through final-only and feedback protocols.
+`save_toric3d_x_feedback_threshold` writes paired counts, Wilson intervals,
+metadata, and PDF/SVG/PNG figures.
+
+The completed 35,000-shot production grid uses `L=5,7,9,11,13`, seven rates
+from 0.01 through 0.025, and 1,000 paired shots per point. Final-only decoding
+has no adjacent-size crossing in this window. For one-step feedback, an
+accepted cubic finite-size fit with `L>=7` gives
+**p ≈ 0.01482 (1.48% per participating gate output)**, with conditional 95%
+bootstrap interval 1.43%–1.54%. The all-size quadratic fit is rejected, and
+the all-size cubic fit narrowly misses the preset goodness guard; the reported
+number is therefore a conditional model estimate. Accepted size/window
+variants span about 1.48%–1.51%. See the
+[X-feedback threshold report](docs/superpowers/toric3d-x-feedback-threshold.md)
+and [raw results](results/toric3d-x-feedback-threshold-2026-10-11).
+
+This X-sector threshold and the preceding Z-sector estimate use different
+logical input states and different syndrome decoders. Neither establishes a
+joint threshold under combined Pauli noise. The global classical MWPM step is
+also outside a constant-depth spatially local channel.
+
 The original Cartesian x-sweep was also rerun at small rates
 `p=1e-6,...,3e-4`, with `L=3,5,7,9` and 10,000 paired shots per point.
 Layer feedback substantially lowers its finite-size logical-Z diagnostic,
