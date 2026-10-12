@@ -511,6 +511,27 @@ replays each sampled fault record through final-only and feedback protocols.
 `save_toric3d_x_feedback_threshold` writes paired counts, Wilson intervals,
 metadata, and PDF/SVG/PNG figures.
 
+The three-strength diagonal experiment compares no intermediate feedback,
+constant-width slice-local feedback, and full-prefix feedback for pure X and
+pure Z faults. Each shot replays one immutable fault record through all three
+protocols, so the saved CSV includes their complete eight-pattern joint count
+and paired differences.
+
+```bash
+JULIA_CONDAPKG_BACKEND=Null \
+JULIA_PYTHONCALL_EXE="$PWD/.CondaPkg/.pixi/envs/default/bin/python" \
+julia --project=. examples/compare_toric3d_diagonal_feedback.jl --help
+```
+
+Use `compare_toric3d_diagonal_feedback` for configurable scans and
+`save_toric3d_diagonal_feedback` for CSV, TOML, PDF, SVG, and PNG artifacts.
+The command runs an independent timing pilot before scientific sampling and
+supports exact checkpoint resume. X prepares logical `|00>` without noisy seed
+gates and uses BP+OSD; Z prepares logical `|++>` with noisy seed-H outputs and
+uses MWPM. Numerical X and Z thresholds therefore describe different state
+preparation experiments and should be compared only among protocols within
+the same channel.
+
 The completed 35,000-shot production grid uses `L=5,7,9,11,13`, seven rates
 from 0.01 through 0.025, and 1,000 paired shots per point. Final-only decoding
 has no adjacent-size crossing in this window. For one-step feedback, an
