@@ -94,6 +94,7 @@ def synthetic_rows(seed=9182, *, shots=120000,
                     max_iter=50, bp_method="minimum_sum",
                     ms_scaling_factor=1.0, schedule="parallel",
                     omp_thread_count=1, osd_method="OSD_CS", osd_order=2,
+                    invalid_recoveries=0,
                     pymatching_version="synthetic-pymatching",
                     ldpc_version="synthetic-ldpc")
                 row.update(dict(zip(JOINT_COLUMNS, joint)))
@@ -163,6 +164,18 @@ class FeedbackStrengthFitTests(unittest.TestCase):
 
             write_rows(source, rows[:-1])
             with self.assertRaisesRegex(ValueError, "rectangular|missing"):
+                FIT.read_feedback_points([source])
+
+            broken = [dict(row) for row in rows]
+            broken[0]["invalid_recoveries"] = 1
+            write_rows(source, broken)
+            with self.assertRaisesRegex(ValueError, "invalid recover"):
+                FIT.read_feedback_points([source])
+
+            broken = [dict(row) for row in rows]
+            broken[0]["ldpc_version"] = "different-ldpc"
+            write_rows(source, broken)
+            with self.assertRaisesRegex(ValueError, "decoder versions"):
                 FIT.read_feedback_points([source])
 
     def test_six_seeded_crossings_recover_known_parameters(self):
@@ -322,6 +335,35 @@ class FeedbackStrengthFitTests(unittest.TestCase):
             self.assertNotEqual(report["accepted_model_pc_spread"][key],
                                 fit.get("bootstrap", {}).get("pc_interval"))
 
+    def test_model_spread_is_withheld_when_primary_bootstrap_is_rejected(self):
+        points = FIT.validate_feedback_points(
+            synthetic_rows(channels=("x_only",)))
+        rejected_bootstrap = {
+            "replicates": 1000, "accepted": 799,
+            "pc_interval": None, "nu_interval": None, "samples": [],
+            "method": "forced bootstrap rejection",
+        }
+        def primary(_points, channel, protocol, **_kwargs):
+            return {"channel": channel, "protocol": protocol,
+                    "status": "ok", "pc": 0.03, "nu": 1.0,
+                    "diagnostic": []}
+
+        def sensitivity(_points, channel, protocol, _primary):
+            return [{"fit_key": f"{channel}/{protocol}", "pc": 0.031}]
+
+        with mock.patch.object(FIT, "fit_feedback_protocol",
+                               side_effect=primary), mock.patch.object(
+                FIT, "bootstrap_feedback_protocol",
+                return_value=rejected_bootstrap), mock.patch.object(
+                    FIT, "sensitivity_fits", side_effect=sensitivity):
+            report = FIT.analyze_feedback_scan(
+                points, bootstrap_replicates=1000,
+                p_windows={"x_only": (0.010, 0.040)})
+        self.assertTrue(all(fit["status"] == "inconclusive"
+                            for fit in report["fits"].values()))
+        self.assertTrue(all(spread is None for spread in
+                            report["accepted_model_pc_spread"].values()))
+
     def test_cli_reports_are_byte_stable_and_figures_are_complete(self):
         with tempfile.TemporaryDirectory() as folder:
             folder = Path(folder)
@@ -358,6 +400,8 @@ class FeedbackStrengthFitTests(unittest.TestCase):
             self.assertIn("marginal binomial", report["likelihood"])
             self.assertIn("paired", report["protocol_dependence"])
             self.assertIn("joint counts", report["protocol_dependence"])
+            self.assertIn("Bonferroni-Wilson",
+                          report["paired_rate_difference_interval"])
             for extension, signature in (("pdf", b"%PDF"),
                                          ("png", b"\x89PNG"),
                                          ("svg", b"<?xml")):

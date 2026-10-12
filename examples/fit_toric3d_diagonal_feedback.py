@@ -124,6 +124,15 @@ def _normalize_feedback_row(source):
     channel = str(row.get("channel", ""))
     if channel not in ("x_only", "z_only"):
         raise ValueError("channel must be x_only or z_only")
+    invalid_recoveries = _integer(row, "invalid_recoveries")
+    if invalid_recoveries != 0:
+        raise ValueError("invalid recovery count must be zero before analysis")
+    pymatching_version = str(row.get("pymatching_version", "")).strip()
+    ldpc_version = str(row.get("ldpc_version", "")).strip()
+    if not pymatching_version:
+        raise ValueError("pymatching decoder version must be recorded")
+    if channel == "x_only" and not ldpc_version:
+        raise ValueError("ldpc decoder version must be recorded for X analysis")
     joint = tuple(_integer(row, column) for column in JOINT_COLUMNS)
     if any(count < 0 for count in joint):
         raise ValueError("joint counts must be nonnegative")
@@ -150,6 +159,8 @@ def _normalize_feedback_row(source):
         channel=channel, metric="state_failure", joint_counts=joint,
         paired_differences=paired,
         x_routing=str(row.get("x_routing", "unspecified")),
+        invalid_recoveries=invalid_recoveries,
+        pymatching_version=pymatching_version, ldpc_version=ldpc_version,
     )
     return row
 
@@ -160,6 +171,7 @@ def validate_feedback_points(rows):
     keys = set()
     routings = set()
     settings = set()
+    decoder_versions = {}
     for source in rows:
         if str(source.get("metric", "state_failure")) != "state_failure":
             continue
@@ -172,6 +184,8 @@ def validate_feedback_points(rows):
         routings.add(row["x_routing"])
         settings.add(tuple(str(row.get(name, "unspecified"))
                            for name in SETTING_COLUMNS))
+        decoder_versions.setdefault(row["channel"], set()).add(
+            (row["pymatching_version"], row["ldpc_version"]))
         normalized.append(row)
     if not normalized:
         raise ValueError("the CSV contains no state_failure rows")
@@ -179,6 +193,8 @@ def validate_feedback_points(rows):
         raise ValueError("do not pool different X routing policies in one analysis")
     if len(settings) != 1:
         raise ValueError("do not pool different decoder settings in one analysis")
+    if any(len(versions) != 1 for versions in decoder_versions.values()):
+        raise ValueError("do not pool different decoder versions within one channel")
     for channel in sorted({row["channel"] for row in normalized}):
         selected = [row for row in normalized if row["channel"] == channel]
         dimensions = sorted({(row["steps"], row["Ly"], row["Lz"])
@@ -662,11 +678,13 @@ def analyze_feedback_scan(points, *, bootstrap_replicates=1000, seed=1234,
                 sensitivity_fits(points, channel, protocol, primary))
     model_spread = {}
     for key, fit in fits.items():
-        accepted = ([fit["pc"]] if fit["pc"] is not None else [])
+        if fit["status"] != "ok":
+            model_spread[key] = None
+            continue
+        accepted = [fit["pc"]]
         accepted.extend(row["pc"] for row in sensitivity
                         if row["fit_key"] == key and row["pc"] is not None)
-        model_spread[key] = ([min(accepted), max(accepted)]
-                             if accepted else None)
+        model_spread[key] = [min(accepted), max(accepted)]
     return {
         "fits": fits, "sensitivity": sensitivity,
         "accepted_model_pc_spread": model_spread,
@@ -982,6 +1000,8 @@ def main(arguments=None):
             "separate marginal binomial likelihood for every channel/protocol combination",
         "protocol_dependence":
             "protocol observations are paired through replayed faults; joint counts determine paired rate differences, so threshold estimates are correlated and are not compared as independent fits",
+        "paired_rate_difference_interval":
+            "95% conservative Bonferroni-Wilson difference interval from the two discordant paired-outcome proportions",
         "scaling_variable": "x=((p-pc)/sp)(L/Lref)^(1/nu)",
         "sampling_uncertainty":
             "95% parametric marginal-bootstrap interval conditional on each accepted model",
