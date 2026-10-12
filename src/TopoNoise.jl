@@ -66,6 +66,8 @@ export Toric3DSliceLattice, Toric3DSliceEncoder, toric3d_slice_qubits,
 export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z,
        toric3d_encoded_seed_checks, toric3d_encoded_encoder, verify_toric3d_encoded_encoder,
        verify_toric3d_encoded_zero_encoder,
+       Toric3DEncodedPrefix, toric3d_encoded_prefix,
+       Toric3DZFeedbackWindow, toric3d_z_feedback_window, toric3d_z_window_syndrome,
        build_toric3d_z_fault_model, sample_toric3d_z_frames,
        build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
        toric3d_z_threshold_counts, scan_toric3d_z_threshold, save_toric3d_z_threshold,
@@ -101,6 +103,7 @@ include("toric3d/slice_encoder.jl")
 include("toric3d/slice_feedback.jl")
 include("toric3d/slice_scan.jl")
 include("toric3d/encoded_slice_geometry.jl")
+include("toric3d/feedback_strength_geometry.jl")
 include("toric3d/z_threshold.jl")
 include("toric3d/x_feedback_threshold.jl")
 include("toric3d/x_feedback_scan.jl")
