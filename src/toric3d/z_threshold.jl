@@ -109,6 +109,32 @@ function _toric3d_validate_z_batch(decoder::Toric3DZThresholdDecoder,syndromes,r
     return recoveries
 end
 
+function _toric3d_validate_z_recovery(decoder::Toric3DZThresholdDecoder,
+        syndrome::AbstractVector{Bool}, recovery::AbstractVector{Bool})
+    length(syndrome) == size(decoder.matrix,1) ||
+        throw(DimensionMismatch("incorrect star-syndrome dimensions"))
+    length(recovery) == size(decoder.matrix,2) ||
+        throw(DimensionMismatch("incorrect data-recovery dimensions"))
+    checked = BitVector(recovery)
+    BitVector(isodd.(decoder.matrix*Vector{UInt8}(checked))) == BitVector(syndrome) ||
+        error("invalid Z recovery: its star syndrome differs from the measurement")
+    return checked
+end
+
+function _decode_toric3d_z(decoder::Toric3DZThresholdDecoder,
+        syndrome::AbstractVector{Bool})
+    length(syndrome) == size(decoder.matrix,1) ||
+        throw(DimensionMismatch("incorrect star-syndrome dimensions"))
+    iseven(count(syndrome)) ||
+        throw(ArgumentError("closed-graph star syndromes must have even parity"))
+    n = size(decoder.matrix,2)
+    !any(syndrome) && return falses(n)
+    numpy = PythonCall.pyimport("numpy")
+    predicted = decoder.matcher.decode(_toric3d_numpy_vector(numpy,syndrome))
+    recovery = _toric3d_py_bits(numpy,predicted,n)
+    return _toric3d_validate_z_recovery(decoder,syndrome,recovery)
+end
+
 """Decode only measured star syndromes; reject every invalid returned recovery."""
 function decode_toric3d_z_batch(decoder::Toric3DZThresholdDecoder,
         syndromes::AbstractMatrix{Bool})
@@ -124,6 +150,24 @@ function decode_toric3d_z_batch(decoder::Toric3DZThresholdDecoder,
     bits = _toric3d_py_bits(numpy,predicted,n*shots)
     recoveries = BitMatrix(reshape(bits,n,shots))
     return _toric3d_validate_z_batch(decoder,syndromes,recoveries)
+end
+
+"""Apply one validated final Z recovery and score both encoded windings."""
+function toric3d_z_threshold_outcome(decoder::Toric3DZThresholdDecoder,
+        frame::AbstractVector{Bool})::NamedTuple{
+            (:syndrome,:recovery,:residual,:logical_1,:logical_2,:failure),
+            Tuple{BitVector,BitVector,BitVector,Bool,Bool,Bool}}
+    length(frame) == data_qubit_count(decoder.code) ||
+        throw(DimensionMismatch("incorrect data-frame dimensions"))
+    data = BitVector(frame)
+    syndrome = BitVector(isodd.(decoder.matrix*Vector{UInt8}(data)))
+    recovery = _decode_toric3d_z(decoder,syndrome)
+    residual = data .⊻ recovery
+    logical = BitVector(isodd.(decoder.logicals*Vector{UInt8}(residual)))
+    logical_1,logical_2 = logical
+    return (syndrome=syndrome,recovery=recovery,residual=residual,
+        logical_1=logical_1,logical_2=logical_2,
+        failure=logical_1 | logical_2)
 end
 
 """Score either of two residual logical Z windings after validated recovery."""
