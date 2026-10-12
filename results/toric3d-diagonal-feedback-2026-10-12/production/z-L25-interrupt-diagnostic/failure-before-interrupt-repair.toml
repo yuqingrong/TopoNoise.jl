@@ -1,0 +1,8 @@
+batch_start = 385
+channel = "z_only"
+checkpoint = "final"
+dimensions = [25, 25, 25]
+error = "InterruptException:"
+p = 0.03
+point_seed = "71e384cc43b75261"
+protocol = "full_prefix"

@@ -1,0 +1,8 @@
+batch_start = 353
+channel = "x_only"
+checkpoint = "final"
+dimensions = [13, 13, 13]
+error = "InterruptException:"
+p = 0.04
+point_seed = "d53a0848cbce9e52"
+protocol = "full_prefix"

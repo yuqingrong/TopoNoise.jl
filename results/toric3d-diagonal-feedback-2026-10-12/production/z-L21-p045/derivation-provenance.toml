@@ -1,0 +1,44 @@
+assembly_source_hash_role = "assembly and rendering only; execution lineage is recorded by input"
+combined_checkpoint_sha256 = "c82ec36dcada13f70af35e0eeaa3425e01a4589601b50185fdda0815b9992e2c"
+decoder_family_builds = 2
+derivation = "states 1:6 from the ten-rate L=21 shard plus the independently replayed frozen state 7 at p=0.045; no shots resampled during assembly"
+format_version = 1
+invalid_recoveries = 0
+point_seed_p045 = "dedd14bb48a97cc7"
+rates = [0.025, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.045]
+saved_paths = "(csv = \"/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback-raw.csv\", metadata = \"/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback-metadata.toml\", svg = \"/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback.svg\", pdf = \"/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback.pdf\", png = \"/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback.png\")"
+shots_per_point = 2000
+
+[combined_metadata]
+path = "results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045/toric3d-diagonal-feedback-metadata.toml"
+sha256 = "e09dc0dc1a87f2f66cd21952bc4e130c92c9162e076db90b090dd9d0b4ede384"
+
+[main_input]
+checkpoint = "results/toric3d-diagonal-feedback-2026-10-12/production/z-L21/toric3d-diagonal-feedback-checkpoint.toml"
+checkpoint_sha256 = "0f2f90d5887a826f65de5a89b9091c02fe75f623659fec3681f29a37859b5fc7"
+completed_shots = [2000, 2000, 2000, 2000, 2000, 2000]
+execution_source_snapshot_status = "full snapshot not embedded in checkpoint; loaded feedback_strength_scan.jl is the pre-1e4dbe9 source with FNV-1a-64 18a0d574a9cff285, established by the archived pre-fix interrupt behavior"
+invalid_recoveries = [0, 0, 0, 0, 0, 0]
+point_seeds = ["745f9a4d9333a4b6", "e1f3842e52a5624f", "86627198ecf66743", "39c8c38a30b79880", "5933ea0e96a4405a", "0b1b69243e87d38d"]
+replay_seconds = [1137.8205049037933, 2135.522786140442, 2712.1525807380676, 1881.1434199810028, 1919.0398378372192, 1804.7771418094635]
+role = "states 1:6, p=0.025 through p=0.04"
+sampling_seconds = [1.9839987754821777, 2.35642147064209, 2.89597749710083, 1.6835741996765137, 1.0991928577423096, 1.4239068031311035]
+selected_state_indices_one_based = [1, 2, 3, 4, 5, 6]
+
+[point_derivation_provenance]
+path = "results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045-point/derivation-provenance.toml"
+sha256 = "2dbc8dfda343fffdc597c7bde35bd6cb18aeb496a0b5843a9d7231d82f7a298e"
+
+[point_input]
+checkpoint = "results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045-point/toric3d-diagonal-feedback-checkpoint.toml"
+checkpoint_sha256 = "9164831e357470a96b6717280fa34b887a995fe5a63306eaee3d05cbb18cd2ae"
+completed_shots = [2000]
+execution_source_snapshot_status = "recorded in the independently generated point metadata"
+invalid_recoveries = [0]
+metadata = "results/toric3d-diagonal-feedback-2026-10-12/production/z-L21-p045-point/toric3d-diagonal-feedback-metadata.toml"
+metadata_sha256 = "d6ea9eeecadfb96adba0a281662fbb67492cef3675af1b30fe9553afa52d9fbe"
+point_seeds = ["dedd14bb48a97cc7"]
+replay_seconds = [2428.827750682831]
+role = "state 7, p=0.045"
+sampling_seconds = [1.529088020324707]
+selected_state_indices_one_based = [1]

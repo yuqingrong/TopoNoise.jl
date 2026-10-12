@@ -1,0 +1,31 @@
+fit_key,channel,protocol,name,p_min,p_max,min_size,degree,correction_omega,status,pc,nu,diagnostic
+x_only/none,x_only,none,cubic,0.025,0.08,5,3,,inconclusive,,,"missing adjacent-size crossings for [(5, 7)]; threshold withheld; parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)"
+x_only/none,x_only,none,min_size_unavailable,0.025,0.08,11,2,,insufficient_data,,,need at least four sizes in the fit window
+x_only/none,x_only,none,trim_lowest_p,0.03,0.08,5,2,,inconclusive,,,"missing adjacent-size crossings for [(5, 7)]; threshold withheld; parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)"
+x_only/none,x_only,none,trim_highest_p,0.025,0.07,5,2,,inconclusive,,,"missing adjacent-size crossings for [(5, 7)]; threshold withheld; parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)"
+x_only/none,x_only,none,fixed_L_inverse_correction,0.025,0.08,5,2,1.0,inconclusive,,,"missing adjacent-size crossings for [(5, 7)]; threshold withheld; parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)"
+x_only/slice_local,x_only,slice_local,cubic,0.025,0.08,5,3,,inconclusive,,,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)
+x_only/slice_local,x_only,slice_local,min_size_unavailable,0.025,0.08,11,2,,insufficient_data,,,need at least four sizes in the fit window
+x_only/slice_local,x_only,slice_local,trim_lowest_p,0.03,0.08,5,2,,inconclusive,,,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)
+x_only/slice_local,x_only,slice_local,trim_highest_p,0.025,0.07,5,2,,inconclusive,,,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)
+x_only/slice_local,x_only,slice_local,fixed_L_inverse_correction,0.025,0.08,5,2,1.0,inconclusive,,,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window; scaling-model lack of fit (deviance p < 0.01)
+x_only/full_prefix,x_only,full_prefix,cubic,0.025,0.08,5,3,,ok,0.05304560221853738,1.5152557346674786,
+x_only/full_prefix,x_only,full_prefix,min_size_unavailable,0.025,0.08,11,2,,insufficient_data,,,need at least four sizes in the fit window
+x_only/full_prefix,x_only,full_prefix,trim_lowest_p,0.03,0.08,5,2,,ok,0.053227089008531236,1.3245535364045316,
+x_only/full_prefix,x_only,full_prefix,trim_highest_p,0.025,0.07,5,2,,ok,0.05292997863506392,1.418661404908941,
+x_only/full_prefix,x_only,full_prefix,fixed_L_inverse_correction,0.025,0.08,5,2,1.0,ok,0.06154463949227751,1.7673189457241738,
+z_only/none,z_only,none,cubic,0.025,0.045,9,3,,inconclusive,,,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window
+z_only/none,z_only,none,min_size_unavailable,0.025,0.045,21,2,,insufficient_data,,,need at least four sizes in the fit window
+z_only/none,z_only,none,trim_lowest_p,0.03,0.045,9,2,,inconclusive,,,parameter bound reached: pc; candidate p_c is outside the fit window
+z_only/none,z_only,none,trim_highest_p,0.025,0.04,9,2,,inconclusive,,,parameter bound reached: nu
+z_only/none,z_only,none,fixed_L_inverse_correction,0.025,0.045,9,2,1.0,inconclusive,,,parameter bound reached: nu; fitted failure probability is not monotone increasing in p
+z_only/slice_local,z_only,slice_local,cubic,0.025,0.045,9,3,,inconclusive,,,"missing adjacent-size crossings for [(13, 17)]; threshold withheld; fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)"
+z_only/slice_local,z_only,slice_local,min_size_unavailable,0.025,0.045,21,2,,insufficient_data,,,need at least four sizes in the fit window
+z_only/slice_local,z_only,slice_local,trim_lowest_p,0.03,0.045,9,2,,inconclusive,,,"missing adjacent-size crossings for [(13, 17)]; threshold withheld; fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)"
+z_only/slice_local,z_only,slice_local,trim_highest_p,0.025,0.04,9,2,,inconclusive,,,"missing adjacent-size crossings for [(13, 17)]; threshold withheld; scaling-model lack of fit (deviance p < 0.01)"
+z_only/slice_local,z_only,slice_local,fixed_L_inverse_correction,0.025,0.045,9,2,1.0,inconclusive,,,"missing adjacent-size crossings for [(13, 17)]; threshold withheld; scaling-model lack of fit (deviance p < 0.01)"
+z_only/full_prefix,z_only,full_prefix,cubic,0.025,0.045,9,3,,inconclusive,,,"missing adjacent-size crossings for [(17, 21)]; threshold withheld; fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)"
+z_only/full_prefix,z_only,full_prefix,min_size_unavailable,0.025,0.045,21,2,,insufficient_data,,,need at least four sizes in the fit window
+z_only/full_prefix,z_only,full_prefix,trim_lowest_p,0.03,0.045,9,2,,inconclusive,,,"missing adjacent-size crossings for [(17, 21)]; threshold withheld; fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)"
+z_only/full_prefix,z_only,full_prefix,trim_highest_p,0.025,0.04,9,2,,inconclusive,,,"missing adjacent-size crossings for [(17, 21)]; threshold withheld; scaling-model lack of fit (deviance p < 0.01)"
+z_only/full_prefix,z_only,full_prefix,fixed_L_inverse_correction,0.025,0.045,9,2,1.0,inconclusive,,,"missing adjacent-size crossings for [(17, 21)]; threshold withheld; fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)"

@@ -1,0 +1,115 @@
+format_version = 1
+invalid_recoveries = 0
+point_seeds = ["7653edcf1d36d0da", "172b998faef21b68", "2319008980c06381", "33bbe1612f0772a2", "592a7b13d5fdc798", "936fe95dd98b4e8f", "1d20f6f56eb7af02", "2e1d3c364b1b1055", "7d7911ea596af14f", "027a43ad6d01f12b"]
+started_at_unix = 1.791799080958717e9
+
+[config]
+batch_size = 32
+channels = ["z_only"]
+dimensions = [[13, 13, 13]]
+error_rates = [0.025, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.045, 0.05, 0.06, 0.07]
+point_rng_type = "Random.Xoshiro"
+rng_type = "Random.Xoshiro"
+seed = 11247
+shots = 2000
+x_routing = "one_step"
+
+    [config.settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[1014, 948, 2, 0, 1, 1, 17, 17], [995, 978, 3, 0, 0, 1, 11, 12], [501, 1454, 3, 0, 0, 1, 9, 32]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 56.056901931762695
+sampling_seconds = 0.46218419075012207
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[906, 888, 7, 4, 3, 1, 100, 91], [974, 868, 3, 7, 3, 1, 70, 74], [471, 1263, 3, 11, 1, 5, 57, 189]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 68.72227334976196
+sampling_seconds = 0.4055631160736084
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[797, 785, 12, 13, 12, 11, 178, 192], [826, 837, 7, 15, 9, 9, 139, 158], [362, 1101, 5, 23, 7, 18, 109, 375]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 70.50836825370789
+sampling_seconds = 1.603623867034912
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[703, 699, 17, 16, 20, 19, 268, 258], [695, 741, 20, 24, 18, 16, 254, 232], [282, 876, 12, 28, 11, 29, 181, 581]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 79.14674401283264
+sampling_seconds = 0.42417120933532715
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[564, 569, 26, 42, 36, 32, 378, 353], [607, 621, 26, 35, 30, 32, 311, 338], [196, 626, 11, 47, 19, 44, 254, 803]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 88.628253698349
+sampling_seconds = 0.418562650680542
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[474, 485, 62, 64, 58, 68, 390, 399], [516, 504, 57, 56, 58, 42, 375, 392], [150, 423, 23, 73, 26, 62, 291, 952]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 96.71093845367432
+sampling_seconds = 0.4644193649291992
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[370, 376, 115, 125, 113, 111, 384, 406], [392, 364, 118, 111, 103, 104, 401, 407], [78, 243, 45, 129, 48, 103, 321, 1033]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 114.00644063949585
+sampling_seconds = 0.4203014373779297
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[322, 364, 153, 176, 176, 184, 289, 336], [321, 348, 172, 162, 167, 148, 349, 333], [57, 214, 52, 197, 70, 183, 282, 945]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 129.12328839302063
+sampling_seconds = 0.3995230197906494
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[275, 266, 242, 241, 226, 225, 265, 260], [273, 269, 226, 218, 228, 230, 268, 288], [38, 121, 90, 251, 87, 230, 279, 904]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 161.897141456604
+sampling_seconds = 0.3989405632019043
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 0.23581194877624512
+invalid_recoveries = 0
+joint_counts = [[273, 261, 278, 210, 225, 251, 248, 254], [267, 246, 256, 250, 248, 270, 216, 247], [37, 109, 117, 259, 79, 303, 250, 846]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 198.44965028762817
+sampling_seconds = 0.4536459445953369

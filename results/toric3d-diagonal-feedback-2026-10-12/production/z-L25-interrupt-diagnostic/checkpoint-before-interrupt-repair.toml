@@ -1,0 +1,115 @@
+format_version = 1
+invalid_recoveries = 1
+point_seeds = ["fcdceedd7e052edb", "71e384cc43b75261", "07898a2a9e2f62ad", "19ebe895f8dee0ea", "7a3e2a94912dbbbb", "a20a927c750e866e", "aa2ec599f5100eca", "eb2f8304693573cc", "551da57bcd099c06", "b5f4b9ebe9b5adb7"]
+started_at_unix = 1.791804669740445e9
+
+[config]
+batch_size = 32
+channels = ["z_only"]
+dimensions = [[25, 25, 25]]
+error_rates = [0.025, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.045, 0.05, 0.06, 0.07]
+point_rng_type = "Random.Xoshiro"
+rng_type = "Random.Xoshiro"
+seed = 11259
+shots = 2000
+x_routing = "one_step"
+
+    [config.settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[[states]]
+completed_shots = 2000
+decoder_build_seconds = 17.245720148086548
+invalid_recoveries = 0
+joint_counts = [[1016, 984, 0, 0, 0, 0, 0, 0], [1062, 937, 0, 0, 0, 0, 1, 0], [543, 1456, 0, 0, 0, 0, 1, 0]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 4089.4017400741577
+sampling_seconds = 3.5154712200164795
+[[states]]
+completed_shots = 384
+decoder_build_seconds = 17.245720148086548
+invalid_recoveries = 1
+joint_counts = [[166, 213, 0, 0, 0, 0, 3, 2], [201, 179, 0, 0, 0, 0, 4, 0], [89, 288, 0, 0, 0, 0, 3, 4]]
+ldpc_version = ""
+pymatching_version = "2.4.0"
+replay_seconds = 2448.9766767024994
+sampling_seconds = 0.8145759105682373
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0
+[[states]]
+completed_shots = 0
+decoder_build_seconds = 0.0
+invalid_recoveries = 0
+joint_counts = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]]
+ldpc_version = ""
+pymatching_version = ""
+replay_seconds = 0.0
+sampling_seconds = 0.0

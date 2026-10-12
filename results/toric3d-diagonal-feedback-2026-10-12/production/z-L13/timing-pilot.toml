@@ -1,0 +1,27 @@
+decoder_construction_seconds = 0.33691125
+estimated_scan_seconds = 814.0066045000001
+format_version = 1
+production_points = 10
+production_shots_per_point = 2000
+sampling_seconds = 0.004036538
+timed_triplets = 20
+timing_policy = "one immutable sampled record replayed independently by each protocol; all records excluded from production"
+timing_shots = 20
+timing_shots_included_in_production = false
+warmup_seconds = 1.757195583
+warmup_shots = 1
+x_routing = "one_step"
+
+[decoder_construction_by_channel_seconds]
+z_only = 0.33691125
+
+[protocol_seconds]
+full_prefix = 0.2953373350000001
+none = 0.25899970600000005
+slice_local = 0.252263913
+
+[[targets]]
+channel = "z_only"
+decoder_construction_seconds = 0.33691125
+dimensions = [13, 13, 13]
+p = 0.025
