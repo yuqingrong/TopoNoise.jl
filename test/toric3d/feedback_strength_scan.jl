@@ -182,3 +182,23 @@ end
         @test all(state["invalid_recoveries"] == 0 for state in checkpoint["states"])
     end
 end
+
+@testset "User interruption is not recorded as an invalid recovery" begin
+    mktempdir() do directory
+        hook = _ -> throw(InterruptException())
+        @test_throws InterruptException compare_toric3d_diagonal_feedback(
+            Xoshiro(81); sizes=[(2, 2, 2)], error_rates=[0.01],
+            channels=[:x_only], shots=2, seed=81, batch_size=2,
+            output_dir=directory, _test_recovery_hook=hook)
+        checkpoint_path = joinpath(directory,
+            "toric3d-diagonal-feedback-checkpoint.toml")
+        failure_path = joinpath(directory,
+            "toric3d-diagonal-feedback-failure.toml")
+        @test isfile(checkpoint_path)
+        checkpoint = TopoNoise.TOML.parsefile(checkpoint_path)
+        @test checkpoint["invalid_recoveries"] == 0
+        @test all(state["invalid_recoveries"] == 0
+            for state in checkpoint["states"])
+        @test !isfile(failure_path)
+    end
+end

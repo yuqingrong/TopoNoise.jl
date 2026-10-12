@@ -469,6 +469,7 @@ function compare_toric3d_diagonal_feedback(rng::Random.AbstractRNG;
                                     state.joint_counts,triplet)
                             end
                         catch error
+                            error isa InterruptException && rethrow()
                             state.replay_seconds += time()-replay_at
                             state.invalid_recoveries += 1
                             checkpoint_path === nothing ||
