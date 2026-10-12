@@ -1,0 +1,31 @@
+format_version = 1
+seed = 1234
+timing_shots_per_channel = 20
+timing_shots_included_in_scientific_counts = false
+estimate_policy = "largest approved scout size timing multiplied by every grid point; conservative because smaller sizes are faster"
+
+[x_only]
+timing_dimensions = [9, 9, 9]
+timing_p = 0.015
+scout_sizes = [3, 5, 7, 9]
+scout_probability_count = 14
+scout_point_count = 56
+shots_per_point = 200
+seconds_per_paired_triplet = 0.26279604565
+largest_point_estimate_seconds = 52.747098546
+full_scout_estimate_seconds = 2953.837518576
+full_scout_estimate_minutes = 49.2306253096
+decoder_build_estimate_policy = "56 times the measured L=9 build time; actual builds at smaller sizes should be faster"
+
+[z_only]
+timing_dimensions = [17, 17, 17]
+timing_p = 0.006
+scout_sizes = [5, 9, 13, 17]
+scout_probability_count = 12
+scout_point_count = 48
+shots_per_point = 200
+seconds_per_paired_triplet = 0.0459032479
+largest_point_estimate_seconds = 10.488608996
+full_scout_estimate_seconds = 445.903017504
+full_scout_estimate_minutes = 7.4317169584
+decoder_build_estimate_policy = "four times the measured L=17 build time; Z decoders are reused across probabilities at fixed size"

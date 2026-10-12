@@ -1,0 +1,8 @@
+batch_start = 1
+channel = "z_only"
+checkpoint = "final"
+dimensions = [5, 5, 5]
+error = "batched local Z feedback violated the prefix invariant"
+p = 0.001
+point_seed = "694a9241a1bbff23"
+protocol = "full_prefix"

@@ -1,0 +1,4760 @@
+{
+  "accepted_model_pc_spread": {
+    "x_only/full_prefix": [
+      0.05208723040957707,
+      0.06431457741290564
+    ],
+    "x_only/none": null,
+    "x_only/slice_local": null,
+    "z_only/full_prefix": null,
+    "z_only/none": null,
+    "z_only/slice_local": null
+  },
+  "bootstrap_replicates": 200,
+  "channels": [
+    "x_only",
+    "z_only"
+  ],
+  "command_arguments": [
+    "results/toric3d-diagonal-feedback-2026-10-12/scout-x/toric3d-diagonal-feedback-raw.csv",
+    "results/toric3d-diagonal-feedback-2026-10-12/scout-z/toric3d-diagonal-feedback-raw.csv",
+    "results/toric3d-diagonal-feedback-2026-10-12/scout-z-mid/toric3d-diagonal-feedback-raw.csv",
+    "results/toric3d-diagonal-feedback-2026-10-12/scout-z-high/toric3d-diagonal-feedback-raw.csv",
+    "--x-p-min",
+    "0.015",
+    "--x-p-max",
+    "0.075",
+    "--z-p-min",
+    "0.03",
+    "--z-p-max",
+    "0.06",
+    "--bootstrap",
+    "200",
+    "--seed",
+    "1234",
+    "--output-dir",
+    "results/toric3d-diagonal-feedback-2026-10-12/scout-fit-combined"
+  ],
+  "fits": {
+    "x_only/full_prefix": {
+      "bootstrap": {
+        "accepted": 133,
+        "method": "seeded parametric marginal-binomial bootstrap conditional on the accepted scaling model",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": [
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 0,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 1,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0957826434693247,
+            "pc": 0.05759518541000449,
+            "replicate": 2,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.166752515107477,
+            "pc": 0.05279235416961953,
+            "replicate": 3,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3253562552462697,
+            "pc": 0.054003079160377485,
+            "replicate": 4,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4324534304465941,
+            "pc": 0.055905174331806404,
+            "replicate": 5,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0595213619302886,
+            "pc": 0.052157973576044465,
+            "replicate": 6,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0692941248205705,
+            "pc": 0.05551132981513951,
+            "replicate": 7,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 8,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.686350566903554,
+            "pc": 0.05408735386207987,
+            "replicate": 9,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.340216355233522,
+            "pc": 0.052607150911343055,
+            "replicate": 10,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0939707960456329,
+            "pc": 0.051917359569914875,
+            "replicate": 11,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2948437755667577,
+            "pc": 0.05125737088005301,
+            "replicate": 12,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.300517879259274,
+            "pc": 0.05432157332625464,
+            "replicate": 13,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 14,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 15,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 16,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.036369702370759,
+            "pc": 0.05101953038423893,
+            "replicate": 17,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6419806226690417,
+            "pc": 0.056596673321333474,
+            "replicate": 18,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9154922158537773,
+            "pc": 0.05217650008705369,
+            "replicate": 19,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 20,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4151094300481182,
+            "pc": 0.05421796731744535,
+            "replicate": 21,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.272097474036806,
+            "pc": 0.05277942688259504,
+            "replicate": 22,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1283825815494755,
+            "pc": 0.053356107848475026,
+            "replicate": 23,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2479141151456201,
+            "pc": 0.04952136164858747,
+            "replicate": 24,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3469598273237267,
+            "pc": 0.05495513846647198,
+            "replicate": 25,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9746329791184246,
+            "pc": 0.055261625052608836,
+            "replicate": 26,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1877699779971385,
+            "pc": 0.05126301658876646,
+            "replicate": 27,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 28,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 29,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4501006007006967,
+            "pc": 0.04842888194414538,
+            "replicate": 30,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4108511920557048,
+            "pc": 0.0499203099398995,
+            "replicate": 31,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.9636205351759197,
+            "pc": 0.060306912275493715,
+            "replicate": 32,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 33,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1548153649381332,
+            "pc": 0.05157572847841573,
+            "replicate": 34,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3445891813868516,
+            "pc": 0.050675595701070796,
+            "replicate": 35,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6731573345003448,
+            "pc": 0.054859910427202646,
+            "replicate": 36,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.093560497877862,
+            "pc": 0.05089641947254271,
+            "replicate": 37,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 38,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1405527955923185,
+            "pc": 0.05595313364225711,
+            "replicate": 39,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3923245219240201,
+            "pc": 0.054209795244021974,
+            "replicate": 40,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6618970560468125,
+            "pc": 0.0494969932849576,
+            "replicate": 41,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 42,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4037031849669435,
+            "pc": 0.05372558289116162,
+            "replicate": 43,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 44,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 45,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 46,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 47,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1995154586601833,
+            "pc": 0.048734248151756476,
+            "replicate": 48,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 49,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2656763552427799,
+            "pc": 0.053907407079785745,
+            "replicate": 50,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 51,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 52,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2004928153555414,
+            "pc": 0.05168731057289377,
+            "replicate": 53,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0447480900742725,
+            "pc": 0.05069378349157334,
+            "replicate": 54,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1181851414906963,
+            "pc": 0.05119738878540934,
+            "replicate": 55,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.5006851097777563,
+            "pc": 0.05102835573194473,
+            "replicate": 56,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 57,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6662875189616322,
+            "pc": 0.05869150508094866,
+            "replicate": 58,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 2.0082362321114116,
+            "pc": 0.0550388382780044,
+            "replicate": 59,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.11259223487628,
+            "pc": 0.0515287383521896,
+            "replicate": 60,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2015641502747605,
+            "pc": 0.055319961502522164,
+            "replicate": 61,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0511858911069627,
+            "pc": 0.050719401361995264,
+            "replicate": 62,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1636458284854925,
+            "pc": 0.05286527572799462,
+            "replicate": 63,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2145795843070852,
+            "pc": 0.05472991695251183,
+            "replicate": 64,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 2.373576166117947,
+            "pc": 0.05958385472518064,
+            "replicate": 65,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4814154317858066,
+            "pc": 0.053884229306576055,
+            "replicate": 66,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 67,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 68,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 69,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 70,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 71,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6849082956414811,
+            "pc": 0.05762846145798958,
+            "replicate": 72,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1193666611755704,
+            "pc": 0.052735282532214746,
+            "replicate": 73,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3342543157761972,
+            "pc": 0.0541654902220715,
+            "replicate": 74,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 75,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2210376258507019,
+            "pc": 0.051800954645068835,
+            "replicate": 76,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2479255414289858,
+            "pc": 0.051674187613882455,
+            "replicate": 77,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 78,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.137680711497426,
+            "pc": 0.05176765098717539,
+            "replicate": 79,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.357866156924463,
+            "pc": 0.05273105259187652,
+            "replicate": 80,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 81,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9920527941050024,
+            "pc": 0.05021882106104255,
+            "replicate": 82,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 83,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0666684172428982,
+            "pc": 0.05092811871694919,
+            "replicate": 84,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.413013671154663,
+            "pc": 0.05107131171318861,
+            "replicate": 85,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.03057638102754,
+            "pc": 0.05365813718966986,
+            "replicate": 86,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 87,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3442978814191173,
+            "pc": 0.05073654867124952,
+            "replicate": 88,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2753058843995226,
+            "pc": 0.05008965060975301,
+            "replicate": 89,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4437613058199434,
+            "pc": 0.05466130869146649,
+            "replicate": 90,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3708861012896885,
+            "pc": 0.053269660417053485,
+            "replicate": 91,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 92,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 93,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.400397110308747,
+            "pc": 0.054996837624374656,
+            "replicate": 94,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0485939038080982,
+            "pc": 0.0483622197298445,
+            "replicate": 95,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0967075057662303,
+            "pc": 0.04903980561224215,
+            "replicate": 96,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2543868142581558,
+            "pc": 0.05154036695680928,
+            "replicate": 97,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 98,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0692637017445001,
+            "pc": 0.04850917516805151,
+            "replicate": 99,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.355235401275197,
+            "pc": 0.05291142273666745,
+            "replicate": 100,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.532243890794202,
+            "pc": 0.057274510387837374,
+            "replicate": 101,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1652550574415035,
+            "pc": 0.05151961289340681,
+            "replicate": 102,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2419402883960664,
+            "pc": 0.0522330190221645,
+            "replicate": 103,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3513382777354952,
+            "pc": 0.047239519994648774,
+            "replicate": 104,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 105,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 106,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2674132196880332,
+            "pc": 0.05665714692176759,
+            "replicate": 107,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 108,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.463775168405863,
+            "pc": 0.05106471693502194,
+            "replicate": 109,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 110,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4502732154232238,
+            "pc": 0.05775484528575784,
+            "replicate": 111,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0698524528776021,
+            "pc": 0.051184868749680576,
+            "replicate": 112,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2018356051132457,
+            "pc": 0.050570698452148025,
+            "replicate": 113,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.7112611555755306,
+            "pc": 0.05783472690856693,
+            "replicate": 114,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6164725820249617,
+            "pc": 0.04646135743132385,
+            "replicate": 115,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 116,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 117,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 118,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1156020599715604,
+            "pc": 0.05234160819476955,
+            "replicate": 119,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1887644651801552,
+            "pc": 0.051519941080515316,
+            "replicate": 120,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 121,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 122,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3992922057497008,
+            "pc": 0.05685193647600674,
+            "replicate": 123,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0171356085771288,
+            "pc": 0.05077014315043533,
+            "replicate": 124,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 125,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.7945913408295175,
+            "pc": 0.050318359513721864,
+            "replicate": 126,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2464341846417566,
+            "pc": 0.0533696787721242,
+            "replicate": 127,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9382561186957978,
+            "pc": 0.05325740133550983,
+            "replicate": 128,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 129,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.34279477313673,
+            "pc": 0.04993000757566838,
+            "replicate": 130,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.079968287041141,
+            "pc": 0.05497755973968844,
+            "replicate": 131,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0596615808433774,
+            "pc": 0.053387080197184376,
+            "replicate": 132,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0374970707773576,
+            "pc": 0.05334568805129251,
+            "replicate": 133,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.8703457106441667,
+            "pc": 0.05017351162658061,
+            "replicate": 134,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 135,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 136,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 137,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.342021594436445,
+            "pc": 0.05091499152072697,
+            "replicate": 138,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.193785969788977,
+            "pc": 0.05492710364977158,
+            "replicate": 139,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1793724335029276,
+            "pc": 0.052858020522339545,
+            "replicate": 140,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1328976109746296,
+            "pc": 0.051802980972335044,
+            "replicate": 141,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9729476106365867,
+            "pc": 0.05033962630379088,
+            "replicate": 142,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.536995921144362,
+            "pc": 0.053415327103481985,
+            "replicate": 143,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.433167141329916,
+            "pc": 0.05253532401812602,
+            "replicate": 144,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 145,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1920340554449746,
+            "pc": 0.05564237431675402,
+            "replicate": 146,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 147,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 148,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3730784528153883,
+            "pc": 0.05243236590564006,
+            "replicate": 149,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3085311754872548,
+            "pc": 0.05377965094796333,
+            "replicate": 150,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 151,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1632052697388309,
+            "pc": 0.05088464156544641,
+            "replicate": 152,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.871433421869505,
+            "pc": 0.04863376322980894,
+            "replicate": 153,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1938835147044673,
+            "pc": 0.05127621020680261,
+            "replicate": 154,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 155,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 156,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.283038797292262,
+            "pc": 0.056377696959020736,
+            "replicate": 157,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 158,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.174594094677883,
+            "pc": 0.05146731937584427,
+            "replicate": 159,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9649800732547682,
+            "pc": 0.05113792590304559,
+            "replicate": 160,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 161,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4787476163544424,
+            "pc": 0.05111851799041215,
+            "replicate": 162,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.7769688330129403,
+            "pc": 0.05853794826328956,
+            "replicate": 163,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1773085998600052,
+            "pc": 0.05691472443759846,
+            "replicate": 164,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 165,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 166,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 167,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.636524563844653,
+            "pc": 0.05407440649360597,
+            "replicate": 168,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2440541065570996,
+            "pc": 0.05604419023132081,
+            "replicate": 169,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.8069484299026233,
+            "pc": 0.056722347906738635,
+            "replicate": 170,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.6239004338302998,
+            "pc": 0.05327465888203676,
+            "replicate": 171,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2943219938798072,
+            "pc": 0.057492525359318127,
+            "replicate": 172,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2169648033147389,
+            "pc": 0.054766110095346245,
+            "replicate": 173,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 174,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0738594701654902,
+            "pc": 0.051694813837402875,
+            "replicate": 175,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4086426983117872,
+            "pc": 0.05008964392533979,
+            "replicate": 176,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.170514538141253,
+            "pc": 0.05229081919387208,
+            "replicate": 177,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 178,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 179,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.4556744834156163,
+            "pc": 0.05452480609196092,
+            "replicate": 180,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 0.9891906863067126,
+            "pc": 0.054549076143280195,
+            "replicate": 181,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2692506169318447,
+            "pc": 0.05285860763919346,
+            "replicate": 182,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 183,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 184,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1122359448774326,
+            "pc": 0.05048197511066875,
+            "replicate": 185,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 186,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.2116075316670512,
+            "pc": 0.05077599245653217,
+            "replicate": 187,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.316275374255178,
+            "pc": 0.052295095105766506,
+            "replicate": 188,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.0763709975563456,
+            "pc": 0.05150762377232644,
+            "replicate": 189,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1651259714829039,
+            "pc": 0.04897114876390764,
+            "replicate": 190,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3224642312109562,
+            "pc": 0.05366794664898777,
+            "replicate": 191,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.18703607079285,
+            "pc": 0.053591496736977384,
+            "replicate": 192,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.352571993736342,
+            "pc": 0.05516381316398892,
+            "replicate": 193,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3724245911735993,
+            "pc": 0.056813622379534905,
+            "replicate": 194,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 195,
+            "status": "rejected"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.1839820134955674,
+            "pc": 0.05163761059684349,
+            "replicate": 196,
+            "status": "accepted"
+          },
+          {
+            "accepted": true,
+            "diagnostic": "",
+            "nu": 1.3843978645987192,
+            "pc": 0.0534254810679654,
+            "replicate": 197,
+            "status": "accepted"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 198,
+            "status": "rejected"
+          },
+          {
+            "accepted": false,
+            "diagnostic": "fitted failure probability is not monotone increasing in p",
+            "nu": null,
+            "pc": null,
+            "replicate": 199,
+            "status": "rejected"
+          }
+        ]
+      },
+      "candidate": {
+        "L_reference": 5.544443371329423,
+        "bound_hits": [],
+        "coefficients": [
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 15,
+        "derivative_min": 0.4367356631924899,
+        "deviance": 12.735849800382235,
+        "deviance_p_value": 0.6226925118111599,
+        "fitted_probabilities": [
+          0.021130719651091704,
+          0.031150966139041503,
+          0.06287852279969881,
+          0.1861944346954094,
+          0.4012480182142066,
+          0.0035846326710894365,
+          0.007404243688793622,
+          0.027003696140108557,
+          0.1772445196756109,
+          0.48547294610081954,
+          0.0004997542364007736,
+          0.0015198289053618358,
+          0.010814087125780752,
+          0.16903653299648266,
+          0.53746582377038,
+          5.817297850069942e-05,
+          0.00027319766382388636,
+          0.004068733350494455,
+          0.16136691870220504,
+          0.5615842388145915
+        ],
+        "issues": [],
+        "largest_absolute_residual": 1.7111555915788659,
+        "monotone_increasing": true,
+        "nu": 1.1871450763604043,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.075,
+        "p_min": 0.015,
+        "p_scale": 0.06,
+        "parameters": [
+          0.6181205068262846,
+          0.17155132918729143,
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "pc": 0.05208723040957707,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -1.094507516537034,
+          -0.907744610847006,
+          0.12359595448957783,
+          1.5914778969529824,
+          -0.3245346530993784,
+          0.3349204195331854,
+          0.42820561463933754,
+          0.697649175537088,
+          0.10204471387311756,
+          -1.7111555915788659,
+          -0.3162290674734852,
+          -0.5517503604401756,
+          -0.11131456436243137,
+          -0.15231485142619944,
+          -0.21176071336287908,
+          -0.10786692059477866,
+          -0.23378294257007778,
+          -0.9039198607136362,
+          0.5241019484833594,
+          1.0948986141134733
+        ]
+      },
+      "channel": "x_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.06470588235294118,
+          "sizes": [
+            3,
+            5
+          ]
+        },
+        {
+          "p": 0.053125,
+          "sizes": [
+            5,
+            7
+          ]
+        },
+        {
+          "p": 0.04000000000000001,
+          "sizes": [
+            7,
+            9
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "fewer than 80% of parametric bootstrap fits were usable"
+      ],
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 3,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "full_prefix",
+      "selected_points": 20,
+      "selected_probabilities": [
+        0.015,
+        0.02,
+        0.03,
+        0.05,
+        0.075
+      ],
+      "selected_sizes": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "status": "inconclusive"
+    },
+    "x_only/none": {
+      "bootstrap": {
+        "accepted": 0,
+        "method": "not run because the primary fit was not accepted",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": []
+      },
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.04789473684210527,
+          "sizes": [
+            7,
+            9
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
+      ],
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 3,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "none",
+      "selected_points": 20,
+      "selected_probabilities": [
+        0.015,
+        0.02,
+        0.03,
+        0.05,
+        0.075
+      ],
+      "selected_sizes": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "status": "inconclusive"
+    },
+    "x_only/slice_local": {
+      "bootstrap": {
+        "accepted": 0,
+        "method": "not run because the primary fit was not accepted",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": []
+      },
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.017857142857142856,
+          "sizes": [
+            5,
+            7
+          ]
+        },
+        {
+          "p": 0.02375000000000001,
+          "sizes": [
+            5,
+            7
+          ]
+        },
+        {
+          "p": 0.04680000000000001,
+          "sizes": [
+            7,
+            9
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5)]; threshold withheld"
+      ],
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 3,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "slice_local",
+      "selected_points": 20,
+      "selected_probabilities": [
+        0.015,
+        0.02,
+        0.03,
+        0.05,
+        0.075
+      ],
+      "selected_sizes": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "status": "inconclusive"
+    },
+    "z_only/full_prefix": {
+      "bootstrap": {
+        "accepted": 0,
+        "method": "not run because the primary fit was not accepted",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": []
+      },
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.20380644738288192,
+          4.1893974393455276,
+          -3.578067948583951
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 31,
+        "derivative_min": -3.3765447236103325,
+        "deviance": 74.4934570346308,
+        "deviance_p_value": 1.9205557033083586e-05,
+        "fitted_probabilities": [
+          0.34801776505461196,
+          0.4091810849962402,
+          0.4689027683090397,
+          0.5251393915184688,
+          0.5764518440247884,
+          0.6220354761444843,
+          0.6616283242125286,
+          0.7236127965686242,
+          0.7916538540802182,
+          0.23496922959656244,
+          0.3250737557517363,
+          0.4199055882226626,
+          0.5104258764986489,
+          0.5900229507251923,
+          0.6556325268525819,
+          0.707071283717901,
+          0.773514738253439,
+          0.804105195726092,
+          0.15083473573263886,
+          0.2530912386910003,
+          0.3751645624918269,
+          0.49703484743972215,
+          0.6017100487103658,
+          0.6820578349809294,
+          0.7388669600332365,
+          0.7977601773285745,
+          0.7597311374762202,
+          0.09273048626606877,
+          0.1929588661250629,
+          0.33371840671645747,
+          0.48443153082910995,
+          0.6121752200709203,
+          0.7036754464771939,
+          0.7618587185724043,
+          0.8065710080904993,
+          0.6532843255464644
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p",
+          "scaling-model lack of fit (deviance p < 0.01)"
+        ],
+        "largest_absolute_residual": 3.0174666619263664,
+        "monotone_increasing": false,
+        "nu": 1.3335967273406537,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.29053190581097593,
+          0.2878795984477272,
+          0.20380644738288192,
+          4.1893974393455276,
+          -3.578067948583951
+        ],
+        "pc": 0.038715957174329275,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.9802663229442827,
+          -0.12025939757312236,
+          -0.5356880913205402,
+          0.2792533183664007,
+          0.24465523995148838,
+          -0.7885258299754362,
+          0.10077591717500783,
+          -0.5885922555078558,
+          -3.0174666619263664,
+          -0.6660876171535799,
+          0.9035414936963297,
+          2.5815924594647446,
+          -1.0022130026586622,
+          -0.14443075794338192,
+          1.469313905642187,
+          0.24637991517326188,
+          -0.9634520778353759,
+          -1.2152556566124346,
+          -1.811185513184802,
+          -0.4258174027176495,
+          1.1635655607015827,
+          1.2152593988278892,
+          2.2616620656532684,
+          1.1522651891405726,
+          0.3584385653438646,
+          0.07886042613068817,
+          -0.48760996340743246,
+          -2.0834035764898458,
+          -2.2562732324163193,
+          0.48830695622461323,
+          1.8554560260125341,
+          1.9685558501969422,
+          -0.11382956668490331,
+          -2.5518407784483266,
+          -2.562536406968852,
+          2.428189128800878
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.03363636363636364,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.03625,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.04,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.036484375,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.056875,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.03716666666666667,
+          "sizes": [
+            13,
+            17
+          ]
+        },
+        {
+          "p": 0.04,
+          "sizes": [
+            13,
+            17
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p",
+        "scaling-model lack of fit (deviance p < 0.01)"
+      ],
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 5,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "full_prefix",
+      "selected_points": 36,
+      "selected_probabilities": [
+        0.03,
+        0.0325,
+        0.035,
+        0.0375,
+        0.04,
+        0.0425,
+        0.045,
+        0.05,
+        0.06
+      ],
+      "selected_sizes": [
+        5,
+        9,
+        13,
+        17
+      ],
+      "status": "inconclusive"
+    },
+    "z_only/none": {
+      "bootstrap": {
+        "accepted": 0,
+        "method": "not run because the primary fit was not accepted",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": []
+      },
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [
+          "pc"
+        ],
+        "coefficients": [
+          1.0498163940480973,
+          -0.10098855368115027,
+          0.244607676971529
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 31,
+        "derivative_min": -0.10098855368115027,
+        "deviance": 26.817655504840832,
+        "deviance_p_value": 0.6813013399391404,
+        "fitted_probabilities": [
+          0.7407396402411687,
+          0.7398662806147842,
+          0.7392400029820325,
+          0.7388619709614518,
+          0.7387328850720535,
+          0.7388529841969462,
+          0.7392220460890131,
+          0.7407038597524349,
+          0.7465937751213502,
+          0.7407396402411687,
+          0.7395169875624839,
+          0.7388577985577616,
+          0.7387648547460707,
+          0.7392385475341354,
+          0.7402768800849764,
+          0.7418754578783062,
+          0.7467236541378768,
+          0.7626773488866497,
+          0.7407396402411687,
+          0.7392651670722011,
+          0.7387345508692575,
+          0.7391515332753268,
+          0.7405131748184773,
+          0.7428098318264911,
+          0.7460250841970923,
+          0.7551111262220147,
+          0.7828044966282217,
+          0.7407396402411687,
+          0.73907819423652,
+          0.7387917928395185,
+          0.7398833747810641,
+          0.7423417157659525,
+          0.7461413042363767,
+          0.7512420856572856,
+          0.7651123315962305,
+          0.805030318174052
+        ],
+        "issues": [
+          "parameter bound reached: pc",
+          "fitted failure probability is not monotone increasing in p",
+          "candidate p_c is outside the fit window"
+        ],
+        "largest_absolute_residual": 2.0400137155101326,
+        "monotone_increasing": false,
+        "nu": 1.4302133318798704,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.0,
+          0.3578236162778955,
+          1.0498163940480973,
+          -0.10098855368115027,
+          0.244607676971529
+        ],
+        "pc": 0.03,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.34658030417039437,
+          0.9713881357649521,
+          0.18553422849490486,
+          1.163490234147081,
+          -0.28111670361845686,
+          0.8418129019384406,
+          -0.13599253696631977,
+          -1.1521521531886345,
+          -0.8646576098015791,
+          0.29884225447702584,
+          0.3377826345416039,
+          -1.2510487378552706,
+          -0.6040755936792026,
+          -1.263903517816288,
+          -0.17019226745457133,
+          2.0400137155101326,
+          -0.0560515793152928,
+          1.573055497517743,
+          -0.023869024846684263,
+          0.8289659685566999,
+          1.4893150708074034,
+          0.349399656634388,
+          -0.9844152750784002,
+          -0.4144693529205139,
+          0.12914298010355957,
+          -0.8258310871261958,
+          -0.7821380557489656,
+          -0.5079359438322495,
+          -0.45337917558877966,
+          -1.7317156298517442,
+          0.32612565880550193,
+          -0.39908605213515025,
+          0.28785794554029226,
+          1.104363886303021,
+          0.4966483255801382,
+          -0.17956462945467805
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.03125,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.043250000000000004,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.031,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.04166666666666667,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.0375,
+          "sizes": [
+            13,
+            17
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "parameter bound reached: pc",
+        "fitted failure probability is not monotone increasing in p",
+        "candidate p_c is outside the fit window"
+      ],
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 5,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "none",
+      "selected_points": 36,
+      "selected_probabilities": [
+        0.03,
+        0.0325,
+        0.035,
+        0.0375,
+        0.04,
+        0.0425,
+        0.045,
+        0.05,
+        0.06
+      ],
+      "selected_sizes": [
+        5,
+        9,
+        13,
+        17
+      ],
+      "status": "inconclusive"
+    },
+    "z_only/slice_local": {
+      "bootstrap": {
+        "accepted": 0,
+        "method": "not run because the primary fit was not accepted",
+        "nu_interval": null,
+        "pc_interval": null,
+        "replicates": 200,
+        "samples": []
+      },
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.33979140885230835,
+          4.131350566916802,
+          -3.770456600910455
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 31,
+        "derivative_min": -3.142611022809586,
+        "deviance": 67.72287543121459,
+        "deviance_p_value": 0.00015086032517590807,
+        "fitted_probabilities": [
+          0.3434254062290185,
+          0.4116748366058048,
+          0.4781373432597013,
+          0.5400520797772661,
+          0.5955916678569475,
+          0.6438760283999048,
+          0.6847836134461138,
+          0.7462353117563264,
+          0.8063465923834034,
+          0.23041022405809913,
+          0.3243944123610641,
+          0.4238215658735977,
+          0.518400979516,
+          0.6007465619910077,
+          0.6676807139800623,
+          0.7193114084362761,
+          0.7841997380550778,
+          0.8083314947870835,
+          0.15057425517991432,
+          0.25339307672226474,
+          0.37644976876709657,
+          0.4994380994201252,
+          0.6050601515206506,
+          0.6860854408376487,
+          0.7433804179210443,
+          0.8031993320424577,
+          0.7701834273092267,
+          0.09634528766976276,
+          0.19586222116708588,
+          0.3340045839934397,
+          0.48205381983132495,
+          0.6088732251174781,
+          0.7012073231977431,
+          0.7612619108413176,
+          0.8116806900529014,
+          0.6935269498024079
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p",
+          "scaling-model lack of fit (deviance p < 0.01)"
+        ],
+        "largest_absolute_residual": 3.448084558513411,
+        "monotone_increasing": false,
+        "nu": 1.5525741571403815,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.31525139069833497,
+          0.43991429995872244,
+          0.33979140885230835,
+          4.131350566916802,
+          -3.770456600910455
+        ],
+        "pc": 0.03945754172095005,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.8465710845053033,
+          -0.1918093457115499,
+          -0.6550493877533026,
+          -0.2852323455873969,
+          0.12702960637985686,
+          -1.0004738778500761,
+          -0.2978058401618918,
+          -0.36512925661282875,
+          -3.448084558513411,
+          -1.1892226022052725,
+          1.2266410626335813,
+          3.1817461369039415,
+          0.04525778770013986,
+          0.26720718904017104,
+          0.9703190702170016,
+          0.9658753890095729,
+          -1.863257402247762,
+          -0.11969720451351773,
+          -1.6044547837214242,
+          -0.5980341732537962,
+          0.8333652520599556,
+          1.4301074138507635,
+          1.8787176493088038,
+          1.1858568916748675,
+          0.8619176530503643,
+          -1.1809170430545326,
+          -1.1826749121514408,
+          -1.5023487500982837,
+          -1.9906395441932336,
+          0.32969687410178244,
+          0.6494344394999277,
+          1.336736714641583,
+          -0.03730184791798213,
+          -1.0370569608236484,
+          -1.8694044299218402,
+          2.805952678282776
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "crossings": [
+        {
+          "p": 0.03333333333333333,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.03722222222222222,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.03875,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.0496875,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.0505,
+          "sizes": [
+            5,
+            9
+          ]
+        },
+        {
+          "p": 0.03703125,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.053636363636363635,
+          "sizes": [
+            9,
+            13
+          ]
+        },
+        {
+          "p": 0.051666666666666666,
+          "sizes": [
+            13,
+            17
+          ]
+        }
+      ],
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p",
+        "scaling-model lack of fit (deviance p < 0.01)"
+      ],
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "goodness_alpha": 0.01,
+      "min_size": 5,
+      "nu": null,
+      "nu_bounds": [
+        0.3,
+        5.0
+      ],
+      "pc": null,
+      "protocol": "slice_local",
+      "selected_points": 36,
+      "selected_probabilities": [
+        0.03,
+        0.0325,
+        0.035,
+        0.0375,
+        0.04,
+        0.0425,
+        0.045,
+        0.05,
+        0.06
+      ],
+      "selected_sizes": [
+        5,
+        9,
+        13,
+        17
+      ],
+      "status": "inconclusive"
+    }
+  },
+  "format_version": 1,
+  "input_csv": [
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-x/toric3d-diagonal-feedback-raw.csv",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z/toric3d-diagonal-feedback-raw.csv",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z-high/toric3d-diagonal-feedback-raw.csv",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z-mid/toric3d-diagonal-feedback-raw.csv"
+  ],
+  "input_sha256": {
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-x/toric3d-diagonal-feedback-raw.csv": "8646f00519ef1d97fab97a127aa3e0b5ac129d29d87ac169c0c2970641fa0647",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z-high/toric3d-diagonal-feedback-raw.csv": "ee412fe9f8a2432317c14cb90c3dfc544b71e65a87f8cb4458b94b78076cfc61",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z-mid/toric3d-diagonal-feedback-raw.csv": "c2dda9828eb1d044b95b40bb75bf4b5454a774f2eea04dcde0a09630ea223f7d",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-diagonal-feedback-2026-10-12/scout-z/toric3d-diagonal-feedback-raw.csv": "9797153bb92c43f20de22457c25ebb6de58119460a1ed487a7817e3f27f1a618"
+  },
+  "likelihood": "separate marginal binomial likelihood for every channel/protocol combination",
+  "model_uncertainty": "per-channel/protocol accepted sensitivity spread, reported separately from bootstrap intervals",
+  "observable": {
+    "x_only": "logical |00> state failure: either residual logical-X membrane",
+    "z_only": "logical |++> state failure: either residual logical-Z winding"
+  },
+  "package_versions": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.1",
+    "python": "3.12.13",
+    "scipy": "1.18.0"
+  },
+  "protocol_dependence": "protocol observations are paired through replayed faults; joint counts determine paired rate differences, so threshold estimates are correlated and are not compared as independent fits",
+  "protocols": [
+    "none",
+    "slice_local",
+    "full_prefix"
+  ],
+  "sampling_uncertainty": "95% parametric marginal-bootstrap interval conditional on each accepted model",
+  "scaling_variable": "x=((p-pc)/sp)(L/Lref)^(1/nu)",
+  "seed": 1234,
+  "sensitivity": [
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
+      ],
+      "fit_key": "x_only/none",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "cubic",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "x_only/none",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 9,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
+      ],
+      "fit_key": "x_only/none",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_lowest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
+      ],
+      "fit_key": "x_only/none",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_highest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
+      ],
+      "fit_key": "x_only/none",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "fixed_L_inverse_correction",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5)]; threshold withheld"
+      ],
+      "fit_key": "x_only/slice_local",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "cubic",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "x_only/slice_local",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 9,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5)]; threshold withheld"
+      ],
+      "fit_key": "x_only/slice_local",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_lowest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5)]; threshold withheld"
+      ],
+      "fit_key": "x_only/slice_local",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_highest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(3, 5)]; threshold withheld"
+      ],
+      "fit_key": "x_only/slice_local",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "fixed_L_inverse_correction",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 5.544443371329423,
+        "bound_hits": [],
+        "coefficients": [
+          -1.167243428437116,
+          3.4725935511671557,
+          -3.698263745466815,
+          7.741563490982055
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 14,
+        "derivative_min": 2.8836877594208072,
+        "deviance": 6.909729375385956,
+        "deviance_p_value": 0.9381356961331647,
+        "fitted_probabilities": [
+          0.015084397492040616,
+          0.027281510412187005,
+          0.06908834190607349,
+          0.20290412534332972,
+          0.38311708155603735,
+          0.0013417520823758692,
+          0.004544603962025521,
+          0.028824657449512372,
+          0.18961960639275297,
+          0.45061991757271497,
+          7.102043274144947e-05,
+          0.0005345174861689371,
+          0.01060235624270109,
+          0.17819212603374618,
+          0.5209243899911749,
+          2.2684605766300274e-06,
+          4.494149994910621e-05,
+          0.003449694164930638,
+          0.16793737499972047,
+          0.5958153066326933
+        ],
+        "issues": [],
+        "largest_absolute_residual": 1.41332989817382,
+        "monotone_increasing": true,
+        "nu": 1.5769746780058989,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.075,
+        "p_min": 0.015,
+        "p_scale": 0.06,
+        "parameters": [
+          0.663600339650932,
+          0.455508250785339,
+          -1.167243428437116,
+          3.4725935511671557,
+          -3.698263745466815,
+          7.741563490982055
+        ],
+        "pc": 0.05481602037905592,
+        "polynomial_degree": 3,
+        "standardized_residuals": [
+          -0.5899171212476614,
+          -0.6321333184465467,
+          -0.22798463921846673,
+          0.9528344553641978,
+          0.20022600914107147,
+          1.41332989817382,
+          1.147050022735047,
+          0.5219695277294257,
+          -0.347045339966857,
+          -0.7282006780666591,
+          -0.11918513078531381,
+          -0.3270484208523431,
+          -0.08317288792700532,
+          -0.4875289232460268,
+          0.25692209026074436,
+          -0.02130007381468472,
+          -0.09480877573125607,
+          -0.832061986822745,
+          0.2671956956641294,
+          0.12059599333561835
+        ]
+      },
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [],
+      "fit_key": "x_only/full_prefix",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "cubic",
+      "nu": 1.5769746780058989,
+      "pc": 0.05481602037905592,
+      "protocol": "full_prefix",
+      "status": "ok"
+    },
+    {
+      "candidate": null,
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "x_only/full_prefix",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 9,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": {
+        "L_reference": 5.544443371329423,
+        "bound_hits": [],
+        "coefficients": [
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 15,
+        "derivative_min": 0.4367356631924899,
+        "deviance": 12.735849800382235,
+        "deviance_p_value": 0.6226925118111599,
+        "fitted_probabilities": [
+          0.021130719651091704,
+          0.031150966139041503,
+          0.06287852279969881,
+          0.1861944346954094,
+          0.4012480182142066,
+          0.0035846326710894365,
+          0.007404243688793622,
+          0.027003696140108557,
+          0.1772445196756109,
+          0.48547294610081954,
+          0.0004997542364007736,
+          0.0015198289053618358,
+          0.010814087125780752,
+          0.16903653299648266,
+          0.53746582377038,
+          5.817297850069942e-05,
+          0.00027319766382388636,
+          0.004068733350494455,
+          0.16136691870220504,
+          0.5615842388145915
+        ],
+        "issues": [],
+        "largest_absolute_residual": 1.7111555915788659,
+        "monotone_increasing": true,
+        "nu": 1.1871450763604043,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.075,
+        "p_min": 0.015,
+        "p_scale": 0.06,
+        "parameters": [
+          0.6181205068262846,
+          0.17155132918729143,
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "pc": 0.05208723040957707,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -1.094507516537034,
+          -0.907744610847006,
+          0.12359595448957783,
+          1.5914778969529824,
+          -0.3245346530993784,
+          0.3349204195331854,
+          0.42820561463933754,
+          0.697649175537088,
+          0.10204471387311756,
+          -1.7111555915788659,
+          -0.3162290674734852,
+          -0.5517503604401756,
+          -0.11131456436243137,
+          -0.15231485142619944,
+          -0.21176071336287908,
+          -0.10786692059477866,
+          -0.23378294257007778,
+          -0.9039198607136362,
+          0.5241019484833594,
+          1.0948986141134733
+        ]
+      },
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [],
+      "fit_key": "x_only/full_prefix",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_lowest_p",
+      "nu": 1.1871450763604043,
+      "pc": 0.05208723040957707,
+      "protocol": "full_prefix",
+      "status": "ok"
+    },
+    {
+      "candidate": {
+        "L_reference": 5.544443371329423,
+        "bound_hits": [],
+        "coefficients": [
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 15,
+        "derivative_min": 0.4367356631924899,
+        "deviance": 12.735849800382235,
+        "deviance_p_value": 0.6226925118111599,
+        "fitted_probabilities": [
+          0.021130719651091704,
+          0.031150966139041503,
+          0.06287852279969881,
+          0.1861944346954094,
+          0.4012480182142066,
+          0.0035846326710894365,
+          0.007404243688793622,
+          0.027003696140108557,
+          0.1772445196756109,
+          0.48547294610081954,
+          0.0004997542364007736,
+          0.0015198289053618358,
+          0.010814087125780752,
+          0.16903653299648266,
+          0.53746582377038,
+          5.817297850069942e-05,
+          0.00027319766382388636,
+          0.004068733350494455,
+          0.16136691870220504,
+          0.5615842388145915
+        ],
+        "issues": [],
+        "largest_absolute_residual": 1.7111555915788659,
+        "monotone_increasing": true,
+        "nu": 1.1871450763604043,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.075,
+        "p_min": 0.015,
+        "p_scale": 0.06,
+        "parameters": [
+          0.6181205068262846,
+          0.17155132918729143,
+          -1.365708368974823,
+          5.181507683093891,
+          -4.130856477271583
+        ],
+        "pc": 0.05208723040957707,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -1.094507516537034,
+          -0.907744610847006,
+          0.12359595448957783,
+          1.5914778969529824,
+          -0.3245346530993784,
+          0.3349204195331854,
+          0.42820561463933754,
+          0.697649175537088,
+          0.10204471387311756,
+          -1.7111555915788659,
+          -0.3162290674734852,
+          -0.5517503604401756,
+          -0.11131456436243137,
+          -0.15231485142619944,
+          -0.21176071336287908,
+          -0.10786692059477866,
+          -0.23378294257007778,
+          -0.9039198607136362,
+          0.5241019484833594,
+          1.0948986141134733
+        ]
+      },
+      "channel": "x_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [],
+      "fit_key": "x_only/full_prefix",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "trim_highest_p",
+      "nu": 1.1871450763604043,
+      "pc": 0.05208723040957707,
+      "protocol": "full_prefix",
+      "status": "ok"
+    },
+    {
+      "candidate": {
+        "L_reference": 5.544443371329423,
+        "bound_hits": [],
+        "coefficients": [
+          0.10247593809551522,
+          3.016015778291783,
+          -5.267671328392621
+        ],
+        "correction_coefficient": -0.47075394370497503,
+        "correction_omega": 1.0,
+        "degrees_of_freedom": 14,
+        "derivative_min": 0.4761983599889641,
+        "deviance": 11.413137832952623,
+        "deviance_p_value": 0.653319294713437,
+        "fitted_probabilities": [
+          0.01618637378542717,
+          0.026129427073588368,
+          0.06054246228394911,
+          0.19832287125355133,
+          0.382443019564967,
+          0.002813606461855269,
+          0.006477721968871894,
+          0.02790624527392441,
+          0.20463863341660277,
+          0.48429544203562624,
+          0.0003703459760426929,
+          0.001237837712242584,
+          0.010233544397238507,
+          0.181815144226072,
+          0.5318052880097826,
+          4.2590851090907796e-05,
+          0.00020996246926877223,
+          0.003403129028761567,
+          0.15303660070678965,
+          0.558089676126935
+        ],
+        "issues": [],
+        "largest_absolute_residual": 1.677956249747882,
+        "monotone_increasing": true,
+        "nu": 1.599719795394783,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.075,
+        "p_min": 0.015,
+        "p_scale": 0.06,
+        "parameters": [
+          0.8219096235484274,
+          0.46982848603079747,
+          0.10247593809551522,
+          3.016015778291783,
+          -5.267671328392621,
+          -0.47075394370497503
+        ],
+        "pc": 0.06431457741290564,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.6932980128389968,
+          -0.5433996006474221,
+          0.2643269268429522,
+          1.1235040958559548,
+          0.2199081924747889,
+          0.5837454179108259,
+          0.620924326762306,
+          0.6090968956208742,
+          -0.863685352574171,
+          -1.677956249747882,
+          -0.2722069738264279,
+          -0.497869833081357,
+          -0.03281746617572338,
+          -0.6165592941515754,
+          -0.05116487502812516,
+          -0.0922958993116885,
+          -0.20494221759571798,
+          -0.8264078730441528,
+          0.862749225589878,
+          1.1934849492918018
+        ]
+      },
+      "channel": "x_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [],
+      "fit_key": "x_only/full_prefix",
+      "fit_window": [
+        0.015,
+        0.075
+      ],
+      "min_size": 3,
+      "name": "fixed_L_inverse_correction",
+      "nu": 1.599719795394783,
+      "pc": 0.06431457741290564,
+      "protocol": "full_prefix",
+      "status": "ok"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [
+          "pc"
+        ],
+        "coefficients": [
+          1.0802641102650385,
+          -0.45682448135936854,
+          0.9602357522418314,
+          -0.3576730640402909
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 30,
+        "derivative_min": -0.45682448135936854,
+        "deviance": 25.83175722826762,
+        "deviance_p_value": 0.6836906664106375,
+        "fitted_probabilities": [
+          0.7465439604994848,
+          0.7430026203543064,
+          0.7401388418615747,
+          0.7379303154169379,
+          0.7363502899547377,
+          0.7353682449920554,
+          0.7349505060404656,
+          0.735660795996195,
+          0.7421428047315006,
+          0.7465439604994848,
+          0.7409573093558482,
+          0.7372597551626243,
+          0.7353224156588284,
+          0.7349875215963063,
+          0.7360763593183175,
+          0.7383960627979798,
+          0.7459198817369331,
+          0.7668775790702956,
+          0.7465439604994848,
+          0.7393038837337063,
+          0.7356105089554583,
+          0.7350738878608002,
+          0.7372194038884526,
+          0.7415231219007451,
+          0.7474402704943669,
+          0.761963651769042,
+          0.7883493030921135,
+          0.7465439604994848,
+          0.7379699079209476,
+          0.7349571265900382,
+          0.7366323242537824,
+          0.7419519291348813,
+          0.7498037503266495,
+          0.7590837802257878,
+          0.7778599441870648,
+          0.7927401440447918
+        ],
+        "issues": [
+          "parameter bound reached: pc",
+          "fitted failure probability is not monotone increasing in p",
+          "candidate p_c is outside the fit window"
+        ],
+        "largest_absolute_residual": 2.143127832068967,
+        "monotone_increasing": false,
+        "nu": 1.1210559609803687,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.0,
+          0.1142710634331208,
+          1.0802641102650385,
+          -0.45682448135936854,
+          0.9602357522418314,
+          -0.3576730640402909
+        ],
+        "pc": 0.03,
+        "polynomial_degree": 3,
+        "standardized_residuals": [
+          -0.537867702640351,
+          0.8737296852608294,
+          0.15675718799474395,
+          1.1921140855029615,
+          -0.20382275776570427,
+          0.9499460858718343,
+          0.0015858958418639695,
+          -0.9832836732661225,
+          -0.7158371942264976,
+          0.11236076309746432,
+          0.2918975211949651,
+          -1.1972405854213177,
+          -0.4911846130557123,
+          -1.1211275701775982,
+          -0.03453597261332404,
+          2.143127832068967,
+          -0.029882405961854035,
+          1.4423248622581655,
+          -0.21275346977144333,
+          0.8277586199139519,
+          1.583811498966605,
+          0.47833682565554797,
+          -0.8745780678389314,
+          -0.3722304998094026,
+          0.08331798802136701,
+          -1.0614086475554152,
+          -0.9814952215156302,
+          -0.7004248190748048,
+          -0.4171161251713726,
+          -1.6007495204198827,
+          0.42920451187021913,
+          -0.3862912000592431,
+          0.16966443145267018,
+          0.8570551642864674,
+          0.07280747259289565,
+          0.25329112914975893
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [
+        "parameter bound reached: pc",
+        "fitted failure probability is not monotone increasing in p",
+        "candidate p_c is outside the fit window"
+      ],
+      "fit_key": "z_only/none",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "cubic",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "z_only/none",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 17,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [
+          "nu"
+        ],
+        "coefficients": [
+          1.0656588259526942,
+          0.08556507444894469,
+          -0.0022163630304534473
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 27,
+        "derivative_min": 0.06652812166929346,
+        "deviance": 25.932643896730745,
+        "deviance_p_value": 0.5223411481212352,
+        "fitted_probabilities": [
+          0.7433295709138612,
+          0.7434776340943675,
+          0.7436255719406526,
+          0.7437733845185598,
+          0.7439210718939742,
+          0.7440686341328236,
+          0.7443633834647468,
+          0.7449513833952455,
+          0.7406184775670017,
+          0.7416823768786008,
+          0.7427399284584099,
+          0.7437911556739166,
+          0.7448360820041119,
+          0.745874731034712,
+          0.7479332920454284,
+          0.7519761350015243,
+          0.7327993823969281,
+          0.7365545391214099,
+          0.7402347542959,
+          0.7438409342626461,
+          0.7473740019532241,
+          0.7508348946601128,
+          0.7575439634634491,
+          0.7701383607106214,
+          0.7157456597075988,
+          0.7256034123908659,
+          0.7349982395860224,
+          0.7439427362087911,
+          0.752450213071358,
+          0.7605344954525836,
+          0.7754902979944738,
+          0.8009514260581211
+        ],
+        "issues": [
+          "parameter bound reached: nu"
+        ],
+        "largest_absolute_residual": 1.9205749251131656,
+        "monotone_increasing": true,
+        "nu": 0.3,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.0325,
+        "p_scale": 0.027499999999999997,
+        "parameters": [
+          0.2709329717635901,
+          -1.2039728043259361,
+          1.0656588259526942,
+          0.08556507444894469,
+          -0.0022163630304534473
+        ],
+        "pc": 0.03995065672349873,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          0.8635080236077562,
+          0.04929892785428323,
+          1.016193248515995,
+          -0.44619349374056194,
+          0.6829881498800853,
+          -0.29389258095939624,
+          -1.2761548864831704,
+          -0.8095322890098537,
+          0.30270634915516287,
+          -1.346732918992877,
+          -0.7356978944085311,
+          -1.4186616889644252,
+          -0.3190782152340748,
+          1.9205749251131656,
+          -0.0955390954483768,
+          1.9000843785716024,
+          1.0291245136552212,
+          1.5553218544380865,
+          0.314936440179443,
+          -1.0963833703906374,
+          -0.5654664588434785,
+          -0.027298001087888504,
+          -0.9089102682604989,
+          -0.3407729459859224,
+          0.2901533231090858,
+          -1.2868813903671523,
+          0.480717236260182,
+          -0.4517776110269233,
+          0.0835504368635397,
+          0.8107523855215303,
+          0.15284706438916024,
+          -0.033698255208288834
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "parameter bound reached: nu"
+      ],
+      "fit_key": "z_only/none",
+      "fit_window": [
+        0.0325,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "trim_lowest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [
+          "pc",
+          "nu"
+        ],
+        "coefficients": [
+          1.0597907007342051,
+          -0.04994314696018875,
+          0.016321664028567617
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 27,
+        "derivative_min": -0.04994314696018875,
+        "deviance": 21.40576534618871,
+        "deviance_p_value": 0.7669255584447221,
+        "fitted_probabilities": [
+          0.7426505459094451,
+          0.7425320918925064,
+          0.7424145712291432,
+          0.7422979847921951,
+          0.742182333447056,
+          0.74206761805168,
+          0.7419538394565864,
+          0.7417290960321824,
+          0.7426505459094451,
+          0.7418304082120523,
+          0.7410575054632624,
+          0.740332125087965,
+          0.7396545358129254,
+          0.739024987757948,
+          0.7384437125243728,
+          0.7374268148410857,
+          0.7426505459094451,
+          0.7400507570314914,
+          0.7380066346661303,
+          0.7365268950356489,
+          0.7356177896397601,
+          0.7352831347135858,
+          0.7355243303447153,
+          0.7377278238293961,
+          0.7426505459094451,
+          0.7372774064960559,
+          0.7352916732362246,
+          0.7367433527791263,
+          0.7415959390141482,
+          0.7497253916718963,
+          0.7609172316558347,
+          0.7911618309438722
+        ],
+        "issues": [
+          "parameter bound reached: pc, nu",
+          "fitted failure probability is not monotone increasing in p",
+          "candidate p_c is outside the fit window"
+        ],
+        "largest_absolute_residual": 2.1417205610909793,
+        "monotone_increasing": false,
+        "nu": 0.3,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.05,
+        "p_min": 0.03,
+        "p_scale": 0.020000000000000004,
+        "parameters": [
+          0.0,
+          -1.2039728043259361,
+          1.0597907007342051,
+          -0.04994314696018875,
+          0.016321664028567617
+        ],
+        "pc": 0.03,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.40923275454908914,
+          0.8884263220495912,
+          0.08361105158768146,
+          1.0574052586274907,
+          -0.39385270946795947,
+          0.7412923012022637,
+          -0.22475145587543283,
+          -1.1867652973988814,
+          0.23774763266653037,
+          0.26400399247433204,
+          -1.3255006295532195,
+          -0.655805963187926,
+          -1.2779633469249638,
+          -0.12961358913547613,
+          2.1417205610909793,
+          0.2433934708665511,
+          -0.0857425609412794,
+          0.8044468179522699,
+          1.5113890285621152,
+          0.43253398973095863,
+          -0.8215129742636985,
+          -0.16935131554462096,
+          0.4641541919859361,
+          -0.24845515909885232,
+          -0.5709778513529941,
+          -0.39450949396885704,
+          -1.6121203404578732,
+          0.4256973150523936,
+          -0.3746170863118518,
+          0.17220498088463496,
+          0.7985066888239913,
+          -0.38834063494733
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "parameter bound reached: pc, nu",
+        "fitted failure probability is not monotone increasing in p",
+        "candidate p_c is outside the fit window"
+      ],
+      "fit_key": "z_only/none",
+      "fit_window": [
+        0.03,
+        0.05
+      ],
+      "min_size": 5,
+      "name": "trim_highest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [
+          "pc"
+        ],
+        "coefficients": [
+          1.0219460058394996,
+          -0.0703204742593327,
+          0.21621293419716459
+        ],
+        "correction_coefficient": 0.01911523225724646,
+        "correction_omega": 1.0,
+        "degrees_of_freedom": 30,
+        "derivative_min": -0.0703204742593327,
+        "deviance": 26.704281055663294,
+        "deviance_p_value": 0.6387531369839723,
+        "fitted_probabilities": [
+          0.7427142019193372,
+          0.7421591775417588,
+          0.7417983280651697,
+          0.741632186899387,
+          0.741660999299378,
+          0.7418847227479304,
+          0.742303026889066,
+          0.7437206131165369,
+          0.7488440625735093,
+          0.7394584777453969,
+          0.738662734025829,
+          0.738358760020487,
+          0.7385476665218937,
+          0.7392287634324829,
+          0.7403995568752537,
+          0.74205573898454,
+          0.7467978617696861,
+          0.7617110805237337,
+          0.7381991948100473,
+          0.7372444616991196,
+          0.7371674038086833,
+          0.737968519057401,
+          0.7396426209204459,
+          0.7421787998492798,
+          0.7455603472360695,
+          0.754763085524561,
+          0.7819099547040723,
+          0.7375309275741558,
+          0.7364778355988724,
+          0.7367628249403038,
+          0.738383099583759,
+          0.7413226822274632,
+          0.7455522390321645,
+          0.7510287959776711,
+          0.7654808725069954,
+          0.8058884314967766
+        ],
+        "issues": [
+          "parameter bound reached: pc",
+          "fitted failure probability is not monotone increasing in p",
+          "candidate p_c is outside the fit window"
+        ],
+        "largest_absolute_residual": 2.0346510553565076,
+        "monotone_increasing": false,
+        "nu": 1.278525641104945,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.0,
+          0.24570757116390626,
+          1.0219460058394996,
+          -0.0703204742593327,
+          0.21621293419716459,
+          0.01911523225724646
+        ],
+        "pc": 0.03,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.4113252126004866,
+          0.9000625432248718,
+          0.10345926214911202,
+          1.0780260425825317,
+          -0.37674982429533305,
+          0.7470317073899205,
+          -0.23614166609434264,
+          -1.2542828259650258,
+          -0.9405979042484514,
+          0.3396432269453942,
+          0.36492159714228395,
+          -1.2342204623448738,
+          -0.5969236012453755,
+          -1.2635730213521472,
+          -0.17417560515674554,
+          2.0346510553565076,
+          -0.058470401769439996,
+          1.6029332027244707,
+          0.05793079105836424,
+          0.8918317995663706,
+          1.5367961975170292,
+          0.38693537100218933,
+          -0.9552910041068472,
+          -0.3937367079563151,
+          0.14415516381696772,
+          -0.8139945706659613,
+          -0.7503436042357414,
+          -0.4027810513037738,
+          -0.36845680568702294,
+          -1.6622467965765195,
+          0.37379328257485606,
+          -0.36566340416086673,
+          0.30676480982225096,
+          1.1110230856481118,
+          0.4846176308805639,
+          -0.21054816205140844
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [
+        "parameter bound reached: pc",
+        "fitted failure probability is not monotone increasing in p",
+        "candidate p_c is outside the fit window"
+      ],
+      "fit_key": "z_only/none",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "fixed_L_inverse_correction",
+      "nu": null,
+      "pc": null,
+      "protocol": "none",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.19650960886456692,
+          4.6731079222286915,
+          -7.1294501393925644,
+          3.3995025231764457
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 30,
+        "derivative_min": -0.310862422799981,
+        "deviance": 26.147737920191023,
+        "deviance_p_value": 0.6675695766377006,
+        "fitted_probabilities": [
+          0.3395798436010913,
+          0.4142536819449998,
+          0.4836008074908179,
+          0.5447523314006125,
+          0.5965750579269897,
+          0.639189372942891,
+          0.6734171648077945,
+          0.7211400610949462,
+          0.7610255451158213,
+          0.20610050082043527,
+          0.3224543092619935,
+          0.44038240919349003,
+          0.5422365877145401,
+          0.6209522062456438,
+          0.6775078508094335,
+          0.7160249128087216,
+          0.755453914813321,
+          0.7585779915258943,
+          0.10957467328198608,
+          0.23961519703656384,
+          0.3988137108849824,
+          0.5399379992189789,
+          0.6407835182694611,
+          0.7042577484821024,
+          0.7405460014369287,
+          0.7642433012657046,
+          0.7517244150886164,
+          0.05154466081106793,
+          0.16948927767052288,
+          0.3585024417041884,
+          0.5377722913803721,
+          0.6574860404081404,
+          0.7235121711834938,
+          0.7544550676308791,
+          0.7617508964392294,
+          0.7827660787134765
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p"
+        ],
+        "largest_absolute_residual": 2.695418614336229,
+        "monotone_increasing": false,
+        "nu": 1.2665294371702702,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.25625407898549657,
+          0.23628043311902625,
+          0.19650960886456692,
+          4.6731079222286915,
+          -7.1294501393925644,
+          3.3995025231764457
+        ],
+        "pc": 0.037687622369564897,
+        "polynomial_degree": 3,
+        "standardized_residuals": [
+          -0.7340286329484228,
+          -0.2656694361421242,
+          -0.809388457473832,
+          -0.41894040072382743,
+          0.09873117593118957,
+          -0.8595780760767926,
+          0.04773225224246831,
+          0.4370925845908074,
+          -1.6921049411457716,
+          -0.38809253002080446,
+          1.2872627153644223,
+          2.695418614336229,
+          -0.6312017490533048,
+          -0.3192570803146299,
+          0.6805016993140597,
+          1.0655440061858472,
+          -0.8375008157121852,
+          1.5340883638665526,
+          0.019256786632565748,
+          -0.15290840259018465,
+          0.17867164532038493,
+          0.285508614277033,
+          0.8612101124686548,
+          0.6427593302938941,
+          0.9502832063619243,
+          0.1917964916555405,
+          -0.5474816922351559,
+          0.8606158933092435,
+          -1.1115663634004203,
+          -0.3981839458299198,
+          -0.9295967711658581,
+          -0.0740867894096444,
+          -0.7434415046293757,
+          -0.803529245867491,
+          -0.05812371073275491,
+          0.07661310163146412
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p"
+      ],
+      "fit_key": "z_only/slice_local",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "cubic",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "z_only/slice_local",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 17,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.3261536231879006,
+          3.4412249943475666,
+          -2.625104684128763
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 27,
+        "derivative_min": -2.437263050494004,
+        "deviance": 55.03516121229953,
+        "deviance_p_value": 0.0011344664492159745,
+        "fitted_probabilities": [
+          0.4407126747881605,
+          0.49569777800853426,
+          0.5469573064463636,
+          0.5935138940599805,
+          0.634870781123835,
+          0.670922922910538,
+          0.727969477247813,
+          0.792934196494272,
+          0.3549561829898282,
+          0.4438710497703329,
+          0.5272812633384126,
+          0.6003143380072389,
+          0.6608665744594785,
+          0.7089693118804966,
+          0.7730053294277995,
+          0.8099081242768433,
+          0.27979194204266444,
+          0.3959973508884426,
+          0.5092127614750127,
+          0.6062520789755482,
+          0.6817917399652222,
+          0.7365580175823975,
+          0.7969821841467878,
+          0.7815543840221849,
+          0.21564966154654697,
+          0.351268015594196,
+          0.4920856074381881,
+          0.6116442910338499,
+          0.6993486411170491,
+          0.7573575337340628,
+          0.8082348948000322,
+          0.7085196771058986
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p",
+          "scaling-model lack of fit (deviance p < 0.01)"
+        ],
+        "largest_absolute_residual": 2.89451546495933,
+        "monotone_increasing": false,
+        "nu": 1.3412719547948582,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.0325,
+        "p_scale": 0.027499999999999997,
+        "parameters": [
+          0.24694125792773217,
+          0.2936183837345677,
+          0.3261536231879006,
+          3.4412249943475666,
+          -2.625104684128763
+        ],
+        "pc": 0.03929088459301264,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -1.0172837746625583,
+          -1.151149606669889,
+          -0.48175428592769065,
+          0.18675005475979278,
+          -0.730530679521085,
+          0.12270967058716993,
+          0.22342780177004914,
+          -2.89451546495933,
+          0.296846414993927,
+          2.5939117907685816,
+          -0.20625247007923136,
+          0.2796376632207518,
+          1.169016582651452,
+          1.277440517311995,
+          -1.4519050042257862,
+          -0.17690124641176683,
+          -1.4111341463200335,
+          0.2603273270242952,
+          1.1538331976276572,
+          1.8452077348403386,
+          1.3118983434118245,
+          1.073645822204826,
+          -0.9486384372454975,
+          -1.59339817046456,
+          -2.6013126482480997,
+          -0.1856919629772479,
+          0.36531995061840417,
+          1.25804732904045,
+          0.020088933671720908,
+          -0.9025225473655677,
+          -1.7326974793132837,
+          2.380039318285715
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p",
+        "scaling-model lack of fit (deviance p < 0.01)"
+      ],
+      "fit_key": "z_only/slice_local",
+      "fit_window": [
+        0.0325,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "trim_lowest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "missing adjacent-size crossings for [(13, 17)]; threshold withheld"
+      ],
+      "fit_key": "z_only/slice_local",
+      "fit_window": [
+        0.03,
+        0.05
+      ],
+      "min_size": 5,
+      "name": "trim_highest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          1.7050236939882262,
+          1.7051369066036208,
+          -4.66721698423074
+        ],
+        "correction_coefficient": -0.43804854071105304,
+        "correction_omega": 1.0,
+        "degrees_of_freedom": 30,
+        "derivative_min": -3.230396982570575,
+        "deviance": 42.96457876507017,
+        "deviance_p_value": 0.05901815518059595,
+        "fitted_probabilities": [
+          0.3205803039692335,
+          0.39619860481010066,
+          0.4684825119160798,
+          0.5334925014632796,
+          0.5890150235839794,
+          0.6343524909129344,
+          0.6698022562165663,
+          0.7142161869827897,
+          0.7144424546505497,
+          0.23471799545119382,
+          0.34027214309409737,
+          0.44984166288540645,
+          0.5499463846820596,
+          0.6325592713334528,
+          0.6957123969920166,
+          0.7411026452105991,
+          0.7898756842346429,
+          0.7615204336767657,
+          0.14478322203940613,
+          0.2534469406394489,
+          0.3853779300016844,
+          0.5161119224675338,
+          0.6256141934191665,
+          0.7068528947701163,
+          0.7621626524130725,
+          0.8155666033325977,
+          0.7582896915735736,
+          0.08342909123411134,
+          0.17753016235300167,
+          0.3154941749789996,
+          0.46983684209713544,
+          0.6054202514742966,
+          0.7051919850718886,
+          0.7705347527122559,
+          0.8285148146083304,
+          0.7397108838185152
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p"
+        ],
+        "largest_absolute_residual": 2.57060910761588,
+        "monotone_increasing": false,
+        "nu": 2.2123504813978525,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.5842705959686181,
+          0.7940555165871629,
+          1.7050236939882262,
+          1.7051369066036208,
+          -4.66721698423074,
+          -0.43804854071105304
+        ],
+        "pc": 0.04752811787905854,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.1690967924611871,
+          0.2544854707803342,
+          -0.382102905124334,
+          -0.0990052262006989,
+          0.31574607991108505,
+          -0.7150917266029506,
+          0.15630379106226094,
+          0.6505887764048691,
+          -0.13909373013789086,
+          -1.325312747515679,
+          0.7380841298639713,
+          2.4208533572703987,
+          -0.8512695401019178,
+          -0.6617528281539625,
+          0.13178699766424978,
+          0.2872585198151815,
+          -2.07849009300275,
+          1.442892029214044,
+          -1.397936943050831,
+          -0.5997434059658181,
+          0.5701804510145322,
+          0.9589976064391076,
+          1.2970183776881214,
+          0.5637869642294291,
+          0.26032761990781356,
+          -1.6615451801781747,
+          -0.7693316025309112,
+          -0.9424908158623151,
+          -1.3889908212003652,
+          0.8979217960115827,
+          0.9963789918727104,
+          1.4345756320663174,
+          -0.16103679031151247,
+          -1.3632890608106971,
+          -2.57060910761588,
+          1.4596537069683895
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p"
+      ],
+      "fit_key": "z_only/slice_local",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "fixed_L_inverse_correction",
+      "nu": null,
+      "pc": null,
+      "protocol": "slice_local",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.07002502029431033,
+          4.864884965683819,
+          -6.861963939630081,
+          2.8750188576627402
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 30,
+        "derivative_min": -0.5943892675134776,
+        "deviance": 27.221339515278785,
+        "deviance_p_value": 0.6116261027910641,
+        "fitted_probabilities": [
+          0.3487553272138001,
+          0.4125277026345449,
+          0.47246335434711245,
+          0.5266369091636005,
+          0.5740892825555628,
+          0.6146313523870413,
+          0.6485816433577385,
+          0.6991793407279357,
+          0.7497127535986662,
+          0.21346447651608258,
+          0.32393623730593046,
+          0.43564624595000195,
+          0.5334253500607332,
+          0.6106186574187529,
+          0.6674301827407072,
+          0.7070945048562001,
+          0.7492358669330845,
+          0.7508646458099143,
+          0.10773463782029079,
+          0.2375709814727133,
+          0.39770137228137326,
+          0.5399700682447222,
+          0.6413253200966393,
+          0.7045347352526635,
+          0.7398443407763438,
+          0.7591082784459413,
+          0.7214768476592681,
+          0.044568727308066027,
+          0.1613947842004921,
+          0.35901259225383186,
+          0.5463158229532604,
+          0.6670075933166509,
+          0.7297251645371589,
+          0.7554068213866635,
+          0.7482067390703224,
+          0.7458013336432383
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p"
+        ],
+        "largest_absolute_residual": 2.316418976955349,
+        "monotone_increasing": false,
+        "nu": 1.0413576737908299,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.23521370293326038,
+          0.04052531735513348,
+          0.07002502029431033,
+          4.864884965683819,
+          -6.861963939630081,
+          2.8750188576627402
+        ],
+        "pc": 0.03705641108799781,
+        "polynomial_degree": 3,
+        "standardized_residuals": [
+          -1.001670314314367,
+          -0.2162505385144637,
+          -0.6363253491686369,
+          0.2368803135017888,
+          0.31204649071361856,
+          -0.5704527423170218,
+          0.48635136032928594,
+          0.1794895018534145,
+          -1.4597537668835179,
+          0.052996779988588795,
+          0.9387402987942972,
+          2.120680296018909,
+          -1.6562234375036038,
+          -0.7430170162823457,
+          1.1277419696810418,
+          0.24566403638017098,
+          -0.13820231474187736,
+          0.6256810392534152,
+          -0.12473551333999382,
+          0.08071410223123193,
+          0.49985284534385066,
+          0.0008493159798115152,
+          1.14038677643167,
+          0.47936678190641163,
+          0.3273680567893482,
+          1.3523452850604636,
+          0.7421106574214862,
+          0.3722217645791958,
+          -1.2068379894229144,
+          -0.2656960704191471,
+          0.10465422942375918,
+          0.38987200355101037,
+          -0.9465788525276485,
+          -2.316418976955349,
+          -0.4303063315076286,
+          -0.35082793518335176
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 3,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p"
+      ],
+      "fit_key": "z_only/full_prefix",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "cubic",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": null,
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "need at least four sizes in the fit window"
+      ],
+      "fit_key": "z_only/full_prefix",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 17,
+      "name": "min_size_unavailable",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "insufficient_data"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.20624760994199823,
+          3.5024515138523244,
+          -2.588546638739798
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 27,
+        "derivative_min": -2.654335646473736,
+        "deviance": 58.88162437164625,
+        "deviance_p_value": 0.0003689935328782916,
+        "fitted_probabilities": [
+          0.4300024385168296,
+          0.48236336594860507,
+          0.5315663879550976,
+          0.5766868950778324,
+          0.6172011125848328,
+          0.6529262993805286,
+          0.710464978748918,
+          0.7786825951122586,
+          0.3515692013994049,
+          0.43804820522937354,
+          0.5194161975508405,
+          0.5910298128535804,
+          0.6507809885560439,
+          0.6985606053349696,
+          0.7627107787395236,
+          0.800055922582431,
+          0.2812376210070374,
+          0.3964348650731813,
+          0.5081472300086822,
+          0.6035959909778652,
+          0.6777161541478274,
+          0.7312681045212562,
+          0.789421537242452,
+          0.7652243447025818,
+          0.21985665893319753,
+          0.35694776332729444,
+          0.497400583555408,
+          0.6149610328748363,
+          0.6999794184069289,
+          0.7552032637496129,
+          0.8000163510573287,
+          0.6705232726600832
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p",
+          "scaling-model lack of fit (deviance p < 0.01)"
+        ],
+        "largest_absolute_residual": 3.068373684816591,
+        "monotone_increasing": false,
+        "nu": 1.2588590355751212,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.0325,
+        "p_scale": 0.027499999999999997,
+        "parameters": [
+          0.22065322541528665,
+          0.23020578340451656,
+          0.20624760994199823,
+          3.5024515138523244,
+          -2.588546638739798
+        ],
+        "pc": 0.038567963698920384,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.7142091466037718,
+          -0.9159442087905284,
+          0.09731133726530186,
+          0.23794542650896622,
+          -0.64593832570801,
+          0.358684381692427,
+          -0.17040470696245186,
+          -2.5101050233936966,
+          0.10161855000132333,
+          2.0509078404777794,
+          -1.257228058545797,
+          -0.17344760677047433,
+          1.6084228151672373,
+          0.5066391775016663,
+          -0.5887537790745866,
+          -1.0627487842287378,
+          -1.2971172181072366,
+          0.5367414243093419,
+          0.9010520132604732,
+          2.208965600047193,
+          1.2795176798422323,
+          0.5975837788963809,
+          0.3669239823269632,
+          -0.6747898428291251,
+          -3.068373684816591,
+          -0.20508531057717444,
+          1.4877562677494989,
+          1.8902206045212389,
+          0.0006351493025567254,
+          -2.3090724520863906,
+          -2.2987456145106027,
+          1.9399863930426757
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p",
+        "scaling-model lack of fit (deviance p < 0.01)"
+      ],
+      "fit_key": "z_only/full_prefix",
+      "fit_window": [
+        0.0325,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "trim_lowest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          0.09340433144515943,
+          3.2705746685861317,
+          -2.405338301362938
+        ],
+        "correction_coefficient": null,
+        "correction_omega": null,
+        "degrees_of_freedom": 27,
+        "derivative_min": -1.746790250919393,
+        "deviance": 29.223481519073758,
+        "deviance_p_value": 0.350146589928804,
+        "fitted_probabilities": [
+          0.3489726077183151,
+          0.4106247993449828,
+          0.47016480500919827,
+          0.5255135273858595,
+          0.575296320045728,
+          0.6188263001576115,
+          0.6559664623860809,
+          0.7122113178892375,
+          0.21875205863745034,
+          0.3206694210608021,
+          0.42796239640688855,
+          0.5271307099658372,
+          0.6096163094480217,
+          0.6728362192390573,
+          0.7180184463216073,
+          0.7643525622165136,
+          0.11902913314458778,
+          0.23644904278925782,
+          0.3853941634965013,
+          0.5287037924612809,
+          0.6393908191022288,
+          0.7123088609595412,
+          0.7533669175254383,
+          0.7622534796645095,
+          0.05679208266862072,
+          0.1642450952487244,
+          0.3429966863873712,
+          0.5302460636620169,
+          0.6651490590540535,
+          0.7399314546435093,
+          0.7683454284173427,
+          0.7084836437736098
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p"
+        ],
+        "largest_absolute_residual": 2.7938178498050616,
+        "monotone_increasing": false,
+        "nu": 1.0558689431652974,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "optimizer_success": true,
+        "p_max": 0.05,
+        "p_min": 0.03,
+        "p_scale": 0.020000000000000004,
+        "parameters": [
+          0.36984530624371953,
+          0.05436407073113309,
+          0.09340433144515943,
+          3.2705746685861317,
+          -2.405338301362938
+        ],
+        "pc": 0.03739690612487439,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -1.007972263545682,
+          -0.1616975783848465,
+          -0.5713649098057084,
+          0.26866796607293225,
+          0.2776276084781975,
+          -0.6937863662154783,
+          0.26892529058210973,
+          -0.22526221372590563,
+          -0.12835538609355734,
+          1.0402237596241957,
+          2.3448381363687343,
+          -1.47665460180219,
+          -0.7136147517311844,
+          0.9694932750832604,
+          -0.0948681222254046,
+          -0.6448745625989685,
+          -0.6126866620210456,
+          0.11818779870525865,
+          0.860283171604018,
+          0.3200327882600718,
+          1.19601779071545,
+          0.24027481089996217,
+          -0.11046343347405825,
+          1.2539641709595082,
+          -0.4150212599944254,
+          -1.307156854608333,
+          0.20863627989191988,
+          0.5597507795268454,
+          0.4450242906527185,
+          -1.2873317184202064,
+          -2.7938178498050616,
+          0.8251491657637738
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": null,
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p"
+      ],
+      "fit_key": "z_only/full_prefix",
+      "fit_window": [
+        0.03,
+        0.05
+      ],
+      "min_size": 5,
+      "name": "trim_highest_p",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "inconclusive"
+    },
+    {
+      "candidate": {
+        "L_reference": 9.986221549293205,
+        "bound_hits": [],
+        "coefficients": [
+          1.486613052846552,
+          2.2947268968751837,
+          -4.55769190026396
+        ],
+        "correction_coefficient": -0.41649305698355227,
+        "correction_omega": 1.0,
+        "degrees_of_freedom": 30,
+        "derivative_min": -3.5653426332172673,
+        "deviance": 54.61505088375497,
+        "deviance_p_value": 0.003923308433485038,
+        "fitted_probabilities": [
+          0.32141575573834424,
+          0.3915730525504066,
+          0.4588993072313604,
+          0.5201184801228521,
+          0.5732616393753232,
+          0.6175557996285369,
+          0.6530706085188657,
+          0.7000222761102207,
+          0.7128825350231176,
+          0.2368733557172361,
+          0.33909249152694254,
+          0.44483955046639145,
+          0.5417759005670404,
+          0.6224057009416631,
+          0.6846640330407209,
+          0.7298866504179172,
+          0.7792470261548129,
+          0.7529926959545638,
+          0.14521139912296518,
+          0.2534557494221445,
+          0.3842980617305338,
+          0.5135216446233174,
+          0.6215346746699417,
+          0.7015223901774844,
+          0.7557598539947571,
+          0.8067717911544691,
+          0.7362642536500495,
+          0.08186694277830985,
+          0.17682393327220622,
+          0.31661102789492374,
+          0.4721860152389212,
+          0.6073155952863867,
+          0.7053382768356466,
+          0.7683558531533232,
+          0.820484677432434,
+          0.6971008037567656
+        ],
+        "issues": [
+          "fitted failure probability is not monotone increasing in p",
+          "scaling-model lack of fit (deviance p < 0.01)"
+        ],
+        "largest_absolute_residual": 3.150048755355018,
+        "monotone_increasing": false,
+        "nu": 1.906598049420473,
+        "nu_bounds": [
+          0.3,
+          5.0
+        ],
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "optimizer_success": true,
+        "p_max": 0.06,
+        "p_min": 0.03,
+        "p_scale": 0.03,
+        "parameters": [
+          0.513654869238667,
+          0.6453205280098254,
+          1.486613052846552,
+          2.2947268968751837,
+          -4.55769190026396,
+          -0.41649305698355227
+        ],
+        "pc": 0.045409646077160006,
+        "polynomial_degree": 2,
+        "standardized_residuals": [
+          -0.19427966772659616,
+          0.3890287235687262,
+          -0.25256516596156464,
+          0.4212540908339767,
+          0.3356333924799399,
+          -0.6563735679212709,
+          0.35443179330856317,
+          0.1536191535749742,
+          -0.2464008002293163,
+          -0.7275686854446551,
+          0.475212363921968,
+          1.8543346502203488,
+          -1.8953348453823748,
+          -1.0911973431358073,
+          0.6189482138699147,
+          -0.4741450853401031,
+          -1.1677422806942146,
+          0.5576994215818998,
+          -1.6141149730770177,
+          -0.4374657304525766,
+          0.8926093558539543,
+          0.7491949937117068,
+          1.7047772427097447,
+          0.5710631578127311,
+          -0.1895946323944808,
+          -0.2425537186049159,
+          0.280358454199341,
+          -1.6437974406436207,
+          -1.7356653722756055,
+          1.0151285566972954,
+          2.2043251044746373,
+          2.104879275369084,
+          -0.16559815789459387,
+          -2.7942112138771678,
+          -3.150048755355018,
+          1.166401703611143
+        ]
+      },
+      "channel": "z_only",
+      "correction_omega": 1.0,
+      "degree": 2,
+      "diagnostic": [
+        "fitted failure probability is not monotone increasing in p",
+        "scaling-model lack of fit (deviance p < 0.01)"
+      ],
+      "fit_key": "z_only/full_prefix",
+      "fit_window": [
+        0.03,
+        0.06
+      ],
+      "min_size": 5,
+      "name": "fixed_L_inverse_correction",
+      "nu": null,
+      "pc": null,
+      "protocol": "full_prefix",
+      "status": "inconclusive"
+    }
+  ],
+  "source_file": "/Users/rongyuqing/jcode/TopoNoise.jl/examples/fit_toric3d_diagonal_feedback.py",
+  "source_sha256": "7bc6618cdea685192a15e10a530353388d98f57b70020c0c15af2f79e91ce1f1",
+  "threshold_difference_policy": "no threshold-shift confidence interval is reported without a joint paired bootstrap"
+}

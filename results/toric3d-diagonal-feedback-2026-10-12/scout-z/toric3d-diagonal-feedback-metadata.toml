@@ -1,0 +1,126 @@
+active_gate_outputs_per_transfer_cell = 13
+batch_size = 32
+channel_comparison_warning = "X and Z use different logical input states, seed circuits, fault locations, and decoders; compare protocols within a channel"
+channels = ["z_only"]
+checkpoint_filename = "toric3d-diagonal-feedback-checkpoint.toml"
+complete = true
+completed_points = 48
+decoder_builds_x = 0
+decoder_builds_z = 4
+dimensions_steps_Ly_Lz = [[5, 5, 5], [9, 9, 9], [13, 13, 13], [17, 17, 17]]
+error_rates = [0.0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.0075, 0.01, 0.015, 0.02, 0.03]
+expected_points = 48
+failure_filename = "toric3d-diagonal-feedback-failure.toml"
+format_version = 1
+geometry = "diagonal encoded slice with n=3(steps+1)LyLz, k=2, dX=(steps+1)min(Ly,Lz), dZ=2min(Ly,Lz)"
+ideal_operations = ["initialization except declared Z seed H gates", "idle qubits", "syndrome measurements", "classical processing", "Pauli corrections"]
+individual_interval = "95% Wilson score interval"
+invalid_recoveries = 0
+joint_pattern_encoding = "mask = none + 2*slice_local + 4*full_prefix"
+julia_version = "1.12.6"
+logical_qubits = 2
+metrics = ["logical_1", "logical_2", "state_failure"]
+paired_difference_convention = "second protocol minus first protocol"
+paired_interval = "conservative approximate 95% interval from 97.5% Wilson discordance intervals"
+paired_replay = "the identical sampled preparation fault record is replayed through all three protocols"
+point_rng_type = "Random.Xoshiro"
+point_seeds_hex = ["9471d80a2a528e4e", "694a9241a1bbff23", "f8dde90968656b91", "03d110fc19ba338e", "8535fc205a8911e0", "a3ba4f1a677ade64", "d6f1768bc89f84fc", "f796ab230df0ca41", "ca2e00167f85eae9", "b22fb923368b11fe", "9113887ded8aa185", "894f73554b7829b3", "b61d9b18a10a491e", "1a9b1f01cf0400f7", "ce84293274a9a20d", "dedbaa8671272e53", "f67475809eefd428", "26b3bdf25b4e1fa2", "b7217bd66923cc17", "f08631bb14d671ae", "86be7598a8f7d3b9", "13f5bb6479764db9", "f758aa79ef365562", "aaa38920ad1171d8", "5577c977b9de49d4", "cd5ce61130fc11e6", "280da883ae4f41a5", "617c0e98e5878adf", "119a328eb4ed74e4", "dc9a008849948d74", "01644a557a780f24", "b2cf6f90484b9a2e", "59673239bee8e934", "e935584ee0a06354", "f941584915eb7961", "c2ba953a066a9b8b", "7d294fabf9e59d86", "5cd624bcaf82509d", "b56fd785e4b43589", "a81d13149728f358", "2c8247b9ce230b8d", "b2863255d4b4b336", "3114c6e723517fc7", "19bb51e76aac2c80", "6be01a706699b5b8", "d0e0877b7a980c07", "f1a79f2039e88112", "bd3fd2fe282a90d0"]
+protocols = ["none", "slice_local", "full_prefix"]
+resume_supported = true
+resumed = false
+rng_policy = "one deterministic point substream; each immutable fault record is replayed through all protocols"
+rng_type = "Random.Xoshiro"
+seed_metadata = 1234
+shots_per_point = 200
+source_hash_algorithm = "FNV-1a-64"
+started_at_unix = 1.791796864942559e9
+timing_fields = "aggregate decoder construction, fault sampling, and three-protocol replay wall seconds per point"
+transfer_schedule = "seven gates per cell: H on first fresh edge, two fresh-edge CNOTs, four old-control CNOTs"
+x_routing = "one_step"
+
+[channel_models.x_only]
+decoder_limitations = "neglects nonuniform exposure, circuit correlations, and feedback-conditioned correlations"
+decoder_prior = "uniform declared p, clamped to [1e-12,1-1e-12]"
+fault_pauli = "X"
+final_decoder = "validated full-code BP+OSD X recovery"
+full_prefix_policy = "all completed prefix plaquettes, recovery on all mapped prefix qubits"
+initial_state = "logical |00> from ideal seed X-star measurement and ideal Z correction"
+seed_circuit = "ideal encoded seed; no noisy seed gates"
+seed_gate_outputs = 0
+seed_gate_outputs_formula = "0"
+slice_local_check_set = "active-slice Z compatibility checks before each transfer"
+slice_local_correction_support = "fresh transfer targets reached by the selected target feed-forward route"
+slice_local_policy = "one-step target feed-forward; x_routing=full_path is a sensitivity only"
+state_failure = "either residual logical-X membrane"
+
+[channel_models.z_only]
+decoder_limitations = "neglects circuit correlations and feedback-conditioned correlations"
+decoder_prior = "unit data-edge weights"
+fault_pauli = "Z"
+final_decoder = "validated full-code deterministic unit-weight MWPM Z recovery"
+full_prefix_policy = "all completed prefix stars, recovery on all mapped prefix qubits"
+initial_state = "logical |++> from noisy H on every seed edge and ideal compatibility correction"
+seed_circuit = "one H output on every one of 3*Ly*Lz seed edges"
+seed_gate_outputs = "dimension dependent"
+seed_gate_outputs_formula = "3*Ly*Lz"
+slice_local_check_set = "seed checks, then a three-check-sheet moving window"
+slice_local_correction_support = "seed edges at r=0; newest two data slices r-1:r thereafter"
+slice_local_policy = "complete deterministic unit-weight MWPM window recovery"
+state_failure = "either residual logical-Z winding"
+
+[decoder_settings]
+bp_method = "minimum_sum"
+max_iter = 50
+ms_scaling_factor = 1.0
+omp_thread_count = 1
+osd_method = "OSD_CS"
+osd_order = 2
+schedule = "parallel"
+
+[decoder_versions]
+ldpc = [""]
+pymatching = ["2.4.0"]
+
+[[fault_locations]]
+channel = "z_only"
+dimensions_steps_Ly_Lz = [5, 5, 5]
+seed_gate_outputs = 75
+total_gate_outputs = 1700
+transfer_gate_outputs = 1625
+[[fault_locations]]
+channel = "z_only"
+dimensions_steps_Ly_Lz = [9, 9, 9]
+seed_gate_outputs = 243
+total_gate_outputs = 9720
+transfer_gate_outputs = 9477
+[[fault_locations]]
+channel = "z_only"
+dimensions_steps_Ly_Lz = [13, 13, 13]
+seed_gate_outputs = 507
+total_gate_outputs = 29068
+transfer_gate_outputs = 28561
+[[fault_locations]]
+channel = "z_only"
+dimensions_steps_Ly_Lz = [17, 17, 17]
+seed_gate_outputs = 867
+total_gate_outputs = 64736
+transfer_gate_outputs = 63869
+
+[git_state]
+branch = "3dTC"
+commit = "848fec9d213eb9ad129604908b942e3f58190a03"
+dirty = true
+
+[resource_scaling]
+full_prefix = "O(steps^2*Ly*Lz) check participation"
+slice_local = "O(steps*Ly*Lz) check participation"
+
+[source_hashes]
+"examples/compare_toric3d_diagonal_feedback.jl" = "f10d6ce5d880cc59"
+"src/toric3d/feedback_strength_decoders.jl" = "f20192d56bd06cd7"
+"src/toric3d/feedback_strength_geometry.jl" = "01e6c2495cb711af"
+"src/toric3d/feedback_strength_output.jl" = "ecd33bef7f0ece09"
+"src/toric3d/feedback_strength_scan.jl" = "18a0d574a9cff285"
+"src/toric3d/feedback_strength_x.jl" = "7d6c9da6e431625c"
+"src/toric3d/feedback_strength_z.jl" = "a3530037a45bb21d"
+"src/toric3d/feedback_strength_z_batch.jl" = "436abc0423f973a4"
