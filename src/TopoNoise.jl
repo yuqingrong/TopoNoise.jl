@@ -76,6 +76,8 @@ export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z
        decode_toric3d_z_feedback_batch,
        Toric3DDiagonalZFaultRecord, sample_toric3d_diagonal_z_faults,
        replay_toric3d_z_strength, toric3d_z_strength_triplet,
+       Toric3DDiagonalZFaultBatch, sample_toric3d_diagonal_z_fault_batch,
+       toric3d_z_strength_batch,
        scan_toric3d_z_threshold, save_toric3d_z_threshold,
        Toric3DXThresholdDecoder, build_toric3d_x_threshold_decoder,
        decode_toric3d_x, toric3d_x_threshold_outcome,
@@ -115,6 +117,7 @@ include("toric3d/feedback_strength_geometry.jl")
 include("toric3d/z_threshold.jl")
 include("toric3d/feedback_strength_decoders.jl")
 include("toric3d/feedback_strength_z.jl")
+include("toric3d/feedback_strength_z_batch.jl")
 include("toric3d/x_feedback_threshold.jl")
 include("toric3d/feedback_strength_x.jl")
 include("toric3d/x_feedback_scan.jl")
