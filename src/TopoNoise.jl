@@ -84,6 +84,9 @@ export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z
        replay_toric3d_x_feedback, toric3d_x_feedback_pair,
        Toric3DXFeedbackDecoderFamily, build_toric3d_x_feedback_decoders,
        replay_toric3d_x_strength, toric3d_x_strength_triplet,
+       Toric3DProtocolEstimate, Toric3DPairEstimate, Toric3DTripleMetricEstimate,
+       Toric3DDiagonalFeedbackPoint, Toric3DDiagonalFeedbackScan,
+       compare_toric3d_diagonal_feedback,
        Toric3DXFeedbackPoint, Toric3DXFeedbackScan,
        compare_toric3d_x_feedback_threshold,
        plot_toric3d_x_feedback_threshold, save_toric3d_x_feedback_threshold
@@ -120,6 +123,7 @@ include("toric3d/feedback_strength_z.jl")
 include("toric3d/feedback_strength_z_batch.jl")
 include("toric3d/x_feedback_threshold.jl")
 include("toric3d/feedback_strength_x.jl")
+include("toric3d/feedback_strength_scan.jl")
 include("toric3d/x_feedback_scan.jl")
 include("toric3d/x_feedback_output.jl")
 
