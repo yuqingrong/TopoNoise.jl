@@ -4,6 +4,7 @@ import csv
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 import tempfile
 import types
@@ -254,6 +255,9 @@ class FeedbackStrengthFitTests(unittest.TestCase):
             p_min=0.010, p_max=0.040)
         self.assertEqual(result["status"], "no_crossing", result)
         self.assertIsNone(result["pc"])
+        self.assertIsNone(result["nu"])
+        self.assertIsNotNone(result["candidate"], result)
+        self.assertTrue(math.isfinite(result["candidate"]["pc"]), result)
 
         missing_pair = synthetic_rows(channels=("x_only",))
         size_eleven = {
@@ -272,6 +276,9 @@ class FeedbackStrengthFitTests(unittest.TestCase):
             p_min=0.010, p_max=0.040)
         self.assertEqual(result["status"], "inconclusive", result)
         self.assertIsNone(result["pc"])
+        self.assertIsNone(result["nu"])
+        self.assertIsNotNone(result["candidate"], result)
+        self.assertTrue(math.isfinite(result["candidate"]["pc"]), result)
         self.assertTrue(any("missing adjacent-size crossings" in item
                             for item in result["diagnostic"]), result)
 
@@ -301,6 +308,81 @@ class FeedbackStrengthFitTests(unittest.TestCase):
                 self.assertEqual(result["candidate"]["pc"], injected["pc"])
                 self.assertTrue(any(diagnostic in item
                                     for item in result["diagnostic"]), result)
+
+    def test_primary_fit_exception_is_reported_as_inconclusive(self):
+        points = FIT.validate_feedback_points(
+            synthetic_rows(channels=("x_only",)))
+        with mock.patch.object(
+                FIT, "_candidate_fit",
+                side_effect=RuntimeError("forced optimizer failure")):
+            result = FIT.fit_feedback_protocol(
+                points, "x_only", "none", p_min=0.010, p_max=0.040)
+        self.assertEqual(result["status"], "inconclusive", result)
+        self.assertIsNone(result["pc"])
+        self.assertIsNone(result["nu"])
+        self.assertIsNone(result["candidate"])
+        self.assertTrue(any(
+            "RuntimeError: forced optimizer failure" in item
+            for item in result["diagnostic"]), result)
+
+    def test_bootstrap_fit_exceptions_are_rejected_and_counted(self):
+        points = FIT.validate_feedback_points(
+            synthetic_rows(channels=("x_only",)))
+        fit = FIT.fit_feedback_protocol(
+            points, "x_only", "none", p_min=0.010, p_max=0.040)
+        candidate = fit["candidate"]
+        attempts = 0
+
+        def fail_three_replicates(*_args, **_kwargs):
+            nonlocal attempts
+            replicate = attempts
+            attempts += 1
+            if replicate in (1, 4, 7):
+                raise FloatingPointError(f"forced numerical failure {replicate}")
+            return candidate
+
+        with mock.patch.object(
+                FIT, "_candidate_fit", side_effect=fail_three_replicates):
+            bootstrap = FIT.bootstrap_feedback_protocol(
+                points, "x_only", "none", fit, replicates=10, seed=4567)
+        self.assertEqual(bootstrap["replicates"], 10)
+        self.assertEqual(bootstrap["accepted"], 7)
+        rejected = [sample for sample in bootstrap["samples"]
+                    if not sample["accepted"]]
+        self.assertEqual([sample["replicate"] for sample in rejected], [1, 4, 7])
+        for sample in rejected:
+            self.assertEqual(sample["status"], "rejected")
+            self.assertIsNone(sample["pc"])
+            self.assertIsNone(sample["nu"])
+            self.assertIn("FloatingPointError: forced numerical failure",
+                          sample["diagnostic"])
+        self.assertIsNone(bootstrap["pc_interval"])
+        self.assertIsNone(bootstrap["nu_interval"])
+        guarded = FIT._finalize_bootstrap_guard(fit, bootstrap)
+        self.assertEqual(guarded["status"], "inconclusive", guarded)
+        self.assertTrue(any("80%" in item
+                            for item in guarded["diagnostic"]), guarded)
+
+    def test_fit_guards_do_not_swallow_process_control_exceptions(self):
+        points = FIT.validate_feedback_points(
+            synthetic_rows(channels=("x_only",)))
+        fit = FIT.fit_feedback_protocol(
+            points, "x_only", "none", p_min=0.010, p_max=0.040)
+        for exception in (KeyboardInterrupt, SystemExit):
+            with self.subTest(boundary="primary", exception=exception.__name__), \
+                    mock.patch.object(FIT, "_candidate_fit",
+                                      side_effect=exception("forced")):
+                with self.assertRaises(exception):
+                    FIT.fit_feedback_protocol(
+                        points, "x_only", "none",
+                        p_min=0.010, p_max=0.040)
+            with self.subTest(boundary="bootstrap", exception=exception.__name__), \
+                    mock.patch.object(FIT, "_candidate_fit",
+                                      side_effect=exception("forced")):
+                with self.assertRaises(exception):
+                    FIT.bootstrap_feedback_protocol(
+                        points, "x_only", "none", fit,
+                        replicates=1, seed=4567)
 
     def test_bootstrap_guard_has_exact_eighty_percent_boundary(self):
         fit = {"status": "ok", "pc": 0.02, "nu": 1.0, "diagnostic": []}

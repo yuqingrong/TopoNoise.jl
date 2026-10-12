@@ -46,6 +46,14 @@ SETTING_COLUMNS = (
     "max_iter", "bp_method", "ms_scaling_factor", "schedule",
     "omp_thread_count", "osd_method", "osd_order",
 )
+FIT_COMPUTATION_EXCEPTIONS = (ArithmeticError, RuntimeError, ValueError)
+
+
+def _fit_failure_diagnostic(error):
+    detail = str(error).strip()
+    suffix = f": {detail}" if detail else ""
+    return ("optimizer/numerical fit failure "
+            f"({type(error).__name__}{suffix}); threshold withheld")
 
 
 def _sha256(path):
@@ -501,24 +509,29 @@ def fit_feedback_protocol(points, channel, protocol, *, p_min=None, p_max=None,
         base["status"] = "no_crossing"
         base["diagnostic"].append(
             "no adjacent-size sign-changing crossing inside the fit window")
-        return base
-    if observed_pairs != expected_pairs:
+    elif observed_pairs != expected_pairs:
         base["status"] = "inconclusive"
         missing = sorted(expected_pairs - observed_pairs)
         base["diagnostic"].append(
             f"missing adjacent-size crossings for {missing}; threshold withheld")
+    try:
+        candidate = _candidate_fit(
+            selected, channel, protocol, p_min=p_min, p_max=p_max,
+            degree=degree, nu_bounds=nu_bounds,
+            goodness_alpha=goodness_alpha, correction=correction)
+    except FIT_COMPUTATION_EXCEPTIONS as error:
+        if base["status"] == "insufficient_data":
+            base["status"] = "inconclusive"
+        base["diagnostic"].append(_fit_failure_diagnostic(error))
         return base
-    candidate = _candidate_fit(
-        selected, channel, protocol, p_min=p_min, p_max=p_max,
-        degree=degree, nu_bounds=nu_bounds, goodness_alpha=goodness_alpha,
-        correction=correction)
     issues = _candidate_guard_issues(
         candidate, p_min=p_min, p_max=p_max, goodness_alpha=goodness_alpha)
     candidate = dict(candidate, issues=issues)
     base["candidate"] = candidate
     base["diagnostic"].extend(issues)
-    if issues:
-        base["status"] = "inconclusive"
+    if issues or base["status"] != "insufficient_data":
+        if base["status"] == "insufficient_data":
+            base["status"] = "inconclusive"
         return base
     base.update(status="ok", pc=candidate["pc"], nu=candidate["nu"])
     return base
@@ -547,12 +560,20 @@ def bootstrap_feedback_protocol(points, channel, protocol, fit, *,
         column = f"{protocol}_failures"
         for row, probability in zip(sampled, probabilities):
             row[column] = int(rng.binomial(row["shots"], probability))
-        replica = _candidate_fit(
-            sampled, channel, protocol, p_min=fit["fit_window"][0],
-            p_max=fit["fit_window"][1], degree=fit["degree"],
-            nu_bounds=tuple(fit["nu_bounds"]),
-            goodness_alpha=fit["goodness_alpha"], correction=correction,
-            warm_start=candidate["parameters"])
+        try:
+            replica = _candidate_fit(
+                sampled, channel, protocol, p_min=fit["fit_window"][0],
+                p_max=fit["fit_window"][1], degree=fit["degree"],
+                nu_bounds=tuple(fit["nu_bounds"]),
+                goodness_alpha=fit["goodness_alpha"], correction=correction,
+                warm_start=candidate["parameters"])
+        except FIT_COMPUTATION_EXCEPTIONS as error:
+            samples.append({
+                "replicate": replicate, "accepted": False,
+                "pc": None, "nu": None, "status": "rejected",
+                "diagnostic": _fit_failure_diagnostic(error),
+            })
+            continue
         numerical_issues = _candidate_guard_issues(
             replica, p_min=fit["fit_window"][0], p_max=fit["fit_window"][1],
             goodness_alpha=fit["goodness_alpha"], include_goodness=False)
