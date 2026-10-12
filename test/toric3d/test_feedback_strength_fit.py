@@ -364,6 +364,62 @@ class FeedbackStrengthFitTests(unittest.TestCase):
         self.assertTrue(all(spread is None for spread in
                             report["accepted_model_pc_spread"].values()))
 
+    def test_sensitivity_figure_distinguishes_accepted_and_withheld_estimates(self):
+        protocols = {
+            "none": "No feedback",
+            "slice_local": "Slice-local",
+            "full_prefix": "Full-prefix",
+        }
+        fits = {}
+        sensitivities = []
+        for channel_index, channel in enumerate(("x_only", "z_only")):
+            for protocol_index, protocol in enumerate(protocols):
+                key = f"{channel}/{protocol}"
+                pc = 0.02 + 0.004 * channel_index + 0.002 * protocol_index
+                fits[key] = {
+                    "channel": channel, "protocol": protocol,
+                    "status": "ok", "pc": pc,
+                    "candidate": {"pc": pc}, "diagnostic": [],
+                    "bootstrap": {"pc_interval": [pc - 0.001, pc + 0.001]},
+                }
+                sensitivities.extend([
+                    {"fit_key": key, "name": "cubic", "status": "ok",
+                     "pc": pc + 0.0003, "candidate": {"pc": pc + 0.0003},
+                     "diagnostic": []},
+                    {"fit_key": key, "name": "trim_lowest_p",
+                     "status": "inconclusive", "pc": None,
+                     "candidate": {"pc": pc + 0.0015},
+                     "diagnostic": ["scaling-model lack of fit"]},
+                    {"fit_key": key, "name": "trim_highest_p",
+                     "status": "no_crossing", "pc": None,
+                     "candidate": None,
+                     "diagnostic": ["no adjacent-size crossing"]},
+                ])
+        report = {"fits": fits, "sensitivity": sensitivities}
+        fits["x_only/none"].update(status="inconclusive", pc=None,
+                                   diagnostic=["bootstrap guard failed"])
+
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder)
+            FIT._make_sensitivity_plot(report, output)
+            for extension, signature in (("pdf", b"%PDF"),
+                                         ("png", b"\x89PNG"),
+                                         ("svg", b"<?xml")):
+                path = output / f"threshold-sensitivity.{extension}"
+                self.assertGreater(path.stat().st_size, 1000)
+                self.assertTrue(path.read_bytes().startswith(signature))
+            svg = (output / "threshold-sensitivity.svg").read_text()
+            for channel in ("X-only", "Z-only"):
+                for protocol in protocols.values():
+                    self.assertIn(f"{channel} / {protocol}", svg)
+            for label in ("Primary accepted",
+                          "Sensitivity accepted",
+                          "Diagnostic candidate (WITHHELD)",
+                          "No numerical candidate",
+                          "primary withheld",
+                          "not threshold estimates"):
+                self.assertIn(label, svg)
+
     def test_cli_reports_are_byte_stable_and_figures_are_complete(self):
         with tempfile.TemporaryDirectory() as folder:
             folder = Path(folder)
@@ -402,17 +458,24 @@ class FeedbackStrengthFitTests(unittest.TestCase):
             self.assertIn("joint counts", report["protocol_dependence"])
             self.assertIn("Bonferroni-Wilson",
                           report["paired_rate_difference_interval"])
-            for extension, signature in (("pdf", b"%PDF"),
-                                         ("png", b"\x89PNG"),
-                                         ("svg", b"<?xml")):
-                path = output / f"threshold-fit.{extension}"
-                self.assertGreater(path.stat().st_size, 1000)
-                self.assertTrue(path.read_bytes().startswith(signature))
+            for stem in ("threshold-fit", "threshold-sensitivity"):
+                for extension, signature in (("pdf", b"%PDF"),
+                                             ("png", b"\x89PNG"),
+                                             ("svg", b"<?xml")):
+                    path = output / f"{stem}.{extension}"
+                    self.assertGreater(path.stat().st_size, 1000)
+                    self.assertTrue(path.read_bytes().startswith(signature))
             svg = (output / "threshold-fit.svg").read_text()
             for label in ("X-only", "Z-only", "No feedback",
                           "Slice-local", "Full-prefix", "Paired differences",
                           "Scaling collapse"):
                 self.assertIn(label, svg)
+            sensitivity_svg = (
+                output / "threshold-sensitivity.svg").read_text()
+            for label in ("X-only / No feedback", "Z-only / Full-prefix",
+                          "Primary accepted", "Sensitivity accepted",
+                          "not threshold estimates"):
+                self.assertIn(label, sensitivity_svg)
 
 
 if __name__ == "__main__":

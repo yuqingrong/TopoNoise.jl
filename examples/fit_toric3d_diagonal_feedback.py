@@ -821,6 +821,184 @@ def _make_plot(report, points, output):
     plt.close(figure)
 
 
+def _finite_pc(record, *, accepted):
+    """Return an accepted estimate or a retained diagnostic candidate."""
+    source = record if accepted else record.get("candidate")
+    if not isinstance(source, dict) and record.get("status") == "ok":
+        source = record
+    if not isinstance(source, dict):
+        return None
+    value = source.get("pc")
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return None
+    return value if math.isfinite(value) else None
+
+
+def _sensitivity_label(name):
+    labels = {
+        "cubic": "Cubic scaling polynomial",
+        "trim_lowest_p": "Trim lowest p",
+        "trim_highest_p": "Trim highest p",
+        "fixed_L_inverse_correction": "Add fixed L^-1 correction",
+    }
+    if name.startswith("min_size_"):
+        suffix = name.removeprefix("min_size_")
+        return ("Drop smallest size (unavailable)" if suffix == "unavailable"
+                else f"Minimum L = {suffix}")
+    return labels.get(name, name.replace("_", " ").capitalize())
+
+
+def _make_sensitivity_plot(report, output):
+    """Plot accepted estimates and clearly marked diagnostic candidates."""
+    os.environ.setdefault(
+        "MPLCONFIGDIR", str(Path(tempfile.gettempdir()) / "toponoise-mpl"))
+    import matplotlib
+    matplotlib.use("Agg")
+    matplotlib.rcParams["svg.fonttype"] = "none"
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+    from matplotlib.ticker import PercentFormatter
+
+    channels = (("x_only", "X-only"), ("z_only", "Z-only"))
+    protocols = (
+        ("none", "No feedback"),
+        ("slice_local", "Slice-local"),
+        ("full_prefix", "Full-prefix"),
+    )
+    primary_color = "#2364AA"
+    sensitivity_color = "#258477"
+    diagnostic_color = "#D97706"
+    missing_color = "#6B7280"
+    figure, axes = plt.subplots(
+        2, 3, figsize=(16.0, 9.0), squeeze=False,
+        constrained_layout=True)
+    sensitivity_by_key = {}
+    for row in report.get("sensitivity", []):
+        sensitivity_by_key.setdefault(row["fit_key"], []).append(row)
+
+    for row_index, (channel, channel_label) in enumerate(channels):
+        for column_index, (protocol, protocol_label) in enumerate(protocols):
+            axis = axes[row_index, column_index]
+            key = f"{channel}/{protocol}"
+            primary = report.get("fits", {}).get(key)
+            axis.set_title(f"{channel_label} / {protocol_label}")
+            axis.grid(axis="x", alpha=0.22)
+            if primary is None:
+                axis.text(0.5, 0.5, "Not analyzed", ha="center", va="center",
+                          transform=axis.transAxes, color=missing_color)
+                axis.set(yticks=[], xlabel="Critical probability p_c")
+                continue
+
+            records = [("Primary", primary, True)]
+            records.extend(
+                (_sensitivity_label(row["name"]), row, False)
+                for row in sensitivity_by_key.get(key, []))
+            positions = np.arange(len(records) - 1, -1, -1, dtype=float)
+            numeric_values = []
+            primary_accepted = primary.get("status") == "ok"
+            for _, record, is_primary in records:
+                accepted = (record.get("status") == "ok"
+                            and (is_primary or primary_accepted))
+                value = _finite_pc(record, accepted=accepted)
+                if value is not None:
+                    numeric_values.append(value)
+            interval = primary.get("bootstrap", {}).get("pc_interval")
+            if (primary.get("status") == "ok" and interval is not None
+                    and len(interval) == 2
+                    and all(math.isfinite(float(value)) for value in interval)):
+                numeric_values.extend(float(value) for value in interval)
+            if numeric_values:
+                low, high = min(numeric_values), max(numeric_values)
+                padding = max(0.001, 0.14 * max(high - low, 0.002))
+                axis.set_xlim(max(0.0, low - padding), high + 3.2 * padding)
+            else:
+                axis.set_xlim(0.0, 0.1)
+            for position, (label, record, is_primary) in zip(
+                    positions, records):
+                accepted = (record.get("status") == "ok"
+                            and (is_primary or primary_accepted))
+                value = _finite_pc(record, accepted=accepted)
+                if accepted and value is not None:
+                    if is_primary:
+                        interval = record.get("bootstrap", {}).get("pc_interval")
+                        xerr = None
+                        if interval is not None and len(interval) == 2:
+                            lower, upper = map(float, interval)
+                            if math.isfinite(lower) and math.isfinite(upper):
+                                xerr = [[max(0.0, value - lower)],
+                                        [max(0.0, upper - value)]]
+                        axis.errorbar(
+                            value, position, xerr=xerr, fmt="D",
+                            color=primary_color, ecolor=primary_color,
+                            ms=6, lw=1.8, capsize=3, zorder=3)
+                        status = ("accepted · conditional 95% CI"
+                                  if xerr is not None else
+                                  "accepted · CI unavailable")
+                    else:
+                        axis.plot(value, position, "o", color=sensitivity_color,
+                                  ms=6, zorder=3)
+                        status = "accepted"
+                    axis.text(0.985, position, status, va="center", ha="right",
+                              transform=axis.get_yaxis_transform(), fontsize=7,
+                              color=(primary_color if is_primary
+                                     else sensitivity_color))
+                else:
+                    candidate = _finite_pc(record, accepted=False)
+                    status_name = ("primary withheld"
+                                   if (not is_primary and not primary_accepted
+                                       and record.get("status") == "ok")
+                                   else str(record.get("status", "withheld")))
+                    if candidate is not None:
+                        axis.plot(candidate, position, marker="x", ls="none",
+                                  color=diagnostic_color, ms=7, mew=1.8,
+                                  zorder=3)
+                        status = f"DIAGNOSTIC · WITHHELD\n({status_name})"
+                        color = diagnostic_color
+                    else:
+                        axis.plot(axis.get_xlim()[0], position, marker="_",
+                                  ls="none", color=missing_color, ms=8,
+                                  mew=1.5)
+                        status = f"WITHHELD · no candidate ({status_name})"
+                        color = missing_color
+                    axis.text(0.985, position, status, va="center", ha="right",
+                              transform=axis.get_yaxis_transform(), fontsize=7,
+                              color=color)
+
+            axis.set_yticks(positions, [label for label, _, _ in records],
+                            fontsize=7.5)
+            axis.set_xlabel("Critical probability p_c")
+            axis.xaxis.set_major_formatter(PercentFormatter(xmax=1.0))
+            axis.tick_params(axis="x", labelsize=8)
+
+    legend = [
+        Line2D([0], [0], marker="D", color=primary_color, lw=1.8,
+               markersize=6,
+               label="Primary accepted + 95% conditional bootstrap CI"),
+        Line2D([0], [0], marker="o", color=sensitivity_color, lw=0,
+               markersize=6, label="Sensitivity accepted"),
+        Line2D([0], [0], marker="x", color=diagnostic_color, lw=0,
+               markeredgewidth=1.8, markersize=7,
+               label="Diagnostic candidate (WITHHELD)"),
+        Line2D([0], [0], marker="_", color=missing_color, lw=0,
+               markeredgewidth=1.5, markersize=8,
+               label="No numerical candidate"),
+    ]
+    figure.legend(handles=legend, loc="outside lower center", ncol=4,
+                  frameon=False, fontsize=8)
+    figure.suptitle(
+        "Threshold sensitivity by channel and feedback protocol\n"
+        "Diagnostic candidates are shown only as crosses; they are not threshold estimates.",
+        fontsize=12)
+    for extension in ("pdf", "svg", "png"):
+        target = output / f"threshold-sensitivity.{extension}"
+        temporary = output / f"threshold-sensitivity.tmp.{extension}"
+        figure.savefig(temporary, dpi=180)
+        temporary.replace(target)
+    plt.close(figure)
+
+
 def _write_summary(path, fits):
     columns = ["fit_key", "channel", "protocol", "status", "pc", "nu",
                "bootstrap_pc_low", "bootstrap_pc_high", "degree", "p_min",
@@ -1020,6 +1198,7 @@ def main(arguments=None):
     (output / "threshold-fit.json").write_text(
         json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
     _make_plot(report, points, output)
+    _make_sensitivity_plot(report, output)
     print(json.dumps({
         key: {"status": fit["status"], "pc": fit["pc"],
               "nu": fit["nu"], "diagnostic": fit["diagnostic"]}
