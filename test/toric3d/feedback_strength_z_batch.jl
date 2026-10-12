@@ -97,3 +97,25 @@ end
     result = toric3d_z_strength_batch(encoder, faults, decoders)
     @test result.slice_local == result.full_prefix
 end
+
+@testset "Batched Z feedback measures the complete three-sheet window" begin
+    code = Toric3DEncodedSlice(3, 2, 2)
+    encoder = toric3d_encoded_encoder(code)
+    decoders = build_toric3d_z_feedback_decoders(code)
+    seed = falses(3code.lattice.Ly * code.lattice.Lz, 1)
+    transfer = falses(2, length(encoder.operations), 1)
+    transfer[2, 2, 1] = true
+    faults = Toric3DDiagonalZFaultBatch(
+        code.lattice.steps, code.lattice.Ly, code.lattice.Lz, seed, transfer)
+
+    scalar = toric3d_z_strength_triplet(
+        encoder, toric3d_z_batch_scalar_record(faults, 1), decoders)
+    batch = toric3d_z_strength_batch(encoder, faults, decoders)
+    for protocol in keys(batch)
+        batch_result = getproperty(batch, protocol)
+        scalar_result = getproperty(scalar, protocol)
+        @test only(batch_result.logical_1) == scalar_result.logical_1
+        @test only(batch_result.logical_2) == scalar_result.logical_2
+        @test only(batch_result.failure) == scalar_result.failure
+    end
+end

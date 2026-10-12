@@ -50,6 +50,17 @@ function _toric3d_z_batch_syndrome(matrix,frames::BitMatrix,qubits)
     return BitMatrix(isodd.(matrix * Matrix{UInt8}(frames[qubits,:])))
 end
 
+function _toric3d_z_batch_window_syndrome(window::Toric3DZFeedbackWindow,
+        frames::BitMatrix)
+    size(frames,1) == data_qubit_count(window.code) ||
+        throw(DimensionMismatch("Z frame batch has the wrong row count"))
+    syndromes = falses(length(window.checks),size(frames,2))
+    for (row,check) in enumerate(window.checks), q in check
+        @views syndromes[row,:] .= xor.(syndromes[row,:],frames[q,:])
+    end
+    return syndromes
+end
+
 function _toric3d_apply_z_batch!(frames::BitMatrix,qubits,recoveries::BitMatrix)
     size(recoveries) == (length(qubits),size(frames,2)) ||
         throw(DimensionMismatch("mapped Z recovery batch has the wrong dimensions"))
@@ -119,13 +130,13 @@ function toric3d_z_strength_batch(encoder::Toric3DSliceEncoder,
     slice_local[seed_qubits,:] .= faults.seed
     full_prefix[seed_qubits,:] .= faults.seed
 
-    seed_syndrome = _toric3d_z_batch_syndrome(
-        decoders.seed.matrix,slice_local,decoders.seed.window.qubits)
+    seed_syndrome = _toric3d_z_batch_window_syndrome(
+        decoders.seed.window,slice_local)
     seed_recovery = decode_toric3d_z_feedback_batch(decoders.seed,seed_syndrome)
     _toric3d_apply_z_batch!(slice_local,decoders.seed.window.qubits,seed_recovery)
     _toric3d_apply_z_batch!(full_prefix,decoders.seed.window.qubits,seed_recovery)
-    any(_toric3d_z_batch_syndrome(
-        decoders.seed.matrix,slice_local,decoders.seed.window.qubits)) &&
+    any(_toric3d_z_batch_window_syndrome(
+        decoders.seed.window,slice_local)) &&
         error("batched seed Z feedback left a nonzero syndrome")
 
     first_operation = 1
@@ -140,8 +151,8 @@ function toric3d_z_strength_batch(encoder::Toric3DSliceEncoder,
         window = toric3d_z_feedback_window(code,r)
         window.matrix == decoders.transfer.window.matrix ||
             error("Z transfer-window ordering differs from the cached batch decoder")
-        local_syndrome = _toric3d_z_batch_syndrome(
-            decoders.transfer.matrix,slice_local,window.qubits)
+        local_syndrome = _toric3d_z_batch_window_syndrome(
+            window,slice_local)
         local_recovery = decode_toric3d_z_feedback_batch(
             decoders.transfer,local_syndrome)
         _toric3d_apply_z_batch!(slice_local,window.qubits,local_recovery)
