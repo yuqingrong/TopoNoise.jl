@@ -144,4 +144,10 @@ export Toric3DVertexProjectorFaultRecord, sample_toric3d_vertex_projector_record
        with_toric3d_vertex_projector_fault, propagate_toric3d_vertex_projector_segment!
 include("toric3d/vertex_projector_noise.jl")
 
+export Toric3DVertexFeedbackWindow, toric3d_vertex_x_slice_window,
+       toric3d_vertex_x_complete_window, toric3d_vertex_x_prefix_window,
+       toric3d_vertex_z_strip_window, toric3d_vertex_z_complete_window,
+       toric3d_vertex_z_prefix_window
+include("toric3d/vertex_projector_feedback_geometry.jl")
+
 end
