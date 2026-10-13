@@ -20,6 +20,7 @@ struct Toric3DVertexDecoderFamily
     z_prefix::Vector{Toric3DVertexMatchingDecoder}
     final_x::Toric3DVertexBPOSDDecoder
     final_z::Toric3DVertexMatchingDecoder
+    boundary::Toric3DVertexBoundaryMap
 end
 function _vertex_bposd(w,p,settings,ldpc,np,cache)
     prior=clamp(Float64(p),1e-12,1-1e-12)
@@ -50,7 +51,7 @@ function build_toric3d_vertex_decoders(c::Toric3DVertexProjectorCode;p::Real,
     qubits=collect(1:data_qubit_count(c))
     finalx=bx(_vertex_window(c,:x_only,:final,c.T,plaquette_checks(c),qubits,Int[],Int[]))
     finalz=_vertex_matching_decoder(_vertex_window(c,:z_only,:final,c.T,star_checks(c),qubits,Int[],Int[]),:closed)
-    Toric3DVertexDecoderFamily(c,Float64(p),settings,xo,zo,xw,zw,xp,zp,finalx,finalz)
+    Toric3DVertexDecoderFamily(c,Float64(p),settings,xo,zo,xw,zw,xp,zp,finalx,finalz,toric3d_vertex_boundary_map(c))
 end
 
 function decode_toric3d_vertex_bposd(d::Toric3DVertexBPOSDDecoder,s::AbstractVector{Bool})::BitVector
