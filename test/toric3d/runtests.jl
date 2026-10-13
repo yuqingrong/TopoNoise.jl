@@ -29,3 +29,6 @@ include("feedback_strength_example.jl")
 include("x_feedback_scan.jl")
 include("x_feedback_output.jl")
 include("x_feedback_example.jl")
+
+include("vertex_projector_legacy.jl")
+include("vertex_projector_encoder.jl")

@@ -129,4 +129,9 @@ include("toric3d/feedback_strength_output.jl")
 include("toric3d/x_feedback_scan.jl")
 include("toric3d/x_feedback_output.jl")
 
+export Toric3DVertexProjectorCode, Toric3DVertexProjectorEncoder,
+       toric3d_vertex_projector_encoder, verify_toric3d_vertex_projector_encoder
+include("toric3d/vertex_projector_geometry.jl")
+include("toric3d/vertex_projector_encoder.jl")
+
 end
