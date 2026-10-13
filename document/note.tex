@@ -518,9 +518,108 @@ zero rather than approaching a positive threshold, as required by the
 decoder-independent bound above.  For example, already at $p=10^{-5}$ the
 feedback diagnostic rises from $0.06\%$ at $L=3$ to $0.73\%$ at $L=9$.
 
-\subsection{Diagonal-slice circuit and a Z-sector threshold estimate}
+\subsection{Direct vertex-projector H+5 experiment}
 
-A separate circuit avoids the preceding propagation mechanism by using
+The primary new diagonal experiment applies the literal cubic-star projector.
+This is a paper-motivated construction, not a reproduction of an explicit
+three-dimensional gate circuit supplied by the paper. Set
+$t=x+y+z$, $u=x$, $v=y$, with open $t=0,\ldots,T$ and periodic
+$(u,v)\in\mathbb Z_{L_u}\times\mathbb Z_{L_v}$. An edge $E[d,t,r]$
+ends at $V(t,r)$ and begins at $V(t-1,r-s_d)$, where
+$s_1=(1,0)$, $s_2=(0,1)$, $s_3=(0,0)$. The encoded slab has
+\[
+ n=3(T+1)L_uL_v,\qquad k=2,\qquad
+ d_Z=2\min(L_u,L_v),\quad d_X=(T+1)\min(L_u,L_v).
+\]
+Distinct physical edges remain distinct when a transverse period is two.
+For the old vertex $V(t-1,r)$, let $e_d=E[d,t-1,r]$ and
+$n_d=E[d,t,r+s_d]$. Apply, in this order,
+\[
+ H(n_1),\quad
+ \mathrm{CX}(n_1,n_2),\quad\mathrm{CX}(n_1,n_3),\quad
+ \mathrm{CX}(n_1,e_1),\quad\mathrm{CX}(n_1,e_2),\quad
+ \mathrm{CX}(n_1,e_3).
+\]
+There are six gates and eleven participating outputs per cell. The independent
+post-output Bernoulli-$p$ X-only or Z-only noise convention is unchanged;
+initialization, idles, boundary operations, measurement, and correction are ideal.
+
+Product zero fixes both logical-Z cycles. Ideally project the independent
+lower white X triads and correct their outcomes. After the bulk circuit,
+project the upper X triads. Their clean outcomes $b$ are uniform on the even
+subspace: draw $L_uL_v-1$ bits and fix the last parity. Let $u$ be the flips
+induced by the noisy Z frame and let $a=b\oplus u$ be the observed outcome.
+Only $a$ enters the physical boundary controller. With its deterministic
+correction map $C$, the relative clean/noisy frame is
+\[
+ z'=z\oplus C(a)\oplus C(b),\qquad a=b\oplus u.
+\]
+The map uses physical-edge-ID-ordered breadth-first paths to bulk root
+$A_{T-1,0,0}$ after deleting the union of both declared logical-X supports.
+This exclusion guarantees zero logical overlap of every open correction path;
+acyclicity alone does not. The graph stays connected through direction-three
+vertical edges and nonwrapping transverse edges. This is a fixed correction
+convention and changes noisy logical-Z diagnostics compared with an arbitrary
+uncut tree. The clean $b$ and gate faults remain hidden from all decoders.
+
+Every immutable gate-fault record and clean boundary branch is reused by
+four arms. Intermediate feedback occurs only after $t=1,\ldots,T-1$:
+\begin{enumerate}
+\item \texttt{none}: boundary completion and final full-code recovery only.
+\item \texttt{one\_step}: in X, measure the periodic six-edge $Q_t$ checks,
+pair point defects by unit-length MWPM, and apply the first and last edge
+of each canonical path (a length-one path is applied once). Old-target X
+faults are unseen but cannot propagate further. Remaining $Q_t$ defects
+receive one contraction, not a repeated moving-frontier transport.
+In Z, match the retiring/frontier strip $(W,A_0)$ at $t=1$ or
+$(A_{t-2},A_{t-1})$ later. Odd parity receives exactly one future dummy;
+even parity receives none. Apply an endpoint edge only at a retiring
+endpoint, so every retiring syndrome clears while frontier defects may wait.
+Symmetric endpoint trimming is not causal in this strip.
+\item \texttt{window\_complete}: restrict recovery to $E_{t-1}\cup E_t$.
+X uses BP+OSD on $P_1$ initially and $P_{t-1}\cup P_t$ subsequently.
+Z uses ordinary open-boundary MWPM on the retiring/frontier strip.
+Both clear all completed checks.
+\item \texttt{full\_prefix}: recover on all $E_0,\ldots,E_t$ from the
+completed plaquettes or lower and bulk stars. Future data are unavailable.
+\end{enumerate}
+The arms differ in measurements, residual constraints, decoder, and correction
+support; feedback-versus-none differences do not isolate correction range.
+
+All arms use common final BP+OSD X recovery and MWPM Z recovery. The fixed
+BP baseline is minimum sum, 50 iterations, scale one, parallel schedule,
+one thread, and \texttt{OSD\_CS} order two, with uniform prior
+$p_{\rm eff}=\min(1-10^{-12},\max(10^{-12},p))$. PyMatching 2.4.0 and
+ldpc 2.4.1 are pinned. Matching first minimizes physical length and then
+lexicographically fixes endpoint/path signatures, retaining period-two
+parallel edges. These decoders omit circuit-induced correlations.
+Every complete recovery must satisfy $Hc=s$; a partial route instead obeys
+$s'=s\oplus Hr$ with its causal residual constraint. A syndrome-valid
+recovery need not restore the intended logical state.
+
+Score both transverse logical-X bits, both logical-Z bits, and all sixteen
+Pauli classes. Either-pair logical X is also $|00_L\rangle$ preparation
+failure for the X-only experiment. Logical Z is a state-independent Pauli
+diagnostic, not $|00_L\rangle$ infidelity. The four-arm statistics retain
+sixteen joint masks per observable, Wilson intervals, and all six paired
+contrasts. Atomic checkpoints reproduce complete records, including $b$.
+A separate timed pilot precedes a 500-shot scout at $L=3,5,7$. The scout
+freezes channel-specific production grids and fit windows before 1000-shot
+production. Threshold claims require adjacent-size crossing consistency,
+an interior monotone likelihood fit, acceptable goodness of fit, and at
+least 80\% usable bootstrap fits. Failed guards leave diagnostic candidates.
+
+% H5_MEASURED_RESULTS_BEGIN
+The implementation and analysis are being verified; the H+5 scientific scan
+has not yet established a threshold. The historical values below belong to
+the separate H+6 experiment and are not substituted for H+5 measurements.
+% H5_MEASURED_RESULTS_END
+
+\subsection{Historical plaquette-transfer H+6 Z-sector estimate}
+
+
+The historical seven-gate plaquette-transfer H+6 circuit avoids the earlier
+Cartesian propagation mechanism by using
 diagonal slices and transferring from old control qubits to new target
 triads.  Every single Z gate-output fault then has final support on at most
 three qubits in two adjacent slices.  To define a logical observable, use a
@@ -535,6 +634,11 @@ no perfect entangled seed is assumed.  The encoded slab has
  d_Z=2\min(L_y,L_z),\qquad
  d_X=(T+1)\min(L_y,L_z).
 \]
+H+5/H+6 threshold values are not a controlled circuit-only comparison:
+the seed preparation, upper boundary instrument, and historical
+channel-dependent seed noise also differ. The saved H+6 data and interfaces
+remain unchanged.
+
 The transfer retains independent rate-$p$ faults on every active H/CNOT
 output and ideal measurements, corrections, and idles.  Final unit-weight
 matching on the star syndrome returns a full data recovery, whose syndrome
@@ -561,7 +665,7 @@ This is a decoder-dependent Z-sector estimate for the diagonal circuit;
 it neither removes the earlier rough-slab bound nor establishes a joint
 X/Z threshold.
 
-\subsection{Diagonal-slice X-sector feedback threshold}
+\subsection{Historical plaquette-transfer H+6 X-sector estimate}
 
 To test the measurement-feedback mechanism itself, use the same encoded
 diagonal geometry but prepare logical $|00\rangle$.  Product zero already
@@ -634,7 +738,7 @@ reproduction commands are recorded in
 \texttt{toric3d-x-feedback-threshold.md} in \texttt{docs/superpowers} and the
 associated results directory.
 
-\subsection{Diagonal sweep with three feedback strengths}
+\subsection{Historical plaquette-transfer H+6 with three feedback strengths}
 
 To hold the diagonal sweep fixed while comparing feedback policies, a further
 paired experiment uses the same encoded diagonal transfer and compares three

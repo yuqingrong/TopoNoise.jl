@@ -436,7 +436,39 @@ JULIA_CONDAPKG_BACKEND=Null \
 This local fallback bypasses dependency resolution; the usual command above
 remains the default when CondaPkg can reach its mapping service.
 
-## Diagonal-slice transfer with active-slice feedback
+## Direct vertex-projector H+5 diagonal feedback
+
+The primary new four-arm experiment uses `Toric3DVertexProjectorCode(T, Lu, Lv)`
+and a literal H plus five CNOT vertex projector: six gates, eleven noisy
+outputs per cell. It compares `none`, `one_step`, `window_complete`, and
+`full_prefix` on the same immutable faults and ideal upper-boundary branch,
+with separate X-only and Z-only noise. Both transverse logical pairs are
+scored. Logical Z is a state-independent diagnostic, not logical-zero
+preparation infidelity.
+
+```sh
+export JULIA_NUM_THREADS=1 JULIA_CONDAPKG_BACKEND=Null
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1
+export JULIA_PYTHONCALL_EXE="$PWD/.CondaPkg/.pixi/envs/default/bin/python"
+export MPLCONFIGDIR=/tmp/toponoise-mpl
+julia --project=. examples/compare_toric3d_vertex_projector_feedback.jl --stage pilot --dimensions 3x3x3 --rates 0.01 --shots 20 --output results/h5/pilot
+julia --project=. examples/compare_toric3d_vertex_projector_feedback.jl --stage scout --output results/h5/scout
+.CondaPkg/.pixi/envs/default/bin/python examples/analyze_toric3d_vertex_projector.py select --input-csv results/h5/scout/toric3d-h5-vertex-projector-feedback-raw.csv --input-metadata results/h5/scout/toric3d-h5-vertex-projector-feedback-metadata.toml --output results/h5/selection.json
+julia --project=. examples/compare_toric3d_vertex_projector_feedback.jl --stage production --selection results/h5/selection.json --shots 1000 --output results/h5/production
+```
+
+Production requires a ready frozen selection. If it requests an extended scout,
+run `--stage extend-scout --selection ... --output results/h5/scout-extension-1`,
+then rerun selection with `--previous-selection` and every prior CSV/metadata pair.
+Use `--resume` with the identical command to continue atomic checkpoints.
+Raw and aggregate CSV, provenance TOML, and PDF/SVG/PNG figures are saved;
+the `fit` subcommand produces guarded candidates, bootstrap intervals, and
+separate model/window sensitivity. See
+[the H+5 experiment report](docs/superpowers/toric3d-h5-vertex-projector.md)
+for complete commands and scientific limitations. Feedback comparisons change
+measured checks, residual constraints, decoder, and correction support together.
+
+## Historical plaquette-transfer H+6 with active-slice feedback
 
 A separate experimental construction transfers the state from old control
 qubits to new target triads along diagonal cubic slices. It retains the same
