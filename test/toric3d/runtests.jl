@@ -32,3 +32,4 @@ include("x_feedback_example.jl")
 
 include("vertex_projector_legacy.jl")
 include("vertex_projector_encoder.jl")
+include("vertex_projector_boundary.jl")

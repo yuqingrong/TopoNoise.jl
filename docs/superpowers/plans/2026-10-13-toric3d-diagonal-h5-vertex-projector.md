@@ -105,7 +105,7 @@
 
 - [ ] **Step 1: Write failing boundary-algebra tests**
 
-  Assert independent lower white triads, rank exactly `M-1` for the clean upper-outcome distribution, uniform support over all `2^(M-1)` even-parity branches, a lexicographic spanning tree rooted specifically at final bulk star `A_(T-1,0,0)`, and zero logical-Z homology for every tree correction. On `Lu=Lv=2`, exhaust all eight clean even branches and all sixteen upper flip vectors.
+  Assert independent lower white triads, rank exactly `M-1` for the clean upper-outcome distribution, uniform support over all `2^(M-1)` even-parity branches, a physical-edge-ID-ordered BFS spanning tree excluding the union of both logical-X supports, rooted specifically at final bulk star `A_(T-1,0,0)`, and zero logical-Z homology for every tree correction. On `Lu=Lv=2`, exhaust all eight clean even branches and all sixteen upper flip vectors.
 
 - [ ] **Step 2: Write failing paired-instrument tests**
 
@@ -119,7 +119,7 @@
 
 - [ ] **Step 4: Implement the deterministic tree map and branch sampler**
 
-  Represent the ideal lower-white-triad measurement and its deterministic zero-homology Z correction as the noiseless reference preparation. Root the upper correction tree at `A_(T-1,0,0)` and record that root in provenance. The upper sampler draws the first `Lu*Lv-1` bits and fixes the final parity. The controller accepts only the observed physical outcome; keep clean `b` solely in replay provenance and the explicit clean/noisy comparison.
+  Represent the ideal lower-white-triad measurement and its deterministic zero-homology Z correction as the noiseless reference preparation. Use physical-edge-ID-ordered BFS on the star graph with the union of the two logical-X supports excluded, root it at `A_(T-1,0,0)`, and record that convention and root in provenance. The excluded-edge condition, not acyclicity alone, guarantees zero logical overlaps. The upper sampler draws the first `Lu*Lv-1` bits and fixes the final parity. The controller accepts only the observed physical outcome; keep clean `b` solely in replay provenance and the explicit clean/noisy comparison.
 
 - [ ] **Step 5: Implement stabilizer-state verification helpers**
 

@@ -134,4 +134,10 @@ export Toric3DVertexProjectorCode, Toric3DVertexProjectorEncoder,
 include("toric3d/vertex_projector_geometry.jl")
 include("toric3d/vertex_projector_encoder.jl")
 
+export Toric3DVertexBoundaryMap, toric3d_vertex_boundary_map,
+       verify_toric3d_vertex_lower_boundary, toric3d_vertex_boundary_correction,
+       sample_toric3d_vertex_upper_branch, Toric3DVertexBoundaryCompletion,
+       complete_toric3d_vertex_boundary
+include("toric3d/vertex_projector_boundary.jl")
+
 end

@@ -105,15 +105,20 @@ constraint, so only `L_uL_v-1` are independent. They are otherwise
 intrinsically random and are not an error syndrome.
 
 Model upper completion as an explicit physical measurement instrument. Build
-a deterministic lexicographic spanning tree of the full star graph, rooted at
-one declared final bulk star. For each upper star `U`, let `P_U` be its unique
+a physical-edge-ID-ordered breadth-first spanning tree on the full star
+vertex set, excluding edges in the union of the two declared logical-X
+supports, rooted at `A_(T-1,0,0)`. The cut graph stays connected: direction-3
+edges connect slices and nonwrapping transverse edges connect the rectangular
+transverse domain. For each upper star `U`, let `P_U` be its unique
 tree path to that root. For an observed upper-outcome vector `a`, define
 
 \[
 C(a)=\bigoplus_{U:a_U=1}P_U.
 \]
 
-This map has fixed zero logical-Z homology because its support lies in a tree.
+Every path has zero overlap with both declared logical-X supports by
+construction, and therefore so does every correction. A tree alone would not
+guarantee this for open paths.
 It flips every indicated upper outcome. If `a` has odd parity, it transfers
 the unmatched endpoint to the declared bulk root, where the final decoder can
 observe it. For a clean even-parity outcome it leaves every completed bulk
