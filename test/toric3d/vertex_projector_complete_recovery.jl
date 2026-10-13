@@ -28,11 +28,11 @@ end
                 @test TopoNoise._toric3d_settings_metadata(d.settings)==(max_iter=50,bp_method="minimum_sum",ms_scaling_factor=1.,schedule="parallel",omp_thread_count=1,osd_method="OSD_CS",osd_order=2)
                 s=falses(size(d.window.matrix,1));x=decode_toric3d_vertex_bposd(d,s)
                 @test !any(x)
-                x[1]=true;@test_throws ErrorException TopoNoise._vertex_validate_recovery(d.window,s,x)
+                x[1]=true;@test_throws TopoNoise.Toric3DVertexInvalidRecovery TopoNoise._vertex_validate_recovery(d.window,s,x)
             end
             for d in vcat(f.z_window,f.z_prefix,[f.final_z])
                 s=falses(size(d.window.matrix,1));x=decode_toric3d_vertex_z_complete(d,s).full_recovery
-                x[1]=true;@test_throws ErrorException TopoNoise._vertex_validate_recovery(d.window,s,x)
+                x[1]=true;@test_throws TopoNoise.Toric3DVertexInvalidRecovery TopoNoise._vertex_validate_recovery(d.window,s,x)
             end
         end
     end

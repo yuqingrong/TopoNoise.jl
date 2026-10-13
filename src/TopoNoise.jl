@@ -164,4 +164,14 @@ export TORIC3D_VERTEX_PROTOCOLS, TORIC3D_VERTEX_REPLAY_CHANNELS,
        Toric3DVertexFeedbackHistory, Toric3DVertexReplayOutcome, replay_toric3d_vertex_projector
 include("toric3d/vertex_projector_replay.jl")
 
+export Toric3DVertexScanGrid, Toric3DVertexProtocolEstimate, Toric3DVertexPairEstimate,
+       Toric3DVertexQuadMetricEstimate, Toric3DVertexFeedbackPoint, Toric3DVertexFeedbackScan,
+       compare_toric3d_vertex_projector_feedback, Toric3DVertexInvalidRecovery
+include("toric3d/vertex_projector_scan.jl")
+
+export write_toric3d_vertex_projector_feedback_csv, plot_toric3d_vertex_projector_feedback,
+       save_toric3d_vertex_projector_feedback, Toric3DVertexProductionSelection,
+       load_toric3d_vertex_production_selection
+include("toric3d/vertex_projector_output.jl")
+
 end

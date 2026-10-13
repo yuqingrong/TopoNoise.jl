@@ -1,3 +1,14 @@
+"""A scientific recovery invariant failed; user interruption is a separate exception."""
+struct Toric3DVertexInvalidRecovery <: Exception
+    message::String
+    context::Dict{String,Any}
+end
+Base.showerror(io::IO,e::Toric3DVertexInvalidRecovery)=print(io,e.message)
+function _vertex_invalid(w,s,recovery;message="invalid H+5 recovery: returned data do not reproduce measured syndrome",route=recovery,paths=Any[],observed_post_syndrome=nothing)
+    throw(Toric3DVertexInvalidRecovery(message,Dict{String,Any}("channel"=>string(w.channel),"policy"=>string(w.policy),"checkpoint"=>w.checkpoint,
+        "syndrome"=>collect(s),"recovery"=>collect(recovery),"post_syndrome"=>s .⊻ _vertex_syndrome(w.matrix,route),"predicted_post_syndrome"=>s .⊻ _vertex_syndrome(w.matrix,route),"observed_post_syndrome"=>isnothing(observed_post_syndrome) ? Bool[] : collect(observed_post_syndrome),"qubits"=>w.qubits,"checks"=>w.checks,"route"=>collect(route),"paths"=>paths)))
+end
+
 """A matched endpoint pair and its ordered full-code physical data edges."""
 struct Toric3DVertexMatchedPath
     first::Int
@@ -94,10 +105,10 @@ function _vertex_lift(parent,edge,a,b)
     reverse!(path)
 end
 
-function _vertex_validate_recovery(w,s,recovery)
+function _vertex_validate_recovery(w,s,recovery;paths=Any[])
     length(s)==size(w.matrix,1) || throw(DimensionMismatch("measured syndrome length differs"))
     length(recovery)==length(w.qubits) || throw(DimensionMismatch("data recovery length differs"))
-    _vertex_syndrome(w.matrix,recovery)==s || error("invalid H+5 recovery: returned data do not reproduce measured syndrome")
+    _vertex_syndrome(w.matrix,recovery)==s || _vertex_invalid(w,s,recovery;paths)
     recovery
 end
 
@@ -142,7 +153,7 @@ function _vertex_matching_decision(d::Toric3DVertexMatchingDecoder,s::AbstractVe
             p.second in retired && (route[index[last(p.edges)]]⊻=true)
         end
     end
-    _vertex_validate_recovery(w,s,full)
+    _vertex_validate_recovery(w,s,full;paths=[p.edges for p in paths])
     trim==:complete && (route.=full)
     residual=s .⊻ _vertex_syndrome(w.matrix,route)
     if trim==:z_retiring

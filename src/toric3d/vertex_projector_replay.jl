@@ -70,9 +70,9 @@ function _vertex_final_recovery(frame::PauliFrame,f::Toric3DVertexDecoderFamily)
 end
 
 """Replay one immutable shot, applying data corrections before subsequent gates."""
-function replay_toric3d_vertex_projector(e::Toric3DVertexProjectorEncoder,
+function _vertex_replay(e::Toric3DVertexProjectorEncoder,
         r::Toric3DVertexProjectorFaultRecord,f::Toric3DVertexDecoderFamily;
-        protocol::Symbol,channel::Symbol,record_history::Bool=true)
+        protocol::Symbol,channel::Symbol,record_history::Bool=true,_context=Dict{String,Any}())
     protocol in TORIC3D_VERTEX_PROTOCOLS || throw(ArgumentError("invalid H+5 feedback protocol"))
     channel in TORIC3D_VERTEX_REPLAY_CHANNELS || throw(ArgumentError("channel must be x_only, z_only, or both"))
     channel==:x_only && any(r.z) && throw(ArgumentError("X-only replay contains Z faults"))
@@ -84,6 +84,7 @@ function replay_toric3d_vertex_projector(e::Toric3DVertexProjectorEncoder,
     for t in 1:c.T
         propagate_toric3d_vertex_projector_segment!(frame,e,r,first,e.checkpoints[t]);first=e.checkpoints[t]+1
         (t==c.T || protocol==:none) && continue
+        _context["frame"]=PauliFrame(copy(frame.x),copy(frame.z));_context["boundary_phase"]="pending";_context["checkpoint"]=t
         decisions=_vertex_checkpoint_decisions(frame,f,protocol,channel,t)
         for (w,s,decision) in decisions
             bits=w.channel==:x_only ? frame.x : frame.z
@@ -91,12 +92,12 @@ function replay_toric3d_vertex_projector(e::Toric3DVertexProjectorEncoder,
             _vertex_validate_recovery(w,s,decision.full_recovery)
             bits[w.qubits].⊻=decision.route
             post=_vertex_syndrome(w.checks,bits)
-            post==decision.residual_syndrome || error("partial-route prediction disagrees with physical frame")
+            post==decision.residual_syndrome || _vertex_invalid(w,s,decision.full_recovery;message="partial-route prediction disagrees with physical frame",route=decision.route,paths=[p.edges for p in decision.paths],observed_post_syndrome=post)
             if protocol!=:one_step
                 checks=w.channel==:x_only ? plaquette_checks(c)[1:3m*t] : star_checks(c)[1:(t+1)*m]
-                !any(_vertex_syndrome(checks,bits)) || error("complete feedback violated prepared-prefix checks")
+                !any(_vertex_syndrome(checks,bits)) || _vertex_invalid(w,s,decision.full_recovery;message="complete feedback violated prepared-prefix checks",route=decision.route,paths=[p.edges for p in decision.paths],observed_post_syndrome=post)
             elseif w.channel==:z_only
-                !any(post[w.retired_rows]) || error("one-step Z feedback left retired syndrome")
+                !any(post[w.retired_rows]) || _vertex_invalid(w,s,decision.full_recovery;message="one-step Z feedback left retired syndrome",route=decision.route,paths=[p.edges for p in decision.paths],observed_post_syndrome=post)
             end
             record_history && push!(history,Toric3DVertexFeedbackHistory(t,w.channel,w,s,decision.full_recovery,
                 decision.route,post,decision.paths,decision.signature))
@@ -104,10 +105,24 @@ function replay_toric3d_vertex_projector(e::Toric3DVertexProjectorEncoder,
     end
     before=PauliFrame(frame.x,frame.z)
     boundary=complete_toric3d_vertex_boundary(f.boundary,frame.z,r.upper_branch)
+    _context["frame"]=PauliFrame(copy(frame.x),copy(frame.z));_context["boundary_phase"]="completed";_context["checkpoint"]=c.T
     frame.z.=boundary.z
     result=_vertex_final_recovery(frame,f)
     Toric3DVertexReplayOutcome(protocol,channel,before,boundary,result.residual,history,
         result.x_syndrome,result.z_syndrome,result.x_recovery,result.z_decision,result.logical_x,result.logical_z,
         result.logical_x_failure,result.logical_z_failure,result.pauli_class,
         channel==:x_only ? result.logical_x_failure : nothing)
+end
+
+function replay_toric3d_vertex_projector(e::Toric3DVertexProjectorEncoder,r::Toric3DVertexProjectorFaultRecord,f::Toric3DVertexDecoderFamily;kw...)
+    context=Dict{String,Any}()
+    try
+        _vertex_replay(e,r,f;kw...,_context=context)
+    catch err
+        if err isa Toric3DVertexInvalidRecovery
+            frame=pop!(context,"frame",PauliFrame(falses(data_qubit_count(e.code)),falses(data_qubit_count(e.code))))
+            throw(Toric3DVertexInvalidRecovery(err.message,merge(context,_vertex_boundary_context(e,r,frame),err.context)))
+        end
+        rethrow()
+    end
 end
