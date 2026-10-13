@@ -1,0 +1,21 @@
+{
+  "arm_replays": 160,
+  "checkpoint_counts_and_digests_verified": true,
+  "checkpoint_sha256": "7d75726840a7129581dae164a5c5c58a4c7a8d2eeaee1af600f84e650f0ac378",
+  "contrasts_per_metric": 6,
+  "invalid_recoveries": 0,
+  "metadata_sha256": "e9e5ab9be529931a1454c8da8aa1ffbb6e50128dfbaa8aa510e496b2d3dd0bf7",
+  "metrics_per_point": 23,
+  "paired_records": 40,
+  "phase_seconds_by_channel": {
+    "x_only": 0.08278783499999999,
+    "z_only": 0.064005875
+  },
+  "points": 2,
+  "raw_csv_sha256": "208a9b8d10d4771f650542a6c03ecb407949871ab9b54782e28fd56bd25dd513",
+  "source_hashes_verified": true,
+  "stage": "pilot",
+  "statistics_verified": true,
+  "warmup_excluded": true,
+  "zero_noise_passed": true
+}

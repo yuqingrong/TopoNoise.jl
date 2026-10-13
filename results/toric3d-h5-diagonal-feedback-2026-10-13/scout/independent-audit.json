@@ -1,0 +1,21 @@
+{
+  "arm_replays": 132000,
+  "checkpoint_counts_and_digests_verified": true,
+  "checkpoint_sha256": "9030c3be414b4129da5880f5d8bec7b95053d5cedb0138d366c983075b31ca09",
+  "contrasts_per_metric": 6,
+  "invalid_recoveries": 0,
+  "metadata_sha256": "bc321c4c451cf8d9929eb9086d9756f685f94743fd959b35694ba15d78672ea1",
+  "metrics_per_point": 23,
+  "paired_records": 33000,
+  "phase_seconds_by_channel": {
+    "x_only": 394.2115354409999,
+    "z_only": 842.8168014260003
+  },
+  "points": 66,
+  "raw_csv_sha256": "d931aac13561a4f68aebf2cd39357e288aab2d86ff30a75ef839f5b81222fb0d",
+  "source_hashes_verified": true,
+  "stage": "scout",
+  "statistics_verified": true,
+  "warmup_excluded": true,
+  "zero_noise_passed": true
+}
