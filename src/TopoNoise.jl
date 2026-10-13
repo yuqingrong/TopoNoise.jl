@@ -140,4 +140,8 @@ export Toric3DVertexBoundaryMap, toric3d_vertex_boundary_map,
        complete_toric3d_vertex_boundary
 include("toric3d/vertex_projector_boundary.jl")
 
+export Toric3DVertexProjectorFaultRecord, sample_toric3d_vertex_projector_record,
+       with_toric3d_vertex_projector_fault, propagate_toric3d_vertex_projector_segment!
+include("toric3d/vertex_projector_noise.jl")
+
 end
