@@ -150,4 +150,9 @@ export Toric3DVertexFeedbackWindow, toric3d_vertex_x_slice_window,
        toric3d_vertex_z_prefix_window
 include("toric3d/vertex_projector_feedback_geometry.jl")
 
+export Toric3DVertexMatchedPath, Toric3DVertexMatchingDecision,
+       build_toric3d_vertex_x_one_step_decoder, build_toric3d_vertex_z_one_step_decoder,
+       decode_toric3d_vertex_x_one_step, decode_toric3d_vertex_z_one_step
+include("toric3d/vertex_projector_matching.jl")
+
 end
