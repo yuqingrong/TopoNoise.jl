@@ -4,6 +4,7 @@
   "checkpoint_sha256": "9030c3be414b4129da5880f5d8bec7b95053d5cedb0138d366c983075b31ca09",
   "contrasts_per_metric": 6,
   "invalid_recoveries": 0,
+  "logical_labels_verified_from_pauli_classes": true,
   "metadata_sha256": "bc321c4c451cf8d9929eb9086d9756f685f94743fd959b35694ba15d78672ea1",
   "metrics_per_point": 23,
   "paired_records": 33000,

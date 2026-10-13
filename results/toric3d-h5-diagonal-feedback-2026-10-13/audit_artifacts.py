@@ -34,12 +34,17 @@ for r in csv.DictReader(raw.open()):
 assert set(groups)==expected and m['completed_points']==m['expected_points']==len(expected)
 for g in groups.values():
     assert len(g)==23
-    for p in P: assert sum(int(g['pauli_class_'+str(i)][p+'_failures']) for i in range(16))==m['shots']
+    for p in P:
+        classes=[int(g['pauli_class_'+str(i)][p+'_failures']) for i in range(16)]
+        assert sum(classes)==m['shots']
+        for metric,mask in [('logical_x_1',1),('logical_x_2',2),('logical_x_union',3),('logical_z_1',4),('logical_z_2',8),('logical_z_union',12),('pauli_any',15)]:
+            assert sum(v for i,v in enumerate(classes) if i&mask)==int(g[metric][p+'_failures'])
+    for mask in range(16): assert g['pauli_class_0']['joint_mask_'+str(mask)]==g['pauli_any']['joint_mask_'+str(15-mask)]
 metrics=['logical_x_1','logical_x_2','logical_x_union','logical_z_1','logical_z_2','logical_z_union','pauli_any']+['pauli_class_'+str(i) for i in range(16)]
 ordered=[(ch,*d,float(p)) for ch in ('x_only','z_only') if ch in m['config']['channel_grids'] for d in m['config']['channel_grids'][ch]['dimensions'] for p in m['config']['channel_grids'][ch]['rates']]
 assert len(ck['states'])==len(ordered)==len(ck['point_seeds'])
 for k,state,seed in zip(ordered,ck['states'],ck['point_seeds']):
-    assert state['completed_shots']==m['shots'] and state['invalid_recoveries']==0
+    assert state['completed_shots']==m['shots'] and state['invalid_recoveries']==0 and len(state['counts'])==23
     for metric,counts in zip(metrics,state['counts']):
         r=groups[k][metric]
         assert counts==[int(r['joint_mask_'+str(i)]) for i in range(16)]
@@ -48,5 +53,5 @@ for k,state,seed in zip(ordered,ck['states'],ck['point_seeds']):
         for name in ('sampling_seconds','replay_seconds','decoder_build_seconds'): near(r[name],state[name])
 assert not list(b.rglob('failure.toml'))
 primary=[g['logical_x_union' if k[0]=='x_only' else 'logical_z_union'] for k,g in groups.items()]
-summary=dict(stage=m['stage'],points=len(groups),paired_records=len(groups)*m['shots'],arm_replays=4*len(groups)*m['shots'],metrics_per_point=23,contrasts_per_metric=6,invalid_recoveries=0,raw_csv_sha256=sha(raw),metadata_sha256=sha(mp),checkpoint_sha256=sha(b/'checkpoints/checkpoint.toml'),source_hashes_verified=True,statistics_verified=True,checkpoint_counts_and_digests_verified=True,warmup_excluded=True,zero_noise_passed=True,phase_seconds_by_channel={ch:sum(float(r[x]) for r in primary if r['channel']==ch for x in ('decoder_build_seconds','sampling_seconds','replay_seconds')) for ch in m['config']['channel_grids']})
+summary=dict(stage=m['stage'],points=len(groups),paired_records=len(groups)*m['shots'],arm_replays=4*len(groups)*m['shots'],metrics_per_point=23,contrasts_per_metric=6,invalid_recoveries=0,raw_csv_sha256=sha(raw),metadata_sha256=sha(mp),checkpoint_sha256=sha(b/'checkpoints/checkpoint.toml'),source_hashes_verified=True,statistics_verified=True,logical_labels_verified_from_pauli_classes=True,checkpoint_counts_and_digests_verified=True,warmup_excluded=True,zero_noise_passed=True,phase_seconds_by_channel={ch:sum(float(r[x]) for r in primary if r['channel']==ch for x in ('decoder_build_seconds','sampling_seconds','replay_seconds')) for ch in m['config']['channel_grids']})
 (b/'independent-audit.json').write_text(json.dumps(summary,indent=2,sort_keys=True)+'\n');print(json.dumps(summary,indent=2))
