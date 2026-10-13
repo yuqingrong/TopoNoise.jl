@@ -1,7 +1,7 @@
 # Diagonal H+5 vertex-projector feedback experiment
 
 **Date:** 2026-10-13  
-**Status:** revised four-arm design awaiting written-spec approval
+**Status:** approved four-arm design
 
 **Purpose:** determine whether ideal slice feedback gives a nonzero logical
 threshold for the direct cubic-vertex projector under the existing
@@ -376,11 +376,14 @@ record the matching backend and version as well as the canonical signature.
 At a common checkpoint, the selected X- and Z-type measurements commute. An
 X recovery does not change an X-star syndrome, and a Z recovery does not
 change a Z-check syndrome. The Pauli recovery order therefore changes only a
-discarded global phase. For a combined-channel API call, capture both syndrome
-sets from the same pre-correction frame, compute both decisions, then XOR both
-routes into the frame. Although the first study runs X-only and Z-only noise
-separately, verify this compatibility for both one-step and complete-window
-policies so that the public API has an unambiguous combined-channel meaning.
+discarded global phase. The public replay `channel` values are exactly
+`:x_only`, `:z_only`, and `:both`. A pure-channel call rejects a record with
+any fault in the opposite component before propagation. For `channel=:both`,
+capture both syndrome sets from the same pre-correction frame, compute both
+decisions, then XOR both routes into the frame. Although the first study scans
+X-only and Z-only noise separately, verify `:both` compatibility for both
+one-step and complete-window policies so that the public API has an
+unambiguous combined-channel meaning.
 
 ## Final decoding and observables
 
