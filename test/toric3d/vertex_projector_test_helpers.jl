@@ -35,3 +35,37 @@ function h5_test_contains(state,pauli,s)
     h5_test_rank(vcat(state,permutedims(v)))==h5_test_rank(state)
 end
 
+
+using Test, Random, TopoNoise, LinearAlgebra
+
+# Truth tables are derived by actual 2x2/4x4 matrix conjugation, independently
+# of the binary propagation formulas in the simulator.
+function h5_physical_tables()
+    paulis=[ComplexF64[1 0;0 1],ComplexF64[0 1;1 0],ComplexF64[1 0;0 -1],ComplexF64[0 -im;im 0]]
+    h=ComplexF64[1 1;1 -1]/sqrt(2);cx=ComplexF64[1 0 0 0;0 1 0 0;0 0 0 1;0 0 1 0]
+    htable=zeros(Int,4);ctable=Matrix{Tuple{Int,Int}}(undef,4,4)
+    for a in 1:4
+        htable[a]=only([j-1 for j in 1:4 if abs(tr(paulis[j]'*h*paulis[a]*h'))≈2])
+        for b in 1:4
+            out=cx*kron(paulis[a],paulis[b])*cx'
+            ctable[a,b]=only([(i-1,j-1) for i in 1:4 for j in 1:4 if abs(tr(kron(paulis[i],paulis[j])'*out))≈4])
+        end
+    end
+    htable,ctable
+end
+function h5_physical_segment!(labels,e,r,first,last,tables)
+    ht,ct=tables
+    for step in first:last
+        op=e.operations[step]
+        if op.gate==:H
+            q=only(op.qubits);labels[q]=ht[labels[q]+1]
+        else
+            c,t=op.qubits;labels[c],labels[t]=ct[labels[c]+1,labels[t]+1]
+        end
+        for (slot,q) in enumerate(op.qubits)
+            labels[q]⊻=Int(r.x[slot,step])+2Int(r.z[slot,step])
+        end
+    end
+    labels
+end
+
