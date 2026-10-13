@@ -1,7 +1,8 @@
 # Diagonal H+5 vertex-projector feedback experiment
 
 **Date:** 2026-10-13  
-**Status:** design approved in conversation; implementation pending  
+**Status:** revised after protocol-consistency review; implementation pending
+
 **Purpose:** determine whether ideal slice feedback gives a nonzero logical
 threshold for the direct cubic-vertex projector under the existing
 post-gate-output noise model.
@@ -205,6 +206,20 @@ with frame propagation and with the explicit clean/noisy boundary branches.
 All intermediate feedback occurs after layers `1:T-1`. Every protocol uses
 the same final full-code recovery after ideal upper-boundary completion.
 
+The weak protocol uses one common two-edge-slice data window in both Pauli
+sectors,
+
+\[
+D_t=E_{t-1}\cup E_t.
+\]
+
+This is the smallest syndrome-complete window for the H+5 circuit: a layer-`t`
+gate acts only on old targets in `E_{t-1}` and fresh edges in `E_t`, and Pauli
+propagation through the rest of that layer never leaves those two slices. The
+X- and Z-sector measurements below are commuting CSS checks. Their recoveries
+may overlap, but their order changes only an ignored Pauli phase, so the same
+window also defines a compatible combined-channel protocol.
+
 ### No feedback
 
 Propagate the complete fault record through all H+5 layers, apply the common
@@ -214,15 +229,21 @@ or unassisted boundary preparation.
 
 ### Weak X feedback
 
-After layer `t`, measure the six-edge Z compatibility checks `Q_t` contained
-in the active edge slice `E_t`. Decode their periodic triangular matching
-graph with unit-weight MWPM and apply the full recovery directly to `E_t`.
-The recovery must reproduce the measured `Q_t` syndrome. It need not clear
-older physical-plaquette syndrome created by faults on old CNOT targets.
+Write `P_j` for all `3L_uL_v` physical Z plaquettes between edge slices
+`E_{j-1}` and `E_j`. After layer `t`, measure
 
-This is a physical active-slice correction. Do not reuse the H+6
-target-feedforward map `F(C)`, which depends on the old-control/new-target
-plaquette-transfer circuit.
+- `P_1` at `t=1`; and
+- `P_{t-1} union P_t` at `t>=2`.
+
+Restrict recovery columns to `D_t` and decode the resulting binary incidence
+matrix with BP+OSD. Require the recovery to reproduce the complete window
+syndrome and, after application, require every completed plaquette in
+`P_1:P_t` to have zero syndrome.
+
+The previous active-slice checks `Q_t` may be retained as a diagnostic, but
+they do not define weak H+5 feedback: they cannot see all physical-plaquette
+defects made by faults on old CNOT targets. Do not reuse either their MWPM
+decoder or the H+6 target-feedforward map `F(C)`.
 
 ### Strong X feedback
 
@@ -233,19 +254,33 @@ vanish. The decoder must not access future edges.
 
 ### Weak Z feedback
 
-Z faults can occur on both old targets and new edges. Use a constant-width
-open matching graph after each layer:
+Write `W` for the lower white boundary triads and `A_j` for bulk-star sheet
+`j`, supported on `E_j union E_{j+1}`. On the same recovery window `D_t`, use
+the following constant-width open matching graph after each layer:
 
-- at `t=1`, include the lower white boundary stars and bulk-star sheet zero,
-  with recovery edges in `E_0:E_1`;
-- at `t>=2`, include bulk-star sheets `t-2` and `t-1`, with recovery edges in
-  `E_{t-1}:E_t`.
+- at `t=1`, measure `W union A_0`; and
+- at `t>=2`, measure `A_{t-2} union A_{t-1}`.
 
 Columns ending at the unprepared upper frontier have one detector endpoint,
 so odd syndrome parity is valid and must be matched to the open boundary.
-Apply the recovery only inside this window. Because earlier completed sheets
-entered the layer with zero syndrome and the selected edges touch no older
-sheet, the recovery must restore zero syndrome on the entire completed prefix.
+Apply the recovery only inside `D_t`. Require it to reproduce the complete
+window syndrome and, after application, require `W` and every completed star
+sheet `A_0:A_{t-1}` to have zero syndrome.
+
+For both sectors, the completed-prefix requirement follows inductively. Rows
+older than `P_{t-1}` in the X sector or `A_{t-2}` in the Z sector are disjoint
+from `D_t` and cannot change during layer `t` or its weak recovery. The actual
+net change of the propagated Pauli frame during layer `t`, including injected
+faults, is supported on `D_t` and witnesses that the measured syndrome lies in
+the restricted matrix image. Thus any syndrome-valid recovery on `D_t` clears
+the only completed rows that could have changed, for arbitrary fault patterns
+and not merely for single faults.
+
+For `M=L_uL_v`, the expected binary-matrix ranks are `3M-1` for the `t=1`
+weak-X matrix of shape `3M by 6M`, `4M` for a steady weak-X matrix of shape
+`6M by 6M`, and full row rank `2M` for both weak-Z matrices of shape
+`2M by 6M`. These expectations also apply when either transverse period is
+two; duplicated coordinates must still denote distinct physical edges.
 
 ### Strong Z feedback
 
@@ -263,11 +298,12 @@ defined above and use the existing full-code decoders:
 - unit-weight MWPM for Z recovery from the full star syndrome; and
 - BP+OSD for X recovery from the full plaquette syndrome.
 
-Use minimum-sum BP, 50 iterations, scaling factor one, parallel schedule, one
-thread, and `OSD_CS` order two, with a uniform physical-`p` prior. Record that
-these baseline decoders neglect circuit-induced correlations. Every complete
-intermediate and final recovery must reproduce its input syndrome. Save an
-atomic failure record and stop the affected point on any mismatch.
+For every intermediate and final BP+OSD instance, use minimum-sum BP, 50
+iterations, scaling factor one, parallel schedule, one thread, and `OSD_CS`
+order two, with a uniform physical-`p` prior. Record that these baseline
+decoders neglect circuit-induced correlations. Every complete intermediate
+and final recovery must reproduce its input syndrome. Save an atomic failure
+record and stop the affected point on any mismatch.
 
 Let `F_X,F_Z` be the final Pauli frame after all gate faults, intermediate
 corrections, paired boundary completion, and final recovery. For logical pair
@@ -283,9 +319,12 @@ class. These are state-independent logical diagnostics. Also label logical-X
 as `|00>` state-preparation failure for the selected ideal reference state;
 do not label logical Z as `|00>` infidelity.
 
-Weak and strong protocols differ in measured check sets, correction support,
-and decoder family. Their threshold difference is therefore an end-to-end
-protocol comparison, not an isolated estimate of correction range alone.
+Weak and strong protocols differ in measured check sets and correction
+support. Both strengths use BP+OSD in the X sector and MWPM in the Z sector,
+but build different decoder instances for their respective matrices. Their
+threshold difference is therefore an end-to-end protocol comparison, not an
+isolated estimate of correction range alone.
+
 Likewise, do not compare H+5 numbers directly with historical H+6 thresholds
 as a controlled circuit-only change: the seed, boundary instrument, and old
 channel-specific seed noise differ.
@@ -306,17 +345,20 @@ Development follows test-first red/green cycles. Required checks are:
    valid drop-in boundary for the H+5 circuit;
 6. exhaustive X and Z faults at all 11 output locations on a small lattice;
 7. open-MWPM recovery for both even and odd frontier syndromes;
-8. weak-X measured-syndrome validity, weak-Z complete-prefix clearing, and
-   strong X/Z complete-prefix clearing;
-9. equality of physical correction and propagated-frame correction;
-10. stabilizer-rank verification that clean upper outcomes are uniform on the
+8. syndrome-image and restricted-matrix-rank checks for both weak windows at
+   periods two and three, weak X/Z complete-prefix clearing, commuting weak
+   check measurements, and equality of the two X/Z correction orders in the
+   binary frame;
+9. strong X/Z complete-prefix clearing;
+10. equality of physical correction and propagated-frame correction;
+11. stabilizer-rank verification that clean upper outcomes are uniform on the
     even-parity subspace, all allowed clean upper branches, physical use of
     `b xor u`, equality of explicit two-branch and optimized relative
     completion, zero homology of the tree correction, and preservation of all
     four logical generators;
-11. final BP+OSD/MWPM recovery validity, zero-noise success, paired replay,
+12. final BP+OSD/MWPM recovery validity, zero-noise success, paired replay,
     seeded reproducibility, incremental resume, and invalid-recovery aborts;
-12. existing H+6 and Cartesian 3D regression tests.
+13. existing H+6 and Cartesian 3D regression tests.
 
 The verification must separately distinguish “prepared stabilizer state” from
 “decoder returned a syndrome-valid correction”; neither substitutes for the
