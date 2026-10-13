@@ -155,4 +155,9 @@ export Toric3DVertexMatchedPath, Toric3DVertexMatchingDecision,
        decode_toric3d_vertex_x_one_step, decode_toric3d_vertex_z_one_step
 include("toric3d/vertex_projector_matching.jl")
 
+export Toric3DVertexBPOSDDecoder, Toric3DVertexDecoderFamily,
+       build_toric3d_vertex_decoders, decode_toric3d_vertex_bposd,
+       decode_toric3d_vertex_z_complete, toric3d_vertex_decoder_metadata
+include("toric3d/vertex_projector_decoders.jl")
+
 end
