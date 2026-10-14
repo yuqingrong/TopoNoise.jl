@@ -186,4 +186,7 @@ export write_toric3d_vertex_projector_feedback_csv, plot_toric3d_vertex_projecto
        load_toric3d_vertex_production_selection
 include("toric3d/vertex_projector_output.jl")
 
+export toric3d_vertex_z_audit_payload, write_toric3d_vertex_z_ambiguity_audit
+include("toric3d/vertex_projector_z_output.jl")
+
 end
