@@ -170,6 +170,12 @@ export Toric3DVertexZFaultSignature, Toric3DVertexZObservableGroup,
        toric3d_vertex_z_fault_signatures, audit_toric3d_vertex_z_boundary
 include("toric3d/vertex_projector_z_audit.jl")
 
+export Toric3DVertexCircuitZDecoder, Toric3DVertexCircuitZDecision,
+       Toric3DVertexZControlOutcome, Toric3DVertexParityErasureEstimate,
+       build_toric3d_vertex_circuit_z_decoder, decode_toric3d_vertex_circuit_z,
+       finalize_toric3d_vertex_z_control, toric3d_vertex_parity_erasure_estimate
+include("toric3d/vertex_projector_z_control.jl")
+
 export Toric3DVertexScanGrid, Toric3DVertexProtocolEstimate, Toric3DVertexPairEstimate,
        Toric3DVertexQuadMetricEstimate, Toric3DVertexFeedbackPoint, Toric3DVertexFeedbackScan,
        compare_toric3d_vertex_projector_feedback, Toric3DVertexInvalidRecovery
