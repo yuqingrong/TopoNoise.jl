@@ -1,6 +1,6 @@
 # H+5 Z-boundary ambiguity diagnostics and circuit-aware control
 
-**Date:** 2026-10-14  
+**Date:** 2026-10-14
 **Status:** in-chat design approved; written specification awaiting review
 
 **Purpose:** measure and expose the information-theoretic Z-decoding limit of
