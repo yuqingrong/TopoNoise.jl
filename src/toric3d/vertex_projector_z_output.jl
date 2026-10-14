@@ -1,8 +1,8 @@
 const _VERTEX_Z_AUDIT_FORMAT="h5-z-boundary-ambiguity-v1"
 const _VERTEX_Z_AUDIT_FILENAMES=(
-    json="z-boundary-ambiguity.json",
+    json="z-boundary-audit.json",
     groups_csv="z-boundary-groups.csv",
-    report="report.md",
+    report="z-boundary-report.md",
 )
 
 _vertex_z_protocol_index(protocol)=something(findfirst(==(protocol),TORIC3D_VERTEX_PROTOCOLS),typemax(Int))
