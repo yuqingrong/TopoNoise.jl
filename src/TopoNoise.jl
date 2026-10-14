@@ -165,6 +165,11 @@ export TORIC3D_VERTEX_PROTOCOLS, TORIC3D_VERTEX_REPLAY_CHANNELS,
        replay_toric3d_vertex_projector_pre_final, replay_toric3d_vertex_projector
 include("toric3d/vertex_projector_replay.jl")
 
+export Toric3DVertexZFaultSignature, Toric3DVertexZObservableGroup,
+       Toric3DVertexZParitySummary, Toric3DVertexZAmbiguityAudit,
+       toric3d_vertex_z_fault_signatures, audit_toric3d_vertex_z_boundary
+include("toric3d/vertex_projector_z_audit.jl")
+
 export Toric3DVertexScanGrid, Toric3DVertexProtocolEstimate, Toric3DVertexPairEstimate,
        Toric3DVertexQuadMetricEstimate, Toric3DVertexFeedbackPoint, Toric3DVertexFeedbackScan,
        compare_toric3d_vertex_projector_feedback, Toric3DVertexInvalidRecovery
