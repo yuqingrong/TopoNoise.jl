@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "points": 195,
+  "paired_records": 195000,
+  "invalid_recoveries": 0,
+  "illustrative_rows_verified": 9,
+  "quoted_paired_intervals_verified": 6,
+  "guarded_windows": 14,
+  "eligible_arms": 0,
+  "bootstrap_executed": 0,
+  "julia_assertions": 45610,
+  "julia_test_sets": 145,
+  "python_tests": 51,
+  "figure_exports": 12,
+  "raw_csv_sha256": "ba3765ff260f09e109510bd574e19aa9a71e2da560c0e6916db1a8f44fbd8390",
+  "note_pdf_sha256": "7c3dd68046c2fa6df18f406bd0cee9a9a9c8bb988cacc8908235f8a2f8516108",
+  "report_sha256": "c71019cfd7b4163d129fee3d4bcdf27df6ca5839985e8a853cb7e7b0659db361",
+  "note_tex_sha256": "3a40710c2ab6bd43e53f5f7703b7c8716b209dc1e060a5092f17e0edce073f3a",
+  "regression_logs": {
+    "final-python-tests.log": "f37ef1fc44945ca021530df245863243a41dc221baa4ca96a359e9f637e527b6",
+    "final-julia-tests.log": "1f22633dcfc5db5b9b137573fd40f2f86c83204806828a8e2a3cefc08dbca419"
+  },
+  "scientific_source_unchanged": true
+}

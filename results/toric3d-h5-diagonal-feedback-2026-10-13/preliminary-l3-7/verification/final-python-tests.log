@@ -1,0 +1,158 @@
+test_bootstrap_1000_is_reproducible (test_feedback_strength_fit.FeedbackStrengthFitTests.test_bootstrap_1000_is_reproducible) ... ok
+test_bootstrap_fit_exceptions_are_rejected_and_counted (test_feedback_strength_fit.FeedbackStrengthFitTests.test_bootstrap_fit_exceptions_are_rejected_and_counted) ... ok
+test_bootstrap_guard_has_exact_eighty_percent_boundary (test_feedback_strength_fit.FeedbackStrengthFitTests.test_bootstrap_guard_has_exact_eighty_percent_boundary) ... ok
+test_cli_reports_are_byte_stable_and_figures_are_complete (test_feedback_strength_fit.FeedbackStrengthFitTests.test_cli_reports_are_byte_stable_and_figures_are_complete) ... ok
+test_data_guards_withhold_thresholds (test_feedback_strength_fit.FeedbackStrengthFitTests.test_data_guards_withhold_thresholds) ... ok
+test_fit_guards_do_not_swallow_process_control_exceptions (test_feedback_strength_fit.FeedbackStrengthFitTests.test_fit_guards_do_not_swallow_process_control_exceptions) ... ok
+test_model_spread_is_withheld_when_primary_bootstrap_is_rejected (test_feedback_strength_fit.FeedbackStrengthFitTests.test_model_spread_is_withheld_when_primary_bootstrap_is_rejected) ... ok
+test_numerical_guards_retain_rejected_candidate (test_feedback_strength_fit.FeedbackStrengthFitTests.test_numerical_guards_retain_rejected_candidate) ... ok
+test_parser_reads_disjoint_shards_and_derives_marginals (test_feedback_strength_fit.FeedbackStrengthFitTests.test_parser_reads_disjoint_shards_and_derives_marginals) ... ok
+test_parser_rejects_corrupt_counts_duplicates_and_missing_grid (test_feedback_strength_fit.FeedbackStrengthFitTests.test_parser_rejects_corrupt_counts_duplicates_and_missing_grid) ... ok
+test_primary_fit_exception_is_reported_as_inconclusive (test_feedback_strength_fit.FeedbackStrengthFitTests.test_primary_fit_exception_is_reported_as_inconclusive) ... ok
+test_sensitivities_cover_required_models_and_keep_spreads_separate (test_feedback_strength_fit.FeedbackStrengthFitTests.test_sensitivities_cover_required_models_and_keep_spreads_separate) ... ok
+test_sensitivity_figure_distinguishes_accepted_and_withheld_estimates (test_feedback_strength_fit.FeedbackStrengthFitTests.test_sensitivity_figure_distinguishes_accepted_and_withheld_estimates) ... ok
+test_six_seeded_crossings_recover_known_parameters (test_feedback_strength_fit.FeedbackStrengthFitTests.test_six_seeded_crossings_recover_known_parameters) ... ok
+test_linear_target_crossing_uses_bracketing_points (test_original_small_p.OriginalSmallPAnalysisTests.test_linear_target_crossing_uses_bracketing_points) ... ok
+test_power_law_recovers_inverse_square (test_original_small_p.OriginalSmallPAnalysisTests.test_power_law_recovers_inverse_square) ... ok
+test_target_crossing_rejects_unbracketed_target (test_original_small_p.OriginalSmallPAnalysisTests.test_target_crossing_rejects_unbracketed_target) ... ok
+test_all_threshold_guards_withhold_threshold_claims (test_vertex_projector_fit.H5FitTests.test_all_threshold_guards_withhold_threshold_claims) ... ok
+test_empty_saturation_extends_then_terminates_at_bounds (test_vertex_projector_fit.H5FitTests.test_empty_saturation_extends_then_terminates_at_bounds) ... ok
+test_extension_rounds_require_cumulative_parent_chain (test_vertex_projector_fit.H5FitTests.test_extension_rounds_require_cumulative_parent_chain) ... ok
+test_high_probability_windows_preserve_five_rate_rule (test_vertex_projector_fit.H5FitTests.test_high_probability_windows_preserve_five_rate_rule) ... ok
+test_mixed_arm_extension_status_uses_active_union (test_vertex_projector_fit.H5FitTests.test_mixed_arm_extension_status_uses_active_union) ... ok
+test_multiple_crossings_fund_every_candidate_window (test_vertex_projector_fit.H5FitTests.test_multiple_crossings_fund_every_candidate_window) ... ok
+test_reads_four_arm_joint_counts_and_six_contrasts (test_vertex_projector_fit.H5FitTests.test_reads_four_arm_joint_counts_and_six_contrasts) ... ok
+test_report_refuses_a_csv_with_the_wrong_saved_hash (test_vertex_projector_fit.H5FitTests.test_report_refuses_a_csv_with_the_wrong_saved_hash) ... ok
+test_reports_hashes_sensitivities_and_diagnostic_candidates (test_vertex_projector_fit.H5FitTests.test_reports_hashes_sensitivities_and_diagnostic_candidates) ... ok
+test_scout_selection_is_frozen_before_production (test_vertex_projector_fit.H5FitTests.test_scout_selection_is_frozen_before_production) ... ok
+test_scout_shards_merge_exact_points (test_vertex_projector_fit.H5FitTests.test_scout_shards_merge_exact_points) ... ok
+test_seeded_bootstrap_is_reproducible_per_channel_and_protocol (test_vertex_projector_fit.H5FitTests.test_seeded_bootstrap_is_reproducible_per_channel_and_protocol) ... ok
+test_timing_rule_selects_expected_channel_sizes (test_vertex_projector_fit.H5FitTests.test_timing_rule_selects_expected_channel_sizes) ... ok
+test_bad_deviance_does_not_emit_a_threshold (test_x_feedback_fit.XFeedbackThresholdFitTests.test_bad_deviance_does_not_emit_a_threshold) ... ok
+test_cli_writes_guarded_report_sensitivities_hashes_and_figures (test_x_feedback_fit.XFeedbackThresholdFitTests.test_cli_writes_guarded_report_sensitivities_hashes_and_figures) ... ok
+test_decreasing_curve_does_not_emit_a_threshold (test_x_feedback_fit.XFeedbackThresholdFitTests.test_decreasing_curve_does_not_emit_a_threshold) ... ok
+test_no_crossing_does_not_emit_a_threshold (test_x_feedback_fit.XFeedbackThresholdFitTests.test_no_crossing_does_not_emit_a_threshold) ... ok
+test_optimizer_bound_does_not_emit_a_threshold (test_x_feedback_fit.XFeedbackThresholdFitTests.test_optimizer_bound_does_not_emit_a_threshold) ... ok
+test_parametric_bootstrap_is_seeded_and_protocol_specific (test_x_feedback_fit.XFeedbackThresholdFitTests.test_parametric_bootstrap_is_seeded_and_protocol_specific) ... ok
+test_protocols_recover_distinct_known_thresholds (test_x_feedback_fit.XFeedbackThresholdFitTests.test_protocols_recover_distinct_known_thresholds) ... ok
+test_read_points_filters_state_failure_and_rejects_bad_grids (test_x_feedback_fit.XFeedbackThresholdFitTests.test_read_points_filters_state_failure_and_rejects_bad_grids) ... ok
+test_too_few_sizes_or_probabilities_are_rejected (test_x_feedback_fit.XFeedbackThresholdFitTests.test_too_few_sizes_or_probabilities_are_rejected) ... ok
+test_bootstrap_is_seeded_and_intervals_use_only_accepted_fits (test_z_correction_fit.CorrectionFitTests.test_bootstrap_is_seeded_and_intervals_use_only_accepted_fits) ... ok
+test_likelihood_gradient_matches_independent_finite_differences (test_z_correction_fit.CorrectionFitTests.test_likelihood_gradient_matches_independent_finite_differences) ... ok
+test_parameter_bound_is_not_an_accepted_fit (test_z_correction_fit.CorrectionFitTests.test_parameter_bound_is_not_an_accepted_fit) ... ok
+test_seeded_binomial_data_recovers_threshold_and_correction (test_z_correction_fit.CorrectionFitTests.test_seeded_binomial_data_recovers_threshold_and_correction) ... ok
+test_all_zero_failures_are_not_a_crossing (test_z_threshold_fit.ThresholdFitTests.test_all_zero_failures_are_not_a_crossing) ... ok
+test_bound_hitting_fit_is_reported_as_inconclusive (test_z_threshold_fit.ThresholdFitTests.test_bound_hitting_fit_is_reported_as_inconclusive) ... ok
+test_cli_saves_data_uncertainties_figures_and_metadata (test_z_threshold_fit.ThresholdFitTests.test_cli_saves_data_uncertainties_figures_and_metadata) ... ok
+test_invalid_counts_or_non_cubic_geometry_are_rejected (test_z_threshold_fit.ThresholdFitTests.test_invalid_counts_or_non_cubic_geometry_are_rejected) ... ok
+test_non_crossing_curves_are_not_given_a_threshold (test_z_threshold_fit.ThresholdFitTests.test_non_crossing_curves_are_not_given_a_threshold) ... ok
+test_seeded_binomial_crossing_recovers_known_threshold (test_z_threshold_fit.ThresholdFitTests.test_seeded_binomial_crossing_recovers_known_threshold) ... ok
+test_seeded_bootstrap_reproduces_intervals (test_z_threshold_fit.ThresholdFitTests.test_seeded_bootstrap_reproduces_intervals) ... ok
+test_wilson_retains_uncertainty_at_zero_failures (test_z_threshold_fit.ThresholdFitTests.test_wilson_retains_uncertainty_at_zero_failures) ... ok
+
+----------------------------------------------------------------------
+Ran 51 tests in 43.562s
+
+OK
+{
+  "x_only/full_prefix": {
+    "diagnostic": [],
+    "nu": 1.3511371226958047,
+    "pc": 0.02995126173734588,
+    "status": "ok"
+  },
+  "x_only/none": {
+    "diagnostic": [],
+    "nu": 1.1542045397065626,
+    "pc": 0.020035121604163028,
+    "status": "ok"
+  },
+  "x_only/slice_local": {
+    "diagnostic": [],
+    "nu": 1.25337874733058,
+    "pc": 0.025071138570968293,
+    "status": "ok"
+  },
+  "z_only/full_prefix": {
+    "diagnostic": [],
+    "nu": 1.3102777598638016,
+    "pc": 0.028049901454972298,
+    "status": "ok"
+  },
+  "z_only/none": {
+    "diagnostic": [],
+    "nu": 1.10360391429685,
+    "pc": 0.01796946204480603,
+    "status": "ok"
+  },
+  "z_only/slice_local": {
+    "diagnostic": [],
+    "nu": 1.2050332246992768,
+    "pc": 0.022898106957752837,
+    "status": "ok"
+  }
+}
+{
+  "x_only/full_prefix": {
+    "diagnostic": [],
+    "nu": 1.3511371226958047,
+    "pc": 0.02995126173734588,
+    "status": "ok"
+  },
+  "x_only/none": {
+    "diagnostic": [],
+    "nu": 1.1542045397065626,
+    "pc": 0.020035121604163028,
+    "status": "ok"
+  },
+  "x_only/slice_local": {
+    "diagnostic": [],
+    "nu": 1.25337874733058,
+    "pc": 0.025071138570968293,
+    "status": "ok"
+  },
+  "z_only/full_prefix": {
+    "diagnostic": [],
+    "nu": 1.3102777598638016,
+    "pc": 0.028049901454972298,
+    "status": "ok"
+  },
+  "z_only/none": {
+    "diagnostic": [],
+    "nu": 1.10360391429685,
+    "pc": 0.01796946204480603,
+    "status": "ok"
+  },
+  "z_only/slice_local": {
+    "diagnostic": [],
+    "nu": 1.2050332246992768,
+    "pc": 0.022898106957752837,
+    "status": "ok"
+  }
+}
+{
+  "final_only": {
+    "status": "ok",
+    "pc": 0.023515082960119355,
+    "nu": 1.2530147024481992,
+    "diagnostic": []
+  },
+  "slice_feedback": {
+    "status": "ok",
+    "pc": 0.029727887839078548,
+    "nu": 1.4348652139911477,
+    "diagnostic": []
+  }
+}
+{
+  "status": "ok",
+  "pc_interval": [
+    0.02455175181304856,
+    0.024639178158229514
+  ],
+  "diagnostic": [],
+  "pc": 0.02460142332948656,
+  "nu": 1.278538406873033,
+  "deviance": 33.86844816419753,
+  "degrees_of_freedom": 31
+}

@@ -1,5 +1,15 @@
 # Preliminary H+5 diagnostics: L=3,5,7
 
+**Complete, 2026-10-14:** all 195 points and 195,000 paired records finished
+successfully, with 780,000 protocol replays and zero invalid recoveries.
+Both independent audits passed. All 14 frozen windows fail the unchanged
+minimum-four-size guard before fitting: no threshold or scaling exponent is
+reported, and the requested 1000 bootstrap replicates were not executed.
+
+The [measured report](../../../docs/superpowers/toric3d-h5-vertex-projector.md)
+contains illustrative values and per-contrast intervals. Fixed-size feedback
+effects depend on the error rate; they do not establish a threshold.
+
 The user explicitly confirmed these three sizes on2026-10-14, clarifying an
 earlier L=4 typo. L9,11,13 are deferred. Both prior runs are deliberately stopped
 with their selections/checkpoints preserved. No scientific source code, rate,
@@ -36,15 +46,27 @@ and pass that same output directory to `run_preliminary.jl`. This resets counts
 while preserving the documented parent-grid seed assignment. The preserved
 parent checkpoint is required. Never prepare over an existing checkpoint.
 
-After completion, run the independent `../audit_artifacts.py` on `production/`
-and audit all already-complete retained states against the parent checkpoint.
+To reproduce the completed audits, run `../audit_artifacts.py production/`
+and `audit_checkpoint_reuse.py` from this directory using the repository's Python.
 Then run `analyze_preliminary.py` with the same one-thread numerical environment.
 It calls the unchanged fitting guard with1000 requested bootstrap replicates:
 all candidates fail the minimum-four-size check before fitting or bootstrap.
 Report fixed-size paired effects and preliminary curves, with no threshold,
 scaling exponent or fitted confidence interval. Empty bootstrap/sensitivity
-outputs and blank scaling panels must be explained as not performed.
+outputs mean not performed. Figures show measured curves only, without
+scaling panels. All four final figures (X/Z production and X/Z analysis)
+were visually inspected; PDF/SVG/PNG exports are retained.
 
-The final report, LaTeX note, PDF, Julia/Python regressions and local data commit
-remain part of delivery. The original six-size and four-size runs are deferred,
-not completed by this subset.
+Fresh regressions passed 45,610 Julia assertions across 145 test sets and
+51 Python tests. `verification/` retains their full logs and the completed
+run log. `production/independent-audit.json` validates all saved statistics;
+`production/independent-reuse-audit.json` validates both checkpoint subsets.
+`analysis/measured-summary.json` records the exact illustrative measurements,
+and `analysis/paired-differences.csv` includes all six primary paired contrasts
+at every point. Intervals cover each contrast, not the entire searched grid.
+
+The updated LaTeX note and PDF live at `document/note.tex` and
+`document/note.pdf` in the repository. The original six-size and four-size
+runs are deferred, not completed by this subset. Their preserved checkpoints
+are required for the inherited seed mapping and must not be deleted or resumed
+without the user's request.

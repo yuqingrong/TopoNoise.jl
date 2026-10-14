@@ -1,0 +1,6 @@
+excluded_from_scientific_counts = true
+linear_point_projection_seconds = 7244.891940000001
+paired_records_per_channel = 2
+projection_limitation = "pilot L=3 only; scout size scaling is measured before production selection"
+seconds = 0.07430658400000001
+zero_noise_passed = true

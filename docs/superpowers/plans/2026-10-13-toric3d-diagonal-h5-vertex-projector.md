@@ -649,6 +649,8 @@
 
 ### Task 13: Run the timed pilot, scout, frozen production scan, and final analysis
 
+**Revised delivery completed 2026-10-14:** L=3,5,7 only; 195,000 paired records, zero invalid recoveries, independent artifact/reuse audits passed, all 14 windows rejected before fitting by the four-size guard, no bootstrap executed. Final Julia/Python regressions passed (45,610 assertions / 51 tests); measured report, figures and note PDF are complete. The checked steps below refer to this authorized amendment, not completion of the deferred six-size design.
+
 **Current user amendment, 2026-10-14 13:14:** The user explicitly confirmed **L=3,5,7** after clarifying an L=4 typo. This supersedes the four-size amendment below. Finish `results/toric3d-h5-diagonal-feedback-2026-10-13/preliminary-l3-7/` only; both prior runs are stopped and preserved. The new selection is diagnostic-only, SHA-256 `1597b9941132d3f24c11c68ec1933ea639f5289225fe80ff5070367e81416e72`. Retain all rates, windows, settings, source hashes, 1000 paired records and existing parent-grid point seeds from master seed1234. The195-point checkpoint reuses186000 records and initially needs9000 remaining Z-only L7 records. `run_preliminary.jl` resumes this checkpoint using the unchanged scan API. The production CLI's four-size requirement is unchanged. `analyze_preliminary.py` invokes the existing four-size guard with1000 requested bootstrap replicates, expects rejection before any fitting/bootstrap, and exports fixed-size diagnostic curves/paired effects. No threshold or scaling exponent may be claimed from three sizes. Complete independent audits, measured report/note, final regressions, PDF verification and local commit for this revised scope. Do not automatically resume L9,11,13.
 
 **User amendment, 2026-10-14:** After measured large-size runtimes exceeded the small-scout projection, the user requested smaller lattices first. Finish a separate preliminary run at cubic L=3,5,7,9; defer L11,13. Preserve the original selection and interrupted full checkpoint unchanged. Use `results/toric3d-h5-diagonal-feedback-2026-10-13/preliminary-l3-9/selection.json` (SHA-256 `dca614dc243ec8d918cb91ac27c74425c7af0fbba6f2381c88d33d3ebf025412`) and its `production/` and `analysis/` directories for Steps 5–9. Rates, candidate windows, four protocols, 1000 records per point, seed1234, decoder settings and source hashes remain unchanged. The amendment is motivated only by runtime. Reuse the 80 completed X points only after checking exact counts, digests and fresh-run point seeds; the 180 Z points use the fresh reduced-grid seed stream. `prepare_checkpoint.jl` and `checkpoint-reuse.toml` document this derivation. Retain all original fit guards and label the resulting measurements preliminary. The original six-size run is deliberately deferred, not failed or complete, and must not resume automatically. Finish the audits, report, note, final regressions and local commit for this revised scope, then disable the follow-up.
@@ -664,17 +666,17 @@
 - Consumes: staged CLI and analysis script.
 - Produces: raw/aggregate CSV, metadata, selection, checkpoints, failure records if any, PDF/SVG/PNG curves, guarded threshold reports, and final documented conclusions.
 
-- [ ] **Step 1: Run a short timed pilot**
+- [x] **Step 1: Run a short timed pilot**
 
   Run both channels at `(T,Lu,Lv)=(3,3,3)`, `p=0.01`, 20 paired records, all four protocols, seed 1234, and save timing separately from science counts:
 
   `JULIA_NUM_THREADS=1 JULIA_CONDAPKG_BACKEND=Null JULIA_PYTHONCALL_EXE="$PWD/.CondaPkg/.pixi/envs/default/bin/python" julia --project=. examples/compare_toric3d_vertex_projector_feedback.jl --stage pilot --dimensions 3x3x3 --rates 0.01 --channels x_only,z_only --shots 20 --seed 1234 --output results/toric3d-h5-diagonal-feedback-2026-10-13/pilot`
 
-- [ ] **Step 2: Review pilot validity and runtime**
+- [x] **Step 2: Review pilot validity and runtime**
 
   Require zero invalid recoveries, zero-noise success from the warmup, all four replay arms, and a recorded runtime projection before launching the scout.
 
-- [ ] **Step 3: Run or resume the exact scout**
+- [x] **Step 3: Run or resume the exact scout**
 
   Use cubic `L=3,5,7`, 500 paired shots, both channels, all four protocols, seed 1234, and the eleven-point probability grid from Task 10. Save every completed point atomically:
 
@@ -682,7 +684,7 @@
 
   If interrupted, repeat this exact command with `--resume`.
 
-- [ ] **Step 4: Freeze separate X and Z production selections**
+- [x] **Step 4: Freeze separate X and Z production selections**
 
   Run the `select` subcommand on scout artifacts only:
 
@@ -698,7 +700,7 @@
 
   Repeat with a new shard number only if the deterministic rule requests another extension. On every reselection, pass the current selection as `--previous-selection` and include the initial scout plus every prior extension CSV/metadata pair in round order; dropping or replacing any earlier shard is an error. Freeze the first `status="ready"` selection hash before production; never resume an old checkpoint with changed grids.
 
-- [ ] **Step 5: Run or resume the production scan**
+- [x] **Step 5: Run or resume the production scan**
 
   Use the frozen selection, 1000 paired records per point, seed 1234, both channels, all four protocols, and incremental checkpoints:
 
@@ -706,7 +708,7 @@
 
   If interrupted, repeat this exact command with `--resume`. Stop any affected point immediately if recovery validation creates a failure record; diagnose and fix before resuming.
 
-- [ ] **Step 6: Generate final artifacts and guarded fits**
+- [x] **Step 6: Generate final artifacts and guarded fits**
 
   Run:
 
@@ -714,15 +716,15 @@
 
   Save CSV plus PDF/SVG/PNG curves, reconstruct all sixteen-way counts and six contrasts independently, and report threshold values only for arms that pass every guard.
 
-- [ ] **Step 7: Inspect every final figure and audit provenance**
+- [x] **Step 7: Inspect every final figure and audit provenance**
 
   Check readable legends, coincident-curve visibility, error bars, correct channel/state labels, source/data hashes, backend versions, `p/p_eff`, zero invalid recoveries, complete point counts, and exclusion of timing/warmup records.
 
-- [ ] **Step 8: Populate the report and note with measured results**
+- [x] **Step 8: Populate the report and note with measured results**
 
   Record thresholds or guarded diagnostic candidates, uncertainty and sensitivity separately, fixed-size paired feedback effects, total shots/runtime, exact artifact paths, and scientific limitations. Never reuse the historical H+6 threshold values as H+5 results.
 
-- [ ] **Step 9: Run final verification and commit the reproducible delivery**
+- [x] **Step 9: Run final verification and commit the reproducible delivery**
 
   Re-run full Julia/Python tests, rebuild the note PDF, run `git diff --check`, and verify all reported numbers directly from saved CSV/JSON.
 

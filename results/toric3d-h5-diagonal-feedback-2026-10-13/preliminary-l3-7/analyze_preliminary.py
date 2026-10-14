@@ -64,6 +64,44 @@ p.write_text(p.read_text().replace(
     "All threshold estimates are withheld. The unchanged minimum-four-size guard "
     "rejects every candidate before fitting. The configured 1000 bootstrap "
     "replicates were therefore not executed; empty bootstrap/sensitivity files "
-    "do not represent successful fits. Blank scaling panels indicate that no "
-    "scaling fit was performed. Fixed-size curves and paired effects remain valid."))
+    "do not represent successful fits. Figures contain measured curves only, "
+    "without scaling panels. Fixed-size curves and paired effects remain valid.").replace(
+    "Statistical bootstrap intervals are conditional on the frozen window and scaling model. "
+    "Model, size, and window sensitivity is listed separately in sensitivity.csv. "
+    "A diagnostic candidate is not a threshold.",
+    "No bootstrap intervals or sensitivity fits were computed. The candidate entries "
+    "below are frozen scout windows rejected by the size guard, not fitted thresholds."))
+
+# Presentation-only replacement for the generic report's empty scaling panels.
+# The scientific fitting engine and its minimum-four-size guard are unchanged.
+import matplotlib.pyplot as plt
+for channel in analysis.CHANNELS:
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.6), sharey=True,
+                             constrained_layout=True)
+    for ax, protocol in zip(axes, analysis.PROTOCOLS):
+        for L, marker in zip((3, 5, 7), ("o", "s", "^")):
+            points = sorted((r for r in rows if r["channel"] == channel and r["T"] == L),
+                            key=lambda r: r["p"])
+            y = [r[f"{protocol}_failures"] / r["shots"] for r in points]
+            ci = [analysis.engine.wilson_interval(r[f"{protocol}_failures"], r["shots"])
+                  for r in points]
+            ax.errorbar([r["p"] for r in points], y,
+                        yerr=[[v - c[0] for v, c in zip(y, ci)],
+                              [c[1] - v for v, c in zip(y, ci)]],
+                        marker=marker, markersize=3, linewidth=1, capsize=2, label=f"L={L}")
+        ax.set(title=protocol.replace("_", " "), xlabel="post-gate p", ylim=(-.02, 1.02))
+        ax.grid(alpha=.2)
+    label = ("X-only: logical-X union / |00_L> failure" if channel == "x_only"
+             else "Z-only: state-independent logical-Z union")
+    axes[0].set_ylabel("logical failure probability")
+    axes[0].legend()
+    fig.suptitle("Preliminary H+5 — " + label + "\n"
+                 "Measured curves with Wilson 95% intervals; no scaling fit (3 sizes, at least 4 required)",
+                 fontsize=12)
+    for ext in ("pdf", "svg", "png"):
+        fig.savefig(output / f"fits-{channel}.{ext}", dpi=180)
+    plt.close(fig)
+# CSV and SVG exporters use CRLF or trailing spaces; normalize text exports.
+for path in [*output.glob("*.csv"), *output.glob("*.svg")]:
+    path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()).rstrip() + "\n")
 print("PASS: all eight arms threshold-ineligible; no fitted thresholds or bootstrap claims")

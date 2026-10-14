@@ -610,9 +610,80 @@ an interior monotone likelihood fit, acceptable goodness of fit, and at
 least 80\% usable bootstrap fits. Failed guards leave diagnostic candidates.
 
 % H5_MEASURED_RESULTS_BEGIN
-The implementation and analysis are being verified; the H+5 scientific scan
-has not yet established a threshold. The historical values below belong to
-the separate H+6 experiment and are not substituted for H+5 measurements.
+\paragraph{Preliminary measurements at three sizes.}
+The user-confirmed run completed $L=3,5,7$ on 14 October 2026:
+60 X-only and 135 Z-only points, with 1000 paired records per point,
+195000 records and 780000 arm replays in total. There were no invalid
+recoveries. Recorded sampling, decoder-building and replay times were
+1532.72 seconds for X and 12168.14 seconds for Z; these include the original
+cost of reused records and exclude warmup, compilation, plotting and deferred
+sizes. They are not the wall time of the last resumed segment.
+
+\emph{No H+5 threshold or scaling exponent is estimated.} All 14 frozen
+candidate windows fail the unchanged minimum-four-size guard before fitting.
+The requested 1000 bootstrap replicates were therefore not executed, and
+no fitted interval or sensitivity fit is reported. This limitation is not
+evidence for a zero threshold.
+
+Table~\ref{tab:h5-preliminary} gives illustrative points selected after the
+run from the frozen grid. Each rate is based on 1000 paired records.
+For X at $L=7$, $p=0.039448164$, one-step feedback increases failure by
+4.4 percentage points relative to none (per-contrast 95\% interval
+$[1.38,7.38]$), and either complete protocol increases it by 10.8 points
+($[6.99,14.50]$). At the higher sampled rate $p=0.077446809$, the
+window-complete change is instead $-11.4$ points ($[-17.07,-5.62]$), and
+the full-prefix change is $-11.7$ points ($[-17.34,-5.94]$).
+Thus finite-size feedback effects depend on the error rate.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{llrrrrr}
+\hline
+Channel & $p$ & $L$ & None & One step & Window & Prefix \\
+\hline
+X & 0.039448164 & 3 & 13.6 & 14.8 & 17.7 & 18.2 \\
+X & 0.039448164 & 5 & 6.5 & 12.3 & 17.1 & 17.1 \\
+X & 0.039448164 & 7 & 4.2 & 8.6 & 15.0 & 15.0 \\
+Z & 0.0096470592 & 3 & 51.6 & 50.2 & 41.0 & 41.1 \\
+Z & 0.0096470592 & 5 & 74.5 & 75.5 & 64.7 & 64.7 \\
+Z & 0.0096470592 & 7 & 76.3 & 74.4 & 71.7 & 71.7 \\
+\hline
+\end{tabular}
+\caption{Preliminary H+5 logical-union rates in percent at $L=3,5,7$.
+X denotes logical-zero preparation failure; Z is a state-independent
+logical-Pauli diagnostic, not logical-zero infidelity.}
+\label{tab:h5-preliminary}
+\end{table}
+
+At the lowest sampled Z rate $p=0.0096470592$, window-complete changes the
+diagnostic by $-10.6$ points at $L=3$ ($[-15.39,-5.70]$), but by $-4.6$
+points at $L=7$ ($[-10.10,0.94]$). Most Z curves are near the 0.75 union
+probability of two uniform logical bits. The grid thus supplies little
+unsaturated evidence at larger sizes. Paired intervals use simultaneous
+bounds on the two discordance probabilities within each contrast, without
+multiple-comparison coverage across rates, sizes or contrasts. These
+illustrative comparisons are exploratory, not a confirmatory threshold test.
+
+The original six-size scan was deliberately stopped at 106350 records,
+and its four-size precursor at 206000 records, after runtime-directed user
+amendments. Their immutable selections and checkpoints are preserved;
+$L=9,11,13$ remain deferred. The final subset reused 186000 records exactly
+and completed 9000 more. Point seeds retain their parent indices in the
+260-element \texttt{Random.Xoshiro(1234)} UInt64 stream; no existing record
+was reseeded. The three-size selection hash begins \texttt{1597b9941132d3f2}.
+All original rates, candidate windows, decoder settings and scientific source
+hashes were preserved. Full hashes, commands and checkpoint ancestry appear
+in the repository's \texttt{preliminary-l3-7/README.md} and H+5 report.
+
+Independent audits verified all joint counts, paired statistics, logical
+labels, checkpoint digests, reused states and source/data hashes, with
+warmup excluded. Fresh regressions passed 45610 Julia assertions across
+145 test sets and all 51 Python tests. Measured curves, six paired contrasts
+per point and the guarded diagnostic report are saved in the repository's
+\texttt{preliminary-l3-7/} result directory; the H+5 report gives full paths.
+Historical H+6 values below belong to a separate
+experiment and are not substituted for H+5 measurements.
 % H5_MEASURED_RESULTS_END
 
 \subsection{Historical plaquette-transfer H+6 Z-sector estimate}
