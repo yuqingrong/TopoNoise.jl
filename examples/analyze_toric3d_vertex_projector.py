@@ -15,6 +15,110 @@ def rounded(x):return float(format(x,'.8g'))
 def atomic_json(path,data):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     tmp=path.with_suffix(path.suffix+'.tmp');tmp.write_text(json.dumps(data,indent=2,sort_keys=True,allow_nan=False)+'\n');tmp.replace(path)
+
+def _finite_json(value,path='$'):
+    if isinstance(value,dict):
+        if not all(isinstance(k,str) for k in value):raise ValueError(f'{path}: JSON object keys must be strings')
+        for k,v in value.items():_finite_json(v,f'{path}.{k}')
+    elif isinstance(value,list):
+        for i,v in enumerate(value):_finite_json(v,f'{path}[{i}]')
+    elif isinstance(value,float) and not math.isfinite(value):raise ValueError(f'{path}: nonfinite numeric value')
+    elif value is not None and not isinstance(value,(str,int,float,bool)):raise ValueError(f'{path}: unsupported JSON value')
+
+def _count(value,label):
+    if isinstance(value,bool) or not isinstance(value,int) or value<0:raise ValueError(f'{label} must be a nonnegative integer')
+    return value
+
+def _logical_class(value,label):
+    if not isinstance(value,list) or len(value)!=2 or not all(isinstance(v,bool) for v in value):raise ValueError(f'{label} must contain two booleans')
+    return tuple(value)
+
+def _validate_z_group(group,label):
+    required=('syndrome_indices','upper_parity_odd','class_counts','selected_class','baseline_class','mixed','unavoidable_count','baseline_failure_count','control_failure_count')
+    if not isinstance(group,dict) or any(k not in group for k in required):raise ValueError(f'{label}: incomplete group')
+    syndrome=group['syndrome_indices']
+    if not isinstance(syndrome,list) or any(isinstance(i,bool) or not isinstance(i,int) or i<1 for i in syndrome) or syndrome!=sorted(set(syndrome)):raise ValueError(f'{label}: malformed syndrome indices')
+    if not isinstance(group['upper_parity_odd'],bool) or not isinstance(group['mixed'],bool):raise ValueError(f'{label}: parity/mixed flags must be boolean')
+    counts=group['class_counts']
+    if not isinstance(counts,list) or len(counts)!=4:raise ValueError(f'{label}: class_counts must have four entries')
+    counts=[_count(v,f'{label}.class_counts') for v in counts]
+    if sum(counts)==0:raise ValueError(f'{label}: empty class_counts')
+    classes=((False,False),(False,True),(True,False),(True,True));selected=_logical_class(group['selected_class'],f'{label}.selected_class')
+    _logical_class(group['baseline_class'],f'{label}.baseline_class')
+    expected=classes[counts.index(max(counts))]
+    if selected!=expected:raise ValueError(f'{label}: selected class violates deterministic tie break')
+    mixed=sum(v>0 for v in counts)>1
+    if group['mixed']!=mixed:raise ValueError(f'{label}: mixed flag disagrees with class counts')
+    unavoidable=_count(group['unavoidable_count'],f'{label}.unavoidable_count')
+    if unavoidable!=sum(counts)-max(counts):raise ValueError(f'{label}: unavoidable count disagrees with class counts')
+    baseline=_count(group['baseline_failure_count'],f'{label}.baseline_failure_count')
+    control=_count(group['control_failure_count'],f'{label}.control_failure_count')
+    if baseline>sum(counts) or control>sum(counts):raise ValueError(f'{label}: failure count exceeds mechanisms')
+    return dict(mechanisms=sum(counts),mixed=int(mixed),unavoidable=unavoidable,baseline=baseline,control=control,odd=group['upper_parity_odd'])
+
+def _validate_z_summary(summary,label):
+    keys=('mechanism_count','group_count','mixed_group_count','unavoidable_count','baseline_failure_count','control_failure_count')
+    if not isinstance(summary,dict) or any(k not in summary for k in keys):raise ValueError(f'{label}: incomplete parity summary')
+    return {k:_count(summary[k],f'{label}.{k}') for k in keys}
+
+def load_z_boundary_audit(path):
+    try:data=json.loads(Path(path).read_text())
+    except (OSError,json.JSONDecodeError) as error:raise ValueError(f'invalid Z-boundary audit: {error}') from error
+    _finite_json(data)
+    if not isinstance(data,dict) or data.get('format')!='h5-z-boundary-ambiguity-v1':raise ValueError('unknown Z-boundary audit format')
+    if data.get('status')!='diagnostic_only' or data.get('protocols')!=list(PROTOCOLS):raise ValueError('invalid Z-boundary audit status/protocols')
+    hashes=data.get('source_hashes')
+    if not isinstance(hashes,dict) or not hashes or any(not isinstance(k,str) or not isinstance(v,str) or len(v)!=64 or any(c not in '0123456789abcdef' for c in v) for k,v in hashes.items()):raise ValueError('invalid Z-boundary source hashes')
+    audits=data.get('audits')
+    if not isinstance(audits,list) or not audits:raise ValueError('Z-boundary audit list is empty')
+    identities=set()
+    total_keys=('mechanism_count','group_count','mixed_group_count','unavoidable_count','baseline_failure_count','control_failure_count')
+    for index,audit in enumerate(audits):
+        label=f'audits[{index}]'
+        if not isinstance(audit,dict):raise ValueError(f'{label}: audit must be an object')
+        dimensions=audit.get('dimensions')
+        if not isinstance(dimensions,list) or len(dimensions)!=3 or any(isinstance(v,bool) or not isinstance(v,int) or v<1 for v in dimensions) or min(dimensions[1:])<2:raise ValueError(f'{label}: invalid dimensions')
+        protocol=audit.get('protocol');final=audit.get('final_layer_only')
+        if protocol not in PROTOCOLS or not isinstance(final,bool):raise ValueError(f'{label}: invalid protocol/scope')
+        identity=(tuple(dimensions),protocol,final)
+        if identity in identities:raise ValueError(f'{label}: duplicate audit identity')
+        identities.add(identity)
+        totals={k:_count(audit.get(k),f'{label}.{k}') for k in total_keys}
+        if totals['mechanism_count']==0:raise ValueError(f'{label}: empty mechanism set')
+        active=_count(audit.get('active_output_fault_count'),f'{label}.active_output_fault_count')
+        if active!=totals['mechanism_count']:raise ValueError(f'{label}: active-output count mismatch')
+        rate=audit.get('unavoidable_rate')
+        if isinstance(rate,bool) or not isinstance(rate,(int,float)) or not math.isfinite(rate) or not 0<=rate<=1 or not math.isclose(rate,totals['unavoidable_count']/totals['mechanism_count'],abs_tol=1e-12):raise ValueError(f'{label}: invalid unavoidable rate')
+        groups=audit.get('groups')
+        if not isinstance(groups,list) or len(groups)!=totals['group_count']:raise ValueError(f'{label}: group count mismatch')
+        stats=[_validate_z_group(group,f'{label}.groups[{i}]') for i,group in enumerate(groups)]
+        aggregate=dict(mechanism_count=sum(s['mechanisms'] for s in stats),group_count=len(stats),mixed_group_count=sum(s['mixed'] for s in stats),unavoidable_count=sum(s['unavoidable'] for s in stats),baseline_failure_count=sum(s['baseline'] for s in stats),control_failure_count=sum(s['control'] for s in stats))
+        if aggregate!=totals:raise ValueError(f'{label}: group totals disagree with audit totals')
+        parity=audit.get('parity')
+        if not isinstance(parity,dict) or set(parity)!=set(('even','odd')):raise ValueError(f'{label}: invalid parity summaries')
+        even=_validate_z_summary(parity['even'],f'{label}.parity.even');odd=_validate_z_summary(parity['odd'],f'{label}.parity.odd')
+        for key in total_keys:
+            if even[key]+odd[key]!=totals[key]:raise ValueError(f'{label}: parity totals disagree for {key}')
+        mixed=audit.get('mixed_groups')
+        if not isinstance(mixed,list) or len(mixed)!=totals['mixed_group_count']:raise ValueError(f'{label}: mixed-group list mismatch')
+    return data
+
+def z_boundary_guard(audit,selected_sizes,protocol,source_hashes=None):
+    if protocol not in PROTOCOLS:raise ValueError('unknown H+5 protocol')
+    issues=[]
+    if source_hashes is not None and audit.get('source_hashes')!=source_hashes:issues.append('Z boundary audit source hashes do not match production data')
+    entries=audit.get('audits',[])
+    for size in sorted(set(int(v) for v in selected_sizes)):
+        matches=[a for a in entries if a.get('protocol')==protocol and a.get('final_layer_only') is True and isinstance(a.get('dimensions'),list) and a['dimensions'][0]==size]
+        if len(matches)!=1:
+            issues.append(f'Z boundary audit missing or ambiguous for size={size}, protocol={protocol}')
+            continue
+        entry=matches[0];geometry=tuple(entry['dimensions'])
+        for key,label in (('mixed_group_count','mixed groups'),('unavoidable_count','unavoidable'),('control_failure_count','control failures')):
+            count=entry.get(key)
+            if count:
+                issues.append(f'Z boundary ambiguity at dimensions={geometry}, protocol={protocol}: {label}={count}')
+    return issues
 def normalize_row(source):
     r=dict(source)
     for k in ('T','Lu','Lv','shots','invalid_recoveries'):r[k]=int(r[k])
@@ -180,10 +284,11 @@ def select_grids(points,meta,inputs,extension_round=0):
     if selected['extension_grids']:selected['status']='needs_extended_scout'
     return selected
 
-def fit_window(points,channel,protocol,window,bootstrap=1000,seed=1234,degree=2,min_size=0,correction=False,ineligible=False):
+def fit_window(points,channel,protocol,window,bootstrap=1000,seed=1234,degree=2,min_size=0,correction=False,ineligible=False,z_guard_issues=()):
     lo,hi=window;rows=[r for r in points if r['channel']==channel and lo<=r['p']<=hi and r['T']>=min_size]
     sizes=sorted({r['T'] for r in rows});rates=sorted({r['p'] for r in rows});issues=[]
     fit=dict(channel=channel,protocol=protocol,fit_window=window,selected_sizes=sizes,selected_probabilities=rates,degree=degree,correction=correction,status='diagnostic_candidate',pc=None,nu=None,candidate=None,diagnostic=issues,bootstrap=dict(replicates=bootstrap,accepted=0,samples=[],pc_interval=None,nu_interval=None))
+    if channel=='z_only':issues.extend([z_guard_issues] if isinstance(z_guard_issues,str) else z_guard_issues)
     if len(sizes)<4:issues.append('need at least four sizes')
     if len(rates)<5:issues.append('need at least five probabilities')
     if ineligible:issues.append('scout extension exhausted: threshold ineligible')
@@ -212,19 +317,27 @@ def fit_window(points,channel,protocol,window,bootstrap=1000,seed=1234,degree=2,
     fit['bootstrap'].update(pc_interval=np.quantile([b['pc'] for b in accepted],[.025,.975]).tolist(),nu_interval=np.quantile([b['nu'] for b in accepted],[.025,.975]).tolist())
     fit.update(status='ok',pc=c['pc'],nu=c['nu']);return fit
 
-def analyze(points,selection,bootstrap=1000,seed=1234):
+def analyze(points,selection,bootstrap=1000,seed=1234,z_boundary_audit=None):
     fits=[];sensitivity=[]
     for ch in CHANNELS:
         config=selection['channels'][ch]
         for pr in PROTOCOLS:
+            guard_issues=()
+            if ch=='z_only' and z_boundary_audit is not None:
+                guard_issues=z_boundary_guard(z_boundary_audit,
+                    [dimensions[0] for dimensions in config['dimensions_T_Lu_Lv']],
+                    pr,selection.get('source_hashes'))
             candidates=[]
             for index,window in enumerate(config['fit_windows'][pr]):
-                f=fit_window(points,ch,pr,window,bootstrap,seed,ineligible=config['flags'][pr].get('threshold_ineligible',False));f['candidate_index']=index;candidates.append(f)
+                f=fit_window(points,ch,pr,window,bootstrap,seed,
+                    ineligible=config['flags'][pr].get('threshold_ineligible',False),
+                    z_guard_issues=guard_issues);f['candidate_index']=index;candidates.append(f)
                 sizes=f['selected_sizes'];rates=f['selected_probabilities']
                 variants=[('cubic',window,0,3,False),('drop_smallest_size',window,sizes[1] if len(sizes)>1 else 9999,2,False),('fixed_L_inverse_correction',window,0,2,True)]
                 if len(rates)>1:variants.extend([('trim_lowest_p',[rates[1],window[1]],0,2,False),('trim_highest_p',[window[0],rates[-2]],0,2,False)])
                 for name,w,minimum,degree,corr in variants:
-                    s=fit_window(points,ch,pr,w,0,seed,degree,minimum,corr);sensitivity.append(dict(channel=ch,protocol=pr,candidate_index=index,name=name,status=s['status'],candidate_pc=(s['candidate'] or {}).get('pc'),diagnostic=s['diagnostic']))
+                    s=fit_window(points,ch,pr,w,0,seed,degree,minimum,corr,
+                        z_guard_issues=guard_issues);sensitivity.append(dict(channel=ch,protocol=pr,candidate_index=index,name=name,status=s['status'],candidate_pc=(s['candidate'] or {}).get('pc'),diagnostic=s['diagnostic']))
             accepted=[f for f in candidates if f['status']=='ok']
             claim=accepted[0] if len(accepted)==1 else None
             fits.append(dict(channel=ch,protocol=pr,status='threshold' if claim else 'diagnostic_candidates',pc=claim['pc'] if claim else None,nu=claim['nu'] if claim else None,pc_interval=claim['bootstrap']['pc_interval'] if claim else None,candidates=candidates))
@@ -269,7 +382,7 @@ def write_report(report,points,output,hashes):
 def main(args=None):
     parser=argparse.ArgumentParser(description=__doc__);subs=parser.add_subparsers(dest='command',required=True)
     select=subs.add_parser('select');select.add_argument('--input-csv',action='append',required=True);select.add_argument('--input-metadata',action='append',required=True);select.add_argument('--previous-selection');select.add_argument('--output',required=True)
-    fit=subs.add_parser('fit');fit.add_argument('--selection',required=True);fit.add_argument('--csv',required=True);fit.add_argument('--metadata',required=True);fit.add_argument('--bootstrap',type=int,default=1000);fit.add_argument('--seed',type=int,default=1234);fit.add_argument('--output',required=True)
+    fit=subs.add_parser('fit');fit.add_argument('--selection',required=True);fit.add_argument('--csv',required=True);fit.add_argument('--metadata',required=True);fit.add_argument('--bootstrap',type=int,default=1000);fit.add_argument('--seed',type=int,default=1234);fit.add_argument('--z-boundary-audit');fit.add_argument('--output',required=True)
     report=subs.add_parser('report');report.add_argument('--fits',required=True);report.add_argument('--csv',required=True);report.add_argument('--output',required=True)
     a=parser.parse_args(args)
     if a.command=='select':
@@ -286,5 +399,9 @@ def main(args=None):
     if meta['shots']!=selection['production_shots'] or meta['protocols']!=list(PROTOCOLS):raise ValueError('production shots/protocols mismatch')
     rows=read_points(a.csv);expected={(ch,*d,p) for ch,v in selection['channels'].items() for d in v['dimensions_T_Lu_Lv'] for p in v['rates']}
     if {key(r) for r in rows}!=expected or len(rows)!=len(expected):raise ValueError('production grid differs from frozen selection')
-    report=analyze(rows,selection,a.bootstrap,a.seed);write_report(report,rows,a.output,dict(selection=sha(a.selection),raw_csv=sha(a.csv),metadata=sha(a.metadata),analysis=sha(__file__),likelihood_engine=sha(Path(__file__).with_name('fit_toric3d_diagonal_feedback.py'))))
+    z_audit=load_z_boundary_audit(a.z_boundary_audit) if a.z_boundary_audit else None
+    report=analyze(rows,selection,a.bootstrap,a.seed,z_audit)
+    hashes=dict(selection=sha(a.selection),raw_csv=sha(a.csv),metadata=sha(a.metadata),analysis=sha(__file__),likelihood_engine=sha(Path(__file__).with_name('fit_toric3d_diagonal_feedback.py')))
+    if a.z_boundary_audit:hashes['z_boundary_audit']=sha(a.z_boundary_audit)
+    write_report(report,rows,a.output,hashes)
 if __name__=='__main__':main()
