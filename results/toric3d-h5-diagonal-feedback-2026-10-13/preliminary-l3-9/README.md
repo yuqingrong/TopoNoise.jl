@@ -1,5 +1,7 @@
 # Preliminary H+5 run: cubic L=3,5,7,9
 
+**Deferred:** The user subsequently confirmed L=3,5,7 only. This run was stopped at206000 saved records. Continue `../preliminary-l3-7/` instead; do not resume this four-size run automatically.
+
 On 2026-10-14 the user requested smaller lattices first because the largest
 sizes were taking substantially longer than the scout timing projection.
 This is an explicit amendment to the six-size selection, motivated only by
