@@ -1,0 +1,43 @@
+{
+  "stage": "preliminary_three_size",
+  "points": 195,
+  "paired_records": 195000,
+  "arm_replays": 780000,
+  "metrics_per_point": 23,
+  "contrasts_per_metric": 6,
+  "invalid_recoveries": 0,
+  "raw_csv_sha256": "ba3765ff260f09e109510bd574e19aa9a71e2da560c0e6916db1a8f44fbd8390",
+  "metadata_sha256": "11da3b08a5b6fdb1caec613554084077558cdc3f6d6ed386c4cab1c334609107",
+  "checkpoint_sha256": "3180191df43597ed1f9768d7ee4b8cc1c251326045f806761f27939b8d5333d7",
+  "source_hashes_verified": true,
+  "statistics_verified": true,
+  "logical_labels_verified_from_pauli_classes": true,
+  "checkpoint_counts_and_digests_verified": true,
+  "warmup_excluded": true,
+  "zero_noise_passed": true,
+  "phase_seconds_by_channel": {
+    "x_only": 1532.72143924,
+    "z_only": 12168.139811547
+  }
+}
+{
+  "passed": true,
+  "complete_points": 195,
+  "paired_records": 195000,
+  "exact_reused_points": 186,
+  "exact_reused_records": 186000,
+  "newly_completed_records": 9000,
+  "inherited_point_seeds_verified": true,
+  "original_to_four_size_exact_X_points": 80,
+  "original_preserved_records": 106350,
+  "four_size_preserved_records": 206000,
+  "original_checkpoint_sha256": "772da74e8dd161de97c00c5008773fb19982ecb55e4a3343489309656323d271",
+  "parent_checkpoint_sha256": "c3544f0d3f72ff2cd5fe0e79379ec502b0360cdc15e76a3f7b9cff4a18faa80c",
+  "final_checkpoint_sha256": "3180191df43597ed1f9768d7ee4b8cc1c251326045f806761f27939b8d5333d7",
+  "selection_sha256": "1597b9941132d3f24c11c68ec1933ea639f5289225fe80ff5070367e81416e72",
+  "audit_script_sha256": "b92beadd0ffbc78de0c0159cd9d47585092e260b7c734b228b9f8537c7a5c0a0",
+  "source_hashes_verified": true,
+  "invalid_recoveries": 0,
+  "seed_rule": "Random.Xoshiro(1234) UInt64 vector of length260, subset at parent_indices_1based; retain every existing point seed and record"
+}
+PASS: final measurements, guards, provenance, 45610 Julia assertions and 51 Python tests verified
