@@ -649,6 +649,8 @@
 
 ### Task 13: Run the timed pilot, scout, frozen production scan, and final analysis
 
+**User amendment, 2026-10-14:** After measured large-size runtimes exceeded the small-scout projection, the user requested smaller lattices first. Finish a separate preliminary run at cubic L=3,5,7,9; defer L11,13. Preserve the original selection and interrupted full checkpoint unchanged. Use `results/toric3d-h5-diagonal-feedback-2026-10-13/preliminary-l3-9/selection.json` (SHA-256 `dca614dc243ec8d918cb91ac27c74425c7af0fbba6f2381c88d33d3ebf025412`) and its `production/` and `analysis/` directories for Steps 5–9. Rates, candidate windows, four protocols, 1000 records per point, seed1234, decoder settings and source hashes remain unchanged. The amendment is motivated only by runtime. Reuse the 80 completed X points only after checking exact counts, digests and fresh-run point seeds; the 180 Z points use the fresh reduced-grid seed stream. `prepare_checkpoint.jl` and `checkpoint-reuse.toml` document this derivation. Retain all original fit guards and label the resulting measurements preliminary. The original six-size run is deliberately deferred, not failed or complete, and must not resume automatically. Finish the audits, report, note, final regressions and local commit for this revised scope, then disable the follow-up.
+
 **Files:**
 - Create: `results/toric3d-h5-diagonal-feedback-2026-10-13/pilot/*`
 - Create: `results/toric3d-h5-diagonal-feedback-2026-10-13/scout/*`
