@@ -5,11 +5,30 @@ function h5_test_outcome(out,c)
     @test out.logical_x==Tuple(TopoNoise._vertex_syndrome(toric3d_encoded_logical_z(c),out.residual.x))
     @test out.logical_z==Tuple(TopoNoise._vertex_syndrome(toric3d_encoded_logical_x(c),out.residual.z))
     @test out.pauli_class==sum(Int(b)<<(i-1) for (i,b) in enumerate((out.logical_x...,out.logical_z...)))
+    @test out.upper_parity_odd==isodd(count(out.boundary.observed))
     for h in out.history
         @test TopoNoise._vertex_syndrome(h.window.matrix,h.full_recovery)==h.syndrome
         @test h.post_syndrome==h.syndrome.⊻TopoNoise._vertex_syndrome(h.window.matrix,h.route)
         @test 1<=h.checkpoint<c.T
         @test all(q->data_qubit_coordinate(c,q)[2]<=h.checkpoint,h.window.qubits)
+    end
+end
+@testset "H+5 pre-final replay exposes the exact boundary-completed state" begin
+    c=Toric3DVertexProjectorCode(3,2,3);e=toric3d_vertex_projector_encoder(c);f=build_toric3d_vertex_decoders(c;p=.1)
+    clean=sample_toric3d_vertex_projector_record(MersenneTwister(41),e)
+    step=e.checkpoints[end-1]+1
+    fault=with_toric3d_vertex_projector_fault(clean,e,step,e.operations[step].qubits[1],:Z)
+    for r in (clean,fault)
+        pre=replay_toric3d_vertex_projector_pre_final(e,r,f;
+            protocol=:window_complete,channel=:z_only)
+        out=replay_toric3d_vertex_projector(e,r,f;
+            protocol=:window_complete,channel=:z_only)
+        @test pre.upper_parity_odd==isodd(count(pre.boundary.observed))
+        @test pre.frame.z==out.boundary.z
+        @test pre.before_boundary==out.before_boundary
+        @test [(h.checkpoint,h.channel,h.signature) for h in pre.history]==
+              [(h.checkpoint,h.channel,h.signature) for h in out.history]
+        @test out.upper_parity_odd==pre.upper_parity_odd
     end
 end
 @testset "H+5 four-arm replay shares one immutable fault and boundary record" begin

@@ -12,11 +12,21 @@ struct Toric3DVertexFeedbackHistory
     paths::Vector{Toric3DVertexMatchedPath}
     signature::Vector{Tuple{Int,Int,Tuple}}
 end
+struct Toric3DVertexPreFinalState
+    protocol::Symbol
+    channel::Symbol
+    before_boundary::PauliFrame
+    boundary::Toric3DVertexBoundaryCompletion
+    frame::PauliFrame
+    history::Vector{Toric3DVertexFeedbackHistory}
+    upper_parity_odd::Bool
+end
 struct Toric3DVertexReplayOutcome
     protocol::Symbol
     channel::Symbol
     before_boundary::PauliFrame
     boundary::Toric3DVertexBoundaryCompletion
+    upper_parity_odd::Bool
     residual::PauliFrame
     history::Vector{Toric3DVertexFeedbackHistory}
     x_syndrome::BitVector
@@ -69,8 +79,8 @@ function _vertex_final_recovery(frame::PauliFrame,f::Toric3DVertexDecoderFamily)
      logical_x=lx,logical_z=lz,logical_x_failure=any(lx),logical_z_failure=any(lz),pauli_class=cls)
 end
 
-"""Replay one immutable shot, applying data corrections before subsequent gates."""
-function _vertex_replay(e::Toric3DVertexProjectorEncoder,
+"""Replay through upper-boundary completion, stopping before final recovery."""
+function replay_toric3d_vertex_projector_pre_final(e::Toric3DVertexProjectorEncoder,
         r::Toric3DVertexProjectorFaultRecord,f::Toric3DVertexDecoderFamily;
         protocol::Symbol,channel::Symbol,record_history::Bool=true,_context=Dict{String,Any}())
     protocol in TORIC3D_VERTEX_PROTOCOLS || throw(ArgumentError("invalid H+5 feedback protocol"))
@@ -107,8 +117,19 @@ function _vertex_replay(e::Toric3DVertexProjectorEncoder,
     boundary=complete_toric3d_vertex_boundary(f.boundary,frame.z,r.upper_branch)
     _context["frame"]=PauliFrame(copy(frame.x),copy(frame.z));_context["boundary_phase"]="completed";_context["checkpoint"]=c.T
     frame.z.=boundary.z
-    result=_vertex_final_recovery(frame,f)
-    Toric3DVertexReplayOutcome(protocol,channel,before,boundary,result.residual,history,
+    Toric3DVertexPreFinalState(protocol,channel,before,boundary,PauliFrame(frame.x,frame.z),history,
+        isodd(count(boundary.observed)))
+end
+
+"""Replay one immutable shot, applying data corrections before subsequent gates."""
+function _vertex_replay(e::Toric3DVertexProjectorEncoder,
+        r::Toric3DVertexProjectorFaultRecord,f::Toric3DVertexDecoderFamily;
+        protocol::Symbol,channel::Symbol,record_history::Bool=true,_context=Dict{String,Any}())
+    pre=replay_toric3d_vertex_projector_pre_final(e,r,f;
+        protocol,channel,record_history,_context)
+    result=_vertex_final_recovery(pre.frame,f)
+    Toric3DVertexReplayOutcome(protocol,channel,pre.before_boundary,pre.boundary,pre.upper_parity_odd,
+        result.residual,pre.history,
         result.x_syndrome,result.z_syndrome,result.x_recovery,result.z_decision,result.logical_x,result.logical_z,
         result.logical_x_failure,result.logical_z_failure,result.pauli_class,
         channel==:x_only ? result.logical_x_failure : nothing)

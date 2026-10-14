@@ -161,7 +161,8 @@ export Toric3DVertexBPOSDDecoder, Toric3DVertexDecoderFamily,
 include("toric3d/vertex_projector_decoders.jl")
 
 export TORIC3D_VERTEX_PROTOCOLS, TORIC3D_VERTEX_REPLAY_CHANNELS,
-       Toric3DVertexFeedbackHistory, Toric3DVertexReplayOutcome, replay_toric3d_vertex_projector
+       Toric3DVertexFeedbackHistory, Toric3DVertexPreFinalState, Toric3DVertexReplayOutcome,
+       replay_toric3d_vertex_projector_pre_final, replay_toric3d_vertex_projector
 include("toric3d/vertex_projector_replay.jl")
 
 export Toric3DVertexScanGrid, Toric3DVertexProtocolEstimate, Toric3DVertexPairEstimate,
