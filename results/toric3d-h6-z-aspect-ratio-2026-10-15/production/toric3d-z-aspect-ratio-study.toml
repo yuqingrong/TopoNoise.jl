@@ -1,0 +1,15 @@
+batch_size = 256
+channel = "Z-only post-H/CNOT output faults"
+circuit = "plaquette-transfer H+6-CNOT"
+comparison = "T=L versus T=2L aspect-ratio diagnostic"
+decoding = "final-only"
+dimensions_steps_Ly_Lz = [[3, 3, 3], [6, 3, 3], [5, 5, 5], [10, 5, 5], [7, 7, 7], [14, 7, 7]]
+error_rates = [0.0045, 0.005, 0.0055, 0.006, 0.0065]
+format_version = 1
+intermediate_feedback = "none"
+seed = 1234
+shots_per_point = 1000
+step_multipliers = [1, 2]
+study = "H+6 Z-only aspect-ratio comparison"
+threshold_eligible = false
+transverse_sizes = [3, 5, 7]

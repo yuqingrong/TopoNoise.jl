@@ -1,0 +1,74 @@
+{
+  "status": "diagnostic_complete",
+  "analysis": "H+6-CNOT Z aspect-ratio comparison",
+  "experiment": {
+    "circuit": "H+6 CNOTs",
+    "recovery": "final-only",
+    "feedback": "none (no feedback)",
+    "observable": "any residual transverse logical Z failure"
+  },
+  "geometry": {
+    "comparison": "T=L versus T=2L at fixed Ly=Lz=L",
+    "difference_direction": "T=2L minus T=L"
+  },
+  "sizes": [
+    3,
+    5,
+    7
+  ],
+  "rates": [
+    0.0045,
+    0.005,
+    0.0055,
+    0.006,
+    0.0065
+  ],
+  "point_count": 30,
+  "difference_count": 15,
+  "uncertainty": {
+    "points": "two-sided 95% Wilson score intervals",
+    "differences": "conservative interval (long Wilson low - short Wilson high, long Wilson high - short Wilson low)",
+    "paired_statistics": false
+  },
+  "threshold": {
+    "fitted": false,
+    "estimate": null,
+    "reason": "This three-size aspect-ratio study is a fixed-size diagnostic; no finite-size threshold fit was requested or performed."
+  },
+  "input": {
+    "path": "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-h6-z-aspect-ratio-2026-10-15/production/toric3d-z-threshold-raw.csv",
+    "sha256": "fb182c082c61846c6ecebfaf1895ebf32276b38f70f2cd271d81f4efcfd61b13",
+    "columns": [
+      "steps",
+      "Ly",
+      "Lz",
+      "p",
+      "shots",
+      "failures",
+      "logical_1_failures",
+      "logical_2_failures",
+      "seed",
+      "decoder",
+      "elapsed_seconds"
+    ]
+  },
+  "analysis_script": {
+    "path": "/Users/rongyuqing/jcode/TopoNoise.jl/examples/analyze_toric3d_z_aspect_ratio.py",
+    "sha256": "fadb2bd3696ab6125f0c8395c7085c9da6f75510aca18d9252c39634690c70e5"
+  },
+  "decoders": [
+    "unit_data_MWPM"
+  ],
+  "seeds": [
+    1234
+  ],
+  "outputs": {
+    "points": "aspect-ratio-points.csv",
+    "differences": "aspect-ratio-differences.csv",
+    "figures": [
+      "aspect-ratio-comparison.pdf",
+      "aspect-ratio-comparison.svg",
+      "aspect-ratio-comparison.png"
+    ]
+  }
+}

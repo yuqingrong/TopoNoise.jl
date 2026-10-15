@@ -521,6 +521,19 @@ The original rough-slab circuit's logical-Z obstruction remains unchanged.
 Raw counts, metadata and statistical analyses are saved in
 [`results/toric3d-z-threshold-2026-10-11`](results/toric3d-z-threshold-2026-10-11).
 
+The final-only aspect-ratio diagnostic compares `T=L` with `T=2L` without
+running any feedback protocol:
+
+```bash
+julia --project=. examples/compare_toric3d_z_aspect_ratio.jl
+```
+
+For `L=3,5,7`, doubling `T` increased the measured logical-Z failure rate at
+every sampled point while leaving `dZ=2L` unchanged. This small-size study
+does not fit a threshold. Its runner, fixed-size analysis and audited results
+are documented in
+[the H+6 aspect-ratio report](docs/superpowers/toric3d-h6-z-aspect-ratio.md).
+
 For the complementary logical-X preparation study, the same encoded geometry
 is prepared in logical `|00>` by ideal seed-star measurement and ideal Z
 correction. Independent X faults occur only after the thirteen participating

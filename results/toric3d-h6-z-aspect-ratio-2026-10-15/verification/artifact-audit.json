@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "analysis_input_hash": true,
+    "analysis_no_threshold_fit": true,
+    "analysis_point_counts": true,
+    "core_metadata_complete": true,
+    "core_point_counts": true,
+    "counts_valid": true,
+    "decoder": true,
+    "exact_grid": true,
+    "figures_present": true,
+    "seed": true,
+    "shots_per_row": true,
+    "study_final_only": true,
+    "study_no_feedback": true,
+    "study_threshold_ineligible": true,
+    "total_shots": true,
+    "unique_rows": true
+  },
+  "format_version": 1,
+  "implementation_commit": "2835029dec880801a226125d32ac9d98972fe080",
+  "independent_of_analysis_module": true,
+  "recovery_validation": "Every batch uses the core syndrome-validating final MWPM path; any mismatch aborts the scan.",
+  "sha256": {
+    "examples/analyze_toric3d_z_aspect_ratio.py": "fadb2bd3696ab6125f0c8395c7085c9da6f75510aca18d9252c39634690c70e5",
+    "examples/compare_toric3d_z_aspect_ratio.jl": "1a86a0260b343ba4cba9d74cc6ba8088d44879e7dd33caec05d520de085c604a",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-comparison.pdf": "fe70cabf078a5baa4b02b355d5f284d66bc441af37056f399cb2a3e017d6a2c3",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-comparison.png": "4b42710b14bf3f456f457c813dcefd4eef10a50036c2e0d8e46011dfe3ff8157",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-comparison.svg": "576d3887fdc95d9a91067ed775670456f2d84e9194fd7abcdf90fd0646cbb6c9",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-differences.csv": "07004b180f691dbce0ef0837712760468fc3d5ab257ad3d4ca1c0bf75422b415",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-points.csv": "1c9e25dbe94348fd65584e1cf40e58f0852d0b364ecb8c909787cf124793b8d6",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/analysis/aspect-ratio-summary.json": "1156589eaec018754c3bcbac8db18c7909d74ce8214966625cd6d0504be0eb18",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/production/timing-pilot.toml": "99a908cf7625f32b1b83b8009de024ec3288914b413717e431d2f5410b921a22",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/production/toric3d-z-aspect-ratio-study.toml": "fc11f4a1eb9d98d1e3bd7b7f93f0325051d4e98b3dd726aef5667d710cc5d168",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/production/toric3d-z-threshold-metadata.toml": "c80c2789abe13c19c3133a4cd9740ed9eff150ddbe10737620f3190972259748",
+    "results/toric3d-h6-z-aspect-ratio-2026-10-15/production/toric3d-z-threshold-raw.csv": "fb182c082c61846c6ecebfaf1895ebf32276b38f70f2cd271d81f4efcfd61b13",
+    "src/toric3d/encoded_slice_geometry.jl": "2456e36c17e71e398133c1f827b3cfb935b235a7c726bd4ba7cb8b0fb6f906a7",
+    "src/toric3d/slice_encoder.jl": "e5473161202d0a9ecb55d1fe78277fde5ecf2a85cf2294ed964038e3eb4eee5e",
+    "src/toric3d/z_threshold.jl": "d65659848ce036601d9986b712810f63ae3e573752e165a776fb2366a60d59b7"
+  },
+  "status": "pass",
+  "total_fault_records": 30000
+}
