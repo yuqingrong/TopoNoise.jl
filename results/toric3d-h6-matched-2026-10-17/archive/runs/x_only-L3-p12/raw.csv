@@ -1,2 +1,0 @@
-channel,steps,Ly,Lz,p,shots,target_shots,seed,point_seed,complete,elapsed_seconds,final_only_logical_1_failures,final_only_logical_2_failures,final_only_failures,one_step_logical_1_failures,one_step_logical_2_failures,one_step_failures,two_slice_logical_1_failures,two_slice_logical_2_failures,two_slice_failures,joint_00,joint_01,joint_02,joint_03,joint_04,joint_05,joint_06,joint_07
-x_only,3,3,3,0.02,1000,1000,764959904104858255,2237ebd0f99a58f9,true,2.960403170000001,58,96,130,134,188,237,7,10,15,708,49,156,72,3,3,3,6

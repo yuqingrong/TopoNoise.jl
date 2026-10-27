@@ -1,8 +1,0 @@
-{
-  "exit_code": 0,
-  "testsets": 188,
-  "passed": 95339,
-  "total": 95339,
-  "source_manifest_sha256": "c3214dbcdd6c1548fcd76f1d60a1fb3517b06da80e7b3b35a6d9bd272b910dac",
-  "note": "Complete baseline integration suite before the subsequent exact parity-calculation optimization."
-}

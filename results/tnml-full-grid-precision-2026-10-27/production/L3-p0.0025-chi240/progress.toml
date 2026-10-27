@@ -1,9 +1,0 @@
-L = 3
-p = 0.0025
-pid = 4181
-requested_shots = 1000
-run_id = "d4188ed0f9ea3291c395d0fcb62c6819bf71bfbda37688c9366658dbe6a5cb71"
-shot = 41
-stage = "tn"
-stage_started_unix = 1.793069640938116e9
-updated_at_unix = 1.793069640938116e9

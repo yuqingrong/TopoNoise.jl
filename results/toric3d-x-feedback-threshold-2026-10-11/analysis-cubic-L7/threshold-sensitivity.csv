@@ -1,7 +1,0 @@
-protocol,name,p_min,p_max,min_size,correction_omega,status,pc,nu,diagnostic
-final_only,min_size_9,0.01,0.025,9,,no_crossing,,,no adjacent-size sign-changing crossing inside the fit window
-final_only,trim_lowest_p,0.0125,0.025,7,,no_crossing,,,no adjacent-size sign-changing crossing inside the fit window
-final_only,trim_highest_p,0.01,0.0225,7,,no_crossing,,,no adjacent-size sign-changing crossing inside the fit window
-slice_feedback,min_size_9,0.01,0.025,9,,ok,0.0151125072993967,1.1798074210992406,
-slice_feedback,trim_lowest_p,0.0125,0.025,7,,ok,0.015063033610288906,0.9807311030593349,
-slice_feedback,trim_highest_p,0.01,0.0225,7,,ok,0.014895407762267818,1.2143793908217442,

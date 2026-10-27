@@ -1,8 +1,0 @@
-{
-  "archived_at_unix": 1792076691.166511,
-  "archive_directory": "pre-optimization",
-  "archived_files": 1364,
-  "statistical_design_will_remain_identical": true,
-  "reason": "Replace strided row parity with exactly equivalent packed-column XOR to avoid hours of unnecessary CPU work. Original data, metadata, selection and source snapshots are preserved. Rerun the same pilot and production seeds with optimized source; no data pooling across versions.",
-  "baseline_full_suite_passed": 95339
-}

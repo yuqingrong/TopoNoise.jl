@@ -1,4 +1,0 @@
-channel,steps,Ly,Lz,p,shots,target_shots,seed,point_seed,complete,elapsed_seconds,final_only_logical_1_failures,final_only_logical_2_failures,final_only_failures,two_slice_logical_1_failures,two_slice_logical_2_failures,two_slice_failures,joint_00,joint_01,joint_02,joint_03
-x_only,11,11,11,0.035,1000,1000,2026101533,804d833332d36091,true,1175.3364874980002,480,462,713,4,6,8,285,707,2,6
-x_only,11,11,11,0.04,1000,1000,2026101533,09728ea6c07aaa28,true,1033.272934792,481,486,729,24,25,40,265,695,6,34
-x_only,11,11,11,0.045,1000,1000,2026101533,18d41a464bcd0edc,true,343.772722582,526,513,763,45,58,84,217,699,20,64

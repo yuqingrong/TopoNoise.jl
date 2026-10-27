@@ -1,9 +1,0 @@
-L = 11
-p = 0.0
-pid = 2165
-requested_shots = 1
-run_id = "a5d62656191300b57646a1468a7372c140cedccf7d5126b114cd7e1432634508"
-shot = 1
-stage = "complete"
-stage_started_unix = 1.793069214497176e9
-updated_at_unix = 1.793069214497176e9

@@ -1,7 +1,0 @@
-fit_key,channel,protocol,status,pc,nu,bootstrap_pc_low,bootstrap_pc_high,degree,p_min,p_max,min_size,deviance,deviance_p_value,diagnostic
-x_only/full_prefix,x_only,full_prefix,inconclusive,,,,,2,0.015,0.075,3,12.735849800382235,0.6226925118111599,fewer than 80% of parametric bootstrap fits were usable
-x_only/none,x_only,none,inconclusive,,,,,2,0.015,0.075,3,,,"missing adjacent-size crossings for [(3, 5), (5, 7)]; threshold withheld"
-x_only/slice_local,x_only,slice_local,inconclusive,,,,,2,0.015,0.075,3,,,"missing adjacent-size crossings for [(3, 5)]; threshold withheld"
-z_only/full_prefix,z_only,full_prefix,inconclusive,,,,,2,0.03,0.06,5,74.4934570346308,1.9205557033083586e-05,fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)
-z_only/none,z_only,none,inconclusive,,,,,2,0.03,0.06,5,26.817655504840832,0.6813013399391404,parameter bound reached: pc; fitted failure probability is not monotone increasing in p; candidate p_c is outside the fit window
-z_only/slice_local,z_only,slice_local,inconclusive,,,,,2,0.03,0.06,5,67.72287543121459,0.00015086032517590807,fitted failure probability is not monotone increasing in p; scaling-model lack of fit (deviance p < 0.01)

@@ -1,3 +1,0 @@
-channel,steps,Ly,Lz,p,shots,target_shots,seed,point_seed,complete,elapsed_seconds,final_only_logical_1_failures,final_only_logical_2_failures,final_only_failures,full_prefix_logical_1_failures,full_prefix_logical_2_failures,full_prefix_failures,joint_00,joint_01,joint_02,joint_03
-x_only,11,11,11,0.05,0,1000,2026101574,73f407ce0b712c78,false,0.0,0,0,0,0,0,0,0,0,0,0
-x_only,11,11,11,0.055,0,1000,2026101574,d94fed45369c43f1,false,0.0,0,0,0,0,0,0,0,0,0,0

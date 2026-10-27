@@ -1,4 +1,0 @@
-excluded_from_scientific_counts = true
-paired_records_per_channel = 2
-seconds = 0.064526085
-zero_noise_passed = true
