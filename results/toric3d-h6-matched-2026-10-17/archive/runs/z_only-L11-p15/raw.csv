@@ -1,0 +1,2 @@
+channel,steps,Ly,Lz,p,shots,target_shots,seed,point_seed,complete,elapsed_seconds,final_only_logical_1_failures,final_only_logical_2_failures,final_only_failures,one_step_logical_1_failures,one_step_logical_2_failures,one_step_failures,two_slice_logical_1_failures,two_slice_logical_2_failures,two_slice_failures,joint_00,joint_01,joint_02,joint_03,joint_04,joint_05,joint_06,joint_07
+z_only,11,11,11,0.0325,1000,1000,866671875392055552,1cf314e45d1e46fe,true,28.496173371999994,477,504,735,466,477,733,196,161,266,57,132,126,419,19,59,63,125

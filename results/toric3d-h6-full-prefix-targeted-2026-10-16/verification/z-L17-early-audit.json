@@ -1,0 +1,24 @@
+{
+  "status": "single_shard_passed",
+  "audit_scope": "Early partial-only audit of completed production-z-L17; not overall production completion and not an analysis of outcomes.",
+  "checked_at_unix": 1792135218.630141,
+  "selection_sha256": "8fb02c7f5e476c0e9a5f69fb08209ef85088f7b576b23de07d18adc8b92a8750",
+  "checker_sha256": "a4d76058322171627db4081d78ebd82329e693b7a4ab0fd32c5fe9dff3405622",
+  "simulation_source_files_verified": 56,
+  "all_planned_point_seeds_regenerated": 77,
+  "historical_and_benchmark_unique_point_seeds": 132,
+  "seed_sets_disjoint": true,
+  "failed_record_files": 0,
+  "shard": {
+    "name": "production-z-L17",
+    "channel": "z_only",
+    "points": 7,
+    "records": 14000,
+    "snapshots_verified": 142,
+    "raw_sha256": "90a123b82a063f615d5fd8c0003a78da6b32b73d1d42c30580c06248d7251497",
+    "checkpoint_sha256": "f59eff0407754e9ff7115cbdc94244fa878c9cd825fc8bd8207e532539eeee23",
+    "metadata_sha256": "6afd1977acb33e2d98f904d7102df41ab2eee62824ef05fcdacc01fb711b723c"
+  },
+  "overall_production_complete": false,
+  "fits_or_replays_performed": false
+}

@@ -1,0 +1,13 @@
+# Restore reproduction-source.tar.gz into a fresh compatible project root.
+# Use a Python environment with the versions in reproduction-environment.json.
+# Run from that root. These commands write the derived follow-up results only.
+
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -B results/toric3d-h6-full-prefix-reanalysis-2026-10-16/test_x_analysis.py
+
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -B results/toric3d-h6-full-prefix-reanalysis-2026-10-16/test_z_models.py
+
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -B results/toric3d-h6-full-prefix-reanalysis-2026-10-16/x_analysis.py
+
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python -B results/toric3d-h6-full-prefix-reanalysis-2026-10-16/z_models.py
+
+env PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLCONFIGDIR=/tmp/h6-full-prefix-mpl python -B results/toric3d-h6-full-prefix-reanalysis-2026-10-16/plot_reanalysis.py

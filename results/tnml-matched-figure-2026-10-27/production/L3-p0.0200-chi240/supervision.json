@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "elapsed_seconds": 881.4726354999002,
+  "peak_rss_bytes": 2811281408,
+  "rss_limit_enforced": true,
+  "decode_limit_seconds": 180.0,
+  "total_limit_seconds": 1800.0,
+  "rss_limit_gib": 4.0,
+  "progress_at_stop": {
+    "L": 3,
+    "p": 0.02,
+    "pid": 26875,
+    "requested_shots": 20,
+    "run_id": "cd2b7166a7d5de92a705413f2a1cefa7d649fc6593b4c5f199df8048e3432842",
+    "shot": 20,
+    "stage": "complete",
+    "stage_started_unix": 1793034654.323677,
+    "updated_at_unix": 1793034654.323677
+  },
+  "command": [
+    "/Users/rongyuqing/.juliaup/bin/julia",
+    "--startup-file=no",
+    "--threads=1,0",
+    "--gcthreads=1",
+    "--project=/Users/rongyuqing/jcode/TopoNoise.jl",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/run.jl",
+    "3",
+    "0.02",
+    "20",
+    "240",
+    "2026102713",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-matched-figure-2026-10-27/production/L3-p0.0200-chi240",
+    "exact=true"
+  ]
+}

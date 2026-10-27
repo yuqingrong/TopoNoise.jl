@@ -1,0 +1,14 @@
+{
+  "pilot_histories": 80,
+  "valid": 80,
+  "unknown": 0,
+  "exact_references": 80,
+  "exact_ml_tie_aware_matches": 80,
+  "exact_ml_strict_matches": 80,
+  "maximum_posterior_absolute_error": 0.00027083605104996633,
+  "all_simulation_source_hashes_verified": true,
+  "archived_files": 63,
+  "total_worker_seconds": 2238.0214829579927,
+  "peak_observed_worker_gib": 2.7424774169921875,
+  "independent_final_review": "Counts, exact comparisons, raw records and figure labeling reconciled; no substantive issues."
+}

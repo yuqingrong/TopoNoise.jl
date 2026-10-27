@@ -1,0 +1,45 @@
+active_gate_outputs_per_transfer_cell = 13
+batch_size = 50
+checkpoint_filename = "toric3d-x-feedback-checkpoint.toml"
+complete = true
+completed_points = 7
+decoder_limitations = "uniform priors neglect nonuniform exposure across qubits and circuit/feedback correlations"
+decoder_prior = "uniform declared physical p on every final data qubit"
+dimensions_steps_Ly_Lz = [[11, 11, 11]]
+error_rates = [0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225]
+expected_points = 7
+feedback = "ideal active-slice star measurement and MWPM correction after each diagonal slice"
+final_decoder = "full-plaquette BP+OSD X recovery, validated against the measured syndrome"
+format_version = 1
+geometry = "diagonal encoded slice with n=3(steps+1)LyLz and two logical qubits"
+ideal_operations = ["initialization", "idle qubits", "syndrome measurements", "classical processing", "Pauli corrections"]
+individual_interval = "95% Wilson score interval"
+initial_state = "logical |00> prepared by ideal X-star measurement and ideal Z correction"
+ldpc_versions = ["2.4.1"]
+logical_diagnostics = ["logical_1", "logical_2", "state_failure"]
+logical_qubits = 2
+noise = "independent Bernoulli X fault of rate p after each participating H/CNOT output"
+paired_difference = "slice_feedback minus final_only using paired discordances"
+paired_interval = "conservative approximate 95% interval from 97.5% Wilson discordance intervals"
+point_rng_type = "Random.Xoshiro"
+point_seeds_hex = ["78289d82aa30a628", "5a70539de110df85", "de1902365081ef67", "a05cdc16538e4526", "cb5fb2c7f2f443b2", "3941dd6fde01b777", "a1ae65889514a1d0"]
+protocols = ["final_only", "slice_feedback"]
+resume_supported = true
+resumed = false
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed_gate_fault_locations = 0
+seed_metadata = 2026101505
+shots_per_point = 500
+started_at_unix = 1.792061698137576e9
+state_failure = "either residual logical-X membrane parity after final recovery"
+transfer_schedule = "seven-gate diagonal transfer: H followed by six CNOTs"
+
+[decoder_settings]
+bp_method = "minimum_sum"
+max_iter = 50
+ms_scaling_factor = 1.0
+omp_thread_count = 1
+osd_method = "OSD_CS"
+osd_order = 2
+schedule = "parallel"

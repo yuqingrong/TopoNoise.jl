@@ -1,0 +1,81 @@
+{
+  "zero_checks": [
+    {
+      "L": 3,
+      "probabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "TNfailure": false,
+      "tn_seconds": 25.912867167,
+      "worker_seconds": 62.35773566598073,
+      "peak_rss_bytes": 1983791104,
+      "run_id": "f7b9db26146e98ccb11bd1abdf6946a419f8d6ce1bce3d5df79e27ac0f0463c7"
+    },
+    {
+      "L": 5,
+      "probabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "TNfailure": false,
+      "tn_seconds": 30.523921625,
+      "worker_seconds": 67.92188583407551,
+      "peak_rss_bytes": 1997979648,
+      "run_id": "48065e016f07ca870e4ce697649f37ced559a117681fae5924a8386a2461f9fb"
+    },
+    {
+      "L": 7,
+      "probabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "TNfailure": false,
+      "tn_seconds": 39.5752995,
+      "worker_seconds": 74.70278091705404,
+      "peak_rss_bytes": 2098659328,
+      "run_id": "62f6130450aa5e7af1153446d155be7bf377610b55d36382d41b841b94e2469c"
+    },
+    {
+      "L": 9,
+      "probabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "TNfailure": false,
+      "tn_seconds": 98.370681625,
+      "worker_seconds": 140.09906999999657,
+      "peak_rss_bytes": 2219229184,
+      "run_id": "7d730e40c6050c389cd22e4a6a7e3adabbd8d665bfbed9bf68ea3e2275660ad3"
+    },
+    {
+      "L": 11,
+      "probabilities": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "TNfailure": false,
+      "tn_seconds": 232.999008167,
+      "worker_seconds": 267.1857804999454,
+      "peak_rss_bytes": 2041856000,
+      "run_id": "d5b32a873d92f28ebc11037a6ade1a63c86ab32221b179406a3c5dffdc2ab9f5"
+    }
+  ],
+  "python_tests_passed": 51,
+  "scientific_backend_changed": false,
+  "independent_review": "All previous audit/provenance findings closed on read-only review.",
+  "requested_positive_points": 110,
+  "requested_histories_per_positive_point": 1000,
+  "production_status": "not_started_at_this_audit",
+  "timer_fix": "Owned fresh stage timed with monotonic clock, tested against clock jumps and stale checkpoints."
+}

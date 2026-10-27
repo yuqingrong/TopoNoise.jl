@@ -1,0 +1,37 @@
+L = 3
+algorithm = "independent_untruncated_dense_detector_frontier"
+chi = 240
+cutoff = 1.0e-18
+elapsed_seconds = 0.461128292
+exact_failure = false
+input_corpus = "input-corpus.toml"
+joint_weights = [0.0009761382767805676, 6.222544074448009e-14, 4.0289208252028957e-14, 2.371109826163614e-14]
+log_joint_syndrome = -6.931906304427843
+logical_mask = 0
+max_width_guard = 22
+mwpm_failure = false
+p = 0.0025
+probabilities = [0.9999999998706887, 6.374654310418121e-11, 4.127407889351313e-11, 2.4290716615244662e-11]
+record_id = "3f159af38db6f530ac8c1b4addab80f50fe9987681370bd5cbd4792320b00013"
+run_id = "c21fabde302ecc3b7c953bd3eac8838a2a38822d87f78ab1621d5dca8e22cead"
+schema_version = 1
+seed_elapsed_seconds = 0.00011525
+seed_joint_weights = [0.0023424780067257457, 9.242846970141781e-14, 9.242846970141779e-14, 4.06390177741583e-18]
+shot_index = 3
+status = "complete"
+transfer_elapsed_seconds = 0.460956792
+transfer_joint_weights = [0.41671182140360324, 1.012150582274169e-11, 7.569643288759476e-13, 1.0121505822741692e-11]
+true_mask = 0
+valid = true
+
+[seed]
+exact = true
+log_marginal_probability = -6.0565459326212325
+maximum_width = 9
+probabilities = [0.9999999999210831, 3.945756136396676e-11, 3.9457561363966746e-11, 1.7348729701738093e-15]
+
+[transfer]
+exact = true
+log_marginal_probability = -0.8753603718066101
+maximum_width = 19
+probabilities = [0.9999999999496054, 2.428898174316132e-11, 1.816517530719745e-12, 2.4288981743161326e-11]

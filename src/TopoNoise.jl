@@ -13,6 +13,7 @@ using Yao: H, X, Z, ResetTo, apply!, chain, control, matblock, measure!, put,
            repeat, subroutine, zero_state
 import CairoMakie
 import ITensorNetworks
+import ITensorMPS
 
 export ToricCodePEPS, physicalinds, toric_code_local_tensor, toric_code_peps,
        toric_code_local_gate, unitary_completion, peps_graph,
@@ -71,6 +72,9 @@ export Toric3DEncodedSlice, toric3d_encoded_logical_x, toric3d_encoded_logical_z
        build_toric3d_z_fault_model, sample_toric3d_z_frames,
        build_toric3d_z_threshold_decoder, decode_toric3d_z_batch,
        toric3d_z_threshold_outcome, toric3d_z_threshold_counts,
+       Toric3DZTNTopology, Toric3DZTNSettings, Toric3DZTNDecoder,
+       build_toric3d_z_tn_topology, toric3d_z_tn_edge_probabilities,
+       build_toric3d_z_tn_decoder, decode_toric3d_z_tn,
        Toric3DZFeedbackDecoder, Toric3DZFeedbackDecoderFamily,
        build_toric3d_z_feedback_decoders, decode_toric3d_z_feedback,
        decode_toric3d_z_feedback_batch,
@@ -119,6 +123,8 @@ include("toric3d/slice_scan.jl")
 include("toric3d/encoded_slice_geometry.jl")
 include("toric3d/feedback_strength_geometry.jl")
 include("toric3d/z_threshold.jl")
+include("toric3d/z_tnml_topology.jl")
+include("toric3d/z_tnml.jl")
 include("toric3d/feedback_strength_decoders.jl")
 include("toric3d/feedback_strength_z.jl")
 include("toric3d/feedback_strength_z_batch.jl")

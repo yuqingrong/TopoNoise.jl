@@ -1,0 +1,9 @@
+L = 7
+p = 0.0
+pid = 263
+requested_shots = 1
+run_id = "934467346fd80560d605ee958026d648c77e9858c06b6094674c2a01509bb193"
+shot = 1
+stage = "complete"
+stage_started_unix = 1.793068877665201e9
+updated_at_unix = 1.793068877665201e9

@@ -1,0 +1,44 @@
+requested_shots = 3
+rng_seed = 2026102704
+run_id = "46bfe0bb44c52d292a916c347fec0e013ba85d3ab74be82641d55b4dd8f65df5"
+sampling_elapsed_seconds = 0.6109805
+
+[[records]]
+final_syndrome = [false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, true, false, true, true, true, true, false, false, true, false, false, false, false, false, false, false, true, true, true, false, true, true, false, false, true, true, false, false]
+mwpm_failure = true
+raw_fault_count = 378
+raw_fault_indices = [84, 161, 170, 180, 191, 195, 204, 220, 223, 276, 288, 299, 329, 338, 346]
+raw_seed_mask = 0
+record_id = "983795cb63298a5280264f3794b0239ac6d4e2a5cd82de64c61ea94c9935fe74"
+recovery_mask = 0
+seed_recovery = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+seed_syndrome = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+shot_index = 1
+transfer_mask = 2
+true_mask = 2
+[[records]]
+final_syndrome = [false, false, false, false, false, false, false, false, false, true, true, true, false, false, false, true, false, false, true, true, false, true, false, false, true, false, false, false, false, false, true, false, true, true, true, true, true, false, true, false, true, false, false, false, false]
+mwpm_failure = true
+raw_fault_count = 378
+raw_fault_indices = [68, 81, 145, 155, 167, 178, 191, 222, 264, 286, 289, 312, 315, 373]
+raw_seed_mask = 0
+record_id = "7cd89eb4537581de6e947b71dedc9fbdab821001c75ac1416489b0f2ba4c359d"
+recovery_mask = 0
+seed_recovery = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+seed_syndrome = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+shot_index = 2
+transfer_mask = 0
+true_mask = 0
+[[records]]
+final_syndrome = [false, false, false, false, false, false, false, false, false, false, true, false, false, true, false, false, true, false, true, false, false, true, true, false, false, true, false, true, false, false, false, true, false, true, true, false, false, true, false, false, false, false, true, true, false]
+mwpm_failure = true
+raw_fault_count = 378
+raw_fault_indices = [24, 56, 62, 144, 148, 176, 188, 237, 255, 257, 281, 288, 292, 340, 351, 353]
+raw_seed_mask = 0
+record_id = "b78b4b4f65405a44537e71d438cc83a344f59a78fede4b6a285fa1a8fec5e374"
+recovery_mask = 0
+seed_recovery = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false]
+seed_syndrome = [false, false, false, false, false, true, false, false, false, false, false, false, false, false, true, false, false, false]
+shot_index = 3
+transfer_mask = 1
+true_mask = 1

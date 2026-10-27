@@ -1,0 +1,9 @@
+{
+  "launcher_pid": 98745,
+  "launched_at_utc": "2026-10-27T02:37:52.574701+00:00",
+  "launcher_sha256": "037ddd1a9b0f842c5f8f13e4838af4c9497bee52a369e8376630e56e0af1f769",
+  "selection_sha256": "bb2777f19822d4ecff3043e4d689165249f3686b109cab13a64ade0965fb5d9c",
+  "sequence": "all five zero checks then22 L3 positive points at1000 fresh histories each",
+  "one_numerical_worker": true,
+  "larger_positive_sizes": "not dispatched until validated"
+}

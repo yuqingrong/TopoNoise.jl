@@ -1,0 +1,74 @@
+{
+  "pid": 98745,
+  "status": "running",
+  "zero_check_sizes": [
+    3,
+    5,
+    7,
+    9,
+    11
+  ],
+  "selected_production_sizes": [
+    3
+  ],
+  "requested_sizes": [
+    3,
+    5,
+    7,
+    9,
+    11
+  ],
+  "planned_production_histories": 110000,
+  "cutoff": 1e-26,
+  "rng_seed_offset": 100000,
+  "points": [
+    {
+      "phase": "zero",
+      "L": 3,
+      "p": 0.0,
+      "requested_shots": 1,
+      "driver_returncode": 0,
+      "plot_returncode": 0
+    },
+    {
+      "phase": "zero",
+      "L": 5,
+      "p": 0.0,
+      "requested_shots": 1,
+      "driver_returncode": 0,
+      "plot_returncode": 0
+    },
+    {
+      "phase": "zero",
+      "L": 7,
+      "p": 0.0,
+      "requested_shots": 1,
+      "driver_returncode": 0,
+      "plot_returncode": 0
+    },
+    {
+      "phase": "zero",
+      "L": 9,
+      "p": 0.0,
+      "requested_shots": 1,
+      "driver_returncode": 0,
+      "plot_returncode": 0
+    },
+    {
+      "phase": "zero",
+      "L": 11,
+      "p": 0.0,
+      "requested_shots": 1,
+      "driver_returncode": 0,
+      "plot_returncode": 0
+    }
+  ],
+  "started_at_utc": "2026-10-27T02:37:52.633306+00:00",
+  "updated_at_utc": "2026-10-27T02:46:57.308527+00:00",
+  "current_point": {
+    "phase": "production",
+    "L": 3,
+    "p": 0.0025,
+    "requested_shots": 1000
+  }
+}

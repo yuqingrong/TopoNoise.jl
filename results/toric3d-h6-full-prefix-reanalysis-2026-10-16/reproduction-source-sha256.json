@@ -1,0 +1,19 @@
+{
+  "examples/fit_toric3d_diagonal_feedback.py": "84bc0a87d2c03f273891fd28969448084f9159c427909686fac1981fa3c3e3ff",
+  "examples/fit_toric3d_h6_threshold.py": "bc5749201b237da0f9ae64967a2eefce25c0244bbd09948e0ead9375a164def2",
+  "examples/plotting_theme.py": "9a4aa53a89c5de9d831a9b59dc954425c28b80c6ef447c6fa26e345b3196144a",
+  "examples/styles/paper-no-grid.mplstyle": "c52350a29b4b1b20bbb3a4c0c585c22450a83ee46d6a1e2b66594a9356e836fa",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/analysis-addendum.md": "f5aa4c762ad1a67d05c4dceb499ac2b16e098563c87f4e763eec98f3b163d355",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/analysis-plan.md": "18aac5fe96000e1ceb6988a5d03ab94a0c12466c7c1a4c6da878ce253c5cd7b1",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/independent-spotcheck.json": "7ae9b23972969962241d11f627d762d06367944fb16098039558c42831de00da",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/independent_spotcheck.py": "f1f3f972ffef2e2926a27ddca3fc141ebd302d065a63a24109e6bd206cbff613",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/input.json": "cc77491378dc0615936ef7a3ca03c90c18d9d952e69b3546165d0c46437cac89",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/plan-freeze.json": "d4dd5d12fdc6b25c4462f067d32093513bf18910ce88d697f055c8aedfb18242",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/plot_reanalysis.py": "aa489aa601ab4d602383c586c04b5bb81f1724d095a7659b4b8cbb055d6f6924",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/test_x_analysis.py": "acfd68e74086ee7e009abdc7b354038026ca7590bc8df8b94eb478046e4216a7",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/test_z_models.py": "0422e1283f9709ceaab628b58b7e80008170752f6f446a8244febb00d88be8f6",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/verification-review.md": "efc3dcff000b3a995e9df3aa2a59028b1d10c040d8d83b14b96021f55d07afc6",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/x_analysis.py": "c6d5f79176e4604781fbf6b3753027c95787a55301a6520bcd920371246c3af3",
+  "results/toric3d-h6-full-prefix-reanalysis-2026-10-16/z_models.py": "9da2e44f046cf79ac6334835c8ba234aeddd924afa33ff155c49eb4c8aa6fb19",
+  "results/toric3d-h6-z-one-step-2026-10-15/analyze.py": "fe1411913a9dabff96f690a29ae46adff9b948e325180f9aad7be3d225aba39d"
+}

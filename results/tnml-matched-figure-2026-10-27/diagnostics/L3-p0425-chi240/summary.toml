@@ -1,0 +1,16 @@
+L = 3
+attempted_tn_shots = 3
+completed_tn_shots = 3
+exception_shots = 0
+invalid_shots = 0
+mwpm_failures = 3
+p = 0.0425
+requested_shots = 3
+run_id = "46bfe0bb44c52d292a916c347fec0e013ba85d3ab74be82641d55b4dd8f65df5"
+saved_histories = 3
+saved_outputs = 3
+tn_failure_identification_interval = [1.0, 1.0]
+tn_failures = 3
+unknown_shots = 0
+updated_at_utc = "2026-10-26T16:43:44.478"
+valid_shots = 3

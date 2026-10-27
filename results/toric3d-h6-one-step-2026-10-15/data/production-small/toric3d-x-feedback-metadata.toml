@@ -1,0 +1,45 @@
+active_gate_outputs_per_transfer_cell = 13
+batch_size = 50
+checkpoint_filename = "toric3d-x-feedback-checkpoint.toml"
+complete = true
+completed_points = 28
+decoder_limitations = "uniform priors neglect nonuniform exposure across qubits and circuit/feedback correlations"
+decoder_prior = "uniform declared physical p on every final data qubit"
+dimensions_steps_Ly_Lz = [[3, 3, 3], [5, 5, 5], [7, 7, 7], [9, 9, 9]]
+error_rates = [0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225]
+expected_points = 28
+feedback = "ideal active-slice star measurement and MWPM correction after each diagonal slice"
+final_decoder = "full-plaquette BP+OSD X recovery, validated against the measured syndrome"
+format_version = 1
+geometry = "diagonal encoded slice with n=3(steps+1)LyLz and two logical qubits"
+ideal_operations = ["initialization", "idle qubits", "syndrome measurements", "classical processing", "Pauli corrections"]
+individual_interval = "95% Wilson score interval"
+initial_state = "logical |00> prepared by ideal X-star measurement and ideal Z correction"
+ldpc_versions = ["2.4.1"]
+logical_diagnostics = ["logical_1", "logical_2", "state_failure"]
+logical_qubits = 2
+noise = "independent Bernoulli X fault of rate p after each participating H/CNOT output"
+paired_difference = "slice_feedback minus final_only using paired discordances"
+paired_interval = "conservative approximate 95% interval from 97.5% Wilson discordance intervals"
+point_rng_type = "Random.Xoshiro"
+point_seeds_hex = ["fe96f86cfc0acad1", "408e5c779829343f", "b2c17fe75495c894", "52c9aad77555b7fb", "20063511ee7def6d", "38634af7ed5f6307", "a59ebab121e38c6e", "f145117d2e28a831", "1021566c93326fe1", "08ba9be5a221adbf", "35d81a4f9ab8da2b", "01b3debe096f2e2e", "9be206ba3ea7f11b", "49b33416f4c73f30", "27e980da5621421b", "ad9a20aa375d2b11", "0d9fd7c48b3d3745", "4105830073553b37", "b8f26e674d2d69c8", "39fc1dd2e5113f62", "4ea31970825d6379", "d098a1cfc37622e9", "6aa545eb1241ac2f", "567f366460a8c187", "5c5bbee4cde0dbc6", "0c99cd87b7761a63", "aa539eae92af29ea", "42e614cac9a04e98"]
+protocols = ["final_only", "slice_feedback"]
+resume_supported = true
+resumed = false
+rng_type = "Random.MersenneTwister"
+routing = "one_step"
+seed_gate_fault_locations = 0
+seed_metadata = 2026101504
+shots_per_point = 500
+started_at_unix = 1.792061675080921e9
+state_failure = "either residual logical-X membrane parity after final recovery"
+transfer_schedule = "seven-gate diagonal transfer: H followed by six CNOTs"
+
+[decoder_settings]
+bp_method = "minimum_sum"
+max_iter = 50
+ms_scaling_factor = 1.0
+omp_thread_count = 1
+osd_method = "OSD_CS"
+osd_order = 2
+schedule = "parallel"

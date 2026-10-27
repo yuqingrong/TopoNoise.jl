@@ -1,0 +1,9 @@
+L = 3
+p = 0.0025
+pid = 79979
+requested_shots = 1000
+run_id = "c21fabde302ecc3b7c953bd3eac8838a2a38822d87f78ab1621d5dca8e22cead"
+shot = 74
+stage = "exact"
+stage_started_unix = 1.793066981861797e9
+updated_at_unix = 1.793066981861797e9

@@ -14,6 +14,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Z-only tensor-network decoding" => "z_tnml.md",
     ],
 )
 

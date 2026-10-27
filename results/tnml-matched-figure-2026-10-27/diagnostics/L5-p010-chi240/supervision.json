@@ -1,0 +1,36 @@
+{
+  "status": "contraction_time_limit",
+  "exit_code": -15,
+  "elapsed_seconds": 211.77413266594522,
+  "peak_rss_bytes": 3320758272,
+  "rss_limit_enforced": true,
+  "decode_limit_seconds": 180.0,
+  "total_limit_seconds": 900.0,
+  "rss_limit_gib": 4.0,
+  "progress_at_stop": {
+    "L": 5,
+    "p": 0.01,
+    "pid": 19510,
+    "requested_shots": 1,
+    "run_id": "6d8268f8d827afb32c5ae0d0a746d5fe00f37a260a1344abe8e48de9acd31c01",
+    "shot": 1,
+    "stage": "tn",
+    "stage_started_unix": 1793033055.861327,
+    "updated_at_unix": 1793033055.861327
+  },
+  "command": [
+    "/Users/rongyuqing/.juliaup/bin/julia",
+    "--startup-file=no",
+    "--threads=1,0",
+    "--gcthreads=1",
+    "--project=.",
+    "examples/tnml_repaired_seed/run.jl",
+    "5",
+    "0.01",
+    "1",
+    "240",
+    "2026102705",
+    "results/tnml-matched-figure-2026-10-27/diagnostics/L5-p010-chi240",
+    "exact=false"
+  ]
+}

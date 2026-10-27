@@ -1,0 +1,412 @@
+{
+  "l3_checked": 12,
+  "l3_valid": 12,
+  "l3_exact_decision_disagreements": 0,
+  "l3_max_posterior_linf": 5.1123031596683743e-05,
+  "checks": [
+    {
+      "run": "L3-p006-chi240",
+      "L": 3,
+      "p": 0.006,
+      "shot": 1,
+      "valid": true,
+      "status": "complete",
+      "seconds": 30.227774125,
+      "exact_maximizers": [
+        0
+      ],
+      "log_joint_syndrome_error": 2.2554853984502188e-08,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 2.6144563226014085e-07,
+      "posterior_linf": 8.038038990659802e-08
+    },
+    {
+      "run": "L3-p006-chi240",
+      "L": 3,
+      "p": 0.006,
+      "shot": 2,
+      "valid": true,
+      "status": "complete",
+      "seconds": 5.989292083,
+      "exact_maximizers": [
+        2
+      ],
+      "log_joint_syndrome_error": -6.886915926429538e-09,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 6.166444235533578e-09,
+      "posterior_linf": 3.083222122057805e-09
+    },
+    {
+      "run": "L3-p006-chi240",
+      "L": 3,
+      "p": 0.006,
+      "shot": 3,
+      "valid": true,
+      "status": "complete",
+      "seconds": 5.407255375,
+      "exact_maximizers": [
+        0
+      ],
+      "log_joint_syndrome_error": -7.595981621477677e-09,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 1.6797555154989218e-08,
+      "posterior_linf": 7.870065932280568e-09
+    },
+    {
+      "run": "L3-p010-chi240",
+      "L": 3,
+      "p": 0.01,
+      "shot": 1,
+      "valid": true,
+      "status": "complete",
+      "seconds": 40.743922375,
+      "exact_maximizers": [
+        1
+      ],
+      "log_joint_syndrome_error": -6.556186846751189e-07,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 2.621996572770176e-07,
+      "posterior_linf": 1.310998286596643e-07
+    },
+    {
+      "run": "L3-p010-chi240",
+      "L": 3,
+      "p": 0.01,
+      "shot": 2,
+      "valid": true,
+      "status": "complete",
+      "seconds": 9.911476292,
+      "exact_maximizers": [
+        1
+      ],
+      "log_joint_syndrome_error": -9.184901728076511e-10,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 1.2730675551537347e-08,
+      "posterior_linf": 5.844535189147848e-09
+    },
+    {
+      "run": "L3-p010-chi240",
+      "L": 3,
+      "p": 0.01,
+      "shot": 3,
+      "valid": true,
+      "status": "complete",
+      "seconds": 5.632425166,
+      "exact_maximizers": [
+        0
+      ],
+      "log_joint_syndrome_error": -2.4855673075308005e-12,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 1.4786769815812512e-11,
+      "posterior_linf": 6.936280438580624e-12
+    },
+    {
+      "run": "L3-p020-chi240",
+      "L": 3,
+      "p": 0.02,
+      "shot": 1,
+      "valid": true,
+      "status": "complete",
+      "seconds": 50.050194125,
+      "exact_maximizers": [
+        0
+      ],
+      "log_joint_syndrome_error": 1.0429307195636284e-08,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 1.2492121058199288e-07,
+      "posterior_linf": 5.660844748511806e-08
+    },
+    {
+      "run": "L3-p020-chi240",
+      "L": 3,
+      "p": 0.02,
+      "shot": 2,
+      "valid": true,
+      "status": "complete",
+      "seconds": 26.84202525,
+      "exact_maximizers": [
+        1
+      ],
+      "log_joint_syndrome_error": 5.161225047345397e-08,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 2.420312890452636e-07,
+      "posterior_linf": 1.1943962717475554e-07
+    },
+    {
+      "run": "L3-p020-chi240",
+      "L": 3,
+      "p": 0.02,
+      "shot": 3,
+      "valid": true,
+      "status": "complete",
+      "seconds": 31.447528958,
+      "exact_maximizers": [
+        1
+      ],
+      "log_joint_syndrome_error": -4.712643125515115e-06,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 1.776553161491473e-05,
+      "posterior_linf": 6.615346058169713e-06
+    },
+    {
+      "run": "L3-p0425-chi240",
+      "L": 3,
+      "p": 0.0425,
+      "shot": 1,
+      "valid": true,
+      "status": "complete",
+      "seconds": 60.590941792,
+      "exact_maximizers": [
+        3
+      ],
+      "log_joint_syndrome_error": -8.734911314434157e-05,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 5.404503331016275e-05,
+      "posterior_linf": 1.6449004520746602e-05
+    },
+    {
+      "run": "L3-p0425-chi240",
+      "L": 3,
+      "p": 0.0425,
+      "shot": 2,
+      "valid": true,
+      "status": "complete",
+      "seconds": 44.845786416,
+      "exact_maximizers": [
+        1
+      ],
+      "log_joint_syndrome_error": 4.654636569156878e-05,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 0.00010916437597260908,
+      "posterior_linf": 4.875470734538867e-05
+    },
+    {
+      "run": "L3-p0425-chi240",
+      "L": 3,
+      "p": 0.0425,
+      "shot": 3,
+      "valid": true,
+      "status": "complete",
+      "seconds": 35.207593917,
+      "exact_maximizers": [
+        0
+      ],
+      "log_joint_syndrome_error": 2.0220370352319605e-05,
+      "ml_strict_match": true,
+      "ml_tie_aware_match": true,
+      "ml_tie_tolerance": 1e-09,
+      "posterior_l1": 0.00010224606319336749,
+      "posterior_linf": 5.1123031596683743e-05
+    }
+  ],
+  "resources": [
+    {
+      "run": "L3-p006-chi240",
+      "status": "completed",
+      "exit_code": 0,
+      "elapsed_seconds": 79.87360066594556,
+      "peak_rss_bytes": 2633662464,
+      "rss_limit_enforced": true,
+      "decode_limit_seconds": 180.0,
+      "total_limit_seconds": 900.0,
+      "rss_limit_gib": 4.0,
+      "progress_at_stop": {
+        "L": 3,
+        "p": 0.006,
+        "pid": 15567,
+        "requested_shots": 3,
+        "run_id": "0cba1220e3a96264039e75eddf91e9da99e123f468ccc4c575de6af965b03db9",
+        "shot": 3,
+        "stage": "complete",
+        "stage_started_unix": 1793032699.599708,
+        "updated_at_unix": 1793032699.599708
+      },
+      "command": [
+        "/Users/rongyuqing/.juliaup/bin/julia",
+        "--startup-file=no",
+        "--threads=1,0",
+        "--gcthreads=1",
+        "--project=.",
+        "examples/tnml_repaired_seed/run.jl",
+        "3",
+        "0.006",
+        "3",
+        "240",
+        "2026102702",
+        "results/tnml-matched-figure-2026-10-27/diagnostics/L3-p006-chi240",
+        "exact=true"
+      ]
+    },
+    {
+      "run": "L3-p010-chi240",
+      "status": "completed",
+      "exit_code": 0,
+      "elapsed_seconds": 93.28962454199791,
+      "peak_rss_bytes": 2610053120,
+      "rss_limit_enforced": true,
+      "decode_limit_seconds": 180.0,
+      "total_limit_seconds": 900.0,
+      "rss_limit_gib": 4.0,
+      "progress_at_stop": {
+        "L": 3,
+        "p": 0.01,
+        "pid": 14410,
+        "requested_shots": 3,
+        "run_id": "fc4bc7c39fb32e846676731c64fb983ac320593f0b2658e0dd93ceaf4bc24c66",
+        "shot": 3,
+        "stage": "complete",
+        "stage_started_unix": 1793032593.972224,
+        "updated_at_unix": 1793032593.972224
+      },
+      "command": [
+        "/Users/rongyuqing/.juliaup/bin/julia",
+        "--startup-file=no",
+        "--threads=1,0",
+        "--gcthreads=1",
+        "--project=.",
+        "examples/tnml_repaired_seed/run.jl",
+        "3",
+        "0.01",
+        "3",
+        "240",
+        "2026102701",
+        "results/tnml-matched-figure-2026-10-27/diagnostics/L3-p010-chi240",
+        "exact=true"
+      ]
+    },
+    {
+      "run": "L3-p020-chi240",
+      "status": "completed",
+      "exit_code": 0,
+      "elapsed_seconds": 147.7379666659981,
+      "peak_rss_bytes": 2791620608,
+      "rss_limit_enforced": true,
+      "decode_limit_seconds": 180.0,
+      "total_limit_seconds": 900.0,
+      "rss_limit_gib": 4.0,
+      "progress_at_stop": {
+        "L": 3,
+        "p": 0.02,
+        "pid": 16477,
+        "requested_shots": 3,
+        "run_id": "61c723617a28f81358a64aa4f1f47aa7afd93f41027d9aeb21a29a39753acf14",
+        "shot": 3,
+        "stage": "complete",
+        "stage_started_unix": 1793032847.287188,
+        "updated_at_unix": 1793032847.287188
+      },
+      "command": [
+        "/Users/rongyuqing/.juliaup/bin/julia",
+        "--startup-file=no",
+        "--threads=1,0",
+        "--gcthreads=1",
+        "--project=.",
+        "examples/tnml_repaired_seed/run.jl",
+        "3",
+        "0.02",
+        "3",
+        "240",
+        "2026102703",
+        "results/tnml-matched-figure-2026-10-27/diagnostics/L3-p020-chi240",
+        "exact=true"
+      ]
+    },
+    {
+      "run": "L3-p0425-chi240",
+      "status": "completed",
+      "exit_code": 0,
+      "elapsed_seconds": 177.19468775007408,
+      "peak_rss_bytes": 2797797376,
+      "rss_limit_enforced": true,
+      "decode_limit_seconds": 180.0,
+      "total_limit_seconds": 900.0,
+      "rss_limit_gib": 4.0,
+      "progress_at_stop": {
+        "L": 3,
+        "p": 0.0425,
+        "pid": 17874,
+        "requested_shots": 3,
+        "run_id": "46bfe0bb44c52d292a916c347fec0e013ba85d3ab74be82641d55b4dd8f65df5",
+        "shot": 3,
+        "stage": "complete",
+        "stage_started_unix": 1793033024.479486,
+        "updated_at_unix": 1793033024.479486
+      },
+      "command": [
+        "/Users/rongyuqing/.juliaup/bin/julia",
+        "--startup-file=no",
+        "--threads=1,0",
+        "--gcthreads=1",
+        "--project=.",
+        "examples/tnml_repaired_seed/run.jl",
+        "3",
+        "0.0425",
+        "3",
+        "240",
+        "2026102704",
+        "results/tnml-matched-figure-2026-10-27/diagnostics/L3-p0425-chi240",
+        "exact=true"
+      ]
+    },
+    {
+      "run": "L5-p010-chi240",
+      "status": "contraction_time_limit",
+      "exit_code": -15,
+      "elapsed_seconds": 211.77413266594522,
+      "peak_rss_bytes": 3320758272,
+      "rss_limit_enforced": true,
+      "decode_limit_seconds": 180.0,
+      "total_limit_seconds": 900.0,
+      "rss_limit_gib": 4.0,
+      "progress_at_stop": {
+        "L": 5,
+        "p": 0.01,
+        "pid": 19510,
+        "requested_shots": 1,
+        "run_id": "6d8268f8d827afb32c5ae0d0a746d5fe00f37a260a1344abe8e48de9acd31c01",
+        "shot": 1,
+        "stage": "tn",
+        "stage_started_unix": 1793033055.861327,
+        "updated_at_unix": 1793033055.861327
+      },
+      "command": [
+        "/Users/rongyuqing/.juliaup/bin/julia",
+        "--startup-file=no",
+        "--threads=1,0",
+        "--gcthreads=1",
+        "--project=.",
+        "examples/tnml_repaired_seed/run.jl",
+        "5",
+        "0.01",
+        "1",
+        "240",
+        "2026102705",
+        "results/tnml-matched-figure-2026-10-27/diagnostics/L5-p010-chi240",
+        "exact=false"
+      ]
+    }
+  ],
+  "larger_size_policy": "L5 trial stopped at 180 s without a completed decision; L7, L9, L11 not launched."
+}

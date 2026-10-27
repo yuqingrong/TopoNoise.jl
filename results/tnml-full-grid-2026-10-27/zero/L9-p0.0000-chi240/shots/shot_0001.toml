@@ -1,0 +1,64 @@
+L = 9
+TNfailure = false
+chi = 240
+cutoff = 1.0e-18
+elapsed_seconds = 98.370681625
+exact_requested = false
+input_corpus = "input-corpus.toml"
+log_joint_syndrome = 0.0
+logical_mask = 0
+mwpm_failure = false
+p = 0.0
+probabilities = [1.0, 0.0, 0.0, 0.0]
+raw_probabilities = [1.0, 0.0, 0.0, 0.0]
+record_id = "0821844751fca2d6b0e983d5ed0254bcfb49235bb4013e5b0eda8e8a6964b9a3"
+run_id = "7d730e40c6050c389cd22e4a6a7e3adabbd8d665bfbed9bf68ea3e2275660ad3"
+schema_version = 1
+shot_index = 1
+status = "complete"
+true_mask = 0
+valid = true
+
+[seed_result]
+log_syndrome = 0.0
+logical_mask = 0
+probabilities = [1.0, 0.0, 0.0, 0.0]
+raw_probabilities = [1.0, 0.0, 0.0, 0.0]
+valid = true
+
+    [seed_result.diagnostics]
+    actual_maxbond = 1
+    algorithm = "conditioned_star_canonical_boundary_mps"
+    contraction_order = "plane_major_detector_order"
+    detector_count = 162
+    discarded_weight = 0.0
+    edge_count = 243
+    events = 13041
+    local_svd_events = 13041
+    max_bond_dimension = 1
+    maximum_local_truncation_error = 0.0
+    minimum_probability = 0.0
+    roundoff_correction_l1 = 0.0
+    sum_local_truncation_error = 0.0
+
+[transfer_result]
+log_syndrome = 0.0
+logical_mask = 0
+probabilities = [1.0, 0.0, 0.0, 0.0]
+raw_probabilities = [1.0, 0.0, 0.0, 0.0]
+valid = true
+
+    [transfer_result.diagnostics]
+    actual_maxbond = 1
+    algorithm = "conditioned_star_canonical_boundary_mps"
+    contraction_order = "plane_major_detector_order"
+    detector_count = 891
+    discarded_weight = 0.0
+    edge_count = 3888
+    events = 396495
+    local_svd_events = 396495
+    max_bond_dimension = 1
+    maximum_local_truncation_error = 0.0
+    minimum_probability = 0.0
+    roundoff_correction_l1 = 0.0
+    sum_local_truncation_error = 0.0

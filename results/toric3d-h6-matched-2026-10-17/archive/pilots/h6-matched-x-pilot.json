@@ -1,0 +1,269 @@
+{
+  "arm_order": [
+    "final_only",
+    "one_step",
+    "two_slice"
+  ],
+  "blas_threads": 1,
+  "canonical_project": "/Users/rongyuqing/.codex/worktrees/61d4/TopoNoise.jl",
+  "complete": true,
+  "elapsed_seconds": 79.16929388046265,
+  "julia_threads": 1,
+  "julia_version": "1.12.6",
+  "purpose": "Performance pilot only; all samples excluded from production",
+  "python_executable": "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+  "shots_per_point": 3,
+  "points": [
+    {
+      "L": 9,
+      "decoder_build_seconds": 0.289991375,
+      "geometry_build_seconds": 1.405940666,
+      "p": 0.003,
+      "projected_10000_shots_hours": 0.019473842592592595,
+      "records": 3,
+      "seconds_per_triple": 0.007010583333333333,
+      "shot_seconds": [
+        0.007094458,
+        0.005957625,
+        0.007979667
+      ],
+      "warmup_seconds": 0.848366291,
+      "point_seed": 2026102603
+    },
+    {
+      "L": 9,
+      "decoder_build_seconds": 0.049602375,
+      "geometry_build_seconds": 1.405940666,
+      "p": 0.015,
+      "projected_10000_shots_hours": 0.1355966046296296,
+      "records": 3,
+      "seconds_per_triple": 0.04881477766666666,
+      "shot_seconds": [
+        0.047250125,
+        0.049064875,
+        0.050129333
+      ],
+      "warmup_seconds": 0.049446,
+      "point_seed": 2026102615
+    },
+    {
+      "L": 9,
+      "decoder_build_seconds": 0.047589458,
+      "geometry_build_seconds": 1.405940666,
+      "p": 0.05,
+      "projected_10000_shots_hours": 0.33993368148148156,
+      "records": 3,
+      "seconds_per_triple": 0.12237612533333335,
+      "shot_seconds": [
+        0.106576959,
+        0.128667375,
+        0.131884042
+      ],
+      "warmup_seconds": 0.112463625,
+      "point_seed": 2026102650
+    },
+    {
+      "L": 11,
+      "decoder_build_seconds": 0.136326708,
+      "geometry_build_seconds": 0.001468625,
+      "p": 0.003,
+      "projected_10000_shots_hours": 0.23690096481481485,
+      "records": 3,
+      "seconds_per_triple": 0.08528434733333334,
+      "shot_seconds": [
+        0.022944042,
+        0.129364375,
+        0.103544625
+      ],
+      "warmup_seconds": 0.126485041,
+      "point_seed": 2026102803
+    },
+    {
+      "L": 11,
+      "decoder_build_seconds": 0.134784458,
+      "geometry_build_seconds": 0.001468625,
+      "p": 0.015,
+      "projected_10000_shots_hours": 0.9876720685185186,
+      "records": 3,
+      "seconds_per_triple": 0.3555619446666667,
+      "shot_seconds": [
+        0.264405667,
+        0.377787333,
+        0.424492834
+      ],
+      "warmup_seconds": 0.260608125,
+      "point_seed": 2026102815
+    },
+    {
+      "L": 11,
+      "decoder_build_seconds": 0.159029292,
+      "geometry_build_seconds": 0.001468625,
+      "p": 0.05,
+      "projected_10000_shots_hours": 2.641682214814815,
+      "records": 3,
+      "seconds_per_triple": 0.9510055973333333,
+      "shot_seconds": [
+        0.625987167,
+        0.607044667,
+        1.619984958
+      ],
+      "warmup_seconds": 0.38414725,
+      "point_seed": 2026102850
+    },
+    {
+      "L": 13,
+      "decoder_build_seconds": 0.7970425,
+      "geometry_build_seconds": 0.003506,
+      "p": 0.003,
+      "projected_10000_shots_hours": 0.6322043981481482,
+      "records": 3,
+      "seconds_per_triple": 0.22759358333333335,
+      "shot_seconds": [
+        0.580825291,
+        0.049721875,
+        0.052233584
+      ],
+      "warmup_seconds": 0.408124458,
+      "point_seed": 2026103003
+    },
+    {
+      "L": 13,
+      "decoder_build_seconds": 0.689725958,
+      "geometry_build_seconds": 0.003506,
+      "p": 0.015,
+      "projected_10000_shots_hours": 3.206340392592592,
+      "records": 3,
+      "seconds_per_triple": 1.1542825413333333,
+      "shot_seconds": [
+        1.282722208,
+        1.0549595,
+        1.125165916
+      ],
+      "warmup_seconds": 1.34563425,
+      "point_seed": 2026103015
+    },
+    {
+      "L": 13,
+      "decoder_build_seconds": 0.666392,
+      "geometry_build_seconds": 0.003506,
+      "p": 0.05,
+      "projected_10000_shots_hours": 5.8763116129629624,
+      "records": 3,
+      "seconds_per_triple": 2.1154721806666665,
+      "shot_seconds": [
+        1.675434,
+        1.564493459,
+        3.106489083
+      ],
+      "warmup_seconds": 1.442839834,
+      "point_seed": 2026103050
+    },
+    {
+      "L": 15,
+      "decoder_build_seconds": 1.439530583,
+      "geometry_build_seconds": 0.007547667,
+      "p": 0.003,
+      "projected_10000_shots_hours": 5.356419407407408,
+      "records": 3,
+      "seconds_per_triple": 1.928310986666667,
+      "shot_seconds": [
+        1.523888917,
+        2.656155584,
+        1.604888459
+      ],
+      "warmup_seconds": 2.74392375,
+      "point_seed": 2026103203
+    },
+    {
+      "L": 15,
+      "decoder_build_seconds": 2.084862084,
+      "geometry_build_seconds": 0.007547667,
+      "p": 0.015,
+      "projected_10000_shots_hours": 10.814302971296296,
+      "records": 3,
+      "seconds_per_triple": 3.8931490696666664,
+      "shot_seconds": [
+        3.767826417,
+        4.152517917,
+        3.759102875
+      ],
+      "warmup_seconds": 4.0305495,
+      "point_seed": 2026103215
+    },
+    {
+      "L": 15,
+      "decoder_build_seconds": 4.217592625,
+      "geometry_build_seconds": 0.007547667,
+      "p": 0.05,
+      "projected_10000_shots_hours": 6.544971336111112,
+      "records": 3,
+      "seconds_per_triple": 2.356189681,
+      "shot_seconds": [
+        2.465365375,
+        2.541202709,
+        2.062000959
+      ],
+      "warmup_seconds": 7.107756583,
+      "point_seed": 2026103250
+    }
+  ],
+  "source_hashes": {
+    "src/TopoNoise.jl": "e8b5d5cb4fcb22614fb23695a6f4a4e2195cb552af9039b7fecc2ec7915b3959",
+    "src/local_gate.jl": "8fbd802912dd1bd597ce1db9742ac649832cefe8111dcda373f36660766e320e",
+    "src/network_graph.jl": "12e6251aa6a43f90942079275c9e05f8420e8563b552badc5a73434d8e0ea8f3",
+    "src/rotated_planar/comparison.jl": "ceea86317417f2889cf21145c978986ab4ec94e5c1fd6fafb38776fc97336957",
+    "src/rotated_planar/comparison_plot.jl": "30370004e66758bbfb8c061ed863169b76787467b27bafcbe2f5d9eac9b4d524",
+    "src/rotated_planar/decoder.jl": "7d2be47c0883ce1f472813d28ba9980f325b213914eb1996fd46fa245ce72256",
+    "src/rotated_planar/encoder.jl": "d27be409b411ac2b7d32e9524522eb3725f7e402bb2e657a28c26e471538a703",
+    "src/rotated_planar/geometry.jl": "6f82c3bd05da708489ba6bb70912093a7b5be2e0765588f5cb133beb02521749",
+    "src/rotated_planar/noise.jl": "b2183690889a5978f1a339418eacfe22ae0baeba47f341531d819b7adfdbcdd5",
+    "src/rotated_planar/scaling.jl": "850f0d440d9e67cf333930d340afec3bd423e34b25b2aa80a218d8b7d74079b6",
+    "src/rotated_planar/scan.jl": "3c746911dc175610015ee7769bd9650d520753fa26dae67ac65191ba62656d48",
+    "src/sequential_circuit.jl": "c33cd5872c3ca06ac3765271df63bee7120982dec1b0964d3564d7bdaacab526",
+    "src/toric3d/decoder.jl": "546d6322bdc27663660617fe3f84824ab871d36e0c42d23854c662ccf37b534f",
+    "src/toric3d/encoded_slice_geometry.jl": "2456e36c17e71e398133c1f827b3cfb935b235a7c726bd4ba7cb8b0fb6f906a7",
+    "src/toric3d/encoder.jl": "6a0db997dfe6733d83ec46e9482853c0a429b0c50fb0a6d7486f47e7733f804c",
+    "src/toric3d/feedback_strength_decoders.jl": "3d0fbdef7fb61da41f62a55b3007dbb2bacc48bbf1680adadf2bbbaef2c66d31",
+    "src/toric3d/feedback_strength_geometry.jl": "0b744528615348b39b3b774a7466a8767b944f16cb64f76e8745b4190ed097a4",
+    "src/toric3d/feedback_strength_output.jl": "6c64945118a612a814cebba503f439f73597d2abae7fc52492fa7b63aa1390ec",
+    "src/toric3d/feedback_strength_scan.jl": "1bfa2fa5ac7f36188fd570156f60ed6fb0e4f7b5d144e966d9a2c6f78c0f0a89",
+    "src/toric3d/feedback_strength_x.jl": "38c7069e77c89dfcd021cf69f8d8ad0c94c1aa14b0a620541694d2bb2691de3f",
+    "src/toric3d/feedback_strength_z.jl": "00ccb31c62ad13b1e2f2712f07a355932faea3b950559b9ef63c5c8a26d00e0c",
+    "src/toric3d/feedback_strength_z_batch.jl": "2cdb619a0c84128e312ed61c0656d0391d966140083e1638109b2996d9383491",
+    "src/toric3d/geometry.jl": "8916baff36630c8aa10e0d5a4c50a4c2823179a4a3ad2f63ada8a770d273c329",
+    "src/toric3d/h6_full_prefix.jl": "6e76d2f2cb6018c931a4ebbc72b01fa1fd027f67c6f4007c3786c1b9906f6c8c",
+    "src/toric3d/h6_two_slice_x.jl": "9102da51adb744cd1e29868a3190902c2bd18cb0449fa3c95cb33aad467d3fb3",
+    "src/toric3d/h6_two_slice_z.jl": "b1204681c72fdc7ec2b25b500c9008f20a20e76a64e865feb66f06b2d8b331a9",
+    "src/toric3d/h6_z_one_step.jl": "22e1d65cd878ed3e45706e45cd092df06bf3b0b8a7a1bd73c5b6390acdc18496",
+    "src/toric3d/noise.jl": "2c7b6821a96cf119880de4e5ee0b5e51007d3c07b09baee0fe79dfa32ce03a66",
+    "src/toric3d/output.jl": "a5717699d2bd46b542ed3c7a61efd634d38e6fe938b2389140d8a041c22a400b",
+    "src/toric3d/scan.jl": "50fa3c129d649239462665f04ec983da3472219892255acae4e0c28b173915f3",
+    "src/toric3d/slice_encoder.jl": "e5473161202d0a9ecb55d1fe78277fde5ecf2a85cf2294ed964038e3eb4eee5e",
+    "src/toric3d/slice_feedback.jl": "6727fbd3f8f959c1b159e226b9c812227da2b5cb7e6080b98860ccecbb69ed1f",
+    "src/toric3d/slice_geometry.jl": "05018d2c9671b242b05c1d0deadc1ce3cc4ef9f8bfd6bb652f622ff6afc4c9eb",
+    "src/toric3d/slice_scan.jl": "80713a684b618349adfa8d409f2361192cd16dd6910e9bf5c6faf1c9a0b1d861",
+    "src/toric3d/vertex_projector_boundary.jl": "ec62ecf54e27c7ecacd8d51f7c2dd44ba162e02a5b31407deaaf8df2818e7a52",
+    "src/toric3d/vertex_projector_decoders.jl": "96e9ec643385c32b702227a3f7be1f6220f254f87636300ce92d9320eed01dfb",
+    "src/toric3d/vertex_projector_encoder.jl": "a3b2c03e55cb6a905a8abb77acba022a0af48e1b6aa7de6a8161b6f859361e95",
+    "src/toric3d/vertex_projector_feedback_geometry.jl": "88df275eb203ea0cb1ac6f9e6b0bc14a9f2f8f515f92e5fe3ae8d5221f4d07bf",
+    "src/toric3d/vertex_projector_geometry.jl": "7d0f6621749dc6dd13daff2d18502eaff424d824d7a8ba1314c1465e155c8353",
+    "src/toric3d/vertex_projector_matching.jl": "2a4f1c0594bde13e471155b73a4b9fa1c27832c568b8e3138b60c08562ae6011",
+    "src/toric3d/vertex_projector_noise.jl": "7fa7ca25ddecf32160aa3bd93fe07fd8c83f65a44e5871cf7fec0ffc746435b4",
+    "src/toric3d/vertex_projector_output.jl": "8c46b8f5988694dd4a63ff3399a4e9aa83a86bed8bf40d84edb5c3b873c11c37",
+    "src/toric3d/vertex_projector_replay.jl": "1a48e36bab494c9885569d5c0ced4565c64fec8575d352197a1d2c33ad4be8af",
+    "src/toric3d/vertex_projector_scan.jl": "e067294e426fab280ab59bf6525e9dd6a4abdebcc7ee77c49f038f10d481e8a2",
+    "src/toric3d/vertex_projector_z_audit.jl": "1d160470a7de6c3aec9edf82750d3ec24dca06fef4608da72a5633d24ba14ec7",
+    "src/toric3d/vertex_projector_z_control.jl": "8390f871590f996346e689f175e8fa416306baa424d3aa43ec9ee021b45b1f88",
+    "src/toric3d/vertex_projector_z_output.jl": "00a994c5e9186e4f3990565730222fe2d2738476e867131b20593396db1eb579",
+    "src/toric3d/x_feedback_output.jl": "80c4e0eda827661870f78503a0852a40a3273c924e5b5f92a41396af9758e026",
+    "src/toric3d/x_feedback_scan.jl": "07566cade82b72863b22d2ff75054d3fe2783777ac42cf2a3a1e3f6436e86a7d",
+    "src/toric3d/x_feedback_threshold.jl": "ec50a57319cf143d553720c122c2a0febd6058e1f1fdb04effd88cbbc408f9c6",
+    "src/toric3d/z_threshold.jl": "d65659848ce036601d9986b712810f63ae3e573752e165a776fb2366a60d59b7",
+    "src/toric_code_peps.jl": "8839eadf1ec17fc387b4a2b7a7d075fbe24c88085459ce9b0e7e06d4d4403bf5",
+    "src/visualization.jl": "2c7d9a01a11c1ba2574f9ddb9455310d1001ccc75c1a868d3ec5f1857f4fe61f"
+  },
+  "script_sha256": "609bf45de8a879dbb13c17eb08e6a968c130f81589552dede6bfcf2463803fb8",
+  "timer_scope": "sampling + deepcopy + three protocol replays + unchanged-record/Boolean/Z-frame/residual-syndrome assertions; one excluded warmup per point",
+  "base_seed_formula": "Xoshiro(UInt64(2026101700 + 100L + round(Int,1000p)))",
+  "all_pilot_counts_excluded_from_production": true
+}

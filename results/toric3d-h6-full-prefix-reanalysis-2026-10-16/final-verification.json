@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "verified_at_utc": "2026-10-16T06:33:17.392050+00:00",
+  "new_circuit_samples": 0,
+  "fresh_archive_extraction_tests_passed": 22,
+  "archive_source_files_verified": 17,
+  "independent_review_assertions_passed": 8433,
+  "independent_review_sha256": "7ae9b23972969962241d11f627d762d06367944fb16098039558c42831de00da",
+  "original_manifest_files_unchanged": 3080,
+  "original_manifest_sha256": "e9f5bc5ce4fc8a8c7e3b0d67baa70c84fb0df80a1452d76491099a7b5343196f",
+  "original_report_sha256": "045282d5f73f3dd2841f89319c6278c134c30d5763a40c593cb8e5509c1709a3",
+  "prior_data_only_pdfs_unchanged": {
+    "x-full-prefix-data.pdf": "938e9bb3fc29243d7fe982286df4fd2d34cdac4f958fd79559077f1bb2e8ed86",
+    "z-full-prefix-data.pdf": "15d3da7d69d56ad083a7ed84437ca027d05fcfd6e1e5abc13f06d56f76d02db3",
+    "full-prefix-comparison-data.pdf": "117125a60103421bfc28e25b2e9a12ab74d19f36efbf61836cf03a7f92713841"
+  },
+  "note_tex_unchanged_sha256": "3a40710c2ab6bd43e53f5f7703b7c8716b209dc1e060a5092f17e0edce073f3a",
+  "source_bindings_verified": true,
+  "input_sha256": "cc77491378dc0615936ef7a3ca03c90c18d9d952e69b3546165d0c46437cac89",
+  "x_report_sha256": "dfd673b359bbf25955dd5e7e051e6d4f5f15f818bed663cb439e2dfa3ed9e955",
+  "z_report_sha256": "833708a97ee8a6bc17bcba3ce88e762e3dae8e6104184a5875793125a2ec04b0",
+  "pdf_qa": {
+    "x-crossing-uncertainty.pdf": {
+      "sha256": "ece4f8a06becb27fe1312e479d3affb462312502f4fc5b3652d20d53d21803b4",
+      "pages": 1,
+      "extracted_text_characters": 749,
+      "rendered_and_visually_inspected": true,
+      "grid_lines": false
+    },
+    "z-finite-size-sensitivity.pdf": {
+      "sha256": "71197daa6c568b16e5a7617d5e96b46ed892c25dffa483dd2bae698c8524bbaa",
+      "pages": 1,
+      "extracted_text_characters": 475,
+      "rendered_and_visually_inspected": true,
+      "grid_lines": false
+    },
+    "z-threshold-profiles.pdf": {
+      "sha256": "87b9ce8212f6c56ed6933f940e1c628477be8bf351648ea27a8130378bf0dac7",
+      "pages": 1,
+      "extracted_text_characters": 630,
+      "rendered_and_visually_inspected": true,
+      "grid_lines": false
+    }
+  },
+  "export_status": "Pending separate destination byte-for-byte verification."
+}

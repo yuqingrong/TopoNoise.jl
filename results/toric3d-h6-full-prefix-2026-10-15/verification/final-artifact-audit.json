@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "checked_at_unix": 1792079718.897814,
+  "production_worker_exit_codes": {
+    "a": 0,
+    "b": 0,
+    "c": 0
+  },
+  "analysis_exit_code": 0,
+  "drop_smallest_plot_exit_code": 0,
+  "source_manifests": {
+    "simulation-source": {
+      "files_verified": 56,
+      "manifest_sha256": "e02140e0a8ef7e982d3cbb3d9ed41cdd7b73db4d0327c8374d4066f7a9dc6a34",
+      "archive_sha256": "48004d0575047b8f8a9a32200905245e02ded290bf066af60a46ef4582cb1015"
+    },
+    "analysis-source": {
+      "files_verified": 9,
+      "manifest_sha256": "d0d61ebfaaf7139160743e7aaed0bf7875e2c1212382af09d68b337862d347de",
+      "archive_sha256": "c9c9c6aa6efda9cc73a8e2040c1431a32db37985292b6e534fabf901e5260e00"
+    },
+    "test-source": {
+      "files_verified": 71,
+      "manifest_sha256": "fc4af89a840697c048c817e3ab6b9cbdb9ac42e8d38d19904200cec59143fc2a",
+      "archive_sha256": "c1252615999f8620e36d62a4de9cc3c5e48c7e535f6fee050129ef8ad0ac2b5b"
+    }
+  },
+  "numerical_files_verified": 3,
+  "selection_sha256": "67cfe03a49b9d18caaa79eef32361803798b9a3d7a341be9da5a295028b6ca6d",
+  "production_points": 70,
+  "production_fault_records": 70000,
+  "paired_protocol_outcomes": 140000,
+  "full_prefix_feedback_checkpoints": 490000,
+  "shots_each_point": 1000,
+  "independent_z_fit_exact_match": true,
+  "figure_count": 18,
+  "png_visual_review": {
+    "reviewed": true,
+    "count": 6,
+    "checks": [
+      "readable titles labels and legends",
+      "no grids",
+      "visible error bars",
+      "diagnostic fit labels",
+      "no clipping or data obscured by annotations"
+    ]
+  },
+  "analysis_output_sha256": {
+    "full-prefix-comparison.pdf": "36fe237033ea7391a5eb764eae5c75200001f5c0abf5068d06741eefed77b94e",
+    "full-prefix-comparison.png": "64e9b76c92ee8e89b54268b20254631ba01ba971a1e76d03209bf4e835c7eb5c",
+    "full-prefix-comparison.svg": "136375949e0be9c8dd095df3c96fc1a893209c01a6a2243db88433d8be202e97",
+    "full-prefix-paired-differences.pdf": "24855a1fd3df67ad859d32b9f0ba25571aa38cd06ecf53ff5ff5e83f788b889b",
+    "full-prefix-paired-differences.png": "9ab91017e82af18831f7efc0934049649e57c5668bb51e2abb94ffdc0a1df49b",
+    "full-prefix-paired-differences.svg": "fa9770ee03e47dfe26babfea7c793cf8824094beeee7f81fef893776ff8d3b2d",
+    "marginals.csv": "e5553ed48b39bb1cb8c18ba09785f620fb4e6b75bc719e9c9705ede29773fa92",
+    "paired-differences.csv": "b200645e5523949d2271f467737e71773aa92a735df4d48b8db9fc6c2dffbb84",
+    "report.json": "045282d5f73f3dd2841f89319c6278c134c30d5763a40c593cb8e5509c1709a3",
+    "x-full-prefix-drop-L3-fit.pdf": "06287a7214b753d6a90cfb37269de03fa1aeeb57278cbed0dd4c4a43ac6b44b7",
+    "x-full-prefix-drop-L3-fit.png": "4c60198406e435cf03d2ba27ab90198c786cec7c511af1bfccd526ff9572174a",
+    "x-full-prefix-drop-L3-fit.svg": "df0ef2799b1385f03889ae1364ce60e3a023985af134d10652987e5e7df97cda",
+    "x-full-prefix-local-fit.pdf": "8d44274917638c9f14c27f798ffc9abbd2da3fbb20077d5162c711ead8f687d3",
+    "x-full-prefix-local-fit.png": "6b3af829ed47e0b0cc4d61e42f999b71c2e19438f2d8ca666c6a978b6389172d",
+    "x-full-prefix-local-fit.svg": "d031dc16e6a6ef1ff51c1ac4efc123264881ba339e0b2b38b2e135a181cc2abb",
+    "z-full-prefix-drop-L3-fit.pdf": "f8025b206ab9ba754c02d1141f889df12fb2a1869e85a1d4f0f858abad91971b",
+    "z-full-prefix-drop-L3-fit.png": "a63a294eb74c78a777d12dbe747b332dd12cbdaddef056509d1e2b897cbc4f7b",
+    "z-full-prefix-drop-L3-fit.svg": "164dce11322127816a61d09b91cb24ae3366f1620a93855781b34ac04d8001e0",
+    "z-full-prefix-local-fit.pdf": "8f3d6d33818059705bb3282c2873abe27e4a72de53d92f5b39291746c1aa8dcb",
+    "z-full-prefix-local-fit.png": "6bcb810a30cbe80eb2072dc2d6b1bb0ea0a5211e900fae2f26aa77c723dd77f8",
+    "z-full-prefix-local-fit.svg": "0b6345cc15ade642fe2f76807efe51137c08aed2c445541b4589c392f33ed83e"
+  },
+  "historical_preservation": {
+    "prior_study_files_verified": 1628,
+    "prior_manifest_unchanged": true,
+    "prior_report_unchanged": true,
+    "note_unchanged": true
+  },
+  "full_suite_summary_sha256": "f4140234b4af9ad0295c9ab9a70e7fba3c81ff52b72655bf50d4ca41ff1f6aa5",
+  "transition_audit_sha256": "c3895271596dd524d1055b7025e11c229ea93d9a6ad6e88b86cef664fd9d8f2d"
+}

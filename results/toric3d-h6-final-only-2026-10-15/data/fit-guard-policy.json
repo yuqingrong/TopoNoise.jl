@@ -1,0 +1,31 @@
+{
+  "recorded_at_unix": 1792050895.4617379,
+  "policy": {
+    "minimum_sizes": 4,
+    "minimum_rates": 5,
+    "goodness_alpha": 0.01,
+    "minimum_bootstrap_replicates": 20,
+    "bootstrap_acceptance_fraction": 0.8,
+    "crossing_cluster": "exactly one connected common intersection of sign-changing brackets across every adjacent-size pair",
+    "pc_sensitivity_tolerance": "max(10% of primary rate window, bootstrap 95% interval width)",
+    "nu_sensitivity_tolerance": "max(25% of primary nu, bootstrap 95% interval width)",
+    "sensitivity_variants": [
+      "drop_smallest",
+      "narrow_window",
+      "cubic",
+      "inverse_L_correction"
+    ],
+    "correction": "add c*L_reference/L to the logit; fixed irrelevant exponent omega=1"
+  },
+  "analysis_source_sha256_at_recording": "2236ff0fe9be6993fa086384927556c1d9445b16ea00e76a36f8f403ccf628ce",
+  "note": "Detailed constants supplied by the analysis implementer, supplementing selection.json. Grid and sample sizes were frozen before production launch. Policy was recorded during startup; no production counts had been inspected.",
+  "clarifications": [
+    {
+      "recorded_at_unix": 1792052318.087073,
+      "key": "crossing_cluster",
+      "original": "one common intersection of sign-changing brackets across every adjacent-size pair",
+      "current": "exactly one connected common intersection of sign-changing brackets across every adjacent-size pair",
+      "reason": "Independent code review and a failing synthetic multiple-crossing regression showed the first implementation allowed disjoint crossing clusters. The publication guard was tightened to enforce one connected cluster. This clarification occurred during production, before production fitting; frozen grids, rates, counts, seeds, and windows are unchanged."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "assertions": 8433,
+  "scope": "Independent saved-output arithmetic, fixed-input/source bindings, interval geometry, 1000 regenerated bootstrap old guards, three fixed-(pc,nu) convex nuisance fits; no analysis imports or full simulation/bootstrap/profile reruns.",
+  "input_sha256": "cc77491378dc0615936ef7a3ca03c90c18d9d952e69b3546165d0c46437cac89",
+  "x_report_sha256": "dfd673b359bbf25955dd5e7e051e6d4f5f15f818bed663cb439e2dfa3ed9e955",
+  "z_report_sha256": "833708a97ee8a6bc17bcba3ce88e762e3dae8e6104184a5875793125a2ec04b0",
+  "review_script_sha256": "f1f3f972ffef2e2926a27ddca3fc141ebd302d065a63a24109e6bd206cbff613",
+  "runtime": {
+    "python_executable": "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+    "python_version": "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:06:14) [Clang 19.1.7 ]",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1"
+    }
+  },
+  "x_primary_components": [
+    [
+      0.035,
+      0.065
+    ]
+  ],
+  "x_all_pair_components": [
+    [
+      0.04618862504166944,
+      0.06066627864751676
+    ]
+  ],
+  "x_bootstrap_valid_common": 1000,
+  "x_bootstrap_valid_both": 1000,
+  "bounded_convex_bootstrap_spot_fits": [
+    {
+      "replicate": 0,
+      "reported_deviance": 29.943527326234616,
+      "independent_deviance": 29.94352732623314
+    },
+    {
+      "replicate": 499,
+      "reported_deviance": 42.73460523964113,
+      "independent_deviance": 42.73460523892639
+    },
+    {
+      "replicate": 999,
+      "reported_deviance": 20.90661666557462,
+      "independent_deviance": 20.906616664999287
+    }
+  ],
+  "z_profile_numerical_failures": {
+    "Lmin3-full-quadratic": 0,
+    "Lmin3-full-corr_w1": 0,
+    "Lmin5-full-quadratic": 0,
+    "Lmin5-full-corr_w1": 0
+  }
+}

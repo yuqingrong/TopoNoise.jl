@@ -1,0 +1,40 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "elapsed_seconds": 59.829132959013805,
+  "timing_basis": "time.monotonic for total duration and first observation of a new owned-worker TN stage; wall-clock progress timestamps are generation tags only",
+  "worker_pid": 98748,
+  "tn_stage_elapsed_seconds_at_last_poll": null,
+  "peak_rss_bytes": 1852080128,
+  "rss_limit_enforced": true,
+  "decode_limit_seconds": 300.0,
+  "total_limit_seconds": 600.0,
+  "rss_limit_gib": 4.0,
+  "progress_at_stop": {
+    "L": 3,
+    "p": 0.0,
+    "pid": 98748,
+    "requested_shots": 1,
+    "run_id": "0bb7e4a7784bddd34c3bebdfc05e0f09d00c348c5044a6117c3bc73b2974e1cf",
+    "shot": 1,
+    "stage": "complete",
+    "stage_started_unix": 1793068731.27521,
+    "updated_at_unix": 1793068731.27521
+  },
+  "command": [
+    "/Users/rongyuqing/.juliaup/bin/julia",
+    "--startup-file=no",
+    "--threads=1,0",
+    "--gcthreads=1",
+    "--project=/Users/rongyuqing/jcode/TopoNoise.jl",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/run.jl",
+    "3",
+    "0.0",
+    "1",
+    "240",
+    "202610380003",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-full-grid-precision-2026-10-27/zero/L3-p0.0000-chi240",
+    "exact=true",
+    "cutoff=1e-26"
+  ]
+}

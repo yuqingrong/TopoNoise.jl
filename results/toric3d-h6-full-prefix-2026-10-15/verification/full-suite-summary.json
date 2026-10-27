@@ -1,0 +1,22 @@
+{
+  "exit_code": 0,
+  "testsets": 189,
+  "passed": 96525,
+  "total": 96525,
+  "source_manifest_sha256": "e02140e0a8ef7e982d3cbb3d9ed41cdd7b73db4d0327c8374d4066f7a9dc6a34",
+  "test_manifest_sha256": "fc4af89a840697c048c817e3ab6b9cbdb9ac42e8d38d19904200cec59143fc2a",
+  "note": "Complete integrated test suite using final optimized source. All testsets passed.",
+  "log_sha256": "279f22bb4294ce76cbc9399bd7a72661b01b23b09be5d7d7293a772541edb895",
+  "reproduction_command": "env JULIA_CONDAPKG_BACKEND=Null JULIA_PYTHONCALL_EXE=/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python JULIA_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 MPLCONFIGDIR=/tmp/h6-full-prefix-mpl julia --compiled-modules=existing --project=. --startup-file=no test/runtests.jl",
+  "reproduction_command_note": "Suggested reproduction invocation using the saved production environment; not a recovered original launch command.",
+  "original_process_session_id": 44900,
+  "launch_command_recovered": false,
+  "launch_evidence": "Parent-task retained execution context identifies session 44900 and exit code 0; the verbatim launch command and environment were not independently recovered.",
+  "independent_log_recount": {
+    "testsets": 189,
+    "passed": 96525,
+    "failed": 0,
+    "errors": 0,
+    "broken": 0
+  }
+}

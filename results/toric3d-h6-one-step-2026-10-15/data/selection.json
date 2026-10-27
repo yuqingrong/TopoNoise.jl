@@ -1,0 +1,58 @@
+{
+  "frozen_at_unix": 1792061627.503036,
+  "frozen_before_production": true,
+  "channel": "x_only",
+  "sizes": [
+    3,
+    5,
+    7,
+    9,
+    11
+  ],
+  "rates": [
+    0.0075,
+    0.01,
+    0.0125,
+    0.015,
+    0.0175,
+    0.02,
+    0.0225
+  ],
+  "paired_shots_per_point": 500,
+  "total_paired_shots": 17500,
+  "pilot_paired_shots": 600,
+  "pilot_excluded_from_production": true,
+  "shards": {
+    "production-small": {
+      "sizes": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "seed": 2026101504
+    },
+    "production-L11": {
+      "sizes": [
+        11
+      ],
+      "seed": 2026101505
+    }
+  },
+  "pilot_sha256": {
+    "timing-pilot.toml": "0b9cfc3c18440668aada72fda7c623bc1ef5efdac5cab31a007f94a97860da2f",
+    "toric3d-x-feedback-raw.csv": "49125d523501d92f33bdf8153ec0b107642223110adba34c4c23400f3e43f3f6",
+    "toric3d-x-feedback-checkpoint.toml": "7d3c5ac54bc712753d9514e8034fcaa3f1d327987fe4b3d9f71a40d8a291fdf2",
+    "toric3d-x-feedback-metadata.toml": "3a4cde6a15b41a966bde7eae4dfa061cf4d67a02f11a1a2b1055cb4f652df6fb"
+  },
+  "rationale": "Preserve previous X sizes and match feedback/no-feedback arms exactly using common fault records. Pilot brackets a transition-like feedback rise between .01 and .02; choose seven positive rates to support both-edge trimming and five sizes to support dropping the smallest. 500 pairs per point limits follow-up runtime using measured ~0.3 seconds per L11 pair. This is a fresh exploratory study; no pilot or historical counts enter fits.",
+  "fit_policy_source": "examples/fit_toric3d_h6_threshold.py",
+  "fit_policy_source_sha256": "bc5749201b237da0f9ae64967a2eefce25c0244bbd09948e0ead9375a164def2",
+  "fit_policy": "Same quadratic binomial-logit primary, nu bounds .3 to 5, >=4 sizes and >=5 rates, interior optimizer, monotonicity, goodness p>=.01, exactly one common adjacent crossing cluster containing candidate, >=80% of 200 bootstrap fits usable with interior 95% intervals, and passing stable drop-smallest/narrow-both-edges/cubic/fixed-1/L sensitivities. Withhold threshold unless all pass.",
+  "bootstrap_replicates": 200,
+  "bootstrap_seeds": {
+    "final_only": 2026101506,
+    "one_step": 2026101507
+  },
+  "comparison": "Pointwise paired discordance intervals; no threshold-difference inference from separate marginal bootstraps."
+}

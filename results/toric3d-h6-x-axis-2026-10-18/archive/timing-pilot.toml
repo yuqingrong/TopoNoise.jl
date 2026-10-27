@@ -1,0 +1,182 @@
+excluded_from_production = true
+
+[[results]]
+L = 3
+build_seconds = 2.237802083
+channel = "x_only"
+elapsed_seconds = 0.086394291
+failures = [0, 0, 0]
+p = 0.003
+seconds_per_record = 0.00431971455
+timed_records = 20
+warmup_seconds = 2.630622083
+[[results]]
+L = 3
+build_seconds = 0.118859416
+channel = "x_only"
+elapsed_seconds = 0.005002084
+failures = [0, 2, 0]
+p = 0.015
+seconds_per_record = 0.00025010420000000003
+timed_records = 20
+warmup_seconds = 0.000341042
+[[results]]
+L = 3
+build_seconds = 0.001053125
+channel = "x_only"
+elapsed_seconds = 0.013842666
+failures = [7, 9, 1]
+p = 0.055
+seconds_per_record = 0.0006921333
+timed_records = 20
+warmup_seconds = 0.000808292
+[[results]]
+L = 7
+build_seconds = 0.013832709
+channel = "x_only"
+elapsed_seconds = 0.148339084
+failures = [0, 0, 0]
+p = 0.003
+seconds_per_record = 0.007416954200000001
+timed_records = 20
+warmup_seconds = 0.003129334
+[[results]]
+L = 7
+build_seconds = 0.012574833
+channel = "x_only"
+elapsed_seconds = 0.352694875
+failures = [2, 5, 0]
+p = 0.015
+seconds_per_record = 0.01763474375
+timed_records = 20
+warmup_seconds = 0.015185625
+[[results]]
+L = 7
+build_seconds = 0.012690667
+channel = "x_only"
+elapsed_seconds = 0.600137875
+failures = [10, 4, 2]
+p = 0.055
+seconds_per_record = 0.030006893750000003
+timed_records = 20
+warmup_seconds = 0.030722125
+[[results]]
+L = 11
+build_seconds = 0.508271916
+channel = "x_only"
+elapsed_seconds = 2.967215125
+failures = [0, 0, 0]
+p = 0.003
+seconds_per_record = 0.14836075625
+timed_records = 20
+warmup_seconds = 0.168151042
+[[results]]
+L = 11
+build_seconds = 0.12157925
+channel = "x_only"
+elapsed_seconds = 4.045436791
+failures = [3, 3, 0]
+p = 0.015
+seconds_per_record = 0.20227183955
+timed_records = 20
+warmup_seconds = 0.21148375
+[[results]]
+L = 11
+build_seconds = 0.122313625
+channel = "x_only"
+elapsed_seconds = 6.033111666
+failures = [8, 8, 0]
+p = 0.055
+seconds_per_record = 0.3016555833
+timed_records = 20
+warmup_seconds = 0.282405583
+[[results]]
+L = 3
+build_seconds = 0.001037708
+channel = "z_only"
+elapsed_seconds = 0.0018545
+failures = [0, 1, 0]
+p = 0.006
+seconds_per_record = 9.2725e-5
+timed_records = 20
+warmup_seconds = 0.652893333
+[[results]]
+L = 3
+build_seconds = 0.111174625
+channel = "z_only"
+elapsed_seconds = 0.00250625
+failures = [8, 13, 6]
+p = 0.02
+seconds_per_record = 0.0001253125
+timed_records = 20
+warmup_seconds = 0.000230166
+[[results]]
+L = 3
+build_seconds = 3.709e-6
+channel = "z_only"
+elapsed_seconds = 0.002746375
+failures = [15, 13, 17]
+p = 0.035
+seconds_per_record = 0.00013731875
+timed_records = 20
+warmup_seconds = 0.000156041
+[[results]]
+L = 7
+build_seconds = 0.004831208
+channel = "z_only"
+elapsed_seconds = 0.013815083
+failures = [2, 12, 0]
+p = 0.006
+seconds_per_record = 0.0006907541500000001
+timed_records = 20
+warmup_seconds = 0.003834833
+[[results]]
+L = 7
+build_seconds = 2.25e-6
+channel = "z_only"
+elapsed_seconds = 0.020188458
+failures = [17, 18, 9]
+p = 0.02
+seconds_per_record = 0.0010094229
+timed_records = 20
+warmup_seconds = 0.001104458
+[[results]]
+L = 7
+build_seconds = 4.5e-6
+channel = "z_only"
+elapsed_seconds = 0.02719825
+failures = [14, 18, 12]
+p = 0.035
+seconds_per_record = 0.0013599125
+timed_records = 20
+warmup_seconds = 0.001813833
+[[results]]
+L = 11
+build_seconds = 0.04210125
+channel = "z_only"
+elapsed_seconds = 0.075325166
+failures = [2, 16, 0]
+p = 0.006
+seconds_per_record = 0.0037662583
+timed_records = 20
+warmup_seconds = 0.012333958
+[[results]]
+L = 11
+build_seconds = 5.458e-6
+channel = "z_only"
+elapsed_seconds = 0.144819583
+failures = [14, 17, 12]
+p = 0.02
+seconds_per_record = 0.00724097915
+timed_records = 20
+warmup_seconds = 0.005793667
+[[results]]
+L = 11
+build_seconds = 3.083e-6
+channel = "z_only"
+elapsed_seconds = 0.2253085
+failures = [13, 15, 17]
+p = 0.035
+seconds_per_record = 0.011265424999999999
+timed_records = 20
+warmup_seconds = 0.014579959

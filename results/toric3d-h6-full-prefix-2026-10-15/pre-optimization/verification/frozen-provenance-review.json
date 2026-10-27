@@ -1,0 +1,228 @@
+{
+  "status": "passed_for_available_artifacts",
+  "scope": "read-only frozen selection, pilot provenance, planned seeds and source archives; no production replay",
+  "reviewed_at_unix": 1792075822.55474,
+  "selection_sha256": "a27f27669fb7e2b5d2aa534a9b605f79c4b111a086eeaead323f5cade9fdefdc",
+  "frozen_at_unix": 1792075534.512795,
+  "assertions": 604,
+  "assertions_by_category": {
+    "source": 71,
+    "archive": 74,
+    "selection": 13,
+    "pilot": 416,
+    "seeds": 5,
+    "production_declaration": 24,
+    "read_only": 1
+  },
+  "archives": {
+    "simulation-source.tar.gz": {
+      "sha256": "2563b422e739047ae11ea5b5d1473cf996a2e82ea08b5c702c63abcabec915e5",
+      "files": 56
+    },
+    "numerical-source.tar.gz": {
+      "sha256": "8ab510fbb89627ef43eed3a8d136f0eb51185ae30158606e6253390232f1c696",
+      "files": 3
+    },
+    "analysis-source.tar.gz": {
+      "sha256": "c9c9c6aa6efda9cc73a8e2040c1431a32db37985292b6e534fabf901e5260e00",
+      "files": 9
+    }
+  },
+  "pilots": {
+    "pilot-x": {
+      "points": 21,
+      "records": 210,
+      "completed_at_unix": 1792075144.408477,
+      "hashes": {
+        "raw.csv": "9d25eb5eb75e1780ffa712cc34391e2bc3abe70dfa6739e390ae2c58f37c0b00",
+        "metadata.toml": "c19846aeb3d7f2f4f240c47b8394aceda62c84d665da6ce5621e8f0bcfd84d03",
+        "checkpoint.toml": "cfc7cb5c2fe0f6a6718a05a07e6776b69a272673c0214c18e5fe437b19e2d1f2"
+      }
+    },
+    "pilot-z": {
+      "points": 21,
+      "records": 210,
+      "completed_at_unix": 1792075023.85238,
+      "hashes": {
+        "raw.csv": "b0013d68344290a85b00e0b9fed6eeedc10adc196297a5493257a3a7162e9bd3",
+        "metadata.toml": "33e79f7bb2881c6b6a8b75b30ba2e1ddc73647bebb103b8f68acfb325d9359cd",
+        "checkpoint.toml": "25877b10541a4ca8649ae7858c4d34d49e8ae2c9e575496450eb732992f13b97"
+      }
+    },
+    "pilot-z-refine": {
+      "points": 18,
+      "records": 1800,
+      "completed_at_unix": 1792075361.81181,
+      "hashes": {
+        "raw.csv": "d59467da2de93f6cbb3e44e702dec60e35e5ba2bc32c87a58215ba60036c3630",
+        "metadata.toml": "91eee9d0d5ef7c1917c5face9afcf5e951dbdbc8c4bccbacf7e14b716eb9746d",
+        "checkpoint.toml": "50cf7dd376f29210c0a228e51c0e2aaa29eab78a32dac96fd4ee0daf7ea84589"
+      }
+    }
+  },
+  "excluded_pilot_records": 2220,
+  "pilot_point_seeds": 60,
+  "production_points": 70,
+  "planned_production_records": 70000,
+  "production_point_seeds": 70,
+  "pilot_production_seed_overlap": false,
+  "regenerated_point_seeds": {
+    "pilot-x": [
+      "d586c6acb713db2c",
+      "622b5bf66dc30ee5",
+      "b7e48941531fd51f",
+      "679dd5503de867e6",
+      "49fdc6cd0ab9524e",
+      "dfe8953114147c75",
+      "48435f50e9b73046",
+      "c81ad28fcc897e36",
+      "dd74714cb681d656",
+      "47ecba97199fa0a6",
+      "1d5732c6be21fa04",
+      "e2f5d3ce1eb56dcf",
+      "07d1ada1a4dfe784",
+      "8f7a057e6056725f",
+      "9d878e03acc45caf",
+      "b03548199c4e5152",
+      "55bdf7b1902c6de9",
+      "18f5445903078feb",
+      "5607a254e684b78a",
+      "e732c07bdd27aa40",
+      "10fe9c51300bd98d"
+    ],
+    "pilot-z": [
+      "b1068cc7121eecaf",
+      "6da8e93ecff99e92",
+      "30fe93f5a56c4702",
+      "924b21e40f5dbf24",
+      "37070ce6e2548e1a",
+      "1140986018794e91",
+      "80c2f9e5b412efcc",
+      "3477ae0f2f090be8",
+      "0db21ecc3e4d6233",
+      "6d05991816e1c9d8",
+      "c8e52ceb854b412e",
+      "1ae48360f313f86a",
+      "fa9f5fcdde438c45",
+      "80249b9ba7d94efa",
+      "a1adea627ada96d6",
+      "9ad10b790b403765",
+      "09052e59ed550c40",
+      "ea883ccfebcb03ce",
+      "dac735dc26b9da15",
+      "7284e2fefcf26ec0",
+      "0a83b5ce668c072e"
+    ],
+    "pilot-z-refine": [
+      "de9c7dc92f50834f",
+      "b7bfaaa69c18a1e3",
+      "bbc4f5d9e6a0e344",
+      "10d46770794c1bd2",
+      "2d8b46cb424be6ab",
+      "666e4f733f8cb117",
+      "771464377f59c611",
+      "fa9e0f6dacdce32c",
+      "dd8083ef422091b0",
+      "b237ffd53e71a33b",
+      "472cae154d019067",
+      "0fcfd4980f3c8443",
+      "27dff4cfd2bc0680",
+      "4aa9ce53bb9bf58d",
+      "c9c6053ad009c3d5",
+      "5a4cf6ec3675ff70",
+      "235107ef096b0862",
+      "2425e750e4c794e2"
+    ],
+    "production-x-small": [
+      "cb76a95e1aa3c298",
+      "508b09e7376cc8b3",
+      "45ee26d55f270c9d",
+      "4718e647197b16da",
+      "0dbb1c1743981c14",
+      "3b178c4514071211",
+      "b3c3930229292b52",
+      "a9d74f96cd2093f4",
+      "aa9928c89ba0129e",
+      "2e75963d2eb486f0",
+      "f482bd7ed4c4af85",
+      "e1f54071b1d68255",
+      "b29d61b1988c7660",
+      "c5c2c028b75ca679",
+      "224a876b2f2cdfb5",
+      "d1f86fadb844184b",
+      "ba8335880b891492",
+      "7d60685a4d354efa",
+      "0c7c5d30c3082d78",
+      "77c7df42d5a5e44c",
+      "cafd227071920fb5"
+    ],
+    "production-x-L9": [
+      "228f7d380f68d90e",
+      "114dbf073953ad06",
+      "c7e98702d718f89d",
+      "2dce3541ad87d9aa",
+      "c016558d38399b3c",
+      "51ae803d7f2d7982",
+      "d03d6e0ba39c43e0"
+    ],
+    "production-x-L11-a": [
+      "1f020ef4af9fc88d",
+      "b3f931bafe4f9098",
+      "48501ebff4656529"
+    ],
+    "production-x-L11-b": [
+      "73f407ce0b712c78",
+      "d94fed45369c43f1"
+    ],
+    "production-x-L11-c": [
+      "e9756805622cda22",
+      "b54da8fc3963f9f3"
+    ],
+    "production-z": [
+      "165a34521421e617",
+      "a645c2bbe27ce193",
+      "b4d51e170d246b4c",
+      "e867c6b618d6c3f0",
+      "c653d4cb4319bfaa",
+      "103095664e36cf38",
+      "d7070663a457b499",
+      "89a1d3dab9665063",
+      "f120c6aff8a626a3",
+      "5c0979b9bfe628e3",
+      "9a05e564a9618a72",
+      "7a256f787cd26e43",
+      "fc0529a8b509f397",
+      "57b27a767d77b3ce",
+      "357cb41ce73d4911",
+      "7b419f74e8492543",
+      "49ff3814e1e106c6",
+      "6f62c0ae370d4cf5",
+      "d9e90671280b4aa1",
+      "63002892de5ccba7",
+      "5b9659753527aabb",
+      "cc1d71d223e9c1a8",
+      "80212979e1c880e1",
+      "05573ff27fdfe8fe",
+      "e6d91842c3deb9e4",
+      "d58b65f21c514f7c",
+      "6d4305415563cd4f",
+      "8a5c770355cef3ee",
+      "8f267f8e3f9036b8",
+      "74798fb0968678bb",
+      "725a0a51cd56b2d6",
+      "b639df014b027dfa",
+      "53f90bbd8a961880",
+      "b383d2f5e0fb79c2",
+      "0611db1ef517e1b0"
+    ]
+  },
+  "verified_production_start_times": {
+    "production-x-small": 1792075724.726289,
+    "production-x-L9": 1792075725.682241,
+    "production-x-L11-a": 1792075724.661448,
+    "production-x-L11-b": 1792075724.488439,
+    "production-x-L11-c": 1792075724.752271,
+    "production-z": 1792075724.266913
+  },
+  "production_checkpoints_not_yet_available": []
+}

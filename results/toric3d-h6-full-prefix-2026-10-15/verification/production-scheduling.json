@@ -1,0 +1,18 @@
+{
+  "max_simultaneous_workers": 3,
+  "shard_order_by_worker": {
+    "a": [
+      "production-x-L11-a"
+    ],
+    "b": [
+      "production-x-L11-b",
+      "production-x-L9"
+    ],
+    "c": [
+      "production-x-small",
+      "production-z",
+      "production-x-L11-c"
+    ]
+  },
+  "reason": "Reuse loaded Julia runtime and bound peak memory. All CLI configurations are exactly the frozen shards."
+}

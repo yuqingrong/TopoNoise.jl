@@ -1,0 +1,386 @@
+{
+  "excluded": true,
+  "records": 420,
+  "zero_noise_checks_pass": true,
+  "points": [
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 2.461613208
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.111472167
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.005870791
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.035,
+      "shots": 10,
+      "final_only_failures": 4,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.008532459
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 2,
+      "elapsed_seconds": 0.010577083
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.065,
+      "shots": 10,
+      "final_only_failures": 6,
+      "full_prefix_failures": 3,
+      "elapsed_seconds": 0.011922375
+    },
+    {
+      "channel": "x_only",
+      "L": 3,
+      "p": 0.08,
+      "shots": 10,
+      "final_only_failures": 6,
+      "full_prefix_failures": 6,
+      "elapsed_seconds": 0.014579083
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.397821583
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.908476667
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.8799165
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.035,
+      "shots": 10,
+      "final_only_failures": 6,
+      "full_prefix_failures": 1,
+      "elapsed_seconds": 1.129080667
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 7,
+      "full_prefix_failures": 2,
+      "elapsed_seconds": 1.450319208
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.065,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 5,
+      "elapsed_seconds": 1.082373417
+    },
+    {
+      "channel": "x_only",
+      "L": 7,
+      "p": 0.08,
+      "shots": 10,
+      "final_only_failures": 9,
+      "full_prefix_failures": 9,
+      "elapsed_seconds": 1.831084084
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 8.81821575
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 4,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 13.0492105
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 7,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 15.3438005
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.035,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 16.713468458
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 2,
+      "elapsed_seconds": 18.10025725
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.065,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 5,
+      "elapsed_seconds": 17.377787
+    },
+    {
+      "channel": "x_only",
+      "L": 11,
+      "p": 0.08,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 8,
+      "elapsed_seconds": 17.173047083
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 2.857003875
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 2,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.006403041
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 2,
+      "full_prefix_failures": 1,
+      "elapsed_seconds": 0.002971083
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.03,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 3,
+      "elapsed_seconds": 0.003471167
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.04,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 8,
+      "elapsed_seconds": 0.002693917
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 4,
+      "elapsed_seconds": 0.00473225
+    },
+    {
+      "channel": "z_only",
+      "L": 3,
+      "p": 0.06,
+      "shots": 10,
+      "final_only_failures": 9,
+      "full_prefix_failures": 7,
+      "elapsed_seconds": 0.003669334
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.007209458
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 3,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.03354425
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.0187125
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.03,
+      "shots": 10,
+      "final_only_failures": 9,
+      "full_prefix_failures": 2,
+      "elapsed_seconds": 0.026340292
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.04,
+      "shots": 10,
+      "final_only_failures": 9,
+      "full_prefix_failures": 7,
+      "elapsed_seconds": 0.033429708
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 9,
+      "elapsed_seconds": 0.034759917
+    },
+    {
+      "channel": "z_only",
+      "L": 7,
+      "p": 0.06,
+      "shots": 10,
+      "final_only_failures": 7,
+      "full_prefix_failures": 7,
+      "elapsed_seconds": 0.044647667
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.0,
+      "shots": 10,
+      "final_only_failures": 0,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.029949375
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.01,
+      "shots": 10,
+      "final_only_failures": 4,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.179604459
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.02,
+      "shots": 10,
+      "final_only_failures": 10,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.090905542
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.03,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 0,
+      "elapsed_seconds": 0.128392375
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.04,
+      "shots": 10,
+      "final_only_failures": 5,
+      "full_prefix_failures": 5,
+      "elapsed_seconds": 0.334188458
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.05,
+      "shots": 10,
+      "final_only_failures": 8,
+      "full_prefix_failures": 6,
+      "elapsed_seconds": 0.278441042
+    },
+    {
+      "channel": "z_only",
+      "L": 11,
+      "p": 0.06,
+      "shots": 10,
+      "final_only_failures": 6,
+      "full_prefix_failures": 7,
+      "elapsed_seconds": 0.433313167
+    }
+  ],
+  "range_choice_note": "Ten samples per pilot point are for broad range and timing checks only. Retain the immediately preceding two-slice production grids, which bracket the observed transitions and allow matched-p comparisons. No pilot samples enter production fits."
+}

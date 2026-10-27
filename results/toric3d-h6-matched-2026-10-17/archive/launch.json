@@ -1,0 +1,12 @@
+{
+  "pid": 36024,
+  "started_at_unix": 1792244442.817899,
+  "command": [
+    "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-h6-matched-2026-10-17/archive/supervise.py",
+    "--study",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/toric3d-h6-matched-2026-10-17",
+    "--workers",
+    "2"
+  ]
+}

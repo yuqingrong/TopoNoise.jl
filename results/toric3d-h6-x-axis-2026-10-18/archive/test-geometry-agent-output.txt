@@ -1,0 +1,6 @@
+Transcript returned by the independent geometry agent, exit code 0, session 76503:
+physical-x H+6 geometry API: 3/3 passed
+square-seed slab topology and logical pairs: 138/138 passed
+H+6 schedule, noise locations, and causal targets: 211/211 passed
+signed verifier rejects corrupt circuits and schedules: 24/24 passed
+Total: 376/376 assertions.

@@ -1,0 +1,39 @@
+[shards."x_only-L3"]
+seed = 249055879764376022
+count = 21
+
+[shards."x_only-L5"]
+seed = 1012999862432049807
+count = 21
+
+[shards."x_only-L7"]
+seed = 232536873198689772
+count = 21
+
+[shards."x_only-L9"]
+seed = 431829614842568138
+count = 21
+
+[shards."x_only-L11"]
+seed = 31309807854985226
+count = 21
+
+[shards."z_only-L3"]
+seed = 282551653122560951
+count = 20
+
+[shards."z_only-L5"]
+seed = 778544928416943690
+count = 20
+
+[shards."z_only-L7"]
+seed = 1131026101174359969
+count = 20
+
+[shards."z_only-L9"]
+seed = 379057303733568240
+count = 20
+
+[shards."z_only-L11"]
+seed = 987923313918565380
+count = 20

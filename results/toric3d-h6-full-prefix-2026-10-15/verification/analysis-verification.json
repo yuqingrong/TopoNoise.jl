@@ -1,0 +1,39 @@
+{
+  "focused_tests": 15,
+  "python_regression_tests": 89,
+  "focused_command": "python -B results/toric3d-h6-full-prefix-2026-10-15/test_analysis.py",
+  "regression_command": "python -B -m unittest discover -s test/toric3d -p 'test_*.py'",
+  "python_executable": "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+  "environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "analyze.py": "622ac2f5d2e1679ef1f5bf605598581880509e6bb982c4e3acfbad51f09943f4",
+    "plot_drop_smallest.py": "043292bec789df53dbdee78188a472298c0fb55acee1d1981c38834d756b8e49",
+    "test_analysis.py": "583e58c91401a6caf7be4b17b11fe0887a14bb2fe71fd7d61310654e948ab13f"
+  },
+  "plot_qa": {
+    "directory": "/tmp/toponoise-full-prefix-plot-qa",
+    "kind": "synthetic rendering fixture only; no simulation results",
+    "exports": [
+      "full-prefix-comparison",
+      "full-prefix-paired-differences",
+      "x-full-prefix-local-fit",
+      "z-full-prefix-local-fit",
+      "x-full-prefix-drop-L3-fit",
+      "z-full-prefix-drop-L3-fit"
+    ],
+    "formats": [
+      "png",
+      "pdf",
+      "svg"
+    ],
+    "inspected": [
+      "x-full-prefix-local-fit.png",
+      "x-full-prefix-drop-L3-fit.png",
+      "full-prefix-comparison.png"
+    ]
+  }
+}

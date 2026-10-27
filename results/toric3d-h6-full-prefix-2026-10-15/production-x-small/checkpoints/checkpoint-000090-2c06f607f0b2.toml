@@ -1,0 +1,283 @@
+format_version = 1
+generation = 90
+payload_sha256 = "2c06f607f0b227b9c91c5ff2981e2bcb0a97e9199c56363a91be8d01427fd539"
+point_seeds_hex = ["cb76a95e1aa3c298", "508b09e7376cc8b3", "45ee26d55f270c9d", "4718e647197b16da", "0dbb1c1743981c14", "3b178c4514071211", "b3c3930229292b52", "a9d74f96cd2093f4", "aa9928c89ba0129e", "2e75963d2eb486f0", "f482bd7ed4c4af85", "e1f54071b1d68255", "b29d61b1988c7660", "c5c2c028b75ca679", "224a876b2f2cdfb5", "d1f86fadb844184b", "ba8335880b891492", "7d60685a4d354efa", "0c7c5d30c3082d78", "77c7df42d5a5e44c", "cafd227071920fb5"]
+started_at_unix = 1.792077343028892e9
+updated_at_unix = 1.79207736509043e9
+
+[config]
+batch_size = 50
+channel = "x_only"
+dimensions = [[3, 3, 3], [5, 5, 5], [7, 7, 7]]
+rates = [0.035, 0.04, 0.045, 0.05, 0.055, 0.06, 0.065]
+seed = 2026101571
+shots = 1000
+sizes = [3, 5, 7]
+
+[decoder_build_count_by_size]
+3 = 5
+5 = 0
+7 = 0
+
+[decoder_build_seconds_by_size]
+3 = 4.082409167
+5 = 0.0
+7 = 0.0
+
+[protocol]
+arm_order = ["final_only", "full_prefix"]
+channel = "x_only"
+circuit = "legacy H+6-CNOT plaquette transfer"
+failure = "either residual logical parity after final recovery"
+fault_locations = "13 L^3 participating transfer outputs"
+feedback_timing = "after transfers 1:T inclusive; no separate r=0 correction"
+final_only = "no intermediate physical correction; exactly one final recovery and logical outcome"
+full_prefix = "complete physical recovery on all available data slices Q0..Qr after EVERY transfer 1:T, including the last; complete-prefix syndrome zero; exactly one final recovery and logical outcome afterward"
+geometry = "T=L; Ly=Lz=L"
+initial_state = "ideal encoded logical |00>"
+joint_histogram_encoding = "mask = final_only + 2*full_prefix; each term is its state-failure Boolean"
+noise = "independent Bernoulli-p faults in the selected channel at its recorded circuit locations"
+point_order = "sizes outer loop, rates inner loop; both strictly increasing"
+point_rng = "Random.Xoshiro(point_seed)"
+point_seed_generation = "MersenneTwister(integer base seed); repeated scalar rand(rng,UInt64); discard duplicate values; 16 lowercase hexadecimal digits"
+resume = "recreate point Xoshiro and sample/discard completed records without decoding; rebuild raw CSV from authoritative checkpoint"
+sampler = "sample_toric3d_faults(p_x=p,p_z=0)"
+seed_preparation = "ideal; zero seed fault locations"
+shared_final_decoder = "family.prefixes[end]; full-plaquette BP+OSD with declared p prior; syndrome-validated recovery"
+z_weights = "unit data-edge weights"
+
+    [protocol.decoder_settings]
+    bp_method = "minimum_sum"
+    max_iter = 50
+    ms_scaling_factor = 1.0
+    omp_thread_count = 1
+    osd_method = "OSD_CS"
+    osd_order = 2
+    schedule = "parallel"
+
+[runtime]
+blas_threads = 1
+julia_threads = 1
+julia_version = "1.12.6"
+python_executable = "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python"
+python_version = "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:09:31) [Clang 19.1.7 ]"
+
+    [runtime.environment]
+    JULIA_CONDAPKG_BACKEND = "Null"
+    JULIA_NUM_THREADS = "1"
+    JULIA_PYTHONCALL_EXE = "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python"
+    OMP_NUM_THREADS = "1"
+    OPENBLAS_NUM_THREADS = "1"
+    VECLIB_MAXIMUM_THREADS = "1"
+
+    [runtime.packages]
+    ldpc = "2.4.1"
+    numpy = "2.5.1"
+    pymatching = "2.4.0"
+    scipy = "1.18.0"
+
+[source_hashes]
+"Manifest.toml" = "0e4e22c6b1478fe8124a9e91a0fa62810c411569b58ea217991dd564dfd7268f"
+"Project.toml" = "bec77ddf0c3465c2a48c79c7c845cbc812497aa6056559ed800b18243c7b2670"
+"results/toric3d-h6-full-prefix-2026-10-15/run_study.jl" = "368f4048be9e96f52e27dbd74077c028a3688a547b80b3f3b32664df719fda88"
+"src/TopoNoise.jl" = "e8b5d5cb4fcb22614fb23695a6f4a4e2195cb552af9039b7fecc2ec7915b3959"
+"src/local_gate.jl" = "8fbd802912dd1bd597ce1db9742ac649832cefe8111dcda373f36660766e320e"
+"src/network_graph.jl" = "12e6251aa6a43f90942079275c9e05f8420e8563b552badc5a73434d8e0ea8f3"
+"src/rotated_planar/comparison.jl" = "ceea86317417f2889cf21145c978986ab4ec94e5c1fd6fafb38776fc97336957"
+"src/rotated_planar/comparison_plot.jl" = "30370004e66758bbfb8c061ed863169b76787467b27bafcbe2f5d9eac9b4d524"
+"src/rotated_planar/decoder.jl" = "7d2be47c0883ce1f472813d28ba9980f325b213914eb1996fd46fa245ce72256"
+"src/rotated_planar/encoder.jl" = "d27be409b411ac2b7d32e9524522eb3725f7e402bb2e657a28c26e471538a703"
+"src/rotated_planar/geometry.jl" = "6f82c3bd05da708489ba6bb70912093a7b5be2e0765588f5cb133beb02521749"
+"src/rotated_planar/noise.jl" = "b2183690889a5978f1a339418eacfe22ae0baeba47f341531d819b7adfdbcdd5"
+"src/rotated_planar/scaling.jl" = "850f0d440d9e67cf333930d340afec3bd423e34b25b2aa80a218d8b7d74079b6"
+"src/rotated_planar/scan.jl" = "3c746911dc175610015ee7769bd9650d520753fa26dae67ac65191ba62656d48"
+"src/sequential_circuit.jl" = "c33cd5872c3ca06ac3765271df63bee7120982dec1b0964d3564d7bdaacab526"
+"src/toric3d/decoder.jl" = "546d6322bdc27663660617fe3f84824ab871d36e0c42d23854c662ccf37b534f"
+"src/toric3d/encoded_slice_geometry.jl" = "2456e36c17e71e398133c1f827b3cfb935b235a7c726bd4ba7cb8b0fb6f906a7"
+"src/toric3d/encoder.jl" = "6a0db997dfe6733d83ec46e9482853c0a429b0c50fb0a6d7486f47e7733f804c"
+"src/toric3d/feedback_strength_decoders.jl" = "3d0fbdef7fb61da41f62a55b3007dbb2bacc48bbf1680adadf2bbbaef2c66d31"
+"src/toric3d/feedback_strength_geometry.jl" = "0b744528615348b39b3b774a7466a8767b944f16cb64f76e8745b4190ed097a4"
+"src/toric3d/feedback_strength_output.jl" = "6c64945118a612a814cebba503f439f73597d2abae7fc52492fa7b63aa1390ec"
+"src/toric3d/feedback_strength_scan.jl" = "1bfa2fa5ac7f36188fd570156f60ed6fb0e4f7b5d144e966d9a2c6f78c0f0a89"
+"src/toric3d/feedback_strength_x.jl" = "38c7069e77c89dfcd021cf69f8d8ad0c94c1aa14b0a620541694d2bb2691de3f"
+"src/toric3d/feedback_strength_z.jl" = "00ccb31c62ad13b1e2f2712f07a355932faea3b950559b9ef63c5c8a26d00e0c"
+"src/toric3d/feedback_strength_z_batch.jl" = "2cdb619a0c84128e312ed61c0656d0391d966140083e1638109b2996d9383491"
+"src/toric3d/geometry.jl" = "8916baff36630c8aa10e0d5a4c50a4c2823179a4a3ad2f63ada8a770d273c329"
+"src/toric3d/h6_full_prefix.jl" = "6e76d2f2cb6018c931a4ebbc72b01fa1fd027f67c6f4007c3786c1b9906f6c8c"
+"src/toric3d/h6_two_slice_x.jl" = "9102da51adb744cd1e29868a3190902c2bd18cb0449fa3c95cb33aad467d3fb3"
+"src/toric3d/h6_two_slice_z.jl" = "b1204681c72fdc7ec2b25b500c9008f20a20e76a64e865feb66f06b2d8b331a9"
+"src/toric3d/h6_z_one_step.jl" = "22e1d65cd878ed3e45706e45cd092df06bf3b0b8a7a1bd73c5b6390acdc18496"
+"src/toric3d/noise.jl" = "2c7b6821a96cf119880de4e5ee0b5e51007d3c07b09baee0fe79dfa32ce03a66"
+"src/toric3d/output.jl" = "a5717699d2bd46b542ed3c7a61efd634d38e6fe938b2389140d8a041c22a400b"
+"src/toric3d/scan.jl" = "50fa3c129d649239462665f04ec983da3472219892255acae4e0c28b173915f3"
+"src/toric3d/slice_encoder.jl" = "e5473161202d0a9ecb55d1fe78277fde5ecf2a85cf2294ed964038e3eb4eee5e"
+"src/toric3d/slice_feedback.jl" = "6727fbd3f8f959c1b159e226b9c812227da2b5cb7e6080b98860ccecbb69ed1f"
+"src/toric3d/slice_geometry.jl" = "05018d2c9671b242b05c1d0deadc1ce3cc4ef9f8bfd6bb652f622ff6afc4c9eb"
+"src/toric3d/slice_scan.jl" = "80713a684b618349adfa8d409f2361192cd16dd6910e9bf5c6faf1c9a0b1d861"
+"src/toric3d/vertex_projector_boundary.jl" = "ec62ecf54e27c7ecacd8d51f7c2dd44ba162e02a5b31407deaaf8df2818e7a52"
+"src/toric3d/vertex_projector_decoders.jl" = "96e9ec643385c32b702227a3f7be1f6220f254f87636300ce92d9320eed01dfb"
+"src/toric3d/vertex_projector_encoder.jl" = "a3b2c03e55cb6a905a8abb77acba022a0af48e1b6aa7de6a8161b6f859361e95"
+"src/toric3d/vertex_projector_feedback_geometry.jl" = "88df275eb203ea0cb1ac6f9e6b0bc14a9f2f8f515f92e5fe3ae8d5221f4d07bf"
+"src/toric3d/vertex_projector_geometry.jl" = "7d0f6621749dc6dd13daff2d18502eaff424d824d7a8ba1314c1465e155c8353"
+"src/toric3d/vertex_projector_matching.jl" = "2a4f1c0594bde13e471155b73a4b9fa1c27832c568b8e3138b60c08562ae6011"
+"src/toric3d/vertex_projector_noise.jl" = "7fa7ca25ddecf32160aa3bd93fe07fd8c83f65a44e5871cf7fec0ffc746435b4"
+"src/toric3d/vertex_projector_output.jl" = "8c46b8f5988694dd4a63ff3399a4e9aa83a86bed8bf40d84edb5c3b873c11c37"
+"src/toric3d/vertex_projector_replay.jl" = "1a48e36bab494c9885569d5c0ced4565c64fec8575d352197a1d2c33ad4be8af"
+"src/toric3d/vertex_projector_scan.jl" = "e067294e426fab280ab59bf6525e9dd6a4abdebcc7ee77c49f038f10d481e8a2"
+"src/toric3d/vertex_projector_z_audit.jl" = "1d160470a7de6c3aec9edf82750d3ec24dca06fef4608da72a5633d24ba14ec7"
+"src/toric3d/vertex_projector_z_control.jl" = "8390f871590f996346e689f175e8fa416306baa424d3aa43ec9ee021b45b1f88"
+"src/toric3d/vertex_projector_z_output.jl" = "00a994c5e9186e4f3990565730222fe2d2738476e867131b20593396db1eb579"
+"src/toric3d/x_feedback_output.jl" = "80c4e0eda827661870f78503a0852a40a3273c924e5b5f92a41396af9758e026"
+"src/toric3d/x_feedback_scan.jl" = "07566cade82b72863b22d2ff75054d3fe2783777ac42cf2a3a1e3f6436e86a7d"
+"src/toric3d/x_feedback_threshold.jl" = "ec50a57319cf143d553720c122c2a0febd6058e1f1fdb04effd88cbbc408f9c6"
+"src/toric3d/z_threshold.jl" = "d65659848ce036601d9986b712810f63ae3e573752e165a776fb2366a60d59b7"
+"src/toric_code_peps.jl" = "8839eadf1ec17fc387b4a2b7a7d075fbe24c88085459ce9b0e7e06d4d4403bf5"
+"src/visualization.jl" = "2c7d9a01a11c1ba2574f9ddb9455310d1001ccc75c1a868d3ec5f1857f4fe61f"
+
+[[states]]
+completed_shots = 1000
+elapsed_seconds = 4.2693266659999995
+failures = [329, 94]
+joint_counts = [644, 262, 27, 67]
+logical_1_counts = [212, 54]
+logical_2_counts = [228, 71]
+[[states]]
+completed_shots = 1000
+elapsed_seconds = 0.996076334
+failures = [410, 129]
+joint_counts = [560, 311, 30, 99]
+logical_1_counts = [256, 74]
+logical_2_counts = [289, 81]
+[[states]]
+completed_shots = 1000
+elapsed_seconds = 1.4948124590000003
+failures = [438, 167]
+joint_counts = [520, 313, 42, 125]
+logical_1_counts = [272, 105]
+logical_2_counts = [309, 114]
+[[states]]
+completed_shots = 1000
+elapsed_seconds = 2.1159610840000003
+failures = [523, 206]
+joint_counts = [437, 357, 40, 166]
+logical_1_counts = [325, 131]
+logical_2_counts = [371, 134]
+[[states]]
+completed_shots = 200
+elapsed_seconds = 0.7201693339999999
+failures = [105, 55]
+joint_counts = [81, 64, 14, 41]
+logical_1_counts = [70, 34]
+logical_2_counts = [74, 39]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]
+[[states]]
+completed_shots = 0
+elapsed_seconds = 0.0
+failures = [0, 0]
+joint_counts = [0, 0, 0, 0]
+logical_1_counts = [0, 0]
+logical_2_counts = [0, 0]

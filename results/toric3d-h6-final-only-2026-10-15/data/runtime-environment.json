@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-10-15T07:45:27.564736+00:00",
+  "python_executable": "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+  "python_version": "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:06:14) [Clang 19.1.7 ]",
+  "platform": "macOS-14.6-arm64-arm-64bit",
+  "packages": {
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.1",
+    "pymatching": "2.4.0",
+    "ldpc": "2.4.1"
+  },
+  "julia_version": "julia version 1.12.6",
+  "thread_environment": {
+    "JULIA_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1"
+  },
+  "condapkg_backend": "Null",
+  "base_commit": "d63e49a411fb66a01ae550e65b1c2e27ae894b98",
+  "note_tex_sha256": "3a40710c2ab6bd43e53f5f7703b7c8716b209dc1e060a5092f17e0edce073f3a",
+  "manifest_sha256": "0e4e22c6b1478fe8124a9e91a0fa62810c411569b58ea217991dd564dfd7268f",
+  "implementation_commit": "08ad0ccff652661c1b04d8af1a58173942e853d3"
+}

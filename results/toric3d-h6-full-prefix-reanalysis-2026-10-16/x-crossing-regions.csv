@@ -1,0 +1,11 @@
+L_small,L_large,adjacent,component,low,high,empty,touches_grid_lower,touches_grid_upper
+3,5,True,0,0.035,0.065,False,True,True
+3,7,False,0,0.038097298098617664,0.065,False,False,True
+3,9,False,0,0.04558263809964557,0.06185327076498276,False,False,False
+3,11,False,0,0.046188625041669394,0.060666278647516794,False,False,False
+5,7,True,0,0.035,0.065,False,True,True
+5,9,False,0,0.03623452829947694,0.065,False,False,True
+5,11,False,0,0.04290794558114282,0.065,False,False,True
+7,9,True,0,0.035,0.065,False,True,True
+7,11,False,0,0.035,0.065,False,True,True
+9,11,True,0,0.035,0.065,False,True,True

@@ -1,0 +1,37 @@
+L = 3
+algorithm = "independent_untruncated_dense_detector_frontier"
+chi = 240
+cutoff = 1.0e-18
+elapsed_seconds = 0.959623709
+exact_failure = false
+input_corpus = "input-corpus.toml"
+joint_weights = [1.0, 0.0, 0.0, 0.0]
+log_joint_syndrome = 0.0
+logical_mask = 0
+max_width_guard = 22
+mwpm_failure = false
+p = 0.0
+probabilities = [1.0, 0.0, 0.0, 0.0]
+record_id = "1e74ecd3ade2754965df878b65c988f83d718cdbf7d4a388f96e1aafac10864a"
+run_id = "f7b9db26146e98ccb11bd1abdf6946a419f8d6ce1bce3d5df79e27ac0f0463c7"
+schema_version = 1
+seed_elapsed_seconds = 0.000865375
+seed_joint_weights = [1.0, 0.0, 0.0, 0.0]
+shot_index = 1
+status = "complete"
+transfer_elapsed_seconds = 0.885097833
+transfer_joint_weights = [1.0, 0.0, 0.0, 0.0]
+true_mask = 0
+valid = true
+
+[seed]
+exact = true
+log_marginal_probability = 0.0
+maximum_width = 9
+probabilities = [1.0, 0.0, 0.0, 0.0]
+
+[transfer]
+exact = true
+log_marginal_probability = 0.0
+maximum_width = 19
+probabilities = [1.0, 0.0, 0.0, 0.0]

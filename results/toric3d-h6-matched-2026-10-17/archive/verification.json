@@ -1,0 +1,31 @@
+{
+  "verified_at_unix": 1792244417.5128179,
+  "julia_assertions": 314,
+  "python_analysis_tests": 11,
+  "python_supervisor_tests": 8,
+  "real_numerical_smoke_fits": 6,
+  "numerical_smoke_bootstrap_replicates": 20,
+  "production_bootstrap_replicates": 200,
+  "source_runtime_files": 55,
+  "synthetic_previews_excluded": true,
+  "checks": [
+    "Shared-record API equivalence and immutability",
+    "Common Z seed repair retains logical errors",
+    "Exact interrupted/resumed counts and seeds",
+    "Eight-bin histogram and logical-union validation",
+    "Corrupted primary and backup rejected",
+    "Completed-checkpoint mirrors repaired on resume",
+    "Worker lock inheritance and shutdown race handling",
+    "Corrupt checkpoint still produces failed status",
+    "Six actual synthetic numerical fits returned finite candidates",
+    "Both PDF pages visually inspected; inset moved away from outer spine"
+  ],
+  "files_sha256": {
+    "run_study.jl": "bb96090580ac63d6507aebf13e268d5edf8252a3a5519be4bf6d6d8095525735",
+    "test_matched_runner.jl": "168e2eb5983f24321fb9205c1d1b96e604e14b1b4dede4f9dad808e95b392f18",
+    "supervise.py": "2fe318c060a3a36d642f750dfec10f588e63e6561e27c93c44e26ae840be829e",
+    "test_supervisor.py": "be08e28f909d1093c1557418def0e0f3407b0e847258554eabd74345b616697c",
+    "analyze.py": "a219a504dc2471c869c2c7a10c988b624f59a42e88b9d2887386ab70dd790f3f",
+    "test_analysis.py": "1dc2c1e23fd6173fcec4d66b80b2dfb88e658e4aec0e3cea1bea7b1857cb7657"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "elapsed_seconds": 715.5526393749751,
+  "timing_basis": "time.monotonic for total duration and first observation of a new owned-worker TN stage; wall-clock progress timestamps are generation tags only",
+  "worker_pid": 89340,
+  "tn_stage_elapsed_seconds_at_last_poll": null,
+  "peak_rss_bytes": 2421817344,
+  "rss_limit_enforced": true,
+  "decode_limit_seconds": 120.0,
+  "total_limit_seconds": 1200.0,
+  "rss_limit_gib": 4.0,
+  "progress_at_stop": {
+    "pid": 89340,
+    "shot": 73,
+    "stage": "complete",
+    "stage_started_unix": 1793068459.341951,
+    "updated_at_unix": 1793068459.341951
+  },
+  "command": [
+    "/Users/rongyuqing/.juliaup/bin/julia",
+    "--startup-file=no",
+    "--threads=1,0",
+    "--gcthreads=1",
+    "--project=.",
+    "examples/tnml_repaired_seed/precision_validate.jl",
+    "results/tnml-full-grid-2026-10-27/production/L3-p0.0025-chi240",
+    "results/tnml-full-grid-2026-10-27/diagnostics/L3-p0.0025-cutoff-validation73"
+  ]
+}

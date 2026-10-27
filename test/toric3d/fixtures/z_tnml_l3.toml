@@ -1,0 +1,52 @@
+# Frozen cases selected from the original tuning corpus; no new shots sampled.
+schema_version = 1
+L = 3
+class_order = "mask=lambda1+2lambda2; entries are masks 0,1,2,3"
+noise = "independent Z faults after seed and transfer H outputs and each CNOT output; diagonal H+6CNOT; no intermediate feedback"
+source_commit = "b528eb24b563b07b6bd15e5436830e4fdd298d57"
+corpus_source = "results/tndecoder3d-l3-stability-2026-10-26/tuning_corpus.toml"
+corpus_sha256 = "9c6abd6f7e18d49a3db7ca0d0a581274a1f674bc6a524f76a964266d89e24a11"
+validated_source = "results/tndecoder3d-l3-repair-2026-10-26/tuning_chi240_all.toml"
+validated_source_sha256 = "6393c9a1dd24aabd24ac6e22e2bb1dedd63a3d4eb0aeb165d71f2af677bed51c"
+validated_module_source = "examples/tndecoder3d_trial/repaired_boundary_mps.jl"
+validated_module_sha256 = "0321bc105503ccc642ecc8c33bbf9627e6d50f816b715a4dc24b89ee30db1f53"
+exact_reference = "Independent untruncated dense frontier; max_width guard 22; no TN decoder or SVD"
+dense_frontier_sha256 = "b0b89152a8e131fcc57ac4429444427f6d3e034e2933edd6c1e7a82f502fdf00"
+raw_detector_matrix_sha256 = "326aeefc408e3f8c77db5a1dca9919f117b1e63d219dbe5bbdbb7a3086351bdd"
+raw_logical_matrix_sha256 = "17ed442262c188d8cf62d83e631b50f090d9886cd27f9bce6c5e74cf98067087"
+max_bond_dimension = 240
+cutoff = 1e-18
+negative_tolerance = 1e-10
+original_blas_threads = 1
+
+[[cases]]
+id = "p020000_random_03"
+p = 0.02
+rate_seed = 2026122902
+sample_index = 3
+raw_fault_ones = [65, 144, 154, 159, 166, 186, 209, 232, 234, 285, 306, 321, 361]
+syndrome_ones = [9, 12, 16, 18, 19, 21, 22, 23, 27, 28, 32, 34, 38, 44]
+true_mask = 3
+exact_probabilities = [0.16990172005363424, 0.024895010678947695, 0.06863235545699596, 0.7365709138104222]
+exact_log_marginal = -25.007803210928543
+exact_mask = 3
+validated_probabilities = [0.16990484749528398, 0.02489708885353529, 0.06863178346187722, 0.7365662801893035]
+validated_log_syndrome = -25.00780048303532
+validated_logical_mask = 3
+validated_posterior_l1 = 1.041123247476003e-5
+
+[[cases]]
+id = "p020000_random_06"
+p = 0.02
+rate_seed = 2026122902
+sample_index = 6
+raw_fault_ones = [21, 118, 142, 168, 186, 243, 263, 290, 306, 362]
+syndrome_ones = [3, 6, 12, 13, 16, 17, 19, 21, 23, 27, 28, 29, 31, 32, 34, 36, 37, 39]
+true_mask = 3
+exact_probabilities = [0.10073824974906263, 0.3693629202302748, 0.3272889978037635, 0.20260983221689904]
+exact_log_marginal = -31.046893278725715
+exact_mask = 1
+validated_probabilities = [0.10058933283874823, 0.36943391662937947, 0.3272343560365876, 0.20274239449528467]
+validated_log_syndrome = -31.047154483524892
+validated_logical_mask = 1
+validated_posterior_l1 = 0.00040711735498061286

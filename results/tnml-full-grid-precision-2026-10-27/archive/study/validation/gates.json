@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "interpretation": "Eligibility for a monitored finite-bond experiment, not a proof of exact contraction or convergence for all syndromes. Every L3 production history is independently audited against exact ML; an unsuccessful point stops that size.",
+  "gates": {
+    "3": {
+      "status": "passed",
+      "chi": 240,
+      "cutoff": 1e-26,
+      "negative_tolerance": 1e-10,
+      "exact_reference_for_every_shot": true,
+      "evidence": [
+        "../tnml-full-grid-2026-10-27/validation/precision-validation73-audit.json",
+        "../tnml-full-grid-2026-10-27/diagnostics/L3-p0.0025-cutoff-validation73/report.toml"
+      ],
+      "reason": "All73 saved low-p regression cases, including five baseline failures, were valid and matched exact ML at cutoff1e-26; maximum posterior error2.446e-12. Eligible only for a monitored fresh-seed scan, with an exact reference and immediate validity/ML guard on every new history. This is not a convergence guarantee for untested syndromes."
+    },
+    "5": {
+      "status": "blocked",
+      "reason": "The identical L5, p=0.01, chi=240 history did not finish with a corrected monotonic 600-second contraction limit. Peak observed RSS was 2.91 GiB. Positive-noise runtime and contraction-dimension convergence remain unestablished; this does not prove mathematical infeasibility.",
+      "evidence": [
+        "../tnml-full-grid-2026-10-27/diagnostics/L5-p0.0100-chi240-extended/supervision.json",
+        "../tnml-full-grid-2026-10-27/validation/extended-probe-identity.json"
+      ]
+    },
+    "7": {
+      "status": "blocked",
+      "reason": "Positive-noise runtime and contraction-dimension stability are unestablished. A zero-noise check does not validate positive-noise decoding."
+    },
+    "9": {
+      "status": "blocked",
+      "reason": "Positive-noise runtime and contraction-dimension stability are unestablished. A zero-noise check does not validate positive-noise decoding."
+    },
+    "11": {
+      "status": "blocked",
+      "reason": "Positive-noise runtime and contraction-dimension stability are unestablished. A zero-noise check does not validate positive-noise decoding."
+    }
+  }
+}

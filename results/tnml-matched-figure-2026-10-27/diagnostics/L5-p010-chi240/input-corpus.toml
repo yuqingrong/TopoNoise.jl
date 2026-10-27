@@ -1,0 +1,18 @@
+requested_shots = 1
+rng_seed = 2026102705
+run_id = "6d8268f8d827afb32c5ae0d0a746d5fe00f37a260a1344abe8e48de9acd31c01"
+sampling_elapsed_seconds = 0.201793417
+
+[[records]]
+final_syndrome = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false, true, false, false, false, true, true, false, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false, true, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, true, false, false, false, false, true, false, false, true, false, true, false, false, false, false, true, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, true, false, true, true, false, true, false, false, true, false, true, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false]
+mwpm_failure = false
+raw_fault_count = 1700
+raw_fault_indices = [30, 90, 319, 320, 578, 592, 800, 808, 968, 1260, 1280, 1366, 1406, 1464, 1569, 1597, 1697]
+raw_seed_mask = 0
+record_id = "6606a978ed1ed3b64d5c30b0600ae882b0eb5b3126769dba4f998abe864c487b"
+recovery_mask = 0
+seed_recovery = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+seed_syndrome = [false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+shot_index = 1
+transfer_mask = 0
+true_mask = 0

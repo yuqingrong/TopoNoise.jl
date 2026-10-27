@@ -393,248 +393,144 @@ contain more CNOTs, so more fragile to X-only noise.
 \newpage
 \section{3D toric code}
 
-\subsection{Geometry, checks, and logical operators}
+\subsection{Noise and logical observables}
 
-We use a relative cubic slab with periodic $y,z$ directions and rough open
-$x$ ends.  There are $L_x$ retained vertex planes $x=1,\ldots,L_x$;
-$x$-edges lie at $x=0,\ldots,L_x$, while transverse edges lie at
-$x=1,\ldots,L_x$.  Coordinates $y\in\mathbb Z_{L_y}$ and
-$z\in\mathbb Z_{L_z}$ are periodic.  The two periodic length-two cells
-are retained as distinct cells, and boundary plaquettes are triangular.
-We allow $L_x\geq1$ and $L_y,L_z\geq2$.  With $M=L_yL_z$,
+Each active H/CNOT output independently acquires an X or Z fault with
+probability $p$ in separate single-channel experiments. Initialization,
+idles, measurements, and corrections are ideal unless stated otherwise.
+Compared protocols reuse the same fault records. Final recovery uses
+MWPM for Z and BP+OSD for X; complete recoveries must reproduce the syndrome.
+
+Logical failure is the union of the scored residual logical-Pauli bits.
+For $|0_L\rangle$ or $|00_L\rangle$, only logical X is preparation failure;
+logical Z is a Pauli-frame diagnostic. For $|++\rangle$, logical Z is
+state failure. All threshold estimates below depend on the circuit,
+decoder, and ideal-feedback assumptions.
+
+\subsection{Cartesian sweep: geometry and Z-fault bound}
+
+Use a cubic slab with rough open $x$ ends and periodic $y,z$ directions.
+Retained vertices have $x=1,\ldots,L_x$; longitudinal edges have
+$x=0,\ldots,L_x$. For $L_x\geq1$, $L_y,L_z\geq2$, and $M=L_yL_z$,
 \[
  H=-\sum_v A_v-\sum_f B_f,\qquad
  A_v=\prod_{e\ni v}X_e,\quad B_f=\prod_{e\in\partial f}Z_e,
- \qquad n=(3L_x+1)M.
 \]
-There are $N_A=L_xM$ independent stars and
-$N_B=(3L_x+2)M$ plaquettes of rank $(2L_x+1)M-1$.
-Thus $k=n-N_A-\operatorname{rank}B=1$.
-For example, the two rough-end $xy$ checks are
+\[
+ n=(3L_x+1)M,\quad N_A=L_xM,\quad N_B=(3L_x+2)M,\quad
+ \operatorname{rank}B=(2L_x+1)M-1,\quad k=1.
+\]
+Rough-end plaquettes are triangular, e.g.,
 \[
  B^{xy}_{0,y,z}=Z^x_{0,y,z}Z^x_{0,y+1,z}Z^y_{1,y,z},\qquad
  B^{xy}_{L_x,y,z}=Z^x_{L_x,y,z}Z^x_{L_x,y+1,z}Z^y_{L_x,y,z}.
 \]
-The $xz$ end checks follow by exchanging $y$ and $z$; interior plaquettes
-have four edges.  The $2\times2\times2$ reference therefore has 28 qubits,
-8 independent stars, and 32 plaquettes of rank 19.  Its circuit has
-8 Hadamards and 40 CNOTs, with a checkpoint after each four-star plane.
-A longitudinal $Z$ string joining the rough ends has distance
-$d_Z=L_x+1$; a transverse $X$ membrane has distance $d_X=M$.
-The prepared state is the normalized projector state
+Interior plaquettes have four edges; period-two parallel edges remain
+distinct. The longitudinal Z string and transverse X membrane give
 \[
+ d_Z=L_x+1,\qquad d_X=M,\qquad
  |0_L\rangle=2^{N_A/2}\prod_v\frac{I+A_v}{2}|0\rangle^{\otimes n}.
 \]
 
-\subsection{Sequential circuit, noise, and feedback}
+Visit vertices in increasing $(x,y,z)$ order. Apply H to the fresh outgoing
+$x$-edge, then CNOTs from it to the incoming $x,+y,-y,+z,-z$ edges, in
+that order. Final-only recovery acts once; layer feedback decodes each
+completed prefix slab, including its moving triangular frontier, and
+corrects only available qubits.
 
-Visit vertices in increasing $(x,y,z)$ order.  At each vertex the fresh
-outgoing $x$-edge is Hadamard transformed, then controls CNOTs onto the
-incoming $x$-edge and the $+y,-y,+z,-z$ edges, in that order.  The last
-outgoing $x$-edges terminate at the right rough end.  For $L_y=2$ or
-$L_z=2$, opposite directions are still distinct edge qubits.  We assume
-ideal initialization, idle periods, stabilizer measurement, and correction.
-Each active output of an H or CNOT independently acquires a Bernoulli-$p$
-$X$ error in the X-only experiment, or a Bernoulli-$p$ $Z$ error in the
-Z-only experiment.  The inactive Pauli channel has rate zero.
-
-Both protocols replay the same sampled gate faults.  Final-only recovery
-decodes the full syndrome once after preparation.  Layer feedback measures
-and decodes after every completed $x$ layer, correcting only qubits in the
-current prefix slab.  Its frontier has moving triangular plaquettes; future
-qubits are unavailable for correction.  At each checkpoint, a Z recovery
-from star defects uses matching and an X recovery from plaquette defects uses
-belief propagation with ordered-statistics decoding.  Matching is only the
-Z-recovery component, not a decoder for both CSS channels.  The small-size
-exact option minimizes data-recovery weight; it is not exact circuit-level
-maximum-likelihood inference.  Decoder ties, finite BP iterations, and the
-ideal measurement assumption limit conclusions from the curves.
-
-The reported residual logical-X and logical-Z parities are Pauli-frame
-diagnostics.  Either-logical failure is their union; state failure for the
-prepared $|0_L\rangle$ is logical-X failure alone.  In particular a logical
-$Z$ changes a Pauli diagnostic but leaves $|0_L\rangle$ unchanged.
-
-\subsection{An indistinguishable Z-fault pair}
-
-Assume $0\leq p<1/2$ and a decoder with access only to measured stabilizer
-syndromes and declared model parameters.  For each transverse position
-$(y,z)$ choose two independent Z-fault bits:
-$a$ on the left boundary $x$-edge after its first CNOT, and $b$ on the
-outgoing $x$-edge after the final CNOT of the first-plane gadget.  At
-checkpoint $j$, $a$ alone leaves $Z$ on the $x=0$ edge; $b$ alone has
-propagated to the $x=1,\ldots,j$ edges.  These two errors give the same
-first-plane star syndrome.  Toggling both adds
-$D_j=Z_{x=0}Z_{x=1}\cdots Z_{x=j}$, a full prefix longitudinal string
-invisible to every checkpoint syndrome.  At the final checkpoint $D_{L_x}$
-is logical $Z$.  The $M=L_yL_z$ pairs are disjoint.  Give a decoder a genie
-that reveals every other fault and each pair XOR $a\oplus b$, the syndrome
-information, but not the constituent bits.  The remaining ambiguity in
-$a$ toggles the final logical-Z parity.  If any XOR is one, its two possible
-bit assignments have equal probability, so the parity is unbiased.
-All XORs vanish with probability
-$t^M$, where $t=(1-p)^2+p^2$.  Conditioned on a zero XOR, the two
-assignments $(a,b)=(0,0)$ and $(1,1)$ have probabilities $(1-p)^2/t$ and
-$p^2/t$.  Their parity bias is $(1-2p)/t$; across all $M$ pairs it is
-$((1-2p)/t)^M$.  Even this genie-aided decoder therefore has error
-probability
+\paragraph{Indistinguishable fault pair.}
+For each $(y,z)$, choose Z-fault bits $a$ on the left boundary edge after
+its first CNOT and $b$ on the outgoing edge after the final CNOT of the
+first-plane gadget. At checkpoint $j$, toggling both adds
+\[
+ D_j=\prod_{x=0}^{j}Z^x_{x,y,z},
+\]
+which has zero prefix syndrome and becomes logical Z at $j=L_x$.
+Thus the syndrome history cannot distinguish the pair assignments with
+the same $a\oplus b$. Even if all other faults and all $M$ pair XORs are
+revealed, an odd XOR leaves unbiased logical parity. For an even XOR,
+the parity bias is $(1-2p)/q$, where $q=(1-p)^2+p^2$. Hence, for
+$0\leq p<1/2$ and any syndrome-only decoder,
 \[
  P_{Z,\mathrm{diagnostic}}\geq
- \frac{1-t^M[(1-2p)/t]^M}{2}
+ \frac{1-q^M[(1-2p)/q]^M}{2}
  =\frac{1-(1-2p)^M}{2}.
 \]
-This is a lower bound for the logical-Z diagnostic under the specified
-gate faults and schedule.  It is not a fidelity bound for $|0_L\rangle$:
-partial Z strings can stabilize the prepared state, and logical Z itself
-acts trivially on that state.
+This bounds the Cartesian logical-Z diagnostic, not $|0_L\rangle$
+infidelity or the diagonal circuits below.
 
-\subsection{Numerical comparison}
-
-The default scan uses cubic $L=3,5,7$, ten physical rates from zero to
-$0.15$, and 1000 paired fault records per point.  It reports both distances,
-logical-X, logical-Z, either-logical and state failure, Wilson intervals,
-and paired protocol differences with uncertainty.  A timed pilot on the
-largest size at $p=0.03$ precedes the full run.  The figure overlays the
-analytic Z bound; it is a diagnostic reference, not a threshold fit.
-
-A second scan resolves the original Cartesian x-sweep using 10000 paired
-fault records at each point, with
-\[
- p\in\{10^{-6},3\times10^{-6},10^{-5},3\times10^{-5},
-          10^{-4},3\times10^{-4}\},\qquad L\in\{3,5,7,9\}.
-\]
-Let $p_{1\%}(L)$ denote the linearly interpolated
-physical rate at which the logical-Z diagnostic reaches one percent.  With
-layer feedback the measured values are
+With 10000 paired records per point at $L=3,5,7,9$ and
+$p\in\{1,3,10,30,100,300\}\times10^{-6}$, the linearly interpolated
+one-percent feedback diagnostic occurs at
 \[
  \bigl(p_{1\%}(3),p_{1\%}(5),p_{1\%}(7),p_{1\%}(9)\bigr)
- = (1.39\times10^{-4},5.03\times10^{-5},
-    2.92\times10^{-5},1.51\times10^{-5}).
+ =(1.39\times10^{-4},5.03\times10^{-5},2.92\times10^{-5},1.51\times10^{-5}).
 \]
-A four-size power-law summary gives
-$p_{1\%}(L)\propto L^{-1.97}$, with a binomial-bootstrap exponent interval
-$1.77$--$2.17$.  Thus the apparent small finite-size crossing moves toward
-zero rather than approaching a positive threshold, as required by the
-decoder-independent bound above.  For example, already at $p=10^{-5}$ the
-feedback diagnostic rises from $0.06\%$ at $L=3$ to $0.73\%$ at $L=9$.
+The fit $p_{1\%}(L)\propto L^{-1.97}$ has bootstrap exponent interval
+$[1.77,2.17]$, consistent with the bound's vanishing diagnostic threshold.
 
-\subsection{Direct vertex-projector H+5 experiment}
+\subsection{Diagonal H+5: direct vertex projectors}
 
-The primary new diagonal experiment applies the literal cubic-star projector.
-This is a paper-motivated construction, not a reproduction of an explicit
-three-dimensional gate circuit supplied by the paper. Set
-$t=x+y+z$, $u=x$, $v=y$, with open $t=0,\ldots,T$ and periodic
-$(u,v)\in\mathbb Z_{L_u}\times\mathbb Z_{L_v}$. An edge $E[d,t,r]$
-ends at $V(t,r)$ and begins at $V(t-1,r-s_d)$, where
-$s_1=(1,0)$, $s_2=(0,1)$, $s_3=(0,0)$. The encoded slab has
+Set $t=x+y+z$, $u=x$, $v=y$, with open $t=0,\ldots,T$ and periodic
+$(u,v)\in\mathbb Z_{L_u}\times\mathbb Z_{L_v}$. Edge $E[d,t,r]$ joins
+$V(t-1,r-s_d)$ to $V(t,r)$, where
+$s_1=(1,0)$, $s_2=(0,1)$, $s_3=(0,0)$. The slab has
 \[
  n=3(T+1)L_uL_v,\qquad k=2,\qquad
  d_Z=2\min(L_u,L_v),\quad d_X=(T+1)\min(L_u,L_v).
 \]
-Distinct physical edges remain distinct when a transverse period is two.
-For the old vertex $V(t-1,r)$, let $e_d=E[d,t-1,r]$ and
-$n_d=E[d,t,r+s_d]$. Apply, in this order,
+Period-two edges remain distinct. For $V(t-1,r)$, write
+$e_d=E[d,t-1,r]$ and $n_d=E[d,t,r+s_d]$.
+The direct star-projector circuit is
 \[
  H(n_1),\quad
  \mathrm{CX}(n_1,n_2),\quad\mathrm{CX}(n_1,n_3),\quad
  \mathrm{CX}(n_1,e_1),\quad\mathrm{CX}(n_1,e_2),\quad
  \mathrm{CX}(n_1,e_3).
 \]
-There are six gates and eleven participating outputs per cell. The independent
-post-output Bernoulli-$p$ X-only or Z-only noise convention is unchanged;
-initialization, idles, boundary operations, measurement, and correction are ideal.
+It has six gates and eleven noisy outputs per cell, implementing a
+paper-motivated construction rather than a circuit reproduced from it.
 
-Product zero fixes both logical-Z cycles. Ideally project the independent
-lower white X triads and correct their outcomes. After the bulk circuit,
-project the upper X triads. Their clean outcomes $b$ are uniform on the even
-subspace: draw $L_uL_v-1$ bits and fix the last parity. Let $u$ be the flips
-induced by the noisy Z frame and let $a=b\oplus u$ be the observed outcome.
-Only $a$ enters the physical boundary controller. With its deterministic
-correction map $C$, the relative clean/noisy frame is
+Product zero fixes both logical-Z cycles. Ideally project and correct the
+lower white X triads, run the bulk circuit, then project the upper X triads.
+Their clean outcomes $b$ are uniform with even parity. If Z faults flip
+them by $u$, the physical controller sees only $a=b\oplus u$. For its
+deterministic correction $C$, the relative frame is
 \[
- z'=z\oplus C(a)\oplus C(b),\qquad a=b\oplus u.
+ z'=z\oplus C(a)\oplus C(b).
 \]
-The map uses physical-edge-ID-ordered breadth-first paths to bulk root
-$A_{T-1,0,0}$ after deleting the union of both declared logical-X supports.
-This exclusion guarantees zero logical overlap of every open correction path;
-acyclicity alone does not. The graph stays connected through direction-three
-vertical edges and nonwrapping transverse edges. This is a fixed correction
-convention and changes noisy logical-Z diagnostics compared with an arbitrary
-uncut tree. The clean $b$ and gate faults remain hidden from all decoders.
+Use edge-ID-ordered breadth-first paths to $A_{T-1,0,0}$ after removing
+both logical-X supports; this guarantees zero logical overlap. The clean
+branch $b$ and fault record remain hidden from the decoders.
 
-Every immutable gate-fault record and clean boundary branch is reused by
-four arms. Intermediate feedback occurs only after $t=1,\ldots,T-1$:
-\begin{enumerate}
-\item \texttt{none}: boundary completion and final full-code recovery only.
-\item \texttt{one\_step}: in X, measure the periodic six-edge $Q_t$ checks,
-pair point defects by unit-length MWPM, and apply the first and last edge
-of each canonical path (a length-one path is applied once). Old-target X
-faults are unseen but cannot propagate further. Remaining $Q_t$ defects
-receive one contraction, not a repeated moving-frontier transport.
-In Z, match the retiring/frontier strip $(W,A_0)$ at $t=1$ or
-$(A_{t-2},A_{t-1})$ later. Odd parity receives exactly one future dummy;
-even parity receives none. Apply an endpoint edge only at a retiring
-endpoint, so every retiring syndrome clears while frontier defects may wait.
-Symmetric endpoint trimming is not causal in this strip.
-\item \texttt{window\_complete}: restrict recovery to $E_{t-1}\cup E_t$.
-X uses BP+OSD on $P_1$ initially and $P_{t-1}\cup P_t$ subsequently.
-Z uses ordinary open-boundary MWPM on the retiring/frontier strip.
-Both clear all completed checks.
-\item \texttt{full\_prefix}: recover on all $E_0,\ldots,E_t$ from the
-completed plaquettes or lower and bulk stars. Future data are unavailable.
-\end{enumerate}
-The arms differ in measurements, residual constraints, decoder, and correction
-support; feedback-versus-none differences do not isolate correction range.
-
-All arms use common final BP+OSD X recovery and MWPM Z recovery. The fixed
-BP baseline is minimum sum, 50 iterations, scale one, parallel schedule,
-one thread, and \texttt{OSD\_CS} order two, with uniform prior
-$p_{\rm eff}=\min(1-10^{-12},\max(10^{-12},p))$. PyMatching 2.4.0 and
-ldpc 2.4.1 are pinned. Matching first minimizes physical length and then
-lexicographically fixes endpoint/path signatures, retaining period-two
-parallel edges. These decoders omit circuit-induced correlations.
-Every complete recovery must satisfy $Hc=s$; a partial route instead obeys
-$s'=s\oplus Hr$ with its causal residual constraint. A syndrome-valid
-recovery need not restore the intended logical state.
-
-Score both transverse logical-X bits, both logical-Z bits, and all sixteen
-Pauli classes. Either-pair logical X is also $|00_L\rangle$ preparation
-failure for the X-only experiment. Logical Z is a state-independent Pauli
-diagnostic, not $|00_L\rangle$ infidelity. The four-arm statistics retain
-sixteen joint masks per observable, Wilson intervals, and all six paired
-contrasts. Atomic checkpoints reproduce complete records, including $b$.
-A separate timed pilot precedes a 500-shot scout at $L=3,5,7$. The scout
-freezes channel-specific production grids and fit windows before 1000-shot
-production. Threshold claims require adjacent-size crossing consistency,
-an interior monotone likelihood fit, acceptable goodness of fit, and at
-least 80\% usable bootstrap fits. Failed guards leave diagnostic candidates.
+\paragraph{Feedback protocols.}
+Reuse each fault record and boundary branch in four arms. Feedback occurs
+after $t=1,\ldots,T-1$:
+\begin{itemize}[nosep]
+\item \texttt{none}: boundary completion and final recovery only.
+\item \texttt{one\_step}: X uses MWPM on the periodic six-edge $Q_t$
+checks and applies the first and last path edges (once for a length-one
+path). Z matches the retiring/frontier star strip, adding one future dummy
+only for odd parity, and corrects retiring endpoints only. Frontier
+defects may remain.
+\item \texttt{window\_complete}: recover on $E_{t-1}\cup E_t$ using
+BP+OSD for completed plaquettes and open-boundary MWPM for the star strip.
+All completed checks clear.
+\item \texttt{full\_prefix}: recover from all completed checks on
+$E_0,\ldots,E_t$; future qubits are unavailable.
+\end{itemize}
+The arms change measurements, decoder, residual constraints, and correction
+support together. Their differences do not isolate correction range.
+Final BP+OSD uses 50 minimum-sum iterations and \texttt{OSD\_CS} order two.
+MWPM minimizes physical length with deterministic ties. Both omit
+circuit-induced correlations.
 
 % H5_MEASURED_RESULTS_BEGIN
-\paragraph{Preliminary measurements at three sizes.}
-The user-confirmed run completed $L=3,5,7$ on 14 October 2026:
-60 X-only and 135 Z-only points, with 1000 paired records per point,
-195000 records and 780000 arm replays in total. There were no invalid
-recoveries. Recorded sampling, decoder-building and replay times were
-1532.72 seconds for X and 12168.14 seconds for Z; these include the original
-cost of reused records and exclude warmup, compilation, plotting and deferred
-sizes. They are not the wall time of the last resumed segment.
-
-\emph{No H+5 threshold or scaling exponent is estimated.} All 14 frozen
-candidate windows fail the unchanged minimum-four-size guard before fitting.
-The requested 1000 bootstrap replicates were therefore not executed, and
-no fitted interval or sensitivity fit is reported. This limitation is not
-evidence for a zero threshold.
-
-Table~\ref{tab:h5-preliminary} gives illustrative points selected after the
-run from the frozen grid. Each rate is based on 1000 paired records.
-For X at $L=7$, $p=0.039448164$, one-step feedback increases failure by
-4.4 percentage points relative to none (per-contrast 95\% interval
-$[1.38,7.38]$), and either complete protocol increases it by 10.8 points
-($[6.99,14.50]$). At the higher sampled rate $p=0.077446809$, the
-window-complete change is instead $-11.4$ points ($[-17.07,-5.62]$), and
-the full-prefix change is $-11.7$ points ($[-17.34,-5.94]$).
-Thus finite-size feedback effects depend on the error rate.
-
+\paragraph{Preliminary results.}
+With $T=L_u=L_v=L$, the completed $L=3,5,7$ run contains
+60 X-only and 135 Z-only points,
+1000 paired records per point, and no invalid recoveries.
+Table~\ref{tab:h5-preliminary} shows selected logical-union rates.
 \begin{table}[htbp]
 \centering
 \small
@@ -650,296 +546,106 @@ Z & 0.0096470592 & 5 & 74.5 & 75.5 & 64.7 & 64.7 \\
 Z & 0.0096470592 & 7 & 76.3 & 74.4 & 71.7 & 71.7 \\
 \hline
 \end{tabular}
-\caption{Preliminary H+5 logical-union rates in percent at $L=3,5,7$.
-X denotes logical-zero preparation failure; Z is a state-independent
-logical-Pauli diagnostic, not logical-zero infidelity.}
+\caption{H+5 logical-union rates (\%). X is $|00_L\rangle$ preparation
+failure; Z is a Pauli diagnostic. Each row uses 1000 paired records.}
 \label{tab:h5-preliminary}
 \end{table}
 
-At the lowest sampled Z rate $p=0.0096470592$, window-complete changes the
-diagnostic by $-10.6$ points at $L=3$ ($[-15.39,-5.70]$), but by $-4.6$
-points at $L=7$ ($[-10.10,0.94]$). Most Z curves are near the 0.75 union
-probability of two uniform logical bits. The grid thus supplies little
-unsaturated evidence at larger sizes. Paired intervals use simultaneous
-bounds on the two discordance probabilities within each contrast, without
-multiple-comparison coverage across rates, sizes or contrasts. These
-illustrative comparisons are exploratory, not a confirmatory threshold test.
+Feedback effects depend on $p$. At $L=7$, window-complete minus none is
+$+10.8$ percentage points at $p=0.039448164$ (95\% interval
+$[6.99,14.50]$), but $-11.4$ points at $p=0.077446809$
+($[-17.07,-5.62]$). Most Z curves are near the $0.75$ union probability
+of two uniform logical bits, leaving little unsaturated large-size data.
+These selected contrasts are exploratory; intervals have per-contrast,
+not across-comparison, coverage.
 
-The original six-size scan was deliberately stopped at 106350 records,
-and its four-size precursor at 206000 records, after runtime-directed user
-amendments. Their immutable selections and checkpoints are preserved;
-$L=9,11,13$ remain deferred. The final subset reused 186000 records exactly
-and completed 9000 more. Point seeds retain their parent indices in the
-260-element \texttt{Random.Xoshiro(1234)} UInt64 stream; no existing record
-was reseeded. The three-size selection hash begins \texttt{1597b9941132d3f2}.
-All original rates, candidate windows, decoder settings and scientific source
-hashes were preserved. Full hashes, commands and checkpoint ancestry appear
-in the repository's \texttt{preliminary-l3-7/README.md} and H+5 report.
-
-Independent audits verified all joint counts, paired statistics, logical
-labels, checkpoint digests, reused states and source/data hashes, with
-warmup excluded. Fresh regressions passed 45610 Julia assertions across
-145 test sets and all 51 Python tests. Measured curves, six paired contrasts
-per point and the guarded diagnostic report are saved in the repository's
-\texttt{preliminary-l3-7/} result directory; the H+5 report gives full paths.
-Historical H+6 values below belong to a separate
-experiment and are not substituted for H+5 measurements.
+\emph{No H+5 threshold or exponent is estimated.} All 14 frozen candidate
+windows fail the minimum-four-size guard before fitting, so bootstrap fits
+were not run. This does not imply a zero threshold. Larger sizes remain
+deferred. Counts, paired contrasts, checkpoints, and audits are documented
+in \texttt{docs/superpowers/toric3d-h5-vertex-projector.md} and its linked
+\texttt{preliminary-l3-7/} results.
 % H5_MEASURED_RESULTS_END
 
-\subsection{Historical plaquette-transfer H+6 Z-sector estimate}
+\subsection{Historical H+6: plaquette transfer}
 
+The seven-gate H+6 circuit transfers old controls to fresh target triads
+on the diagonal slab above, with thirteen noisy outputs per cell.
+A single Z output fault spreads to at most three qubits in two adjacent
+slices. Its seed preparation and upper boundary instrument differ from
+H+5, so their thresholds are not a controlled circuit-only comparison.
 
-The historical seven-gate plaquette-transfer H+6 circuit avoids the earlier
-Cartesian propagation mechanism by using
-diagonal slices and transferring from old control qubits to new target
-triads.  Every single Z gate-output fault then has final support on at most
-three qubits in two adjacent slices.  To define a logical observable, use a
-periodic honeycomb toric-code seed instead of fixing a unique product
-boundary state.  Apply noisy H gates to its $3L_yL_z$ qubits, then ideally
-measure its Z-type compatibility checks and apply X corrections.  These
-checks commute with the specified independent seed Z faults, so they prepare
-the intended logical $|++\rangle$ code space without removing those faults;
-no perfect entangled seed is assumed.  The encoded slab has
+For X noise, prepare $|00\rangle$ using ideal seed X-star measurements,
+with no noisy seed gates. One-step feedback matches defects of the old
+slice's Z compatibility checks and feeds endpoint repairs forward to fresh
+targets. Matching is global; this is not a constant-depth spatially local
+channel. Final BP+OSD scores the union of logical-X membranes.
+
+For Z noise, prepare $|++\rangle$ using noisy seed H gates followed by
+ideal Z-compatibility measurements and X corrections. These preserve the
+seed Z faults. Final MWPM scores the union of logical-Z windings. The
+older Z scan's intermediate Z-check/X-correction feedback is inactive
+under pure Z noise.
+
+\paragraph{Separate sector estimates.}
+For $T=L_u=L_v=L$, the Z scan uses $L=9,13,17,21,25$ and 10000 shots per point
+(330000 total). A quadratic logistic fit with a fixed $1/L$ correction
+gives $p_{c,Z}\simeq0.0052$. The $0.49\%$--$0.54\%$ range across fit
+variants measures model sensitivity, not a confidence interval.
+
+The X scan uses $L=5,7,9,11,13$, $p=0.0100$--$0.0250$, and 1000 paired
+records per point (35000 total). Final-only curves have no adjacent-size
+crossings in this window. The all-size fits fail the goodness guard;
+the accepted cubic sensitivity fit for one-step feedback with $L\geq7$ gives
 \[
- n=3(T+1)L_yL_z,\qquad k=2,\qquad
- d_Z=2\min(L_y,L_z),\qquad
- d_X=(T+1)\min(L_y,L_z).
-\]
-H+5/H+6 threshold values are not a controlled circuit-only comparison:
-the seed preparation, upper boundary instrument, and historical
-channel-dependent seed noise also differ. The saved H+6 data and interfaces
-remain unchanged.
-
-The transfer retains independent rate-$p$ faults on every active H/CNOT
-output and ideal measurements, corrections, and idles.  Final unit-weight
-matching on the star syndrome returns a full data recovery, whose syndrome
-is checked before scoring either transverse logical-Z winding.  For this
-Z-only preparation of $|++\rangle$, a residual logical Z changes the state.
-The optional feedback in this older scan also measures Z-type compatibility
-checks and applies X corrections.  It is therefore inactive under pure Z
-noise, so its result agrees exactly with final-only recovery in this sector.
-This inactive operation is distinct from the X-star measurements and Z
-corrections used by the later three-strength Z experiment.
-
-The completed scan uses $T=L_y=L_z=L=9,13,17,21,25$ and 10,000 shots per
-point, for 330,000 production shots.  A quadratic logistic finite-size fit
-with a fixed leading $1/L$ correction gives
-\[
- p_{c,Z}\simeq 0.0052\quad\text{(approximately $0.52\%$ per active gate output)}.
-\]
-Fits with different size cuts, probability windows, and correction choices
-give estimates roughly $0.49\%$--$0.54\%$; this is a sensitivity range, not
-a confidence interval.  The statistical bootstrap, Wilson intervals, raw
-counts, model diagnostics, and reproducible commands are recorded in
-\texttt{toric3d-z-threshold.md} in \texttt{docs/superpowers} and the associated results.
-This is a decoder-dependent Z-sector estimate for the diagonal circuit;
-it neither removes the earlier rough-slab bound nor establishes a joint
-X/Z threshold.
-
-\subsection{Historical plaquette-transfer H+6 X-sector estimate}
-
-To test the measurement-feedback mechanism itself, use the same encoded
-diagonal geometry but prepare logical $|00\rangle$.  Product zero already
-fixes the seed Z compatibility checks and both logical-Z cycles.  Ideally
-measure the independent seed X stars and apply a syndrome-valid Z correction.
-Under the present convention this preparation has no noisy seed gate: only
-the thirteen participating outputs of each seven-gate transfer cell acquire
-independent X faults of rate $p$.
-
-Before transfer $t$, measure the six-edge Z compatibility checks on active
-slice $t-1$.  Their X-error defects are point excitations on a periodic
-triangular matching graph.  Unit-weight MWPM pairs the defects.  The primary
-one-step rule moves each endpoint one graph edge toward its partner and maps
-this virtual old-slice repair through the fixed transfer to a correction on
-the fresh targets.  Thus many X errors are removed before they can act as
-controls in later transfers.  The classical matching computation is global;
-this implementation is not a constant-depth spatially local channel.
-
-After the final slice, measure all physical Z plaquettes and apply a validated
-BP+OSD X recovery using minimum-sum BP, 50 iterations, parallel updates,
-scaling factor one, one thread, and \texttt{OSD\_CS} order two.  The decoder
-uses a uniform physical-$p$ data prior and does not see the sampled fault
-record.  State failure is the union of the two residual logical-X membrane
-parities.  Unlike the rough-slab logical-Z diagnostic, this event changes the
-prepared $|00\rangle$ state.
-
-The production scan uses
-\[
- L\in\{5,7,9,11,13\},\qquad
- p\in\{0.0100,0.0125,0.0150,0.0175,0.0200,0.0225,0.0250\},
-\]
-with $T=L_y=L_z=L$ and 1000 paired fault records per point, for 35000
-unique production shots.  Final-only failure increases with size throughout
-this window and has no adjacent-size crossing.  One-step feedback reverses
-the size dependence near $p=0.015$.  For example, at $p=0.015$ the feedback
-failure rates for $L=7,9,11,13$ are respectively
-$0.248,0.233,0.211,0.226$, whereas the corresponding final-only rates are
-$0.287,0.399,0.464,0.591$.
-
-The all-size quadratic finite-size fit is rejected by its deviance test.  An
-all-size cubic alternative gives candidate $p_c=0.01470$ but narrowly misses
-the preset goodness guard.  The least aggressive accepted sensitivity uses
-the cubic scaling function and $L\geq7$:
-\[
+ \begin{gathered}
  p_{c,X}=0.01482,\qquad \nu=1.056,\qquad
- p_{\mathrm{deviance}}=0.01996.
+ p_{\mathrm{deviance}}=0.01996,\\
+ p_{c,X}\in[0.01428,0.01543]\quad\text{(conditional 95\% interval)}.
+ \end{gathered}
 \]
-Of 1000 parametric-bootstrap refits, 999 pass the numerical checks, giving the
-conditional 95\% interval
-\[
- p_{c,X}\in[0.01428,0.01543].
-\]
-Accepted size and probability-window variants give $p_c$ from $0.01476$ to
-$0.01511$.  The appropriate conclusion is therefore an X-only threshold of
-approximately $1.5\%$ per participating gate output, conditional on the
-accepted finite-size model and the ideal-feedback assumptions.  A 200-shot
-full-path routing check at $L=13,p=0.015$ gives failure $0.200$, compared with
-$0.226$ for one-step routing, but its uncertainty is too large for a precise
-routing comparison.
+Of 1000 bootstrap refits, 999 pass. These separate input-state and channel studies
+do not establish a joint X/Z threshold or reproduce a threshold from the
+paper.
 
-This experiment implements the paper's qualitative diagonal-slice mechanism:
-measure stabilizers in a two-dimensional slice, pair point defects, and feed
-repairs forward before continuing the sweep.  The encoded boundary, transfer
-gates, tie breaks, post-gate noise, and final BP+OSD decoder are explicit
-choices made here, so the number is not a reproduction of a threshold quoted
-by the paper.  It also does not combine this $|00\rangle$ X-sector result with
-the preceding $|++\rangle$ Z-sector estimate into a joint Pauli threshold.
-Raw counts, Wilson intervals, rejected fits, bootstrap samples, hashes, and
-reproduction commands are recorded in
-\texttt{toric3d-x-feedback-threshold.md} in \texttt{docs/superpowers} and the
-associated results directory.
+\paragraph{Three feedback strengths.}
+A separate paired scan compares no feedback, slice-local feedback, and
+full-prefix recovery. X slice-local feedback uses the one-step rule above;
+full-prefix X uses complete BP+OSD. Active Z feedback first corrects seed
+X stars, then uses either a three-check-sheet band with MWPM on the newest
+two data slices, or full-prefix MWPM. A single-slice Z window misses
+old-control faults. Both active Z policies clear all completed stars.
+Their paths and tie choices can differ. No feedback omits the seed-time
+correction, so this comparison also changes more than recovery support.
+Local and prefix check participation scale as $O(TL_uL_v)$ and
+$O(T^2L_uL_v)$, respectively.
 
-\subsection{Historical plaquette-transfer H+6 with three feedback strengths}
+The completed data contain 36000 paired X records at $L=5,7,9,11$ and
+56000 paired Z records at $L=9,13,17,21$, with no invalid recoveries.
+No primary fit passes every threshold guard:
+\begin{itemize}[nosep]
+\item X full-prefix: candidate $p_c=5.297\%$, rejected by
+goodness-of-fit $p=0.00530<0.01$ despite adjacent-size crossings.
+No-feedback and slice-local fits are inconclusive in this window.
+\item Z slice-local/full-prefix: candidates $3.934\%/3.923\%$, both
+with missing adjacent-size crossings, nonmonotone fits, and
+goodness-of-fit below $1.5\times10^{-5}$.
+\end{itemize}
+Nevertheless, at $L=21,p=0.035$, Z state-failure rates are
+$0.7545/0.2445/0.2415$ for none/local/prefix. The paired differences are
+$-0.513$ for prefix minus none (95\% interval $[-0.549,-0.475]$) and
+$-0.003$ for prefix minus local ($[-0.0146,0.0086]$).
+Thus active Z feedback helps at this
+point, while a local/prefix threshold difference remains unresolved.
+The diagnostic candidates do not supersede the separate sector estimates,
+and failed crossing guards do not imply zero thresholds.
 
-To hold the diagonal sweep fixed while comparing feedback policies, a further
-paired experiment uses the same encoded diagonal transfer and compares three
-protocols.  The
-\emph{no-feedback} protocol performs no intermediate correction and invokes
-only the common final decoder.  For X errors, the \emph{slice-local} protocol
-measures the old active slice's Z compatibility checks before the next
-transfer.  It computes complete MWPM paths, retains their endpoint steps, and
-applies the propagation image of this partial route to the fresh targets after
-the noisy transfer.  This is target feed-forward, rather than a direct data
-recovery on the old slice.  Its \emph{full-prefix} counterpart measures all
-completed prefix Z plaquettes after every nonfinal transfer and applies a
-complete BP+OSD X recovery anywhere in the prepared prefix.
-
-For Z errors, the local and full-prefix protocols first measure both colors of
-seed X stars and apply a complete MWPM Z recovery on the seed edges; the
-no-feedback protocol omits this seed-time feedback.  After each nonfinal
-transfer, the local protocol measures a syndrome-complete moving band of three
-X-star check sheets and applies a complete MWPM Z recovery on the newest two
-data slices.  A literal one-slice Z window would be invalid for the stated
-post-gate noise model, because faults on old CNOT controls can place a defect on
-the next older check sheet.  The full-prefix Z protocol instead measures all
-completed prefix X stars and may apply its complete MWPM Z recovery anywhere
-in the prepared prefix.  Unlike the inactive Z-type compatibility operation
-in the older Z-only scan, these X-star measurements detect and correct pure Z
-faults.
-
-For each channel and Monte Carlo shot, one immutable fault record is replayed
-through all three protocols.  Their eight joint Boolean outcomes therefore
-give both protocol marginals and paired differences for the full implemented
-policies.  In particular, the Z comparison includes the seed-time feedback
-difference described above and does not isolate spatial support alone.  Any
-complete intermediate or final decoder recovery that fails to reproduce its
-measured syndrome aborts the point.  The deliberately partial X one-step
-feed-forward need not clear that syndrome, but its underlying complete MWPM
-route is validated before truncation.
-The X study prepares logical $|00\rangle$ with no noisy seed gates and scores
-either residual logical-X membrane.  The Z study prepares logical
-$|++\rangle$ with an independent Z fault after every seed H and scores either
-residual logical-Z winding.  Thus each reported channel observable is a state
-failure, but the two channel thresholds also differ in their logical input,
-seed circuit, fault locations, and decoder.
-
-The local protocol has total check participation
-$O(TL_yL_z)$, whereas repeatedly decoding the growing prefix costs
-$O(T^2L_yL_z)$.  For X noise, the one-step route can leave residual
-active-slice syndrome, while full-prefix BP+OSD clears the complete prefix
-syndrome.  For Z noise, the three-sheet local protocol already restores zero
-complete-prefix star syndrome at every checkpoint.  Full-prefix Z recovery
-therefore changes the available paths and logical-class/tie choices, and need
-not outperform the local Z protocol.  The X comparison changes the check and
-decoder policy as well as correction support, so a threshold increase cannot
-be attributed to support range alone.
-
-For the cubic specialization below, $T=L_y=L_z=L$.  The frozen target grid
-requested 1000 paired shots for X at
-\[
- L=5,7,9,11,13,\qquad
- p=0.025,0.030,0.040,0.045,0.050,0.055,0.060,0.070,0.080,
-\]
-and 2000 paired shots for Z at
-\[
- L=9,13,17,21,25,\qquad
- p=0.025,0.030,0.0325,0.035,0.0375,0.040,0.045,0.050,0.060,0.070.
-\]
-Measured runtime sets the final size scope to four complete sizes per channel.
-X uses $L=5,7,9,11$ at all nine X probabilities, totaling 36 size-rate points
-and 36000 paired fault records.  Z uses $L=9,13,17,21$ at the first seven
-probabilities through $p=0.045$, totaling 28 points and 56000 paired fault
-records.  This preserves a guard point above the transition and both
-endpoint-trimmed window checks; the higher frozen Z rates chiefly probe
-saturation and were stopped before fitting on the measured runtime.  The
-partial $L=13$ X and $L=25$ Z checkpoints are retained only as resumable
-provenance and are excluded from every fit and aggregate.
-
-A deliberate interruption revealed a now-fixed bookkeeping bug: a user
-interrupt was temporarily labeled as an invalid recovery, and scalar X replay
-could record several outcomes before its batch completion counter advanced.
-The original interruption artifacts are archived separately.  The live
-checkpoints were repaired from atomic counts or deterministic replay, and the
-partial X $L=13$, Z $L=25$, and original-shard Z $L=21,p=0.045$ records are not
-analysis inputs.  These interruption records are not decoder failures.
-
-Thresholds are exposed only when every adjacent size pair crosses in the fit
-window, the monotone likelihood fit passes numerical and deviance checks, and
-at least 80\% of 1000 conditional bootstrap fits are usable.  Conditional
-Monte Carlo intervals and the spread among accepted size, window, polynomial,
-and fixed-$L^{-1}$-correction sensitivities are reported separately.
-
-The runtime-scoped production study contains 36000 X-channel and 56000
-Z-channel paired fault records.  All complete recoveries are syndrome-valid,
-and an independent reconstruction of the checkpoints, joint tables,
-marginals, paired differences, and final analysis inputs finds zero invalid
-recoveries.  Recorded decoder construction, sampling, and three-protocol
-replay total 10.734 compute hours.
-
-No primary finite-size fit passes every registered threshold guard.  For X
-noise, full-prefix feedback gives adjacent-size crossings at 5.159\%, 5.586\%,
-and 5.684\%.  Its quadratic diagnostic candidate is
-$p_{\mathrm c}=5.297\%$ with $\nu=1.391$, but it is withheld because the
-deviance $54.77/31$ has goodness-of-fit $p=0.00530<0.01$.  Accepted cubic and
-endpoint-window sensitivity fits lie between 5.293\% and 5.323\%, while a
-fixed-$L^{-1}$ correction gives 6.154\%; these remain model diagnostics because
-the primary fit fails.  The present no-feedback and slice-local X fits are
-inconclusive in this probability window.
-
-For Z noise, slice-local and full-prefix feedback give diagnostic candidates
-of 3.934\% and 3.923\%, respectively.  The slice-local data lack the
-$L=13,17$ crossing, the full-prefix data lack the $L=17,21$ crossing, and both
-quadratic fits are nonmonotone with goodness-of-fit below $1.5\times10^{-5}$.
-They therefore show a transition-like onset near 3.9\% but do not establish an
-asymptotic threshold.  At $L=21,p=0.035$, the state-failure rates are 0.7545,
-0.2445, and 0.2415 for no feedback, slice-local feedback, and full-prefix
-feedback.  The paired full-prefix-minus-none difference is $-0.513$ with a
-conservative 95\% interval $[-0.549,-0.475]$, whereas full-prefix minus
-slice-local is $-0.003$ with interval $[-0.0146,0.0086]$.  Active Z feedback
-is therefore effective at fixed size and noise rate, while these data do not
-resolve a threshold difference between the local and prefix policies.
-
-These withheld results do not supersede the separate targeted estimates above:
-the earlier low-probability Z final-only study gives 0.517\%, and the earlier
-one-step X slice-local study gives 1.482\%.  The probability windows in the
-present three-policy comparison do not refit either estimate.  Missing
-finite-size crossings likewise do not imply a zero threshold.  Complete raw
-counts, Wilson intervals, sensitivity fits, paired statistics, hashes, and
-reproduction commands are recorded in
-\texttt{toric3d-diagonal-feedback-strength.md} in
-\texttt{docs/superpowers} and its associated results directory.
+Reports in \texttt{docs/superpowers/}: \texttt{toric3d-z-threshold.md},\\
+\texttt{toric3d-x-feedback-threshold.md}, and
+\texttt{toric3d-diagonal-feedback-strength.md}.
 
 \newpage
+
 \section{questions}
 
 \subsection{present 2D toric-code}

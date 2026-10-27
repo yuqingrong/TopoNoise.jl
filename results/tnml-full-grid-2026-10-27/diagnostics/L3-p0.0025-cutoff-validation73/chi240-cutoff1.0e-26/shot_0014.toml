@@ -1,0 +1,75 @@
+actual_maxbond = 192
+baseline_cutoff = 1.0e-18
+baseline_minimum_probability = 1.928436605339952e-12
+baseline_probabilities = [0.9999999999466522, 2.6884903215296394e-11, 1.928436605339952e-12, 2.4534322852525506e-11]
+baseline_valid = true
+chi = 240
+cutoff = 1.0e-26
+elapsed_seconds = 8.194865208
+exact_file_sha256 = "edd16bbda24166d36bea99d9f5489e20bc1bf5bd6a11d94a53f0705cf80564c2"
+log_joint_syndrome = -0.9429448876958625
+logical_mask = 0
+max_bond_cap_reached = false
+minimum_probability = 1.793168077412411e-12
+negative_tolerance = 1.0e-10
+probabilities = [0.9999999999496565, 2.4270659135210348e-11, 1.793168077412411e-12, 2.42796949954819e-11]
+probe_id = "e8bca8b3cbacc9b6a38411696fc7645bd289b815f6edf6725960c273d731af11"
+record_id = "bf0451a36e463ae804f1f242e735a7ce6a4d848817ed2e4ba7ffee5def4936b5"
+shot_index = 14
+status = "complete"
+valid = true
+
+[exact_comparison]
+candidate_argmax = 0
+candidate_argmax_tie_aware_match = true
+exact_logical_mask = 0
+exact_probabilities = [0.9999999999496034, 2.4289725276160697e-11, 1.8172610637191843e-12, 2.4289725276160704e-11]
+log_joint_syndrome_error = -5.773159728050814e-14
+posterior_l1 = 1.0625806851300739e-13
+posterior_linf = 5.306866057708248e-14
+valid_ml_strict_match = true
+valid_ml_tie_aware_match = true
+
+[seed]
+log_syndrome = -0.06758451588920152
+logical_mask = 0
+minimum_probability = -2.230667497152329e-15
+probabilities = [1.0000000000000058, -2.2306597134258386e-15, -2.230667497152329e-15, -1.2392839372552003e-15]
+valid = true
+
+    [seed.diagnostics]
+    actual_maxbond = 23
+    algorithm = "conditioned_star_canonical_boundary_mps"
+    contraction_order = "plane_major_detector_order"
+    detector_count = 18
+    discarded_weight = 1.9680393185042785e-29
+    edge_count = 27
+    events = 153
+    local_svd_events = 153
+    max_bond_dimension = 23
+    maximum_local_truncation_error = 3.0711066684101868e-30
+    minimum_probability = -2.230667497152329e-15
+    roundoff_correction_l1 = 0.0
+    sum_local_truncation_error = 1.9680393185042785e-29
+
+[transfer]
+log_syndrome = -0.8753603718066609
+logical_mask = 0
+minimum_probability = 1.795398744909525e-12
+probabilities = [0.9999999999496507, 2.427288979492358e-11, 1.795398744909525e-12, 2.4280934279419015e-11]
+valid = true
+
+    [transfer.diagnostics]
+    actual_maxbond = 192
+    algorithm = "conditioned_star_canonical_boundary_mps"
+    contraction_order = "plane_major_detector_order"
+    detector_count = 45
+    discarded_weight = 1.4951518947649979e-24
+    edge_count = 162
+    events = 990
+    local_svd_events = 990
+    max_bond_dimension = 192
+    maximum_local_truncation_error = 9.994436974511483e-27
+    minimum_probability = 1.795398744909525e-12
+    roundoff_correction_l1 = 0.0
+    sum_local_truncation_error = 1.4951518947649979e-24

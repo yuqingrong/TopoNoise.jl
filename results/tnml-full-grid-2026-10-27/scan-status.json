@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "selection_sha256": "68ad7ec97faf52ce7bbf4aacb70b1918e590d60347995b04e28b0172ac209d30",
+  "points": {
+    "production:L3-p0.0025-chi240": {
+      "phase": "production",
+      "L": 3,
+      "p": 0.0025,
+      "requested_shots": 1000,
+      "output": "production/L3-p0.0025-chi240",
+      "status": "blocked",
+      "reason": "worker_failed",
+      "attempts": [
+        {
+          "started_at_utc": "2026-10-27T02:05:59.110654+00:00",
+          "command": [
+            "/Users/rongyuqing/jcode/TopoNoise.jl/.CondaPkg/.pixi/envs/default/bin/python",
+            "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/supervise.py",
+            "--output",
+            "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-full-grid-2026-10-27/production/L3-p0.0025-chi240",
+            "--decode-seconds",
+            "600",
+            "--total-seconds",
+            "86400",
+            "--rss-gib",
+            "4",
+            "--",
+            "/Users/rongyuqing/.juliaup/bin/julia",
+            "--startup-file=no",
+            "--threads=1,0",
+            "--gcthreads=1",
+            "--project=/Users/rongyuqing/jcode/TopoNoise.jl",
+            "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/run.jl",
+            "3",
+            "0.0025",
+            "1000",
+            "240",
+            "202610293001",
+            "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-full-grid-2026-10-27/production/L3-p0.0025-chi240",
+            "exact=true"
+          ],
+          "validation": {
+            "document_sha256": "4473e0aa9062fa9d9312dd8476d4a6d0dfb3e6ce59739bb485e0477071fc693e",
+            "gate": {
+              "status": "passed",
+              "chi": 240,
+              "cutoff": 1e-18,
+              "negative_tolerance": 1e-10,
+              "exact_reference_for_every_shot": true,
+              "evidence": [
+                "../tnml-matched-figure-2026-10-27/validation/final-audit.json"
+              ],
+              "reason": "Previous matched-preparation 80-shot pilot had 80 valid and exact-ML-matching TN decisions at p=0.006,0.01,0.02,0.0425. All new rates and histories receive independent exact audits."
+            },
+            "evidence_sha256": {
+              "../tnml-matched-figure-2026-10-27/validation/final-audit.json": "514a39daebb07b659bd0246d9068a938ffe7732709c1f997ce82de2569c32442"
+            }
+          },
+          "returncode": 2,
+          "supervision": {
+            "status": "worker_failed",
+            "exit_code": -15,
+            "elapsed_seconds": 224.04843883297872,
+            "timing_basis": "time.monotonic for total duration and first observation of a new owned-worker TN stage; wall-clock progress timestamps are generation tags only",
+            "worker_pid": 79979,
+            "tn_stage_elapsed_seconds_at_last_poll": null,
+            "peak_rss_bytes": 2486222848,
+            "rss_limit_enforced": true,
+            "decode_limit_seconds": 600.0,
+            "total_limit_seconds": 86400.0,
+            "rss_limit_gib": 4.0,
+            "progress_at_stop": {
+              "L": 3,
+              "p": 0.0025,
+              "pid": 79979,
+              "requested_shots": 1000,
+              "run_id": "c21fabde302ecc3b7c953bd3eac8838a2a38822d87f78ab1621d5dca8e22cead",
+              "shot": 74,
+              "stage": "exact",
+              "stage_started_unix": 1793066981.861797,
+              "updated_at_unix": 1793066981.861797
+            },
+            "command": [
+              "/Users/rongyuqing/.juliaup/bin/julia",
+              "--startup-file=no",
+              "--threads=1,0",
+              "--gcthreads=1",
+              "--project=/Users/rongyuqing/jcode/TopoNoise.jl",
+              "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/run.jl",
+              "3",
+              "0.0025",
+              "1000",
+              "240",
+              "202610293001",
+              "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-full-grid-2026-10-27/production/L3-p0.0025-chi240",
+              "exact=true"
+            ]
+          },
+          "finished_at_utc": "2026-10-27T02:09:43.219558+00:00"
+        }
+      ]
+    }
+  },
+  "size_blocks": {
+    "production:L3": {
+      "point": "production:L3-p0.0025-chi240",
+      "reason": "worker_failed"
+    }
+  },
+  "status": "blocked",
+  "updated_at_utc": "2026-10-27T02:09:43.221605+00:00"
+}

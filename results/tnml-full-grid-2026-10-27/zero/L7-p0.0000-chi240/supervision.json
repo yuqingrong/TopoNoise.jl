@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "elapsed_seconds": 74.70278091705404,
+  "peak_rss_bytes": 2098659328,
+  "rss_limit_enforced": true,
+  "decode_limit_seconds": 300.0,
+  "total_limit_seconds": 600.0,
+  "rss_limit_gib": 4.0,
+  "progress_at_stop": {
+    "L": 7,
+    "p": 0.0,
+    "pid": 62371,
+    "requested_shots": 1,
+    "run_id": "62f6130450aa5e7af1153446d155be7bf377610b55d36382d41b841b94e2469c",
+    "shot": 1,
+    "stage": "complete",
+    "stage_started_unix": 1793064021.160274,
+    "updated_at_unix": 1793064021.160274
+  },
+  "command": [
+    "/Users/rongyuqing/.juliaup/bin/julia",
+    "--startup-file=no",
+    "--threads=1,0",
+    "--gcthreads=1",
+    "--project=/Users/rongyuqing/jcode/TopoNoise.jl",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/examples/tnml_repaired_seed/run.jl",
+    "7",
+    "0",
+    "1",
+    "240",
+    "202610280007",
+    "/Users/rongyuqing/jcode/TopoNoise.jl/results/tnml-full-grid-2026-10-27/zero/L7-p0.0000-chi240",
+    "exact=false"
+  ]
+}

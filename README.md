@@ -603,3 +603,22 @@ reveal a hidden positive threshold: the analytic lower bound still forces
 the asymptotic threshold to zero.  See the
 [small-p report](docs/superpowers/toric3d-original-small-p.md) and its
 [raw results](results/toric3d-original-small-p-2026-10-11).
+
+## Z-only approximate maximum-likelihood decoding
+
+`build_toric3d_z_tn_decoder` and `decode_toric3d_z_tn` estimate the four
+logical-class posteriors for the diagonal H+6CNOT circuit with independent Z
+faults on seed-H and active transfer-gate outputs, a perfect final syndrome,
+and no intermediate feedback. The returned decision is a logical class.
+The conditioned-star MPO / boundary-MPS contraction is approximate; its
+default bond limit of 240 was validated at `L=3` and
+`p=0.006, 0.01, 0.02`.
+
+Run one deterministic nonzero-syndrome example with only `using TopoNoise`:
+
+```bash
+julia --project=. examples/toric3d_z_tnml.jl
+```
+
+See the [decoder guide](docs/src/z_tnml.md) for Julia usage, logical-bit
+ordering, signed weights, and the scope of the numerical validation.

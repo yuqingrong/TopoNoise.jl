@@ -1,0 +1,46 @@
+{
+  "description": "Presentation-only redraw; no sampling or refitting.",
+  "theme": "examples/styles/paper-no-grid.mplstyle",
+  "grids_visible": false,
+  "local_fit_status": "exploratory; no threshold confidence interval",
+  "source_sha256": {
+    "examples/styles/paper-no-grid.mplstyle": "c52350a29b4b1b20bbb3a4c0c585c22450a83ee46d6a1e2b66594a9356e836fa",
+    "examples/plotting_theme.py": "9a4aa53a89c5de9d831a9b59dc954425c28b80c6ef447c6fa26e345b3196144a",
+    "results/toric3d-h6-one-step-2026-10-15/presentation/redraw_figures.py": "a2120daea86e5526eabdedd1db091d7c7a5d5c857260fca1cc5fa2fb65173297",
+    "results/toric3d-h6-one-step-2026-10-15/presentation/near-critical-fits.json": "fd62c536a67d3bdacf7dbd9d7981386b9fe502d467978bc150ec460c11ab8fd8",
+    "results/toric3d-h6-one-step-2026-10-15/analysis/report.json": "ec4de609ada1816a73b79c2608a40c1865b199c07b42223bb92af0bb65a7f754",
+    "results/toric3d-h6-one-step-2026-10-15/analysis/analyze.py": "6d6eca9202e4242899e9e828e75bf74717dec9fc666661a3d15f066c817c5e34"
+  },
+  "production_inputs": [
+    {
+      "directory": "/Users/rongyuqing/.codex/worktrees/61d4/TopoNoise.jl/results/toric3d-h6-one-step-2026-10-15/production-small",
+      "hashes": {
+        "toric3d-x-feedback-raw.csv": "3ce1197a6dfbeccebf189b6e8a211602fc0537992bdfc2c786592f5fc7b26ad3",
+        "toric3d-x-feedback-metadata.toml": "a35f9dfbc2a08bc0685925623f4c91bd7f916282d6abfd0997b2892cd0016254",
+        "toric3d-x-feedback-checkpoint.toml": "b4b9373112e56304ee924d2ae84a4642b75a304a670a2dcc48eb9d0fa8725ea4"
+      }
+    },
+    {
+      "directory": "/Users/rongyuqing/.codex/worktrees/61d4/TopoNoise.jl/results/toric3d-h6-one-step-2026-10-15/production-L11",
+      "hashes": {
+        "toric3d-x-feedback-raw.csv": "9de966103ddcc2cfc79fdc81930e6d323ae10ab40ccc8f729a8579c3071ab56a",
+        "toric3d-x-feedback-metadata.toml": "0d3d583e45e443a9f9f00997cd62df9f0e1c941a47ffbdf3d89548294482fd3b",
+        "toric3d-x-feedback-checkpoint.toml": "93022907393ff4e88217f349d143b9258cbac3477e4d89cd896c39f162c811bb"
+      }
+    }
+  ],
+  "outputs": {
+    "x-one-step-local-fit.png": "1f0e8d362bd037b925bfcb4a63dec3cb01009367ad73b7fc71532f0cb5e416be",
+    "x-one-step-local-fit.pdf": "3d4dfefa4e1d4edb97dad2748391f0317b59af625061e01cc6138edd616f4636",
+    "x-one-step-local-fit.svg": "7319d43f05a11e87056a930f0438b1f94053fe85a3a7f09528b9e4240500c638",
+    "x-one-step-failure-rates.png": "b6250caaa57b9b51190e9fa1c9fe480b03cd1b621b87526ea44895a8f7603267",
+    "x-one-step-failure-rates.pdf": "421de39e2d31161e6bb61273637c196210e0e02a09aaa2dd3e177c4847071418",
+    "x-one-step-failure-rates.svg": "07ed79acd62989b9ab47a4a48b6afe0fc2433d1a2fd4e35c3d9f31624b4439b4",
+    "x-one-step-paired-differences.png": "6f22c2a6f0f63cdc24160f314b142203b70ad589bcedc34658f8a6bf06f9c64a",
+    "x-one-step-paired-differences.pdf": "75bc91ea4303fb2ac7c4954b06e1487e79a449b9e51a906f02c6ff03139971e0",
+    "x-one-step-paired-differences.svg": "6e693d50033fb8e7681519be9036f1c4578c3cb5af484b09884440d43b312bae",
+    "x-one-step-scaling-collapse.png": "4a8710f6f494916407b30080f239cea5628429dd984e61af698c4e31193395a4",
+    "x-one-step-scaling-collapse.pdf": "aeb3efb82193ec728a273eeb6ba7d633262d3181dbb8336c4088c306d3d4820e",
+    "x-one-step-scaling-collapse.svg": "4ec75c467e800ba0f8641a33a742c6a8ac781bcab5cd1ef5671dd0f089265173"
+  }
+}
