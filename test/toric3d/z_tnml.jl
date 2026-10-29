@@ -1,5 +1,8 @@
 using Test
 using TopoNoise
+using ITensors
+using ITensorMPS
+using SHA
 using SparseArrays
 using TOML
 
@@ -151,14 +154,14 @@ end
     end
 end
 
-@testset "Conditioned-star truncation visits only the active prefix" begin
-    # The first graph is a chain. The second has gaps and two untouched tail
-    # vertices, so it catches implementations that sweep future detector sites.
+@testset "Conditioned-star truncation visits only operator support" begin
+    # The first graph is a chain. The second has gaps and a previously active
+    # bond beyond a later star's support, so it catches redundant re-sweeps.
     fixtures = [
         (5, [(1, 2), (2, 3), (3, 4), (4, 5)],
             [0.03, 0.07, 0.11, 0.13], UInt8[0, 1, 2, 3], 4),
         (8, [(1, 4), (1, 6), (3, 5), (5, 6)],
-            [0.04, 0.09, 0.12, 0.08], UInt8[1, 2, 3, 0], 15),
+            [0.04, 0.09, 0.12, 0.08], UInt8[1, 2, 3, 0], 8),
     ]
     settings = Toric3DZTNSettings(max_bond_dimension=128, cutoff=0.0)
     for (n, edges, qs, logicals, expected_events) in fixtures
@@ -176,6 +179,39 @@ end
             @test result.diagnostics.local_svd_events == expected_events
         end
     end
+end
+
+@testset "Active-prefix mass omits a dimension-one product tail" begin
+    sites = [Index(2, "Site,n=$k") for k in 1:5]
+    links = [Index(k == 1 ? 2 : 1, "Link,l=$k") for k in 1:4]
+    tensors = ITensor[
+        ITensor(reshape(collect(1.0:4.0), 2, 2), sites[1], links[1]),
+        ITensor(reshape(collect(1.0:4.0), 2, 2, 1),
+            links[1], sites[2], links[2]),
+    ]
+    for k in 3:5
+        left = links[k - 1]
+        if k < 5
+            right = links[k]
+            data = zeros(ITensors.dim(left), 2, ITensors.dim(right))
+            data[:, 1, :] .= 1.0
+            push!(tensors, ITensor(data, left, sites[k], right))
+        else
+            data = zeros(ITensors.dim(left), 2)
+            data[:, 1] .= 1.0
+            push!(tensors, ITensor(data, left, sites[k]))
+        end
+    end
+    psi = MPS(tensors; ortho_lims=1:2)
+    @test TopoNoise._toric3d_z_tn_mass(psi, 2, 1.0) ==
+          TopoNoise._toric3d_z_tn_mass(psi)
+    scaled = deepcopy(psi)
+    scaled[end] *= 2.0
+    @test TopoNoise._toric3d_z_tn_mass(scaled, 2, 2.0) ==
+          TopoNoise._toric3d_z_tn_mass(scaled)
+    @test_throws ArgumentError TopoNoise._toric3d_z_tn_mass(psi, 0, 1.0)
+    @test_throws ArgumentError TopoNoise._toric3d_z_tn_mass(psi, 6, 1.0)
+    @test_throws ArgumentError TopoNoise._toric3d_z_tn_mass(psi, 2, -1.0)
 end
 
 @testset "Logical-mask bit order and parallel-edge parity" begin
@@ -242,8 +278,10 @@ end
           result.diagnostics.maximum_local_truncation_error >= 0.0
 end
 
-@testset "Frozen L3 public-API regression against validated and exact posteriors" begin
+@testset "Frozen L3 support-boundary regression against exact posteriors" begin
     fixture = TOML.parsefile(joinpath(@__DIR__, "fixtures", "z_tnml_l3.toml"))
+    source_path = joinpath(@__DIR__, "..", "..", fixture["optimized_source"])
+    @test bytes2hex(sha256(read(source_path))) == fixture["optimized_source_sha256"]
     code = Toric3DEncodedSlice(fixture["L"], fixture["L"], fixture["L"])
     model = build_toric3d_z_fault_model(code)
     topology = build_toric3d_z_tn_topology(model)
@@ -261,16 +299,16 @@ end
             @test Int(logical_bits[1]) + 2Int(logical_bits[2]) == case["true_mask"]
             result = decode_toric3d_z_tn(decoder, syndrome)
             @test result.valid
-            @test result.probabilities ≈ case["validated_probabilities"] atol=1e-10 rtol=1e-10
-            @test result.log_syndrome ≈ case["validated_log_syndrome"] atol=1e-9 rtol=0.0
-            @test result.logical_mask == case["validated_logical_mask"] == case["exact_mask"]
+            @test result.probabilities ≈ case["optimized_probabilities"] atol=1e-10 rtol=1e-10
+            @test result.log_syndrome ≈ case["optimized_log_syndrome"] atol=1e-9 rtol=0.0
+            @test result.logical_mask == case["optimized_logical_mask"] == case["exact_mask"]
             @test sum(abs.(result.probabilities .- case["exact_probabilities"])) <= 0.001
             @test abs(result.log_syndrome - case["exact_log_marginal"]) <= 0.001
             @test result.raw_probabilities == result.probabilities
             @test result.diagnostics.actual_maxbond <= 240
-            @test result.diagnostics.local_svd_events == 714
+            @test result.diagnostics.local_svd_events == 605
             @test result.diagnostics.algorithm ==
-                  "conditioned_star_active_boundary_mps"
+                  fixture["optimized_algorithm"]
             @test result.diagnostics.roundoff_correction_l1 == 0.0
         end
     end

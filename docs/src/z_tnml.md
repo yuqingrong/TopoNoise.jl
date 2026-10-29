@@ -122,13 +122,37 @@ q_k = \frac{1-(1-2p)^k}{2}.
 This reduction is exact. The contraction builds an exact star
 matrix-product operator (MPO), including the observed syndrome bit, before
 compressing the canonical boundary matrix-product state (MPS). Each star MPO
-is applied only through its last nonidentity site. Compression continues
-through the farthest detector touched by any star processed so far, because a
-nonunitary star update can change every Schmidt spectrum in that active
-boundary. Detector sites beyond it are an unchanged dimension-one product
-suffix and are skipped. The boundary compression introduces the approximation.
-The implementation preserves signed weights and uses the plane-major detector
-order.
+is applied only through its last nonidentity site. Compression uses that same
+finite support. Although a nonunitary update can change Schmidt values across
+later cuts, it cannot increase their Schmidt ranks; those later bonds were
+already bounded by `max_bond_dimension`. The implementation retains their
+updated spectra until a later star reaches each cut, instead of reapplying the
+cutoff after every earlier star. This changes the finite-cutoff approximation
+policy as well as reducing QR/SVD work, so it needs independent convergence
+checks. Normalization and bond diagnostics still contract through the active
+boundary. Detector sites beyond it are an untouched, normalized,
+dimension-one product suffix and contribute mass one. The boundary compression
+introduces the approximation. The implementation preserves signed weights and
+uses a fixed plane-major detector order, so there is no per-shot
+contraction-path search.
+
+For the two frozen `L=3`, `p=0.02`, bond-240 cases, support-only compression
+reduced the number of local SVD events from 714 to 605. In the validation run,
+mean decode time decreased from about 51.1 seconds to 43.0 seconds. This timing
+is an implementation benchmark rather than a scaling guarantee.
+
+The topology fixes the number of local SVD events before any shot is decoded:
+
+| `L` | Support-only events | Earlier active-frontier events | Reduction |
+|:--|--:|--:|--:|
+| 3 | 605 | 714 | 15.3% |
+| 5 | 7,079 | 8,105 | 12.7% |
+| 7 | 36,609 | 40,824 | 10.3% |
+| 9 | 125,963 | 137,871 | 8.6% |
+| 11 | 339,173 | 366,278 | 7.4% |
+
+Event counts alone do not predict wall time because the SVD matrix dimensions
+also vary with the syndrome and retained bond dimensions.
 
 `Toric3DZTNSettings()` uses `max_bond_dimension=240`, `cutoff=1e-18`, and
 `negative_tolerance=1e-10`. The bond limit must be a positive integer; the
@@ -138,22 +162,27 @@ cost. Assess convergence for the sizes, rates, and syndromes of interest.
 
 `diagnostics.max_bond_dimension` records the largest bond dimension used.
 `maximum_local_truncation_error`, `sum_local_truncation_error`, and
-`local_svd_events` summarize local relative SVD truncation errors on the active
-boundary. The legacy name `discarded_weight` is an alias for
+`local_svd_events` summarize local relative SVD truncation errors on the
+current star support. They are not directly comparable with diagnostics from
+the earlier active-frontier compression schedule. The legacy name
+`discarded_weight` is an alias for
 `sum_local_truncation_error`; it is neither lost probability mass nor a bound
 on posterior error.
 
 ## Validation scope
 
-The integrated settings were checked against an untruncated dense-frontier
-reference for `T=Ly=Lz=3` at `p=0.006, 0.01, 0.02`. Bond limits 240 and 256
-were compared on a fixed 48-case diagnostic set, and the selected limit of
-240 was then checked on 300 held-out samples. With the selected settings,
-the largest observed posterior L1 error was approximately `0.000407` on the
-diagnostic set and `0.000527` on the held-out set.
+The numerical settings were selected for the earlier active-frontier
+compression by comparing bond limits 240 and 256 on a fixed 48-case `L=3`
+diagnostic set, followed by 300 held-out samples at `p=0.006, 0.01, 0.02`.
+Those results do not validate the current support-only cutoff schedule. The
+support-only implementation has instead been checked on 78 exact small-graph
+syndromes and two frozen `L=3`, `p=0.02`, bond-240 cases. On the frozen cases,
+the largest posterior L1 error against the independent dense-frontier
+reference was approximately `0.000407`.
 
-These are empirical errors on those cases, not bounds for arbitrary
-syndromes. They do not establish accuracy at larger sizes, under other noise
-models, or for feedback protocols. A successful `valid` check and a small
-local SVD diagnostic alone do not extend that validation. This integration
-does not supply a new threshold estimate.
+These are empirical errors on those cases, not bounds for arbitrary syndromes.
+Before using support-only compression for a production scan, repeat the saved
+diagnostic and held-out comparisons. The present checks do not establish
+accuracy at larger sizes, under other noise models, or for feedback protocols.
+A successful `valid` check and a small local SVD diagnostic alone do not extend
+that validation. This integration does not supply a new threshold estimate.

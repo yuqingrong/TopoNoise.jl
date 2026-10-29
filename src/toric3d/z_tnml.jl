@@ -5,9 +5,10 @@
     Toric3DZTNSettings(; max_bond_dimension=240, cutoff=1e-18,
                         negative_tolerance=1e-10)
 
-Controls for syndrome-conditioned boundary-MPS contraction. The defaults match
-an empirically validated L=3 configuration, not an error bound or a claim of
-convergence at larger sizes. `cutoff` controls local SVD truncation;
+Controls for syndrome-conditioned boundary-MPS contraction. The numerical
+defaults were selected for the earlier active-frontier contraction. The current
+support-only contraction requires its own convergence checks beyond the frozen
+cases documented below. `cutoff` controls local SVD truncation;
 `negative_tolerance` only controls numerical admissibility of final weights.
 """
 struct Toric3DZTNSettings
@@ -74,9 +75,11 @@ feedback. `source` may be a `Toric3DEncodedSlice`, its fault model, or a
 `Toric3DZTNTopology`. The physical fault probability must satisfy `0 <= p < 0.5`.
 
 Fault propagation and local star MPOs are exact; only boundary-MPS compression
-is approximate. The defaults were validated for L=3 at p=0.006, 0.01, and 0.02.
-Other sizes or rates require their own convergence checks. Building a decoder
-does not sample faults or alter global BLAS/thread settings.
+is approximate. The support-only compression has exact-small and frozen-case
+checks, but the broader validation of its active-frontier predecessor does not
+automatically transfer. Other sizes or rates require their own convergence
+checks. Building a decoder does not sample faults or alter global BLAS/thread
+settings.
 """
 function build_toric3d_z_tn_decoder(topology::Toric3DZTNTopology, p::Real;
         settings::Toric3DZTNSettings=Toric3DZTNSettings())
@@ -104,8 +107,9 @@ function _toric3d_z_tn_suffix_support(groups)
 end
 
 function _toric3d_z_tn_fuse_current(psi)
-    ii=ITensorMPS.siteinds(psi)
-    C=ITensors.combiner(ii[2],ii[1];tags="Carrier")
+    logical=ITensorMPS.siteind(only,psi,1)
+    detector=ITensorMPS.siteind(only,psi,2)
+    C=ITensors.combiner(detector,logical;tags="Carrier")
     # With detector first in the combiner: c = parity + 2*logical.
     first=psi[1]*psi[2]*C
     # The untouched suffix remains right orthogonal. Recording that gauge is
@@ -115,8 +119,9 @@ function _toric3d_z_tn_fuse_current(psi)
 end
 
 function _toric3d_z_tn_star_mpo(psi,groups,vertex,syndrome_bit)
-    sites=ITensorMPS.siteinds(psi)
     output_logical=Index(4,"Logical")
+    lastsite=isempty(groups) ? 1 : groups[end].neighbor-vertex+1
+    sites=Index[ITensorMPS.siteind(only,psi,k) for k in 1:lastsite]
     if isempty(groups)
         arr=zeros(4,8)
         for ell in 0:3
@@ -124,7 +129,6 @@ function _toric3d_z_tn_star_mpo(psi,groups,vertex,syndrome_bit)
         end
         return ITensorMPS.MPO(ITensor[ITensor(arr,output_logical,sites[1])])
     end
-    lastsite=groups[end].neighbor-vertex+1
     tensors=Vector{ITensor}(undef,lastsite)
     suffix=_toric3d_z_tn_suffix_support(groups)
     left_states=suffix[1]
@@ -189,10 +193,44 @@ end
 
 function _toric3d_z_tn_mass(psi)
     value=ITensor(1.)
-    for (T,s) in zip(psi,ITensorMPS.siteinds(psi))
-        value*=T*ITensor(ones(ITensors.dim(s)),s)
+    for k in eachindex(psi)
+        site=ITensorMPS.siteind(only,psi,k)
+        value*=psi[k]*ITensor(ones(ITensors.dim(site)),site)
     end
     Float64(value[])
+end
+
+# `inactive_suffix_mass` is explicit because a dimension-one boundary proves
+# factorization but does not by itself prove that the omitted suffix has mass
+# one. The decoder passes one only for its untouched normalized product suffix.
+function _toric3d_z_tn_mass(psi,active_sites::Integer,inactive_suffix_mass::Real)
+    1 <= active_sites <= length(psi) || throw(ArgumentError(
+        "active mass range must be a nonempty MPS prefix"))
+    isfinite(inactive_suffix_mass) && inactive_suffix_mass >= 0 ||
+        throw(ArgumentError("inactive suffix mass must be finite and nonnegative"))
+    value=ITensor(1.)
+    for k in 1:active_sites
+        site=ITensorMPS.siteind(only,psi,k)
+        value*=psi[k]*ITensor(ones(ITensors.dim(site)),site)
+    end
+    if active_sites < length(psi)
+        boundary=ITensorMPS.linkind(psi,active_sites)
+        isnothing(boundary) && throw(ErrorException(
+            "active prefix is missing its boundary link"))
+        ITensors.dim(boundary)==1 || throw(ErrorException(
+            "inactive MPS suffix must have a dimension-one boundary"))
+        value*=ITensor(ones(ITensors.dim(boundary)),boundary)
+    end
+    Float64(value[])*Float64(inactive_suffix_mass)
+end
+
+function _toric3d_z_tn_active_maxlinkdim(psi,active_sites)
+    maximum_dimension=1
+    for bond in 1:(active_sites-1)
+        link=ITensorMPS.linkind(psi,bond)
+        isnothing(link) || (maximum_dimension=max(maximum_dimension,ITensors.dim(link)))
+    end
+    return maximum_dimension
 end
 
 """
@@ -245,22 +283,27 @@ function decode_toric3d_z_tn(decoder::Toric3DZTNDecoder,syndrome::AbstractVector
         active_sites=frontier-v+1
         @assert 1 <= support <= active_sites <= length(psi)
         star=_toric3d_z_tn_star_mpo(psi,groups,v,syndrome[v])
-        # The observed syndrome is already contracted into the entire star.
-        # Only the finite star support changes exactly here. Compression still
-        # reaches the full active frontier because this nonunitary update may
-        # change every Schmidt spectrum before that frontier.
+        # The observed syndrome is already contracted into the finite star.
+        # A local nonunitary update may change Schmidt values to its right, but
+        # it cannot increase the Schmidt rank across a cut outside its support.
+        # Those downstream bonds were already bounded by maxdim. Skipping them
+        # avoids QR/SVD work and retains their updated spectrum until a later
+        # star reaches the cut; this intentionally changes cutoff scheduling.
         psi=_toric3d_z_tn_apply_prefix(psi,star)
         psi=ITensors.replaceprime(psi,1=>0)
-        ITensorMPS.truncate!(psi;site_range=1:active_sites,
+        ITensorMPS.truncate!(psi;site_range=1:support,
             maxdim=cfg.max_bond_dimension,cutoff=cfg.cutoff,callback)
-        maximum_bond=max(maximum_bond,ITensorMPS.maxlinkdim(psi))
-        z=_toric3d_z_tn_mass(psi)
+        maximum_bond=max(maximum_bond,
+            _toric3d_z_tn_active_maxlinkdim(psi,active_sites))
+        # Sites beyond the active frontier are untouched normalized |0>
+        # product tensors, so their all-ones contraction is exactly one.
+        z=_toric3d_z_tn_mass(psi,active_sites,1.0)
         isfinite(z) && z>0 || throw(DomainError(z,"nonpositive or nonfinite conditioned boundary mass at vertex $v"))
         psi[1]/=z
         log_syndrome+=log(z)
     end
     @assert length(psi)==1
-    weights=vec(Array(psi[1],only(ITensorMPS.siteinds(psi))))
+    weights=vec(Array(psi[1],ITensorMPS.siteind(only,psi,1)))
     all(isfinite,weights) || throw(DomainError(weights,"nonfinite logical class weights"))
     total=sum(weights)
     total>0 || throw(DomainError(total,"nonpositive final logical mass"))
@@ -275,7 +318,7 @@ function decode_toric3d_z_tn(decoder::Toric3DZTNDecoder,syndrome::AbstractVector
         sum_local_truncation_error=sum_discarded,local_svd_events=events,
         minimum_probability=minimum(signed),roundoff_correction_l1=0.,
         edge_count=decoder.edge_count,detector_count=n,
-        algorithm="conditioned_star_active_boundary_mps",contraction_order="plane_major_detector_order")
+        algorithm="conditioned_star_support_boundary_mps",contraction_order="plane_major_detector_order")
     (valid=valid,probabilities=probabilities,logical_mask=valid ? argmax(probabilities)-1 : -1,
      log_syndrome=log_syndrome,raw_probabilities=signed,diagnostics=diagnostics)
 end
