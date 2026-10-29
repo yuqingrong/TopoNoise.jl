@@ -13,6 +13,11 @@ const HERE = @__DIR__
 include(joinpath(HERE, "..", "run.jl"))
 const Runner = TNMLRepairedRunner
 
+function repaired_seed_function(name::Symbol)
+    backend = Base.invokelatest(getproperty, Runner, :RepairedSeedTN)
+    return Base.invokelatest(getproperty, backend, name)
+end
+
 function atomic_toml(path, document)
     mkpath(dirname(path))
     temporary, io = mktemp(dirname(path))
@@ -34,6 +39,7 @@ function exception_result(error, backtrace, elapsed)
         "valid" => false,
         "elapsed_seconds" => elapsed,
         "peak_rss_bytes" => Int(Sys.maxrss()),
+        "rss_scope" => "process_lifetime_high_water",
         "error" => sprint(showerror, error, backtrace),
     )
 end
@@ -48,21 +54,17 @@ function authenticate_record(path)
     return document
 end
 
-function tn_result(context, record, p, chi, cutoff)
-    settings = Runner.TopoNoise.Toric3DZTNSettings(
-        max_bond_dimension=chi,
-        cutoff=cutoff,
-        negative_tolerance=Runner.NEGATIVE_TOLERANCE,
-    )
-    decoder = Base.invokelatest(Runner.RepairedSeedTN.build_decoder, context, p;
-                                settings=settings)
+function tn_result(decoder, record)
     observed = Runner.observed_record(record)
-    decoded = Base.invokelatest(Runner.RepairedSeedTN.decode_record, decoder, observed)
+    decoded = Base.invokelatest(
+        repaired_seed_function(:decode_record), decoder, observed
+    )
     output = Dict{String,Any}(
         "status" => decoded.valid ? "complete" : "invalid",
         "valid" => decoded.valid,
         "elapsed_seconds" => 0.0,
         "peak_rss_bytes" => Int(Sys.maxrss()),
+        "rss_scope" => "process_lifetime_high_water",
     )
     if decoded.valid
         output["probabilities"] = collect(decoded.probabilities)
@@ -70,6 +72,18 @@ function tn_result(context, record, p, chi, cutoff)
         output["log_joint_syndrome"] = Float64(decoded.log_joint_syndrome)
     end
     return output
+end
+
+function tn_result(context, record, p, chi, cutoff)
+    settings = Runner.TopoNoise.Toric3DZTNSettings(
+        max_bond_dimension=chi,
+        cutoff=cutoff,
+        negative_tolerance=Runner.NEGATIVE_TOLERANCE,
+    )
+    decoder = Base.invokelatest(
+        repaired_seed_function(:build_decoder), context, p; settings=settings
+    )
+    return tn_result(decoder, record)
 end
 
 function runtime_identity()
@@ -121,13 +135,14 @@ function main(args=ARGS)
     output = try
         document = authenticate_record(record_path)
         Runner.load_backend!()
-        context = Base.invokelatest(Runner.RepairedSeedTN.build_context, L)
+        context = Base.invokelatest(repaired_seed_function(:build_context), L)
         record = Runner.restore_record(document)
         result = mode == "tn" ?
             tn_result(context, record, p, chi, cutoff) :
             exact_result(context, record, document, L, p)
         result["elapsed_seconds"] = (time_ns() - started) / 1e9
         result["peak_rss_bytes"] = Int(Sys.maxrss())
+        result["rss_scope"] = "process_lifetime_high_water"
         result
     catch error
         error isa InterruptException && rethrow()

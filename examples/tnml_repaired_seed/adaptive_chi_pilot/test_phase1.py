@@ -213,6 +213,18 @@ class ManifestAndPlannerTests(unittest.TestCase):
             self.assertEqual(document["runtime_policy"]["blas_threads"], 4)
             self.assertEqual(document["runtime_policy"]["julia_application_threads"], 1)
             self.assertEqual(document["runtime_policy"]["max_rss_bytes"], 16 * 2**30)
+            self.assertEqual(document["runtime_policy"]["exact_wall_seconds"], 300)
+            self.assertEqual(
+                document["runtime_policy"]["l3_wall_seconds_by_chi"],
+                {
+                    "32": 120,
+                    "64": 300,
+                    "128": 900,
+                    "240": 1800,
+                    "480": 3600,
+                    "960": 7200,
+                },
+            )
             self.assertEqual(document["planned_batches"]["l5_feasibility"], [
                 {"batch": 0, "first_task_id": 0, "last_task_id": 29,
                  "max_concurrent": 20},

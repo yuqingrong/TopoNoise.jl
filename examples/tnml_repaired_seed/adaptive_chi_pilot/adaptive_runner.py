@@ -22,6 +22,9 @@ except ImportError:
 
 
 SCHEMA_VERSION = 2
+RSS_SCOPES = frozenset(
+    {"process_lifetime_high_water", "worker_lifetime_high_water"}
+)
 
 
 class IdentityMismatchError(ValueError):
@@ -151,9 +154,12 @@ def plan_record(
 
 
 def _execution_identity(
-    execution: Mapping[str, Any], task: Mapping[str, Any], record_meta: Mapping[str, Any]
+    execution: Mapping[str, Any],
+    task: Mapping[str, Any],
+    record_meta: Mapping[str, Any],
+    executor_identity: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    return {
+    result = {
         "execution_manifest_id": execution["execution_manifest_id"],
         "corpus_id": execution["corpus_id"],
         "source_bundle_id": execution["source_bundle_id"],
@@ -161,6 +167,7 @@ def _execution_identity(
         "source_identity": execution["source_identity"],
         "runtime_identity": execution["runtime_identity"],
         "resource_policy": execution["resource_policy"],
+        "executor_policy": execution["executor_policy"],
         "L": task["L"],
         "p": float(task["p_key"]),
         "p_key": task["p_key"],
@@ -168,7 +175,57 @@ def _execution_identity(
         "shot_index": record_meta["shot_index"],
         "record_id": record_meta["record_id"],
         "julia_record_id": record_meta["julia_record_id"],
+        "cutoff": task["cutoff"],
     }
+    if executor_identity is not None:
+        result.update(executor_identity)
+    return result
+
+
+def _executor_checkpoint_identity(
+    executor: Any, execution: Mapping[str, Any]
+) -> dict[str, str]:
+    mode = getattr(executor, "executor_mode", None)
+    policy = execution.get("executor_policy")
+    if not isinstance(policy, Mapping):
+        raise IdentityMismatchError("execution manifest lacks executor policy")
+    allowed = policy.get("allowed_executors")
+    if not isinstance(allowed, list) or mode not in allowed:
+        raise IdentityMismatchError("executor mode is not frozen in the manifest")
+    scopes = policy.get("timing_scopes")
+    if not isinstance(scopes, Mapping) or not isinstance(scopes.get(mode), Mapping):
+        raise IdentityMismatchError("executor timing scope is not frozen")
+    scope = scopes[mode]
+    expected_keys = {"wall_time_scope", "decoder_cache_scope"}
+    if set(scope) != expected_keys or any(
+        not isinstance(scope[key], str) or not scope[key] for key in expected_keys
+    ):
+        raise IdentityMismatchError("executor timing scope is malformed")
+    return {
+        "executor_mode": mode,
+        "wall_time_scope": scope["wall_time_scope"],
+        "decoder_cache_scope": scope["decoder_cache_scope"],
+    }
+
+
+def _validate_checkpoint_executor_metrics(
+    document: Mapping[str, Any], executor_identity: Mapping[str, str]
+) -> None:
+    if document.get("status") != "complete":
+        return
+    expected_rss_scope = (
+        "worker_lifetime_high_water"
+        if executor_identity["executor_mode"] == "persistent"
+        else "process_lifetime_high_water"
+    )
+    if document.get("rss_scope") != expected_rss_scope:
+        raise ValueError("complete checkpoint RSS scope does not match its executor")
+    if executor_identity["executor_mode"] == "persistent":
+        if type(document.get("decoder_cache_hit")) is not bool:
+            raise ValueError("persistent checkpoint lacks decoder-cache evidence")
+        for name in ("decoder_build_seconds", "decode_seconds"):
+            if _safe_elapsed(document.get(name)) is None:
+                raise ValueError("persistent checkpoint timing evidence is invalid")
 
 
 def _exception_result(reason: str, error: BaseException) -> dict[str, Any]:
@@ -241,6 +298,21 @@ def _normalize_executor_result(
         "elapsed_seconds": elapsed,
         "peak_rss_bytes": rss,
     }
+    rss_scope = raw.get("rss_scope")
+    if rss_scope is not None:
+        if rss_scope not in RSS_SCOPES:
+            return _invalid_executor_result(raw, f"malformed {label} RSS scope")
+        normalized["rss_scope"] = rss_scope
+    if "decoder_cache_hit" in raw:
+        if type(raw["decoder_cache_hit"]) is not bool:
+            return _invalid_executor_result(raw, f"malformed {label} cache evidence")
+        normalized["decoder_cache_hit"] = raw["decoder_cache_hit"]
+    for name in ("decoder_build_seconds", "decode_seconds"):
+        if name in raw:
+            value = _safe_elapsed(raw[name])
+            if value is None:
+                return _invalid_executor_result(raw, f"malformed {label} timing evidence")
+            normalized[name] = value
     if status == "complete":
         try:
             probabilities = _validate_probabilities(raw.get("probabilities"))
@@ -302,7 +374,7 @@ def _apply_frozen_rss_policy(
     if type(maximum) is not int or maximum <= 0:
         raise IdentityMismatchError("frozen memory limit is invalid")
     if result.get("status") == "complete" and result.get("peak_rss_bytes", 0) > maximum:
-        return {
+        rejected = {
             "status": "memory_limit",
             "valid": False,
             "elapsed_seconds": result.get("elapsed_seconds", 0.0),
@@ -312,6 +384,9 @@ def _apply_frozen_rss_policy(
                 f"the frozen {maximum}-byte cap"
             ),
         }
+        if "rss_scope" in result:
+            rejected["rss_scope"] = result["rss_scope"]
+        return rejected
     return result
 
 
@@ -322,6 +397,7 @@ def _phase2_level_checkpoint(
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
     chi: int,
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     raw = _normalize_executor_result(raw, label="TN")
     raw = _apply_frozen_rss_policy(raw, execution, label="TN")
@@ -355,13 +431,24 @@ def _phase2_level_checkpoint(
             "runtime_profile_id": execution["runtime_profile_id"],
             "shot_index": record_meta["shot_index"],
             "record_content_sha256": record_meta["record_content_sha256"],
+            **executor_identity,
         }
     )
     if status != "complete" and isinstance(raw.get("error"), str):
         checkpoint["error"] = raw["error"]
+    if "rss_scope" in raw:
+        checkpoint["rss_scope"] = raw["rss_scope"]
+    for name in ("decoder_cache_hit", "decoder_build_seconds", "decode_seconds"):
+        if name in raw:
+            checkpoint[name] = raw[name]
     checkpoint["checkpoint_id"] = core.identity_hash(checkpoint, "checkpoint_id")
     return _validate_level_checkpoint(
-        checkpoint, execution=execution, task=task, record_meta=record_meta, chi=chi
+        checkpoint,
+        execution=execution,
+        task=task,
+        record_meta=record_meta,
+        chi=chi,
+        executor_identity=executor_identity,
     )
 
 
@@ -372,6 +459,7 @@ def _validate_level_checkpoint(
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
     chi: int,
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     result = core.validate_level_checkpoint(
         checkpoint,
@@ -391,6 +479,11 @@ def _validate_level_checkpoint(
     }
     if any(result.get(key) != value for key, value in expected.items()):
         raise ValueError("level checkpoint phase-2 identity mismatch")
+    if any(result.get(key) != value for key, value in executor_identity.items()):
+        raise ValueError("level checkpoint executor identity mismatch")
+    if "rss_scope" in result and result["rss_scope"] not in RSS_SCOPES:
+        raise ValueError("level checkpoint RSS scope is invalid")
+    _validate_checkpoint_executor_metrics(result, executor_identity)
     return result
 
 
@@ -415,6 +508,7 @@ def _exact_checkpoint(
     execution: Mapping[str, Any],
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     raw = _normalize_executor_result(raw, label="exact")
     raw = _apply_frozen_rss_policy(raw, execution, label="exact")
@@ -434,6 +528,7 @@ def _exact_checkpoint(
         "valid": raw.get("valid"),
         "elapsed_seconds": raw.get("elapsed_seconds", 0.0),
         "peak_rss_bytes": raw.get("peak_rss_bytes", 0),
+        **executor_identity,
     }
     if status == "complete":
         document.update(
@@ -443,11 +538,20 @@ def _exact_checkpoint(
         )
     elif isinstance(raw.get("error"), str):
         document["error"] = raw["error"]
+    if "rss_scope" in raw:
+        document["rss_scope"] = raw["rss_scope"]
+    for name in ("decoder_cache_hit", "decoder_build_seconds", "decode_seconds"):
+        if name in raw:
+            document[name] = raw[name]
     document["exact_checkpoint_id"] = core.identity_hash(
         document, "exact_checkpoint_id"
     )
     return _validate_exact_checkpoint(
-        document, execution=execution, task=task, record_meta=record_meta
+        document,
+        execution=execution,
+        task=task,
+        record_meta=record_meta,
+        executor_identity=executor_identity,
     )
 
 
@@ -457,6 +561,7 @@ def _validate_exact_checkpoint(
     execution: Mapping[str, Any],
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     result = dict(document)
     identity = result.get("exact_checkpoint_id")
@@ -476,12 +581,17 @@ def _validate_exact_checkpoint(
     }
     if any(result.get(key) != value for key, value in expected.items()):
         raise ValueError("exact checkpoint phase-2 identity mismatch")
+    if any(result.get(key) != value for key, value in executor_identity.items()):
+        raise ValueError("exact checkpoint executor identity mismatch")
     elapsed = result.get("elapsed_seconds")
     rss = result.get("peak_rss_bytes")
     if isinstance(elapsed, bool) or not isinstance(elapsed, (int, float)) or not math.isfinite(elapsed) or elapsed < 0:
         raise ValueError("exact elapsed_seconds must be finite and nonnegative")
     if isinstance(rss, bool) or not isinstance(rss, int) or rss < 0:
         raise ValueError("exact peak_rss_bytes must be nonnegative")
+    if "rss_scope" in result and result["rss_scope"] not in RSS_SCOPES:
+        raise ValueError("exact RSS scope is invalid")
+    _validate_checkpoint_executor_metrics(result, executor_identity)
     status = result.get("status")
     if status == "complete":
         if result.get("valid") is not True:
@@ -565,6 +675,7 @@ def _build_decision(
     levels: list[Mapping[str, Any]],
     adaptive_decision: Mapping[str, Any],
     exact: Mapping[str, Any] | None,
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     audit = _exact_audit(adaptive_decision, exact, execution["exact_audit"])
     document: dict[str, Any] = {
@@ -585,6 +696,7 @@ def _build_decision(
         "exact_checkpoint_id": exact.get("exact_checkpoint_id") if exact else None,
         "adaptive_decision": dict(adaptive_decision),
         "exact_audit": audit,
+        **executor_identity,
     }
     if adaptive_decision.get("status") != "accepted":
         document.update(
@@ -609,12 +721,34 @@ def _present_decision(document: Mapping[str, Any], root: Path) -> dict[str, Any]
     return result
 
 
+def _evaluate_record_state(
+    levels: list[Mapping[str, Any]],
+    *,
+    task: Mapping[str, Any],
+    record_meta: Mapping[str, Any],
+    exact: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    """Stop immediately when a required exact call cannot be audited."""
+    if task["exact_required"] and exact is not None and exact.get("status") != "complete":
+        status = exact.get("status")
+        reason = (
+            f"exact_{status}"
+            if status in ("timeout", "memory_limit")
+            else "invalid_exact_reference"
+        )
+        return {"status": "unknown", "reason": reason}
+    return core.evaluate_stopping(
+        levels, task["chi_ladder"], forced_anchor=record_meta["forced_anchor"]
+    )
+
+
 def _load_levels(
     record_dir: Path,
     *,
     execution: Mapping[str, Any],
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
+    executor_identity: Mapping[str, str],
 ) -> list[dict[str, Any]]:
     levels = []
     missing_seen = False
@@ -632,6 +766,7 @@ def _load_levels(
                 task=task,
                 record_meta=record_meta,
                 chi=chi,
+                executor_identity=executor_identity,
             )
         )
     return levels
@@ -645,6 +780,7 @@ def _validate_decision(
     task: Mapping[str, Any],
     record_meta: Mapping[str, Any],
     record: Mapping[str, Any],
+    executor_identity: Mapping[str, str],
 ) -> dict[str, Any]:
     result = dict(document)
     identity = result.get("decision_id")
@@ -652,7 +788,11 @@ def _validate_decision(
         raise ValueError("decision identity mismatch")
     record_dir = root / _relative_record_output(task, record_meta)
     levels = _load_levels(
-        record_dir, execution=execution, task=task, record_meta=record_meta
+        record_dir,
+        execution=execution,
+        task=task,
+        record_meta=record_meta,
+        executor_identity=executor_identity,
     )
     exact = None
     exact_path = record_dir / "exact.json"
@@ -662,9 +802,10 @@ def _validate_decision(
             execution=execution,
             task=task,
             record_meta=record_meta,
+            executor_identity=executor_identity,
         )
-    adaptive = core.evaluate_stopping(
-        levels, task["chi_ladder"], forced_anchor=record_meta["forced_anchor"]
+    adaptive = _evaluate_record_state(
+        levels, task=task, record_meta=record_meta, exact=exact
     )
     rebuilt = _build_decision(
         execution=execution,
@@ -674,6 +815,7 @@ def _validate_decision(
         levels=levels,
         adaptive_decision=adaptive,
         exact=exact,
+        executor_identity=executor_identity,
     )
     if result != rebuilt:
         raise ValueError("decision derived identity mismatch")
@@ -701,7 +843,10 @@ def run_record(
         execution, corpus, task_id, record_id
     )
     record = corpus_entry["record"]
-    identity = _execution_identity(execution, task, record_meta)
+    executor_identity = _executor_checkpoint_identity(executor, execution)
+    identity = _execution_identity(
+        execution, task, record_meta, executor_identity=executor_identity
+    )
     preflight = getattr(executor, "preflight", None)
     if callable(preflight):
         preflight(identity)
@@ -715,6 +860,7 @@ def run_record(
             task=task,
             record_meta=record_meta,
             record=record,
+            executor_identity=executor_identity,
         )
         return _present_decision(decision, root_path)
 
@@ -727,21 +873,30 @@ def run_record(
                 execution=execution,
                 task=task,
                 record_meta=record_meta,
+                executor_identity=executor_identity,
             )
         else:
             raw_exact = _call_executor(
                 lambda: executor.run_exact(record, execution_identity=identity)
             )
             exact = _exact_checkpoint(
-                raw_exact, execution=execution, task=task, record_meta=record_meta
+                raw_exact,
+                execution=execution,
+                task=task,
+                record_meta=record_meta,
+                executor_identity=executor_identity,
             )
             _write_once(exact_path, exact, "exact checkpoint")
 
     levels = _load_levels(
-        record_dir, execution=execution, task=task, record_meta=record_meta
+        record_dir,
+        execution=execution,
+        task=task,
+        record_meta=record_meta,
+        executor_identity=executor_identity,
     )
-    adaptive = core.evaluate_stopping(
-        levels, task["chi_ladder"], forced_anchor=record_meta["forced_anchor"]
+    adaptive = _evaluate_record_state(
+        levels, task=task, record_meta=record_meta, exact=exact
     )
     while adaptive["status"] in ("continue", "continue_anchor"):
         chi = adaptive["next_chi"]
@@ -759,13 +914,14 @@ def run_record(
             task=task,
             record_meta=record_meta,
             chi=chi,
+            executor_identity=executor_identity,
         )
         _write_once(
             record_dir / f"chi_{chi:04d}.json", checkpoint, "level checkpoint"
         )
         levels.append(checkpoint)
-        adaptive = core.evaluate_stopping(
-            levels, task["chi_ladder"], forced_anchor=record_meta["forced_anchor"]
+        adaptive = _evaluate_record_state(
+            levels, task=task, record_meta=record_meta, exact=exact
         )
 
     decision = _build_decision(
@@ -776,6 +932,7 @@ def run_record(
         levels=levels,
         adaptive_decision=adaptive,
         exact=exact,
+        executor_identity=executor_identity,
     )
     _write_once(decision_path, decision, "record decision")
     return _present_decision(decision, root_path)
@@ -818,6 +975,8 @@ def _read_toml(path: Path) -> dict[str, Any]:
 
 class JuliaExecutor:
     """Thin subprocess adapter to existing Julia TN and dense-exact entry points."""
+
+    executor_mode = "one_shot"
 
     def __init__(
         self,

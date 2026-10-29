@@ -149,6 +149,15 @@ def build_manifest(seed_base: int) -> dict[str, Any]:
             "blas_threads": 4,
             "max_rss_bytes": 16 * 2**30,
             "one_thread_replay_required": True,
+            "exact_wall_seconds": 300,
+            "l3_wall_seconds_by_chi": {
+                "32": 120,
+                "64": 300,
+                "128": 900,
+                "240": 1800,
+                "480": 3600,
+                "960": 7200,
+            },
             "l5_wall_seconds_by_chi": {
                 "32": 120,
                 "64": 300,

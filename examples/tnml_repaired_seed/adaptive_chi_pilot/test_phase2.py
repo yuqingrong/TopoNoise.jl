@@ -37,6 +37,8 @@ def source_identity():
             "examples/tnml_repaired_seed/adaptive_chi_pilot/execution_manifest.py": "9" * 64,
             "examples/tnml_repaired_seed/adaptive_chi_pilot/adaptive_runner.py": "a" * 64,
             "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl": "b" * 64,
+            "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py": "d" * 64,
+            "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl": "e" * 64,
         },
     }
 
@@ -133,6 +135,7 @@ def tn_result(chi, *, probabilities=None, log_joint=None, status="complete"):
         "log_joint_syndrome": log_joint if log_joint is not None else default_log_joint,
         "elapsed_seconds": 0.25,
         "peak_rss_bytes": 1024,
+        "rss_scope": "process_lifetime_high_water",
     }
 
 
@@ -153,10 +156,13 @@ def exact_result(*, probabilities=None, log_joint=None, status="complete"):
         "log_joint_syndrome": log_joint if log_joint is not None else -9.9999995,
         "elapsed_seconds": 0.1,
         "peak_rss_bytes": 512,
+        "rss_scope": "process_lifetime_high_water",
     }
 
 
 class FakeExecutor:
+    executor_mode = "one_shot"
+
     def __init__(self, *, tn_factory=tn_result, exact_factory=exact_result):
         self.tn_factory = tn_factory
         self.exact_factory = exact_factory
@@ -235,6 +241,8 @@ class ExecutionManifestTests(unittest.TestCase):
                 "examples/tnml_repaired_seed/adaptive_chi_pilot/execution_manifest.py",
                 "examples/tnml_repaired_seed/adaptive_chi_pilot/adaptive_runner.py",
                 "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl",
+                "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py",
+                "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl",
             ]
             for index, relative in enumerate(paths):
                 path = repository / relative
@@ -284,6 +292,26 @@ class ExecutionManifestTests(unittest.TestCase):
             self.assertEqual(execution["corpus_id"], corpus["corpus_id"])
             self.assertEqual(execution["source_identity"], source_identity())
             self.assertEqual(execution["runtime_identity"], runtime_identity())
+            self.assertEqual(
+                execution["executor_policy"],
+                {
+                    "persistent_protocol": "persistent_toml_mailbox_v1",
+                    "protocol_version": 1,
+                    "scheduling": "serial_one_worker_per_L_p",
+                    "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
+                    "allowed_executors": ["one_shot", "persistent"],
+                    "timing_scopes": {
+                        "one_shot": {
+                            "wall_time_scope": "whole_julia_process",
+                            "decoder_cache_scope": "none",
+                        },
+                        "persistent": {
+                            "wall_time_scope": "request_after_worker_ready",
+                            "decoder_cache_scope": "worker_lifetime_by_chi",
+                        },
+                    },
+                },
+            )
             self.assertEqual(execution["chi_ladder"], [32, 64, 128, 240, 480, 960])
             self.assertEqual(execution["exact_audit"]["ml_tie_tolerance"], 1e-9)
             self.assertEqual(execution["exact_audit"]["posterior_linf_gate"], 1e-5)
@@ -294,8 +322,18 @@ class ExecutionManifestTests(unittest.TestCase):
             self.assertEqual(cp["denominator"], "accepted_with_complete_exact_reference")
             resources = execution["resource_policy"]
             self.assertEqual(resources["max_rss_bytes"], 16 * 2**30)
-            self.assertEqual(resources["wall_seconds_by_chi"], {})
-            self.assertIsNone(resources["exact_wall_seconds"])
+            self.assertEqual(
+                resources["wall_seconds_by_chi"],
+                {
+                    "32": 120,
+                    "64": 300,
+                    "128": 900,
+                    "240": 1800,
+                    "480": 3600,
+                    "960": 7200,
+                },
+            )
+            self.assertEqual(resources["exact_wall_seconds"], 300)
             self.assertEqual(resources["preflight_wall_seconds"], 300)
             self.assertEqual(
                 resources["enforcement"],
@@ -337,8 +375,9 @@ class ExecutionManifestTests(unittest.TestCase):
                 adaptive_runner.JuliaExecutor._wall_timeout("tn", 32, identity),
                 120.0,
             )
-            self.assertIsNone(
-                adaptive_runner.JuliaExecutor._wall_timeout("exact", 1, identity)
+            self.assertEqual(
+                adaptive_runner.JuliaExecutor._wall_timeout("exact", 1, identity),
+                300.0,
             )
 
     def test_corpus_and_execution_identity_reject_tampering_and_rewrite(self):
@@ -485,6 +524,18 @@ class AdaptiveRunnerTests(unittest.TestCase):
             self.assertTrue((record_dir / "chi_0128.json").is_file())
             self.assertTrue((record_dir / "exact.json").is_file())
             self.assertTrue((record_dir / "decision.json").is_file())
+            first_level = json.loads(
+                (record_dir / "chi_0032.json").read_text(encoding="utf-8")
+            )
+            exact_checkpoint = json.loads(
+                (record_dir / "exact.json").read_text(encoding="utf-8")
+            )
+            for checkpoint in (first_level, exact_checkpoint):
+                self.assertEqual(checkpoint["executor_mode"], "one_shot")
+                self.assertEqual(
+                    checkpoint["wall_time_scope"], "whole_julia_process"
+                )
+                self.assertEqual(checkpoint["decoder_cache_scope"], "none")
 
             resumed = FakeExecutor()
             self.assertEqual(
@@ -499,6 +550,68 @@ class AdaptiveRunnerTests(unittest.TestCase):
             )
             self.assertEqual(resumed.tn_calls, [])
             self.assertEqual(resumed.exact_calls, [])
+
+            class PersistentModeFake(FakeExecutor):
+                executor_mode = "persistent"
+
+            with self.assertRaisesRegex(ValueError, "executor.*mismatch"):
+                adaptive_runner.run_record(
+                    root,
+                    sampling,
+                    task_id=0,
+                    record_id=record["record_id"],
+                    executor=PersistentModeFake(),
+                )
+
+    def test_worker_lifetime_rss_scope_is_preserved_in_exact_and_tn_checkpoints(self):
+        def scoped_tn(chi):
+            result = tn_result(chi)
+            result["rss_scope"] = "worker_lifetime_high_water"
+            result.update(
+                decoder_cache_hit=False,
+                decoder_build_seconds=0.05,
+                decode_seconds=0.20,
+            )
+            return result
+
+        def scoped_exact():
+            result = exact_result()
+            result["rss_scope"] = "worker_lifetime_high_water"
+            result.update(
+                decoder_cache_hit=False,
+                decoder_build_seconds=0.0,
+                decode_seconds=0.1,
+            )
+            return result
+
+        class PersistentScopedFake(FakeExecutor):
+            executor_mode = "persistent"
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            sampling, _, execution = make_bundle(root)
+            record = self.first_record(execution)
+            decision = adaptive_runner.run_record(
+                root,
+                sampling,
+                task_id=0,
+                record_id=record["record_id"],
+                executor=PersistentScopedFake(
+                    tn_factory=scoped_tn, exact_factory=scoped_exact
+                ),
+            )
+            record_dir = Path(decision["record_directory"])
+            level = json.loads((record_dir / "chi_0032.json").read_text())
+            exact = json.loads((record_dir / "exact.json").read_text())
+            self.assertEqual(
+                level["rss_scope"], "worker_lifetime_high_water"
+            )
+            self.assertEqual(
+                exact["rss_scope"], "worker_lifetime_high_water"
+            )
+            self.assertFalse(level["decoder_cache_hit"])
+            self.assertEqual(level["decoder_build_seconds"], 0.05)
+            self.assertEqual(level["decode_seconds"], 0.20)
 
     def test_exact_disagreement_is_recorded_as_false_accept_not_hidden_unknown(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -539,6 +652,25 @@ class AdaptiveRunnerTests(unittest.TestCase):
             self.assertEqual(decision["unknown_reason"], "timeout")
             self.assertEqual([call[1] for call in timeout_executor.tn_calls], [32, 64])
             self.assertNotIn("failure", decision)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            sampling, _, execution = make_bundle(root)
+            record = self.first_record(execution)
+            exact_timeout = FakeExecutor(
+                exact_factory=lambda: exact_result(status="timeout")
+            )
+            decision = adaptive_runner.run_record(
+                root,
+                sampling,
+                task_id=0,
+                record_id=record["record_id"],
+                executor=exact_timeout,
+            )
+            self.assertEqual(decision["final_status"], "unknown")
+            self.assertEqual(decision["unknown_reason"], "exact_timeout")
+            self.assertEqual(len(exact_timeout.exact_calls), 1)
+            self.assertEqual(exact_timeout.tn_calls, [])
 
     def test_memory_and_malformed_complete_output_are_checkpointed_unknown(self):
         def over_cap(chi):
@@ -730,7 +862,8 @@ class AdaptiveRunnerTests(unittest.TestCase):
             )
             self.assertEqual(decision["final_status"], "unknown")
             self.assertEqual(decision["unknown_reason"], "invalid_exact_reference")
-            self.assertEqual(decision["adaptive_decision"]["status"], "accepted")
+            self.assertEqual(decision["adaptive_decision"]["status"], "unknown")
+            self.assertEqual(executor.tn_calls, [])
             self.assertNotIn("failure", decision)
 
         with tempfile.TemporaryDirectory() as temporary:

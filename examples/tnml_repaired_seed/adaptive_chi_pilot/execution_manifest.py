@@ -32,6 +32,8 @@ REQUIRED_SOURCE_FILES = frozenset(
         "examples/tnml_repaired_seed/adaptive_chi_pilot/execution_manifest.py",
         "examples/tnml_repaired_seed/adaptive_chi_pilot/adaptive_runner.py",
         "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl",
     }
 )
 
@@ -452,10 +454,12 @@ def build_execution_manifest(
     if stage == "l3_exact" and chi_ladder != [32, 64, 128, 240, 480, 960]:
         raise ValueError("L3 execution ladder differs from the preregistered policy")
     runtime_policy = sampling["runtime_policy"]
-    wall_seconds = (
-        dict(runtime_policy["l5_wall_seconds_by_chi"])
-        if stage == "l5_feasibility"
-        else {}
+    wall_seconds = dict(
+        runtime_policy[
+            "l5_wall_seconds_by_chi"
+            if stage == "l5_feasibility"
+            else "l3_wall_seconds_by_chi"
+        ]
     )
     document: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -474,11 +478,28 @@ def build_execution_manifest(
         "resource_policy": {
             "max_rss_bytes": runtime_policy["max_rss_bytes"],
             "wall_seconds_by_chi": wall_seconds,
-            "exact_wall_seconds": None,
+            "exact_wall_seconds": runtime_policy["exact_wall_seconds"],
             "preflight_wall_seconds": 300,
             "enforcement": (
                 "wall_timeout_internal_memory_cap_external_with_posthoc_rejection"
             ),
+        },
+        "executor_policy": {
+            "persistent_protocol": "persistent_toml_mailbox_v1",
+            "protocol_version": 1,
+            "scheduling": "serial_one_worker_per_L_p",
+            "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
+            "allowed_executors": ["one_shot", "persistent"],
+            "timing_scopes": {
+                "one_shot": {
+                    "wall_time_scope": "whole_julia_process",
+                    "decoder_cache_scope": "none",
+                },
+                "persistent": {
+                    "wall_time_scope": "request_after_worker_ready",
+                    "decoder_cache_scope": "worker_lifetime_by_chi",
+                },
+            },
         },
         "selection": selected,
         "exact_audit": {

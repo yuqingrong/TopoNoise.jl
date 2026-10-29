@@ -26,6 +26,48 @@ is a thin optional adapter: it authenticates the frozen record and calls the
 existing `RepairedSeedTN.decode_record` and `TNMLRepairedRunner.exact_reference`
 entry points. It does not reimplement decoder mathematics.
 
+`task_runner.py` adds an optional persistent executor. One process owns every
+selected record for one complete `(L, p)` stratum, including all of that
+stratum's manifest shards. It loads Julia, the backend, and the fixed-L context
+once, then caches one decoder for each chi at the frozen `(p, cutoff)`. Records
+remain serial within the process and still pass through `adaptive_runner.py`,
+so checkpoint validation, stopping, exact audits, resume, and unknown
+propagation are identical to the one-shot fallback.
+
+Every exact and TN checkpoint binds `executor_mode`, `wall_time_scope`, and
+`decoder_cache_scope`. Persistent checkpoints also retain cache-hit, decoder
+construction, and decode timing evidence. A resumed record must use the same
+executor/timing identity, so one-shot and persistent checkpoints cannot be
+mixed silently. In one-shot mode the wall limit covers the whole Julia
+process. In persistent mode it covers one request after the worker is ready,
+including decoder construction on a cache miss.
+
+The persistent protocol uses a private TOML file mailbox. Julia's stdout and
+stderr go only to a worker log, so package chatter cannot be mistaken for a
+response. Every request and response carries the session, sequence, source,
+runtime, `(L,p)`, record, and cutoff identity. A per-call wall timeout kills
+the entire worker process group and makes that record unknown; the next record
+may start a fresh worker. The task runner also takes a nonblocking lock for the
+stratum and closes the worker cleanly. `Sys.maxrss()` from this worker is
+recorded as `rss_scope = "worker_lifetime_high_water"`: it is evidence for the
+whole worker lifetime, not a per-call peak. The external supervisor must still
+enforce the frozen 16 GiB cap, followed by the runner's post-hoc cap check.
+Record authentication, request/response identity mismatches, broken request
+pipes, and worker exits without an authenticated response are fatal provenance
+errors. They abort without writing a scientific unknown checkpoint. A reported
+memory limit retires the worker before any later record is attempted.
+
+The preregistered L3 per-call limits for chi
+`32,64,128,240,480,960` are `120,300,900,1800,3600,7200` seconds. Exact L3
+calls have a 300-second limit. L5 retains its separately frozen table. Both the
+one-shot and persistent executors read these same values from the immutable
+execution manifest.
+
+Persistence removes repeated Julia startup, backend/context construction, and
+decoder construction. It does not reduce the boundary-MPS SVD contraction
+cost, so it should be treated as orchestration overhead reduction rather than
+a new decoding algorithm.
+
 Run the bounded phase-1 tests from the repository root with:
 
 ```sh
@@ -34,14 +76,19 @@ PYTHONPYCACHEPREFIX=/tmp/tnml-pycache \
   examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase1.py -v
 ```
 
-Run both bounded phases with:
+Run the full bounded suite, including the fake persistent-process protocol,
+with:
 
 ```sh
 PYTHONPYCACHEPREFIX=/tmp/tnml-pycache \
   python3 -m unittest \
   examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase1.py \
-  examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase2.py -v
+  examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase2.py \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/test_persistent_worker.py -v
 ```
 
-Use `--dry-run` to plan without execution. An explicit `--execute` flag is
-required before the command can start the Julia adapter.
+The one-record fallback requires `adaptive_runner.py --execute`. The persistent
+task runner requires `task_runner.py --execute-task`; `--dry-run` is read-only
+and reports every record grouped into the requested probability stratum. This
+experimental directory does not submit Slurm jobs or modify the production HPC
+wrappers.
