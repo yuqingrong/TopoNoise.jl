@@ -121,9 +121,14 @@ q_k = \frac{1-(1-2p)^k}{2}.
 
 This reduction is exact. The contraction builds an exact star
 matrix-product operator (MPO), including the observed syndrome bit, before
-compressing the canonical boundary matrix-product state (MPS). The boundary
-compression introduces the approximation. The implementation preserves signed
-weights and uses the plane-major detector order.
+compressing the canonical boundary matrix-product state (MPS). Each star MPO
+is applied only through its last nonidentity site. Compression continues
+through the farthest detector touched by any star processed so far, because a
+nonunitary star update can change every Schmidt spectrum in that active
+boundary. Detector sites beyond it are an unchanged dimension-one product
+suffix and are skipped. The boundary compression introduces the approximation.
+The implementation preserves signed weights and uses the plane-major detector
+order.
 
 `Toric3DZTNSettings()` uses `max_bond_dimension=240`, `cutoff=1e-18`, and
 `negative_tolerance=1e-10`. The bond limit must be a positive integer; the
@@ -133,9 +138,10 @@ cost. Assess convergence for the sizes, rates, and syndromes of interest.
 
 `diagnostics.max_bond_dimension` records the largest bond dimension used.
 `maximum_local_truncation_error`, `sum_local_truncation_error`, and
-`local_svd_events` summarize local relative SVD truncation errors. The legacy
-name `discarded_weight` is an alias for `sum_local_truncation_error`; it is
-neither lost probability mass nor a bound on posterior error.
+`local_svd_events` summarize local relative SVD truncation errors on the active
+boundary. The legacy name `discarded_weight` is an alias for
+`sum_local_truncation_error`; it is neither lost probability mass nor a bound
+on posterior error.
 
 ## Validation scope
 

@@ -108,25 +108,24 @@ function _toric3d_z_tn_fuse_current(psi)
     C=ITensors.combiner(ii[2],ii[1];tags="Carrier")
     # With detector first in the combiner: c = parity + 2*logical.
     first=psi[1]*psi[2]*C
-    ITensorMPS.MPS(vcat(ITensor[first],[psi[k] for k in 3:length(psi)]))
+    # The untouched suffix remains right orthogonal. Recording that gauge is
+    # what lets the later prefix truncation avoid sweeping the product tail.
+    ITensorMPS.MPS(vcat(ITensor[first],[psi[k] for k in 3:length(psi)]);
+        ortho_lims=1:1)
 end
 
 function _toric3d_z_tn_star_mpo(psi,groups,vertex,syndrome_bit)
     sites=ITensorMPS.siteinds(psi)
     output_logical=Index(4,"Logical")
-    n=length(psi)
-    tensors=Vector{ITensor}(undef,n)
     if isempty(groups)
         arr=zeros(4,8)
         for ell in 0:3
             arr[ell+1,Int(syndrome_bit)+2ell+1]=1.
         end
-        tensors[1]=ITensor(arr,output_logical,sites[1])
-        for k in 2:n
-            tensors[k]=ITensor(Matrix{Float64}(I,2,2),ITensors.prime(sites[k]),sites[k])
-        end
-        return ITensorMPS.MPO(tensors)
+        return ITensorMPS.MPO(ITensor[ITensor(arr,output_logical,sites[1])])
     end
+    lastsite=groups[end].neighbor-vertex+1
+    tensors=Vector{ITensor}(undef,lastsite)
     suffix=_toric3d_z_tn_suffix_support(groups)
     left_states=suffix[1]
     previous=Index(length(left_states),"Star,v=$vertex,k=1")
@@ -138,7 +137,6 @@ function _toric3d_z_tn_star_mpo(psi,groups,vertex,syndrome_bit)
         iszero(hpos) || (arr[ellout+1,c+1,hpos]=1.)
     end
     tensors[1]=ITensor(arr,output_logical,sites[1],previous)
-    lastsite=groups[end].neighbor-vertex+1
     group_index=1
     for k in 2:lastsite
         neighbor=vertex+k-1
@@ -165,10 +163,28 @@ function _toric3d_z_tn_star_mpo(psi,groups,vertex,syndrome_bit)
         left_states=right_states
         is_neighbor && (group_index+=1)
     end
-    for k in lastsite+1:n
-        tensors[k]=ITensor(Matrix{Float64}(I,2,2),ITensors.prime(sites[k]),sites[k])
-    end
     ITensorMPS.MPO(tensors)
+end
+
+# Apply a finite-support star MPO without materializing identity tensors over
+# the unchanged suffix. Combining the MPO and MPS bond indices reproduces the
+# exact, untruncated naive MPO-MPS product on this prefix.
+function _toric3d_z_tn_apply_prefix(psi,star)
+    support=length(star)
+    1 <= support <= length(psi) || throw(ArgumentError(
+        "star support must be a nonempty MPS prefix"))
+    tensors=ITensor[star[k]*psi[k] for k in 1:support]
+    for bond in 1:(support-1)
+        star_links=ITensors.commoninds(star[bond],star[bond+1])
+        psi_links=ITensors.commoninds(psi[bond],psi[bond+1])
+        links=Index[star_links...,psi_links...]
+        isempty(links) && continue
+        C=ITensors.combiner(links)
+        tensors[bond]*=C
+        tensors[bond+1]*=ITensors.dag(C)
+    end
+    append!(tensors,(psi[k] for k in (support+1):length(psi)))
+    return ITensorMPS.MPS(tensors;ortho_lims=1:support)
 end
 
 function _toric3d_z_tn_mass(psi)
@@ -213,6 +229,7 @@ function decode_toric3d_z_tn(decoder::Toric3DZTNDecoder,syndrome::AbstractVector
     maximum_discarded=0.
     sum_discarded=0.
     events=0
+    frontier=0
     callback=function(;link,truncation_error)
         err=Float64(truncation_error)
         isfinite(err) && err>=0 || throw(ErrorException("invalid SVD truncation diagnostic"))
@@ -222,12 +239,20 @@ function decode_toric3d_z_tn(decoder::Toric3DZTNDecoder,syndrome::AbstractVector
     end
     for v in 1:n
         psi=_toric3d_z_tn_fuse_current(psi)
-        star=_toric3d_z_tn_star_mpo(psi,decoder.groups[v],v,syndrome[v])
+        groups=decoder.groups[v]
+        support=isempty(groups) ? 1 : groups[end].neighbor-v+1
+        frontier=max(frontier,isempty(groups) ? v : groups[end].neighbor)
+        active_sites=frontier-v+1
+        @assert 1 <= support <= active_sites <= length(psi)
+        star=_toric3d_z_tn_star_mpo(psi,groups,v,syndrome[v])
         # The observed syndrome is already contracted into the entire star.
-        # Only this canonical boundary compression is approximate.
-        psi=ITensors.contract(star,psi;alg="naive",truncate=false)
+        # Only the finite star support changes exactly here. Compression still
+        # reaches the full active frontier because this nonunitary update may
+        # change every Schmidt spectrum before that frontier.
+        psi=_toric3d_z_tn_apply_prefix(psi,star)
         psi=ITensors.replaceprime(psi,1=>0)
-        ITensorMPS.truncate!(psi;maxdim=cfg.max_bond_dimension,cutoff=cfg.cutoff,callback)
+        ITensorMPS.truncate!(psi;site_range=1:active_sites,
+            maxdim=cfg.max_bond_dimension,cutoff=cfg.cutoff,callback)
         maximum_bond=max(maximum_bond,ITensorMPS.maxlinkdim(psi))
         z=_toric3d_z_tn_mass(psi)
         isfinite(z) && z>0 || throw(DomainError(z,"nonpositive or nonfinite conditioned boundary mass at vertex $v"))
@@ -250,7 +275,7 @@ function decode_toric3d_z_tn(decoder::Toric3DZTNDecoder,syndrome::AbstractVector
         sum_local_truncation_error=sum_discarded,local_svd_events=events,
         minimum_probability=minimum(signed),roundoff_correction_l1=0.,
         edge_count=decoder.edge_count,detector_count=n,
-        algorithm="conditioned_star_canonical_boundary_mps",contraction_order="plane_major_detector_order")
+        algorithm="conditioned_star_active_boundary_mps",contraction_order="plane_major_detector_order")
     (valid=valid,probabilities=probabilities,logical_mask=valid ? argmax(probabilities)-1 : -1,
      log_syndrome=log_syndrome,raw_probabilities=signed,diagnostics=diagnostics)
 end

@@ -151,6 +151,33 @@ end
     end
 end
 
+@testset "Conditioned-star truncation visits only the active prefix" begin
+    # The first graph is a chain. The second has gaps and two untouched tail
+    # vertices, so it catches implementations that sweep future detector sites.
+    fixtures = [
+        (5, [(1, 2), (2, 3), (3, 4), (4, 5)],
+            [0.03, 0.07, 0.11, 0.13], UInt8[0, 1, 2, 3], 4),
+        (8, [(1, 4), (1, 6), (3, 5), (5, 6)],
+            [0.04, 0.09, 0.12, 0.08], UInt8[1, 2, 3, 0], 15),
+    ]
+    settings = Toric3DZTNSettings(max_bond_dimension=128, cutoff=0.0)
+    for (n, edges, qs, logicals, expected_events) in fixtures
+        exact = z_tnml_enumerated_weights(n, edges, qs, logicals)
+        decoder = TopoNoise._build_toric3d_z_tn_edges(n, edges, qs, logicals; settings)
+        for mask in 0:((1 << n) - 1)
+            isodd(count_ones(mask)) && continue
+            expected = exact[:, mask + 1]
+            iszero(sum(expected)) && continue
+            result = decode_toric3d_z_tn(decoder, z_tnml_syndrome(n, mask))
+            @test result.valid
+            @test result.probabilities ≈ expected / sum(expected) atol=2e-12 rtol=2e-12
+            @test result.log_syndrome ≈ log(sum(expected)) atol=2e-12 rtol=2e-12
+            @test result.diagnostics.events == expected_events
+            @test result.diagnostics.local_svd_events == expected_events
+        end
+    end
+end
+
 @testset "Logical-mask bit order and parallel-edge parity" begin
     settings = Toric3DZTNSettings(cutoff=0.0)
     for logical_mask in 0:3
@@ -241,6 +268,9 @@ end
             @test abs(result.log_syndrome - case["exact_log_marginal"]) <= 0.001
             @test result.raw_probabilities == result.probabilities
             @test result.diagnostics.actual_maxbond <= 240
+            @test result.diagnostics.local_svd_events == 714
+            @test result.diagnostics.algorithm ==
+                  "conditioned_star_active_boundary_mps"
             @test result.diagnostics.roundoff_correction_l1 == 0.0
         end
     end
