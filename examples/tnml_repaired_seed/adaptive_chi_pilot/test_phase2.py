@@ -23,23 +23,17 @@ import manifest
 
 
 def source_identity():
+    files = {
+        path: hashlib.sha256(path.encode()).hexdigest()
+        for path in sorted(
+            {"src/TopoNoise.jl"} | set(execution_manifest.REQUIRED_SOURCE_FILES)
+        )
+    }
     return {
         "project_sha256": "1" * 64,
         "manifest_sha256": "2" * 64,
         "package_source_tree_sha256": "c" * 64,
-        "files": {
-            "src/TopoNoise.jl": "3" * 64,
-            "examples/tnml_repaired_seed/model.jl": "4" * 64,
-            "examples/tnml_repaired_seed/run.jl": "5" * 64,
-            "examples/tnml_repaired_seed/dense_frontier.jl": "6" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/core.py": "7" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/manifest.py": "8" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/execution_manifest.py": "9" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/adaptive_runner.py": "a" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl": "b" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py": "d" * 64,
-            "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl": "e" * 64,
-        },
+        "files": files,
     }
 
 
@@ -229,21 +223,10 @@ class ExecutionManifestTests(unittest.TestCase):
     def test_source_identity_capture_and_executor_verification_detect_drift(self):
         with tempfile.TemporaryDirectory() as temporary:
             repository = Path(temporary)
-            paths = [
-                "Project.toml",
-                "Manifest.toml",
-                "src/TopoNoise.jl",
-                "examples/tnml_repaired_seed/model.jl",
-                "examples/tnml_repaired_seed/run.jl",
-                "examples/tnml_repaired_seed/dense_frontier.jl",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/core.py",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/manifest.py",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/execution_manifest.py",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/adaptive_runner.py",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py",
-                "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl",
-            ]
+            paths = ["Project.toml", "Manifest.toml", "src/TopoNoise.jl"] + sorted(
+                execution_manifest.REQUIRED_SOURCE_FILES
+            )
+            paths = list(dict.fromkeys(paths))
             for index, relative in enumerate(paths):
                 path = repository / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -297,7 +280,7 @@ class ExecutionManifestTests(unittest.TestCase):
                 {
                     "persistent_protocol": "persistent_toml_mailbox_v1",
                     "protocol_version": 1,
-                    "scheduling": "serial_one_worker_per_L_p",
+                    "scheduling": "serial_one_worker_per_manifest_task_or_L_p_group",
                     "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
                     "allowed_executors": ["one_shot", "persistent"],
                     "timing_scopes": {
@@ -571,6 +554,7 @@ class AdaptiveRunnerTests(unittest.TestCase):
                 decoder_cache_hit=False,
                 decoder_build_seconds=0.05,
                 decode_seconds=0.20,
+                worker_startup_seconds=0.0,
             )
             return result
 
@@ -581,6 +565,7 @@ class AdaptiveRunnerTests(unittest.TestCase):
                 decoder_cache_hit=False,
                 decoder_build_seconds=0.0,
                 decode_seconds=0.1,
+                worker_startup_seconds=0.25,
             )
             return result
 
@@ -612,6 +597,7 @@ class AdaptiveRunnerTests(unittest.TestCase):
             self.assertFalse(level["decoder_cache_hit"])
             self.assertEqual(level["decoder_build_seconds"], 0.05)
             self.assertEqual(level["decode_seconds"], 0.20)
+            self.assertEqual(exact["worker_startup_seconds"], 0.25)
 
     def test_exact_disagreement_is_recorded_as_false_accept_not_hidden_unknown(self):
         with tempfile.TemporaryDirectory() as temporary:

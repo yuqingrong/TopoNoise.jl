@@ -183,7 +183,7 @@ end
 function main(args=ARGS)
     config = worker_config(args)
     Threads.nthreads() == 1 || throw(ArgumentError("worker requires one Julia thread"))
-    BLAS.set_num_threads(4)
+    BLAS.set_num_threads(configured_blas_threads())
     started = time_ns()
     context = try
         Runner.load_backend!()

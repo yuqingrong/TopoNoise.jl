@@ -34,6 +34,19 @@ REQUIRED_SOURCE_FILES = frozenset(
         "examples/tnml_repaired_seed/adaptive_chi_pilot/julia_adapter.jl",
         "examples/tnml_repaired_seed/adaptive_chi_pilot/task_runner.py",
         "examples/tnml_repaired_seed/adaptive_chi_pilot/persistent_worker.jl",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/prepare_corpus.jl",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/control.py",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/gate.py",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/report.py",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/env.sh",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/setup.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/corpus.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/freeze.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/l3_calibration.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/l3_replay.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/l5_feasibility.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/smoke.sbatch",
+        "examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/collect.sbatch",
     }
 )
 
@@ -349,7 +362,12 @@ def verify_source_identity(
         raise ValueError("current repository differs from the frozen source identity")
 
 
-def _validate_runtime_identity(value: Any, sampling: Mapping[str, Any]) -> dict[str, Any]:
+def _validate_runtime_identity(
+    value: Any,
+    sampling: Mapping[str, Any],
+    *,
+    expected_blas_threads: int | None = None,
+) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise ValueError("runtime_identity must be an object")
     result = dict(value)
@@ -369,13 +387,41 @@ def _validate_runtime_identity(value: Any, sampling: Mapping[str, Any]) -> dict[
     policy = sampling["runtime_policy"]
     if result["julia_threads"] != policy["julia_application_threads"]:
         raise ValueError("runtime Julia-thread identity differs from the sampling policy")
-    if result["blas_threads"] != policy["blas_threads"]:
+    expected_blas = (
+        policy["blas_threads"]
+        if expected_blas_threads is None
+        else expected_blas_threads
+    )
+    if result["blas_threads"] != expected_blas:
         raise ValueError("runtime BLAS-thread identity differs from the sampling policy")
     return result
 
 
+def _validate_hpc_provenance(value: Any) -> dict[str, Any] | None:
+    if value is None:
+        return None
+    if not isinstance(value, Mapping):
+        raise ValueError("hpc_provenance must be an object or null")
+    result = dict(value)
+    if set(result) != {"environment_profile_id", "corpus_provenance_id", "l3_gate_id"}:
+        raise ValueError("hpc_provenance fields are incomplete")
+    for name in ("environment_profile_id", "corpus_provenance_id"):
+        if not isinstance(result[name], str) or HEX64.fullmatch(result[name]) is None:
+            raise ValueError(f"hpc_provenance.{name} must be a SHA-256 identity")
+    if result["l3_gate_id"] is not None and (
+        not isinstance(result["l3_gate_id"], str)
+        or HEX64.fullmatch(result["l3_gate_id"]) is None
+    ):
+        raise ValueError("hpc_provenance.l3_gate_id must be null or a SHA-256 identity")
+    return result
+
+
 def _execution_tasks(
-    sampling: Mapping[str, Any], corpus: Mapping[str, Any], selected: Mapping[str, list[dict[str, Any]]]
+    sampling: Mapping[str, Any],
+    corpus: Mapping[str, Any],
+    selected: Mapping[str, list[dict[str, Any]]],
+    *,
+    execution_variant: str,
 ) -> list[dict[str, Any]]:
     stage = corpus["stage"]
     entries_by_task: dict[int, list[dict[str, Any]]] = {}
@@ -391,8 +437,7 @@ def _execution_tasks(
         records = []
         for entry in entries_by_task[planned["task_id"]]:
             rank = selected_rank.get((entry["p_key"], entry["record_id"]))
-            records.append(
-                {
+            record = {
                     "task_id": entry["task_id"],
                     "shot_index": entry["shot_index"],
                     "history_seed": entry["history_seed"],
@@ -405,7 +450,8 @@ def _execution_tasks(
                     "anchor_rank": rank if stage == "l5_feasibility" else None,
                     "forced_anchor": stage == "l5_feasibility" and rank is not None,
                 }
-            )
+            if execution_variant == "primary" or record["replay_rank"] is not None:
+                records.append(record)
         tasks.append(
             {
                 "task_id": planned["task_id"],
@@ -428,14 +474,23 @@ def build_execution_manifest(
     source_identity: Mapping[str, Any],
     runtime_identity: Mapping[str, Any],
     corpus_path: str = CORPUS_NAME,
+    execution_variant: str = "primary",
+    hpc_provenance: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     sampling = manifest.validate_manifest(sampling_manifest)
     corpus = validate_frozen_corpus(corpus_document, sampling)
     sources = _validate_source_identity(source_identity)
-    runtime = _validate_runtime_identity(runtime_identity, sampling)
+    if execution_variant not in ("primary", "blas1_replay"):
+        raise ValueError("execution_variant must be primary or blas1_replay")
     if corpus_path != CORPUS_NAME:
         raise ValueError(f"corpus_path must be the frozen path {CORPUS_NAME!r}")
     stage = corpus["stage"]
+    if execution_variant == "blas1_replay" and stage != "l3_exact":
+        raise ValueError("BLAS=1 replay is defined only for the L3 exact stage")
+    expected_blas = 1 if execution_variant == "blas1_replay" else None
+    runtime = _validate_runtime_identity(
+        runtime_identity, sampling, expected_blas_threads=expected_blas
+    )
     L = sampling["stages"][stage]["L"]
     selection_count = 5 if stage == "l3_exact" else 4
     selected = {}
@@ -446,7 +501,9 @@ def build_execution_manifest(
         selected[p_key] = core.rank_record_ids(
             L, float(p_key), record_ids, count=selection_count
         )
-    tasks = _execution_tasks(sampling, corpus, selected)
+    tasks = _execution_tasks(
+        sampling, corpus, selected, execution_variant=execution_variant
+    )
     ladders = {tuple(task["chi_ladder"]) for task in tasks}
     if len(ladders) != 1:
         raise ValueError("execution stage must have one frozen chi ladder")
@@ -468,7 +525,13 @@ def build_execution_manifest(
         "corpus_id": corpus["corpus_id"],
         "corpus_path": corpus_path,
         "stage": stage,
-        "purpose": "exact_calibration" if stage == "l3_exact" else "feasibility_smoke",
+        "execution_variant": execution_variant,
+        "purpose": (
+            "blas1_numerical_replay"
+            if execution_variant == "blas1_replay"
+            else "exact_calibration" if stage == "l3_exact" else "feasibility_smoke"
+        ),
+        "hpc_provenance": _validate_hpc_provenance(hpc_provenance),
         "source_identity": sources,
         "source_bundle_id": core.identity_hash(sources, "source_bundle_id"),
         "runtime_identity": runtime,
@@ -487,7 +550,7 @@ def build_execution_manifest(
         "executor_policy": {
             "persistent_protocol": "persistent_toml_mailbox_v1",
             "protocol_version": 1,
-            "scheduling": "serial_one_worker_per_L_p",
+            "scheduling": "serial_one_worker_per_manifest_task_or_L_p_group",
             "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
             "allowed_executors": ["one_shot", "persistent"],
             "timing_scopes": {
@@ -509,6 +572,16 @@ def build_execution_manifest(
             "log_joint_gate": 1.0e-5,
             "gate_comparison": "inclusive",
             "false_accept_definition": "failure_of_any_class_posterior_or_log_joint_gate",
+        },
+        "replay_comparison": {
+            "required": execution_variant == "blas1_replay",
+            "records_per_probability": 5,
+            "decision_status_must_match": True,
+            "tested_chi_must_match": True,
+            "logical_class_must_match": True,
+            "posterior_linf_gate": 1.0e-6,
+            "log_joint_gate": 1.0e-6,
+            "gate_comparison": "inclusive",
         },
         "clopper_pearson": {
             "method": "exact_beta_quantile",
@@ -548,6 +621,8 @@ def validate_execution_manifest(
         source_identity=result.get("source_identity"),
         runtime_identity=result.get("runtime_identity"),
         corpus_path=result.get("corpus_path"),
+        execution_variant=result.get("execution_variant", "primary"),
+        hpc_provenance=result.get("hpc_provenance"),
     )
     if result != rebuilt:
         raise ValueError("execution manifest derived identity mismatch")
@@ -560,6 +635,8 @@ def create_execution_manifest(
     *,
     source_identity: Mapping[str, Any],
     runtime_identity: Mapping[str, Any],
+    execution_variant: str = "primary",
+    hpc_provenance: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     root_path = Path(root).expanduser().resolve()
     corpus = load_frozen_corpus(root_path, sampling_manifest)
@@ -568,6 +645,8 @@ def create_execution_manifest(
         corpus,
         source_identity=source_identity,
         runtime_identity=runtime_identity,
+        execution_variant=execution_variant,
+        hpc_provenance=hpc_provenance,
     )
     _write_once_json(
         root_path / EXECUTION_MANIFEST_NAME, document, "execution manifest"

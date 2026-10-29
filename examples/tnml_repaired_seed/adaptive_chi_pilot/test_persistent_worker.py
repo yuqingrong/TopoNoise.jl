@@ -100,6 +100,7 @@ class FakeWorkerProcess:
         self.requests = []
         self.cached_chi = set()
         self.stdout_target = stdout
+        self.environment = dict(_kwargs.get("env", {}))
         if stdout is not None:
             stdout.write("backend startup chatter that is not protocol data\n")
             stdout.flush()
@@ -122,6 +123,7 @@ class FakeWorkerProcess:
             'decoder_cache_scope = "worker_lifetime_by_chi"',
             "startup_elapsed_seconds = 0.25",
             "peak_rss_bytes = 1024",
+            'rss_scope = "worker_lifetime_high_water"',
         ] + _runtime_toml_lines(self.runtime)
         ready.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -223,6 +225,8 @@ class FakePopenFactory:
         close_returncode=0,
         broken_pipe=False,
         malformed_result=False,
+        startup_delay=0.0,
+        clock=None,
     ):
         self.runtime = runtime
         self.hang_first = hang_first
@@ -234,9 +238,15 @@ class FakePopenFactory:
         self.close_returncode = close_returncode
         self.broken_pipe = broken_pipe
         self.malformed_result = malformed_result
+        self.startup_delay = float(startup_delay)
+        self.clock = clock
         self.processes = []
 
     def __call__(self, command, **kwargs):
+        if self.startup_delay:
+            if self.clock is None:
+                raise RuntimeError("startup delay test requires a fake clock")
+            self.clock.sleep(self.startup_delay)
         process = FakeWorkerProcess(
             command,
             self.runtime,
@@ -255,16 +265,18 @@ class FakePopenFactory:
         return process
 
 
-def execution_identity(*, L=5, p=0.006):
+def execution_identity(*, L=5, p=0.006, blas_threads=4):
+    runtime = runtime_identity()
+    runtime["blas_threads"] = blas_threads
     return {
         "source_bundle_id": "a" * 64,
         "runtime_profile_id": "b" * 64,
         "source_identity": {},
-        "runtime_identity": runtime_identity(),
+        "runtime_identity": runtime,
         "executor_policy": {
             "persistent_protocol": "persistent_toml_mailbox_v1",
             "protocol_version": 1,
-            "scheduling": "serial_one_worker_per_L_p",
+            "scheduling": "serial_one_worker_per_manifest_task_or_L_p_group",
             "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
             "allowed_executors": ["one_shot", "persistent"],
             "timing_scopes": {
@@ -318,11 +330,16 @@ class PersistentProtocolTests(unittest.TestCase):
 
     def test_worker_reuses_process_and_reports_decoder_cache_hit_despite_stdout_noise(self):
         executor, factory = self.make_executor()
+        environment_checks = []
+        executor.verify_execution_environment = lambda identity: environment_checks.append(
+            identity["source_bundle_id"]
+        )
         identity = execution_identity()
         record = {"record_id": "a" * 64}
         executor.preflight(identity)
         executor.preflight(identity)
         self.assertEqual(len(factory.processes), 1)
+        self.assertEqual(environment_checks, [identity["source_bundle_id"]])
         first = executor.run_tn(
             record, chi=32, cutoff=1e-18, execution_identity=identity
         )
@@ -336,10 +353,42 @@ class PersistentProtocolTests(unittest.TestCase):
         executor.close()
         self.assertEqual(factory.processes[0].returncode, 0)
 
+    def test_worker_startup_wall_is_charged_once_to_first_record(self):
+        clock = FakeClock()
+        factory = FakePopenFactory(
+            runtime_identity(), startup_delay=2.5, clock=clock
+        )
+        executor, _ = self.make_executor(factory=factory, clock=clock)
+        identity = execution_identity()
+        record = {"record_id": "a" * 64}
+        first = executor.run_tn(
+            record, chi=32, cutoff=1e-18, execution_identity=identity
+        )
+        second = executor.run_tn(
+            record, chi=64, cutoff=1e-18, execution_identity=identity
+        )
+        self.assertEqual(first["worker_startup_seconds"], 2.5)
+        self.assertEqual(second["worker_startup_seconds"], 0.0)
+        executor.close()
+
+    def test_worker_uses_frozen_blas_thread_count_for_replay(self):
+        runtime = runtime_identity()
+        runtime["blas_threads"] = 1
+        factory = FakePopenFactory(runtime)
+        executor, _ = self.make_executor(factory=factory)
+        executor.preflight(execution_identity(blas_threads=1))
+        self.assertEqual(factory.processes[0].environment["TNML_BLAS_THREADS"], "1")
+        self.assertEqual(factory.processes[0].environment["OPENBLAS_NUM_THREADS"], "1")
+        executor.close()
+
     def test_timeout_terminates_worker_and_next_preflight_restarts_it(self):
         clock = FakeClock()
         factory = FakePopenFactory(runtime_identity(), hang_first=True)
         executor, _ = self.make_executor(factory=factory, clock=clock)
+        environment_checks = []
+        executor.verify_execution_environment = lambda identity: environment_checks.append(
+            identity["source_bundle_id"]
+        )
         identity = execution_identity()
         result = executor.run_tn(
             {"record_id": "a" * 64},
@@ -352,6 +401,7 @@ class PersistentProtocolTests(unittest.TestCase):
         self.assertTrue(factory.processes[0].terminated)
         executor.preflight(identity)
         self.assertEqual(len(factory.processes), 2)
+        self.assertEqual(environment_checks, [identity["source_bundle_id"]] * 2)
         executor.close()
 
     def test_deadline_precedes_a_late_result_file_observation(self):
@@ -610,6 +660,17 @@ class TaskRunnerTests(unittest.TestCase):
             self.assertEqual(plan["p_key"], "0.0060")
             self.assertEqual(plan["requested_records"], 100)
             self.assertEqual(len(plan["task_ids"]), 5)
+
+    def test_manifest_task_mode_preserves_twenty_record_l3_shard(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            sampling, _, _ = make_bundle(root, "l3_exact")
+            plan = task_runner.run_manifest_task(
+                root, sampling, task_id=0, dry_run=True
+            )
+            self.assertEqual(plan["task_ids"], [0])
+            self.assertEqual(plan["requested_records"], 20)
+            self.assertEqual(plan["p_key"], "0.0060")
 
     def test_one_executor_processes_and_resumes_entire_l5_probability_group(self):
         class ClosingFake(FakeExecutor):

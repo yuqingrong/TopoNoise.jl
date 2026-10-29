@@ -88,7 +88,20 @@ PYTHONPYCACHEPREFIX=/tmp/tnml-pycache \
 ```
 
 The one-record fallback requires `adaptive_runner.py --execute`. The persistent
-task runner requires `task_runner.py --execute-task`; `--dry-run` is read-only
-and reports every record grouped into the requested probability stratum. This
-experimental directory does not submit Slurm jobs or modify the production HPC
-wrappers.
+task runner requires `task_runner.py --execute-task`. `--task-id` preserves
+the 20-history L3 shard and one-history L5 schedule; `--record-index` addresses
+the 30 independent BLAS=1 replay records. The older `--p-key` grouping remains
+available for local experiments but is not the HPC schedule because it would
+discard most array-level parallelism.
+
+The isolated, non-submitting HPC4 control plane and exact commands are in
+`hpc/README.md`. It creates separate L3 primary, L3 BLAS=1 replay, and L5 roots
+without modifying the production HPC wrappers. L5 is blocked by a write-once
+gate until all 600 exact audits and 30 numerical replays pass.
+The L3 gate calibrates the conditional error of histories that the rule
+accepts; the preregistration did not set a minimum accepted fraction, so the
+report always exposes the accepted denominator and does not claim production
+utility. The L5 feasibility gate separately requires at least 80% early
+acceptance among non-anchors. Its median and p90 totals include the one-time
+Julia process/backend/context startup charged to each one-record L5 task as
+well as every TN request.

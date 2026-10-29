@@ -223,7 +223,9 @@ def _validate_checkpoint_executor_metrics(
     if executor_identity["executor_mode"] == "persistent":
         if type(document.get("decoder_cache_hit")) is not bool:
             raise ValueError("persistent checkpoint lacks decoder-cache evidence")
-        for name in ("decoder_build_seconds", "decode_seconds"):
+        for name in (
+            "decoder_build_seconds", "decode_seconds", "worker_startup_seconds"
+        ):
             if _safe_elapsed(document.get(name)) is None:
                 raise ValueError("persistent checkpoint timing evidence is invalid")
 
@@ -307,7 +309,9 @@ def _normalize_executor_result(
         if type(raw["decoder_cache_hit"]) is not bool:
             return _invalid_executor_result(raw, f"malformed {label} cache evidence")
         normalized["decoder_cache_hit"] = raw["decoder_cache_hit"]
-    for name in ("decoder_build_seconds", "decode_seconds"):
+    for name in (
+        "decoder_build_seconds", "decode_seconds", "worker_startup_seconds"
+    ):
         if name in raw:
             value = _safe_elapsed(raw[name])
             if value is None:
@@ -386,6 +390,8 @@ def _apply_frozen_rss_policy(
         }
         if "rss_scope" in result:
             rejected["rss_scope"] = result["rss_scope"]
+        if "worker_startup_seconds" in result:
+            rejected["worker_startup_seconds"] = result["worker_startup_seconds"]
         return rejected
     return result
 
@@ -438,7 +444,10 @@ def _phase2_level_checkpoint(
         checkpoint["error"] = raw["error"]
     if "rss_scope" in raw:
         checkpoint["rss_scope"] = raw["rss_scope"]
-    for name in ("decoder_cache_hit", "decoder_build_seconds", "decode_seconds"):
+    for name in (
+        "decoder_cache_hit", "decoder_build_seconds", "decode_seconds",
+        "worker_startup_seconds",
+    ):
         if name in raw:
             checkpoint[name] = raw[name]
     checkpoint["checkpoint_id"] = core.identity_hash(checkpoint, "checkpoint_id")
@@ -540,7 +549,10 @@ def _exact_checkpoint(
         document["error"] = raw["error"]
     if "rss_scope" in raw:
         document["rss_scope"] = raw["rss_scope"]
-    for name in ("decoder_cache_hit", "decoder_build_seconds", "decode_seconds"):
+    for name in (
+        "decoder_cache_hit", "decoder_build_seconds", "decode_seconds",
+        "worker_startup_seconds",
+    ):
         if name in raw:
             document[name] = raw[name]
     document["exact_checkpoint_id"] = core.identity_hash(
@@ -847,9 +859,11 @@ def run_record(
     identity = _execution_identity(
         execution, task, record_meta, executor_identity=executor_identity
     )
-    preflight = getattr(executor, "preflight", None)
-    if callable(preflight):
-        preflight(identity)
+    verify_environment = getattr(executor, "verify_environment_only", None)
+    if not callable(verify_environment):
+        verify_environment = getattr(executor, "verify_execution_environment", None)
+    if callable(verify_environment):
+        verify_environment(identity)
     record_dir = root_path / plan["record_output"]
     decision_path = record_dir / "decision.json"
     if decision_path.exists():
@@ -863,6 +877,10 @@ def run_record(
             executor_identity=executor_identity,
         )
         return _present_decision(decision, root_path)
+
+    preflight = getattr(executor, "preflight", None)
+    if callable(preflight):
+        preflight(identity)
 
     exact = None
     if task["exact_required"]:
@@ -1063,8 +1081,10 @@ class JuliaExecutor:
         with tempfile.TemporaryDirectory(prefix="tnml-adaptive-probe-") as temporary:
             output_path = Path(temporary) / "runtime.toml"
             environment = os.environ.copy()
-            environment["OPENBLAS_NUM_THREADS"] = "4"
-            environment["MKL_NUM_THREADS"] = "4"
+            blas_threads = str(execution_identity["runtime_identity"]["blas_threads"])
+            environment["TNML_BLAS_THREADS"] = blas_threads
+            environment["OPENBLAS_NUM_THREADS"] = blas_threads
+            environment["MKL_NUM_THREADS"] = blas_threads
             try:
                 completed = subprocess.run(
                     self._probe_command(output_path),
@@ -1139,8 +1159,10 @@ class JuliaExecutor:
                 cutoff=cutoff,
             )
             environment = os.environ.copy()
-            environment["OPENBLAS_NUM_THREADS"] = "4"
-            environment["MKL_NUM_THREADS"] = "4"
+            blas_threads = str(execution_identity["runtime_identity"]["blas_threads"])
+            environment["TNML_BLAS_THREADS"] = blas_threads
+            environment["OPENBLAS_NUM_THREADS"] = blas_threads
+            environment["MKL_NUM_THREADS"] = blas_threads
             timeout = self._wall_timeout(mode, chi, execution_identity)
             try:
                 completed = subprocess.run(

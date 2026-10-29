@@ -27,6 +27,40 @@ PROTOCOL_VERSION = 1
 WORKER_POLICY_NAME = "persistent_toml_mailbox_v1"
 
 
+def verify_l5_gate_binding(
+    root: Path,
+    execution: Mapping[str, Any],
+    *,
+    require_hpc: bool = False,
+) -> None:
+    """Bind every HPC L5 plan/execution to the local passed L3 gate."""
+    provenance = execution.get("hpc_provenance")
+    if execution.get("stage") != "l5_feasibility":
+        return
+    if provenance is None:
+        if require_hpc:
+            raise adaptive_runner.IdentityMismatchError(
+                "L5 execution is missing required HPC provenance"
+            )
+        return
+    if not isinstance(provenance, Mapping):
+        raise adaptive_runner.IdentityMismatchError("L5 HPC provenance is malformed")
+    try:
+        if __package__:
+            from .hpc import gate
+        else:
+            from hpc import gate
+        current = gate.require_l3_gate(root.expanduser().resolve().parent)
+    except (OSError, ValueError) as error:
+        raise adaptive_runner.IdentityMismatchError(
+            f"L5 execution lacks its authenticated local L3 gate: {error}"
+        ) from error
+    if provenance.get("l3_gate_id") != current["gate_id"]:
+        raise adaptive_runner.IdentityMismatchError(
+            "L5 execution manifest was frozen under a different L3 gate"
+        )
+
+
 class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
     """Serial file-mailbox client for a Julia process bound to one ``(L,p)``."""
 
@@ -55,6 +89,9 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
         self._binding: tuple[Any, ...] | None = None
         self._sequence = 0
         self._stdout_log = None
+        self._worker_startup_seconds = 0.0
+        self._startup_charge_pending = False
+        self._verified_environment_binding: tuple[Any, ...] | None = None
 
     @staticmethod
     def _binding_for(identity: Mapping[str, Any]) -> tuple[Any, ...]:
@@ -62,7 +99,7 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
         expected_policy = {
             "persistent_protocol": WORKER_POLICY_NAME,
             "protocol_version": PROTOCOL_VERSION,
-            "scheduling": "serial_one_worker_per_L_p",
+            "scheduling": "serial_one_worker_per_manifest_task_or_L_p_group",
             "decoder_cache": "one_decoder_per_chi_fixed_L_p_cutoff",
             "allowed_executors": ["one_shot", "persistent"],
             "timing_scopes": {
@@ -198,6 +235,11 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
         self._session_token = None
         self._binding = None
         self._sequence = 0
+        self._worker_startup_seconds = 0.0
+        self._startup_charge_pending = False
+        # Source/runtime verification is scoped to one live Julia process.
+        # A retired worker must authenticate the checkout again before restart.
+        self._verified_environment_binding = None
 
     @staticmethod
     def _ready_expected(identity: Mapping[str, Any], token: str) -> dict[str, Any]:
@@ -216,6 +258,7 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
         }
 
     def _start_worker(self, identity: Mapping[str, Any]) -> None:
+        startup_wall_started = self._monotonic()
         self._session = tempfile.TemporaryDirectory(prefix="tnml-persistent-worker-")
         self._session_dir = Path(self._session.name)
         self._session_token = secrets.token_hex(32)
@@ -224,8 +267,10 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
             "w", encoding="utf-8"
         )
         environment = os.environ.copy()
-        environment["OPENBLAS_NUM_THREADS"] = "4"
-        environment["MKL_NUM_THREADS"] = "4"
+        blas_threads = str(identity["runtime_identity"]["blas_threads"])
+        environment["TNML_BLAS_THREADS"] = blas_threads
+        environment["OPENBLAS_NUM_THREADS"] = blas_threads
+        environment["MKL_NUM_THREADS"] = blas_threads
         command = self._worker_command(identity, ready_path, self._session_token)
         try:
             self._process = self._popen_factory(
@@ -248,6 +293,11 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
                 )
             ready = adaptive_runner._read_toml(ready_path)
             runtime = ready.pop("runtime_identity", None)
+            internal_startup = adaptive_runner._safe_elapsed(
+                ready.pop("startup_elapsed_seconds", None)
+            )
+            startup_rss = ready.pop("peak_rss_bytes", None)
+            startup_rss_scope = ready.pop("rss_scope", None)
             self.verify_julia_runtime(runtime, identity["runtime_identity"])
             expected = self._ready_expected(identity, self._session_token)
             if any(ready.get(key) != value for key, value in expected.items()):
@@ -259,16 +309,38 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
                     "persistent Julia worker failed to initialize: "
                     + str(ready.get("error", self._log_tail()))
                 )
+            if (
+                internal_startup is None
+                or type(startup_rss) is not int
+                or startup_rss < 0
+                or startup_rss_scope != "worker_lifetime_high_water"
+            ):
+                raise adaptive_runner.IdentityMismatchError(
+                    "persistent Julia worker returned invalid startup metrics"
+                )
             self._binding = self._binding_for(identity)
+            self._worker_startup_seconds = max(
+                0.0, self._monotonic() - startup_wall_started
+            )
+            self._startup_charge_pending = True
         except BaseException:
             self._terminate_worker()
             self._discard_session()
             raise
 
+    def verify_environment_only(self, execution_identity: Mapping[str, Any]) -> None:
+        environment_binding = (
+            execution_identity.get("source_bundle_id"),
+            execution_identity.get("runtime_profile_id"),
+        )
+        if self._verified_environment_binding != environment_binding:
+            self.verify_execution_environment(execution_identity)
+            self._verified_environment_binding = environment_binding
+
     def preflight(self, execution_identity: Mapping[str, Any]) -> None:
-        self.verify_execution_environment(execution_identity)
         binding = self._binding_for(execution_identity)
         if self._process is not None and self._process.poll() is None:
+            self.verify_environment_only(execution_identity)
             if self._binding != binding:
                 raise adaptive_runner.IdentityMismatchError(
                     "live persistent worker is bound to a different (L,p,cutoff) identity"
@@ -276,6 +348,7 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
             return
         self._terminate_worker()
         self._discard_session()
+        self.verify_environment_only(execution_identity)
         self._start_worker(execution_identity)
 
     @staticmethod
@@ -400,6 +473,7 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
                 "timeout", TimeoutError(f"persistent worker exceeded {timeout} seconds")
             )
             result["elapsed_seconds"] = elapsed
+            result["worker_startup_seconds"] = self._take_startup_charge()
             return result
         if observed != "ready":
             tail = self._log_tail()
@@ -446,7 +520,14 @@ class PersistentJuliaExecutor(adaptive_runner.JuliaExecutor):
             or result.get("peak_rss_bytes", 0) > maximum
         ):
             self._terminate_worker()
+        result["worker_startup_seconds"] = self._take_startup_charge()
         return result
+
+    def _take_startup_charge(self) -> float:
+        if not self._startup_charge_pending:
+            return 0.0
+        self._startup_charge_pending = False
+        return self._worker_startup_seconds
 
     def run_tn(
         self,
@@ -522,6 +603,27 @@ def _probability_records(
     return records
 
 
+def _manifest_task_records(
+    execution: Mapping[str, Any], task_id: int
+) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    task = execution_manifest.task_for_id(execution, task_id)
+    return [(task, record) for record in task["records"]]
+
+
+def _replay_records(
+    execution: Mapping[str, Any]
+) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    if execution.get("execution_variant") != "blas1_replay":
+        raise ValueError("record-index scheduling is reserved for BLAS=1 replay")
+    records = [
+        (task, record)
+        for task in execution["tasks"]
+        for record in task["records"]
+    ]
+    records.sort(key=lambda item: (item[1]["p_key"], item[1]["replay_rank"]))
+    return records
+
+
 def plan_probability_task(
     root: os.PathLike[str] | str,
     sampling_manifest: Mapping[str, Any],
@@ -530,6 +632,7 @@ def plan_probability_task(
 ) -> dict[str, Any]:
     root_path = Path(root).expanduser().resolve()
     execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    verify_l5_gate_binding(root_path, execution)
     records = _probability_records(execution, p_key)
     task_ids = sorted({task["task_id"] for task, _record in records})
     L_values = {task["L"] for task, _record in records}
@@ -551,6 +654,64 @@ def plan_probability_task(
             }
             for task, record in records
         ],
+    }
+
+
+def plan_manifest_task(
+    root: os.PathLike[str] | str,
+    sampling_manifest: Mapping[str, Any],
+    *,
+    task_id: int,
+) -> dict[str, Any]:
+    root_path = Path(root).expanduser().resolve()
+    execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    verify_l5_gate_binding(root_path, execution)
+    records = _manifest_task_records(execution, task_id)
+    task = execution_manifest.task_for_id(execution, task_id)
+    if not records:
+        raise ValueError("execution task has no records")
+    return {
+        "status": "dry_run",
+        "execution_manifest_id": execution["execution_manifest_id"],
+        "stage": execution["stage"],
+        "execution_variant": execution["execution_variant"],
+        "L": task["L"],
+        "p_key": task["p_key"],
+        "task_ids": [task_id],
+        "requested_records": len(records),
+        "records": [
+            {"task_id": task_id, "shot_index": record["shot_index"],
+             "record_id": record["record_id"]}
+            for _task, record in records
+        ],
+    }
+
+
+def plan_replay_record(
+    root: os.PathLike[str] | str,
+    sampling_manifest: Mapping[str, Any],
+    *,
+    record_index: int,
+) -> dict[str, Any]:
+    root_path = Path(root).expanduser().resolve()
+    execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    verify_l5_gate_binding(root_path, execution)
+    records = _replay_records(execution)
+    if type(record_index) is not int or not 0 <= record_index < len(records):
+        raise ValueError("record_index is outside the frozen replay selection")
+    task, record = records[record_index]
+    return {
+        "status": "dry_run",
+        "execution_manifest_id": execution["execution_manifest_id"],
+        "stage": execution["stage"],
+        "execution_variant": execution["execution_variant"],
+        "L": task["L"],
+        "p_key": task["p_key"],
+        "task_ids": [task["task_id"]],
+        "record_index": record_index,
+        "requested_records": 1,
+        "records": [{"task_id": task["task_id"], "shot_index": record["shot_index"],
+                     "record_id": record["record_id"]}],
     }
 
 
@@ -631,13 +792,118 @@ def run_probability_task(
     }
 
 
+def _run_planned_records(
+    root_path: Path,
+    sampling_manifest: Mapping[str, Any],
+    *,
+    plan: Mapping[str, Any],
+    records: list[tuple[dict[str, Any], dict[str, Any]]],
+    executor: Any | None,
+    repository_root: os.PathLike[str] | str | None,
+    julia: str,
+    lock_label: str,
+) -> dict[str, Any]:
+    owned_executor = executor or PersistentJuliaExecutor(
+        repository_root=repository_root or Path(__file__).resolve().parents[3],
+        julia=julia,
+    )
+    execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    lock = _task_lock(
+        root_path, execution["execution_manifest_id"], plan["L"], lock_label
+    )
+    decisions = []
+    try:
+        for task, record in records:
+            decisions.append(
+                adaptive_runner.run_record(
+                    root_path,
+                    sampling_manifest,
+                    task_id=task["task_id"],
+                    record_id=record["record_id"],
+                    executor=owned_executor,
+                )
+            )
+    finally:
+        close = getattr(owned_executor, "close", None)
+        try:
+            if callable(close):
+                close()
+        finally:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+            lock.close()
+    return {
+        "status": "complete",
+        "execution_manifest_id": execution["execution_manifest_id"],
+        "stage": execution["stage"],
+        "execution_variant": execution["execution_variant"],
+        "L": plan["L"],
+        "p_key": plan["p_key"],
+        "task_ids": plan["task_ids"],
+        "requested_records": len(decisions),
+        "accepted_records": sum(item["final_status"] == "accepted" for item in decisions),
+        "unknown_records": sum(item["final_status"] == "unknown" for item in decisions),
+        "false_accepts": sum(item.get("exact_audit", {}).get("false_accept") is True
+                             for item in decisions),
+        "decision_ids": [item["decision_id"] for item in decisions],
+    }
+
+
+def run_manifest_task(
+    root: os.PathLike[str] | str,
+    sampling_manifest: Mapping[str, Any],
+    *,
+    task_id: int,
+    dry_run: bool = False,
+    executor: Any | None = None,
+    repository_root: os.PathLike[str] | str | None = None,
+    julia: str = "julia",
+) -> dict[str, Any]:
+    root_path = Path(root).expanduser().resolve()
+    plan = plan_manifest_task(root_path, sampling_manifest, task_id=task_id)
+    if dry_run:
+        return plan
+    execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    records = _manifest_task_records(execution, task_id)
+    return _run_planned_records(
+        root_path, sampling_manifest, plan=plan, records=records, executor=executor,
+        repository_root=repository_root, julia=julia, lock_label=f"task-{task_id:03d}",
+    )
+
+
+def run_replay_record(
+    root: os.PathLike[str] | str,
+    sampling_manifest: Mapping[str, Any],
+    *,
+    record_index: int,
+    dry_run: bool = False,
+    executor: Any | None = None,
+    repository_root: os.PathLike[str] | str | None = None,
+    julia: str = "julia",
+) -> dict[str, Any]:
+    root_path = Path(root).expanduser().resolve()
+    plan = plan_replay_record(root_path, sampling_manifest, record_index=record_index)
+    if dry_run:
+        return plan
+    execution = execution_manifest.load_execution_manifest(root_path, sampling_manifest)
+    records = _replay_records(execution)
+    selected = [records[record_index]]
+    return _run_planned_records(
+        root_path, sampling_manifest, plan=plan, records=selected, executor=executor,
+        repository_root=repository_root, julia=julia,
+        lock_label=f"replay-{record_index:03d}",
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Plan or execute one persistent adaptive (L,p) task"
     )
     parser.add_argument("--study-root", required=True)
     parser.add_argument("--sampling-manifest", required=True)
-    parser.add_argument("--p-key", required=True, choices=manifest.P_VALUES)
+    selector = parser.add_mutually_exclusive_group(required=True)
+    selector.add_argument("--p-key", choices=manifest.P_VALUES)
+    selector.add_argument("--task-id", type=int)
+    selector.add_argument("--record-index", type=int)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--dry-run", action="store_true")
     mode.add_argument("--execute-task", action="store_true")
@@ -649,14 +915,23 @@ def main(argv: list[str] | None = None) -> int:
     sampling = adaptive_runner._sampling_manifest_from_file(
         arguments.sampling_manifest
     )
-    result = run_probability_task(
-        arguments.study_root,
-        sampling,
-        p_key=arguments.p_key,
+    common = dict(
         dry_run=arguments.dry_run,
         repository_root=arguments.repository_root,
         julia=arguments.julia,
     )
+    if arguments.task_id is not None:
+        result = run_manifest_task(
+            arguments.study_root, sampling, task_id=arguments.task_id, **common
+        )
+    elif arguments.record_index is not None:
+        result = run_replay_record(
+            arguments.study_root, sampling, record_index=arguments.record_index, **common
+        )
+    else:
+        result = run_probability_task(
+            arguments.study_root, sampling, p_key=arguments.p_key, **common
+        )
     print(json.dumps(result, indent=2, sort_keys=True, allow_nan=False))
     return 0
 

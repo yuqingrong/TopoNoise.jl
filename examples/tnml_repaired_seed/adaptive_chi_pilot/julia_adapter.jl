@@ -96,6 +96,12 @@ function runtime_identity()
     )
 end
 
+function configured_blas_threads()
+    value = parse(Int, get(ENV, "TNML_BLAS_THREADS", "4"))
+    value > 0 || throw(ArgumentError("TNML_BLAS_THREADS must be positive"))
+    return value
+end
+
 function exact_result(context, record, record_document, L, p)
     return mktempdir() do scratch
         cfg = (L=L, p=p, shots=1, chi=1, seed=0, output_dir=scratch,
@@ -119,7 +125,7 @@ end
 
 function main(args=ARGS)
     if length(args) == 2 && args[1] == "probe"
-        BLAS.set_num_threads(4)
+        BLAS.set_num_threads(configured_blas_threads())
         atomic_toml(abspath(args[2]), Dict("runtime_identity" => runtime_identity()))
         return nothing
     end
@@ -130,7 +136,7 @@ function main(args=ARGS)
     L, p, chi, cutoff = parse(Int, args[4]), parse(Float64, args[5]),
                          parse(Int, args[6]), parse(Float64, args[7])
     Threads.nthreads() == 1 || throw(ArgumentError("adapter requires one Julia thread"))
-    BLAS.set_num_threads(4)
+    BLAS.set_num_threads(configured_blas_threads())
     started = time_ns()
     output = try
         document = authenticate_record(record_path)
