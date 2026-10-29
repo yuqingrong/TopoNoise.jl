@@ -1,8 +1,8 @@
-# Adaptive-chi pilot: phase 1
+# Adaptive-chi pilot control plane
 
-This directory currently contains only the tested control plane for the pilot
-described in `../ADAPTIVE_CHI_PILOT.md`. It cannot launch Julia, run a tensor
-network contraction, or submit a Slurm job.
+This directory contains the tested phase-1 sampling plan and phase-2 execution
+control plane described in `../ADAPTIVE_CHI_PILOT.md`. Nothing here submits a
+Slurm job. The phase-2 tests use a fake executor and never run a contraction.
 
 `manifest.py` creates an immutable sampling-plan manifest. It freezes the six
 probability strata, every history seed, task layout, chi ladders, stopping
@@ -10,17 +10,21 @@ policy, resource limits, and the exact hash-ranking rule. `plan_task.py` only
 reads that manifest and prints a dry-run task plan. `core.py` implements the
 pure stopping, ranking, checkpoint-validation, and unknown-accounting rules.
 
-Record IDs do not exist until the raw history corpus has been generated. A
-later phase must therefore write a **new execution manifest**, rather than
-mutating this sampling manifest. That execution manifest must bind the frozen
-corpus and selected record IDs/ranks along with source and package hashes,
-BLAS vendor, compute-node identity, and other runtime identity required by the
-design document. Numerical execution remains disabled until that second freeze
-is implemented and reviewed.
+`execution_manifest.py` freezes a generated history corpus, the selected
+record IDs and ranks, source hashes, and runtime identity into a separate
+immutable execution manifest. It also freezes the exact-audit thresholds and
+one-sided 95% exact Clopper-Pearson convention. The phase-1 sampling manifest
+is never mutated.
 
-That phase-2 execution manifest must also freeze the independent-exact-ML tie
-tolerance at `1e-9`, the posterior and log-joint audit gates at `1e-5`, and the
-one-sided 95% exact Clopper-Pearson confidence-bound convention.
+`adaptive_runner.py` applies the pure stopping rule after each immutable chi
+checkpoint and resumes only a validated contiguous prefix. Invalid, timed-out,
+memory-limited, or unavailable exact results remain unknown. Manifest-defined
+per-chi wall limits are enforced by the runner. The frozen 16 GiB memory cap
+must be enforced by the cluster supervisor; a completed adapter result
+reporting a larger peak RSS is rejected as memory-limited. `julia_adapter.jl`
+is a thin optional adapter: it authenticates the frozen record and calls the
+existing `RepairedSeedTN.decode_record` and `TNMLRepairedRunner.exact_reference`
+entry points. It does not reimplement decoder mathematics.
 
 Run the bounded phase-1 tests from the repository root with:
 
@@ -29,3 +33,15 @@ PYTHONPYCACHEPREFIX=/tmp/tnml-pycache \
   python3 -m unittest \
   examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase1.py -v
 ```
+
+Run both bounded phases with:
+
+```sh
+PYTHONPYCACHEPREFIX=/tmp/tnml-pycache \
+  python3 -m unittest \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase1.py \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/test_phase2.py -v
+```
+
+Use `--dry-run` to plan without execution. An explicit `--execute` flag is
+required before the command can start the Julia adapter.
