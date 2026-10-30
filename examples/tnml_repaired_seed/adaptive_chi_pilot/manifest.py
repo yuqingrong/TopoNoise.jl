@@ -120,7 +120,10 @@ def build_manifest(seed_base: int) -> dict[str, Any]:
         "p_values": list(P_VALUES),
         "cutoff": CUTOFF,
         "stopping_policy": {
+            "version": "tnml-adaptive-stopping-v2",
+            "invalid_action": "retry_larger_chi_reset_consecutive_window",
             "minimum_completed_levels": 3,
+            "minimum_consecutive_valid_levels": 3,
             "posterior_bound": core.POSTERIOR_TOLERANCE,
             "log_joint_bound": core.LOG_JOINT_TOLERANCE,
             "normalization_tolerance": core.NORMALIZATION_TOLERANCE,

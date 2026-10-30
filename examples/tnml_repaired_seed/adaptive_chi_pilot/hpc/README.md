@@ -21,6 +21,36 @@ stopping policy. A changed worker requires a new study root for subsequent
 frozen batches; retain old exception checkpoints rather than deleting them or
 reusing their source identity.
 
+After that loading check passes, exercise the adaptive policy with six histories
+(one at each of p=0.006, 0.01, 0.02, 0.03, 0.035, and 0.0425):
+
+```bash
+cd "$HOME/TopoNoise.jl"
+sbatch --partition=a128m512u --array=0-5%6 \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/check_adaptive.sbatch
+```
+
+Each task requests four CPUs and 16 GiB and runs one history at all six chi
+levels (32, 64, 128, 240, 480, 960), plus exact ML. This is six histories total,
+not six histories per chi. The full ladder tests where the adaptive rule would
+stop and checks that decision against exact ML. It is a diagnostic, not the
+production calibration gate. The first contraction includes compilation, and
+the reported prefix time is reconstructed from the full-ladder diagnostic,
+not a separately measured adaptive runtime.
+
+Logs are `slurm-tnml-ladder-check-JOBID_TASK.out` and `.err`. Each task prints
+its new output directory under `$HOME/tnml-adaptive-ladder-checks`; that directory
+contains the sampled record, exact reference, all chi results, and `summary.json`.
+Read `adaptive_decision`, `accepted_exact_audit`, and `highest_chi_exact_audit`
+in the summary. Exit zero requires the highest-chi exact audit to pass and no
+false adaptive acceptance; the adaptive decision can still be `unknown`.
+No old study files are changed. Retain the same code until these tasks finish.
+
+Stopping policy v2 retries explicit numerical invalidity at the next chi and
+requires a new window of three consecutive valid levels. Exceptions, malformed
+output, and resource failures remain terminal unknowns. The policy version is
+frozen in new manifests; subsequent production work needs a fresh study root.
+
 The frozen schedule is:
 
 - L3 primary: 30 array elements, 20 histories each, at most 20 running;
@@ -176,7 +206,9 @@ source examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/env.sh
 
 Scheduler timeout or preemption is resumable by resubmitting the same array
 ID. Completed immutable checkpoints are reused. A per-call timeout, reported
-memory limit, or invalid result is a terminal unknown for that manifest. L5 is
+memory limit, exception, or malformed result is a terminal unknown for that
+manifest. An explicit numerical-invalid TN result retries the next chi; if
+the final level is invalid, the record remains unknown. L5 is
 a feasibility smoke, not threshold data. Its gate also requires all 24 forced
 anchors to finish through chi 480 with an explicit unchanged logical class.
 No L7/L9/L11 scripts are provided.

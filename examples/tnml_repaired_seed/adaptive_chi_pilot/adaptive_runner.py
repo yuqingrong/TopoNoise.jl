@@ -293,6 +293,8 @@ def _normalize_executor_result(
     rss = _safe_rss(raw.get("peak_rss_bytes", 0))
     if elapsed is None or rss is None:
         return _invalid_executor_result(raw, f"malformed {label} resource metrics")
+    if "error" in raw and not isinstance(raw["error"], str):
+        return _invalid_executor_result(raw, f"malformed {label} error field")
 
     normalized: dict[str, Any] = {
         "status": status,

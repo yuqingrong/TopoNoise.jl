@@ -26,6 +26,13 @@ is a thin optional adapter: it authenticates the frozen record and calls the
 existing `RepairedSeedTN.decode_record` and `TNMLRepairedRunner.exact_reference`
 entry points. It does not reimplement decoder mathematics.
 
+Stopping policy v2 retries an explicitly numerical-invalid TN level at larger
+chi, clearing the convergence window and any provisional anchor acceptance.
+Acceptance requires three consecutive valid levels after the most recent
+invalidity. Exceptions, malformed outputs, timeouts, and memory failures remain
+terminal unknowns. The new policy is frozen in new manifests; earlier frozen
+studies retain their original evidence and must not be reused under this policy.
+
 `task_runner.py` adds an optional persistent executor. One process owns every
 selected record for one complete `(L, p)` stratum, including all of that
 stratum's manifest shards. It loads Julia, the backend, and the fixed-L context

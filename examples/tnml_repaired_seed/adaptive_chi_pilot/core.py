@@ -198,6 +198,13 @@ def evaluate_stopping(
     level_values, ladder_values = _validate_ladder_and_levels(levels, ladder)
     eligible: list[dict[str, Any]] = []
     for level in level_values:
+        if (level.get("status") == "invalid" and level.get("valid") is False
+                and ("error" not in level or level["error"] == "")):
+            # Numerical invalidity at small chi can disappear at larger chi.
+            # It cannot contribute to a convergence window or preserve an
+            # earlier provisional acceptance during a forced anchor.
+            eligible.clear()
+            continue
         checked = _eligible_level(level)
         if checked["status"] != "complete":
             return checked
@@ -210,12 +217,20 @@ def evaluate_stopping(
             first_acceptance = _accepted_decision(eligible[end], metrics)
             break
 
-    at_maximum = len(eligible) == len(ladder_values)
+    at_maximum = len(level_values) == len(ladder_values)
+    if level_values and not eligible:
+        if at_maximum:
+            return {"status": "unknown", "reason": "invalid"}
+        return {
+            "status": "continue",
+            "reason": "retry_numerical_invalidity",
+            "next_chi": ladder_values[len(level_values)],
+        }
     if forced_anchor and first_acceptance is not None and not at_maximum:
         return {
             "status": "continue_anchor",
             "reason": "forced_high_chi_anchor",
-            "next_chi": ladder_values[len(eligible)],
+            "next_chi": ladder_values[len(level_values)],
             "provisional_acceptance": first_acceptance,
         }
     if first_acceptance is not None:
@@ -249,7 +264,7 @@ def evaluate_stopping(
     return {
         "status": "continue",
         "reason": "not_converged",
-        "next_chi": ladder_values[len(eligible)],
+        "next_chi": ladder_values[len(level_values)],
     }
 
 

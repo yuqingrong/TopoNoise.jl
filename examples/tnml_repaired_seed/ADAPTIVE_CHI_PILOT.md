@@ -11,6 +11,16 @@ bond dimension while rare ambiguous shots escalate.  A converged adaptive
 result remains an approximate finite-bond TN result.  It must not be called
 exact ML unless an independent exact calculation is available for that shot.
 
+Policy revision (2026-10-30): new sampling manifests use
+`tnml-adaptive-stopping-v2`. An explicitly numerical-invalid TN result retries
+the next chi, clearing the convergence window and provisional anchor decision.
+Acceptance requires three consecutive valid levels after any invalid level.
+This revises the original blanket invalid-result termination rule below;
+exceptions, malformed results, resource failures, and invalidity at maximum chi
+remain unknown. Existing frozen studies retain their original policy and
+results. The six-history ladder diagnostic in `adaptive_chi_pilot/hpc` checks
+this change without granting a production calibration gate.
+
 ## Approaches considered
 
 1. **Independent fixed-chi studies followed by an offline comparison.** This
