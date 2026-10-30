@@ -112,11 +112,7 @@ end
 function cached_decoder!(cache, context, config, chi)
     haskey(cache, chi) && return cache[chi], true, 0.0
     started = time_ns()
-    settings = Runner.TopoNoise.Toric3DZTNSettings(
-        max_bond_dimension=chi,
-        cutoff=config.cutoff,
-        negative_tolerance=Runner.NEGATIVE_TOLERANCE,
-    )
+    settings = tn_settings(chi, config.cutoff)
     decoder = Base.invokelatest(
         repaired_seed_function(:build_decoder), context, config.p; settings=settings
     )

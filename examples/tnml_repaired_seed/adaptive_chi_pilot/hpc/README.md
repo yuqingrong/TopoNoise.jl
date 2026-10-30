@@ -4,6 +4,23 @@ This directory is isolated from `examples/tnml_repaired_seed/hpc`. It uses the
 already validated `.hpc-python-path` and Julia depot, but never edits the older
 fixed-chi study.
 
+Before restarting a batch after a worker fix, run the one-history diagnostic:
+
+```bash
+cd "$HOME/TopoNoise.jl"
+sbatch --partition=a128m512u \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/check_worker.sbatch
+```
+
+It runs a real L3 history at p=0.006 with chi 32, 128, and 960, compares with
+exact ML, and checks decoder cache reuse. It reports invalid low-chi outputs
+and requires chi 960 to pass. Unlike the startup smoke, it actually contracts
+the TN. Its output is `slurm-tnml-worker-check-JOBID.out`; existing frozen studies
+are untouched. Passing this one-history check does not validate the adaptive
+stopping policy. A changed worker requires a new study root for subsequent
+frozen batches; retain old exception checkpoints rather than deleting them or
+reusing their source identity.
+
 The frozen schedule is:
 
 - L3 primary: 30 array elements, 20 histories each, at most 20 running;

@@ -18,6 +18,18 @@ function repaired_seed_function(name::Symbol)
     return Base.invokelatest(getproperty, backend, name)
 end
 
+function tn_settings(chi, cutoff)
+    # load_backend! creates these bindings while the worker is already running.
+    # Both the lookup and the keyword constructor must see the latest world.
+    backend = Base.invokelatest(getproperty, Runner, :TopoNoise)
+    constructor = Base.invokelatest(getproperty, backend, :Toric3DZTNSettings)
+    return Base.invokelatest(constructor;
+        max_bond_dimension=chi,
+        cutoff=cutoff,
+        negative_tolerance=Runner.NEGATIVE_TOLERANCE,
+    )
+end
+
 function atomic_toml(path, document)
     mkpath(dirname(path))
     temporary, io = mktemp(dirname(path))
@@ -75,11 +87,7 @@ function tn_result(decoder, record)
 end
 
 function tn_result(context, record, p, chi, cutoff)
-    settings = Runner.TopoNoise.Toric3DZTNSettings(
-        max_bond_dimension=chi,
-        cutoff=cutoff,
-        negative_tolerance=Runner.NEGATIVE_TOLERANCE,
-    )
+    settings = tn_settings(chi, cutoff)
     decoder = Base.invokelatest(
         repaired_seed_function(:build_decoder), context, p; settings=settings
     )
