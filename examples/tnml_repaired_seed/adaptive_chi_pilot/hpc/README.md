@@ -51,6 +51,55 @@ requires a new window of three consecutive valid levels. Exceptions, malformed
 output, and resource failures remain terminal unknowns. The policy version is
 frozen in new manifests; subsequent production work needs a fresh study root.
 
+## Small fixed-chi speed screen
+
+The six-history ladder check found that chi 64 and 128 selected the correct
+logical class on all six histories, while their posterior/log-evidence errors
+failed the full audit for several higher-p cases. Chi 480 passed the full audit
+on all six. These observations identify candidates; they do not establish a
+validated small-chi decoder.
+
+For the logical-failure figure, the next screen compares fixed chi 64 and 128
+on the same ten new histories per p. This uses the independent exact L3 decoder
+as the reference and avoids paying for a full ladder on every history. A fixed
+chi 480 screen would instead target the stronger probability-accuracy goal;
+changing the adaptive tolerances based only on the six observed histories
+would give an optimistic assessment. This screen leaves that policy unchanged.
+
+```bash
+cd "$HOME/TopoNoise.jl"
+sbatch --partition=a128m512u --array=0-5%6 \
+  examples/tnml_repaired_seed/adaptive_chi_pilot/hpc/fixed_chi_screen.sbatch
+```
+
+This requests six tasks with four CPUs and 16 GiB each, a 30-minute wall limit,
+and **60 histories total**. Every history receives two TN contractions (chi 64
+and 128) and one exact reference. One Julia process per p reuses its context
+and both decoders. The order of the two chi values alternates between histories.
+There is no unscored warm-up history. Per-chi timing includes the first history;
+the separately reported warm median excludes that history, which can include
+compilation. These timings do not predict performance at larger L.
+
+The seed range starts at 202610700000, distinct from the six-history diagnostic
+and the earlier adaptive L3 sampling range. Each submission saves a separate
+directory under `$HOME/tnml-fixed-chi-screen`. Repeating a submission replays
+those seeds; it does not create additional independent samples. A smaller local
+or HPC check can use the optional arguments `OUTPUT_ROOT SHOTS`, where SHOTS is
+1 through 10.
+
+Each `report.json` separates exact-ML class disagreement, full probability-audit
+failure, numerical invalidity, and logical failure. Invalid outcomes remain
+unknown in the requested-shot denominator. A completed screen exits zero even
+when classes disagree or numerical results are invalid; inspect the scientific
+counts. Exceptions, malformed results, or missing checkpoints fail the report.
+No production validation gate is issued, and no old study data are changed.
+
+Read the compact results after the array finishes (replace JOBID with its ID):
+
+```bash
+grep '^SCREEN' slurm-tnml-fixed-JOBID_*.out
+```
+
 The frozen schedule is:
 
 - L3 primary: 30 array elements, 20 histories each, at most 20 running;
